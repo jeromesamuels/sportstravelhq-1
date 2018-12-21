@@ -1,0 +1,13 @@
+{
+	"name"		:"Sports Travel",
+	"folder"	:"sportstravel",
+	"author"	:"Eric Gill",
+	"template"	:{
+					
+					"Default Page"		: "page",
+					"Homepage"			: "homepage",
+					"Full Page"			: "fullpage",
+					"Contact Form"		: "contact",
+					"Backend Template"	: "backend"
+				}
+}
