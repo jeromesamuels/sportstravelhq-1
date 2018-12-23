@@ -94,8 +94,9 @@
                 <ul class="dropdown-menu">
                      
     
+                  <li ><a href="{{ url('core/users')}}">  @lang('core.m_users') <br /></a> </li> 
+
                 @if(Auth::user()->group_id == 1) 
-                    <li ><a href="{{ url('core/users')}}">  @lang('core.m_users') <br /></a> </li> 
                     <li ><a href="{{ url('core/groups')}}">  @lang('core.m_groups') </a> </li>
                     <li><a href="{{ url('core/users/blast')}}">  @lang('core.m_blastemail') </a></li> 
                 @endif

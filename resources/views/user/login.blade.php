@@ -1,16 +1,28 @@
 @extends('layouts.login')
 
 @section('content')
-	
 
-		
+
+
+
+<style type="text/css">
+	.form-signup {
+		background: #FFF;
+	}
+</style>
+
+<div class="home-banner">
+	<div class="container">
+		<div class="row">
+
+	<div class="col-md-6">
+		<div class="sbox" > 
+
 	    <h5 class="text-center m-t" style="text-transform: uppercase;"> {{ config('sximo.cnf_appdesc') }}  </h5> 
 		
-		
-		
 			<div class="ajaxLoading"></div>
-			<p class="message alert alert-danger " style="display:none;"></p>	
-	 
+			<p class="message alert alert-danger " style="display:none;"></p>
+
 		    	@if(Session::has('status'))
 		    		@if(session('status') =='success')
 		    			<p class="alert alert-success">
@@ -60,20 +72,17 @@
 					<button type="submit" class="btn btn-primary btn-block"> Submit </button>
 				</div>			 	
 
-
-
-
-				<div class="   animated fadeInLeft delayp1" >					       
+				<div class="animated fadeInLeft delayp1" >					       
 						<p class="text-center ">						
 							<a href="javascript:void(0)" class="forgot"> @lang('core.forgotpassword') ? </a> | 
 							<a href="{{ url('user/register')}}"> @lang('core.registernew') </a>
-						</p>					
+						</p>
 				</div>	
 				<div class="animated fadeInUp delayp1">
 			<div class="form-group  ">
 				@if($socialize['google']['client_id'] !='' || $socialize['twitter']['client_id'] !='' || $socialize['facebook'] ['client_id'] !='') 
 				
-				<p class="text-muted text-center"><b> {{ Lang::get('core.loginsocial') }} </b>	  </p>
+				<p class="text-muted text-center"><b> {{ Lang::get('core.loginsocial v') }} </b>	  </p>
 				
 				<div style="padding:15px 0; text-align: center;">
 					@if($socialize['facebook']['client_id'] !='') 
@@ -89,10 +98,6 @@
 				@endif
 			</div>			
 
-
-				  <p style="padding:5px 0" class="text-center">
-				  <a href="{{ url('')}}"> {{ Lang::get('core.backtosite') }} </a>  
-			   		</p>
 			   	</div>	
 			   </form>			
 			</div>
@@ -121,52 +126,73 @@
 		</div>
 		
 	</div>
- 
+
+		</div>
+	</div>
+ 		<div class="col-md-6">
+			<div class="registration-side">
+				<h3>Sign Up</h3>
+				<span>Here's why ...</span>
+				<ol>
+					<li>Free</li>
+					<li>Sports Team-focused (10 or more rooms)</li>
+					<li>Best Rates Available</li>
+				</ol>
+			</div>
+		</div>
+
+	  </div>
+	</div>  
+</div>
+
+
+
 
 
 
 <script type="text/javascript">
-	$(document).ready(function(){
+$(document).ready(function(){
 
-		$('.forgot').on('click',function(){
-			$('#tab-forgot').toggle();
-			$('#tab-sign-in').toggle();
-		})
-		var form = $('#LoginAjax'); 
-		form.parsley();
-		form.submit(function(){
-			
-			if(form.parsley().isValid()){			
-				var options = { 
-					dataType:      'json', 
-					beforeSubmit :  showRequest,
-					success:       showResponse  
-				}  
-				$(this).ajaxSubmit(options); 
-				return false;
-							
-			} else {
-				return false;
-			}		
+	$('.forgot').on('click',function(){
+		$('#tab-forgot').toggle();
+		$('#tab-sign-in').toggle();
+	})
+	var form = $('#LoginAjax'); 
+	form.parsley();
+	form.submit(function(){
 		
-		});
-
+		if(form.parsley().isValid()){			
+			var options = { 
+				dataType:      'json', 
+				beforeSubmit :  showRequest,
+				success:       showResponse  
+			}  
+			$(this).ajaxSubmit(options); 
+			return false;
+						
+		} else {
+			return false;
+		}		
+	
 	});
+
+});
 
 function showRequest()
 {
-	$('.ajaxLoading').show();		
-}  
-function showResponse(data)  {		
+	$('.ajaxLoading').show(); 
+}
+
+function showResponse(data) {
 	
 	if(data.status == 'success')
 	{
-		window.location.href = data.url;	
+		window.location.href = data.url;
 		$('.ajaxLoading').hide();
 	} else {
-		$('.message').html(data.message)	
+		$('.message').html(data.message);
 		$('.ajaxLoading').hide();
-		$('.message').show(data.message)	
+		$('.message').show(data.message);	
 		return false;
 	}	
 }	

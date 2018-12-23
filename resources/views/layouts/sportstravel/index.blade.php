@@ -75,6 +75,9 @@
     <!--RTL version:<link href="{{ asset('frontend/sportstravel/assets/vendors/custom/fullcalendar/fullcalendar.bundle.rtl.css') }}" rel="stylesheet" type="text/css" />-->
 
 
+
+    <script src="{{ asset('frontend/sportstravel/vendors/jquery/dist/jquery.js') }}" type="text/javascript"></script>
+
       
   </head>
   <!-- end::Head -->
@@ -925,7 +928,6 @@
     <!-- begin::Quick Nav -->
 
     <!--begin:: Global Mandatory Vendors -->
-    <script src="{{ asset('frontend/sportstravel/vendors/jquery/dist/jquery.js') }}" type="text/javascript"></script>
     <script src="{{ asset('frontend/sportstravel/vendors/popper.js/dist/umd/popper.js') }}" type="text/javascript"></script>
     <script src="{{ asset('frontend/sportstravel/vendors/bootstrap/dist/js/bootstrap.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('frontend/sportstravel/vendors/js-cookie/src/js.cookie.js') }}" type="text/javascript"></script>
@@ -944,6 +946,10 @@
     <script src="{{ asset('frontend/sportstravel/vendors/block-ui/jquery.blockUI.js') }}" type="text/javascript"></script>
     <script src="{{ asset('frontend/sportstravel/vendors/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('frontend/sportstravel/vendors/js/framework/components/plugins/forms/bootstrap-datepicker.init.js') }}" type="text/javascript"></script>
+
+    <script type="text/javascript" src="{{ asset('sximo5/js/plugins/jquery.jCombo.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('sximo5/js/plugins/parsley.js') }}"></script>
+
     <script src="{{ asset('frontend/sportstravel/vendors/bootstrap-datetime-picker/js/bootstrap-datetimepicker.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('frontend/sportstravel/vendors/bootstrap-timepicker/js/bootstrap-timepicker.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('frontend/sportstravel/vendors/js/framework/components/plugins/forms/bootstrap-timepicker.init.js') }}" type="text/javascript"></script>

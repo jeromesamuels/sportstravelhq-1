@@ -40,6 +40,7 @@ class UsersController extends Controller {
 		$filter = [
 			'params' => " AND tb_groups.level > '".Users::level(session('gid'))."'" 
 		];
+
 		$this->grab( $request , $filter ) ;
 		if($this->access['is_view'] ==0) 
 			return redirect('dashboard')->with('message', __('core.note_restric'))->with('status','error');				
@@ -54,7 +55,8 @@ class UsersController extends Controller {
 		if($this->access['is_add'] ==0) 
 			return redirect('dashboard')->with('message', __('core.note_restric'))->with('status','error');
 
-		$this->data['row'] = $this->model->getColumnTable( $this->info['table']); 
+		$this->data['row'] = $this->model->getColumnTable( $this->info['table']);
+
 		$this->data['id'] = '';
 		return view('core.users.form',$this->data);
 

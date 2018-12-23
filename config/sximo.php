@@ -18,7 +18,7 @@ return [
 'cnf_recaptchapublickey' => '6Le2bjQUAAAAABascn2t0WsRjZbmL6EnxFJUU1H_',
 'cnf_recaptchaprivatekey' => '6Le2bjQUAAAAAI6ZKqgzoYS21umpeper74sMK38s',
 'cnf_mode' 			=> 'production',
-'cnf_logo' 			=> 'backend-logo.png',
+'cnf_logo' 			=> 'backend-logo.jpg',
 'cnf_allowip' 			=> '',
 'cnf_restrictip' 		=> '192.116.134 , 194.111.606.21 ',
 'cnf_mail' 			=> 'swift',

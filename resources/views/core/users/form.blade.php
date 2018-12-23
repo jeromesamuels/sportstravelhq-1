@@ -43,8 +43,7 @@
 								  <div class="form-group  " >
 									<label for="Group / Level" class=" control-label col-md-4 text-left"> Group / Level <span class="asterix"> * </span></label>
 									<div class="col-md-6">
-									  <select name='group_id' rows='5' id='group_id' code='{$group_id}' 
-							class='select2 form-control  input-sm'  required  ></select> 
+									  <select name="group_id" rows="5" id="group_id" code="{$group_id}" class="select2 -- form-control input-sm select2-hidden-accessible" required="" tabindex="-1" aria-hidden="true"><option value="">-- Please Select --</option><option value="2">Administrator </option><option value="3">Users </option></select>
 									 </div> 
 									 <div class="col-md-2">
 									 	
@@ -182,14 +181,4 @@
 		</div>
 	</div>
 </div>
-
-		 
-   <script type="text/javascript">
-	$(document).ready(function() { 
-		
-		$("#group_id").jCombo("{{ URL::to('core/users/comboselect?filter=tb_groups:group_id:name') }}",
-		{  selected_value : '{{ $row["group_id"] }}' });
-		 
-	});
-	</script>		 
 @stop

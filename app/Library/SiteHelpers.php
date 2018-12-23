@@ -648,16 +648,20 @@ public static function alphaID($in, $to_num = false, $pad_up = false, $passKey =
 				$form = "<?php \$".$field." = explode(\",\",\$row['".$field."']); ?>";
 				for($i=0; $i<count($opt);$i++) 
 				{
-					
 					$checked = '';
-					$row =  explode(":",$opt[$i]);					
-					 $form .= "
-					  
+					$row =  explode(":",$opt[$i]);
+					 $form .= "					  
 					<input type='checkbox' name='{$field}[]' value ='".ltrim(rtrim($row[0]))."' {$mandatory} {$attribute} class='{$extend_class} minimal-red' ";
 					$form .= "
 					@if(in_array('".trim($row[0])."',\$".$field."))checked @endif 
 					";
-					$form .= " /> ".$row[1]." ";					
+
+					//print_r($row);die;
+					if (!isset($row[1])) {
+					   $row[1] = null;
+					}
+
+						$form .= " /> ".$row[1]." ";
 				}
 				break;				
 			

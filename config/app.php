@@ -51,7 +51,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://40.121.90.145/demo/public'),
+    'url' => env('APP_URL', 'http://localhost:8888/Eric/sportsTravelHQ/sportstravelhq/public'),
 
     /*
     |--------------------------------------------------------------------------
