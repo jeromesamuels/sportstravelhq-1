@@ -34,6 +34,7 @@ class UserController extends Controller {
 	}
 	public function postCreate( Request $request) {
 	
+
 		$rules = array(
 			'username'=>'required|alpha|between:3,12|unique:tb_users',
 			'firstname'=>'required|alpha_num|min:2',
