@@ -192,7 +192,7 @@ class SximoHelpers {
 
   static public function showForm( $module = null )
   {
-     $sql = \DB::table('tb_module')->where('module_name',$module)->get();
+     $sql = \DB::table('tb_module')->where('module_name', $module)->get();
      if(count($sql)>=1)
      {
         $row = $sql[0];
@@ -208,8 +208,6 @@ class SximoHelpers {
         } else {
           return 'cant find the form';
         }
-
-
      } else {
         return 'cant find the form';
      } 

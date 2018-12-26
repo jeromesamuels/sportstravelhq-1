@@ -1,6 +1,7 @@
 <?php 
 
 use App\Models\Post;
+use App\Models\Hotelamenities;
 
 class PostHelpers {
 
@@ -12,7 +13,7 @@ class PostHelpers {
 
 
 
-	static function latestpost(  )
+	static function latestpost()
 	{
 		$sql = Post::latestposts();
 		return $sql;
@@ -176,5 +177,23 @@ class PostHelpers {
 
             return $value;
 
-    } 		
+    }
+
+
+
+	static function amenities()
+	{
+		$sql = Hotelamenities::querySelect();
+		echo $sql;
+
+		$content = '';
+		foreach($sql as $row) :
+		print_r($row);
+		$content .= $row->slug.' - '. $row->title;
+		endforeach ;
+
+		return $content;
+	}
+
+
 }

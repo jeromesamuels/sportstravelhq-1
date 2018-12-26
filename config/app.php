@@ -238,7 +238,9 @@ return [
      //   'Markdown'  => GrahamCampbell\Markdown\Facades\Markdown::class,
         'Socialize' => Laravel\Socialite\Facades\Socialite::class,
         'PDF'       => 'Vsmoraes\Pdf\PdfFacade',  
-        'Cart'      => Gloudemans\Shoppingcart\Facades\Cart::class
+        'Cart'      => Gloudemans\Shoppingcart\Facades\Cart::class, 
+        'Helper' => App\Helpers\Helper::class,
+
     ],
 
 ];

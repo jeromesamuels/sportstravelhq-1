@@ -137,7 +137,6 @@ class UsersController extends Controller {
 
 	function postSave( $request, $id =0)
 	{
-		
 		$rules = $this->validateForm();
 		if($request->input('id') =='')
 		{
@@ -145,7 +144,6 @@ class UsersController extends Controller {
 			$rules['password_confirmation'] = 'required|between:6,12';
 			$rules['email'] 				= 'required|email|unique:tb_users';
 			$rules['username'] 				= 'required|alpha_num|min:2|unique:tb_users';
-			
 		} else {
 			if($request->input('password') !='')
 			{
@@ -223,7 +221,7 @@ class UsersController extends Controller {
         	return ['message'=>__('core.note_success_delete'),'status'=>'success'];	
 	
 		} else {
-			return ['message'=>__('No Item Deleted'),'status'=>'error'];				
+			return ['message'=>__('No Item Deleted'),'status'=>'error'];	
 		}
 
 	}	
@@ -240,16 +238,14 @@ class UsersController extends Controller {
 
 	function postDoblast( Request $request)
 	{
-
 		$rules = array(
 			'subject'		=> 'required',
 			'message'		=> 'required|min:10',
-			'groups'		=> 'required',				
+			'groups'		=> 'required',
 		);	
 		$validator = Validator::make($request->all(), $rules);	
 		if ($validator->passes()) 
-		{	
-
+		{
 			if(!is_null($request->input('groups')))
 			{
 				$count = 0;
@@ -258,12 +254,10 @@ class UsersController extends Controller {
 				{
 					if($request->input('uStatus') == 'all')
 					{
-
 						$users = \DB::table('tb_users')->where('group_id','=',$groups[$i])->get();
 					} else {
 						$users = \DB::table('tb_users')->where('active','=',$request->input('uStatus'))->where('group_id','=',$groups[$i])->get();
 					}
-					
 
 					foreach($users as $row)
 					{
@@ -272,14 +266,12 @@ class UsersController extends Controller {
 						$data['to']			= $row->email;
 						$data['subject']	= $request->input('subject');
 						$data['cnf_appname'] = $this->data['sximoconfig']['cnf_appname'];
-						
-						
+
 						if($this->config['cnf_mail'] && $this->config['cnf_mail'] =='swift')
 						{ 
 							\Mail::send('core.users.email', $data, function ($message) use ($data) {
 					    		$message->to($data['to'])->subject($data['subject']);
 					    	});
-
 
 					    } else {
 					    	$message = view('core.users.email',$data);
@@ -287,32 +279,25 @@ class UsersController extends Controller {
 							$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 							$headers .= 'From: '.$this->config['cnf_appname'].' <'.$this->config['cnf_email'].'>' . "\r\n";
 								mail($data['to'], $data['subject'], $message, $headers);
-
-					    }							
-						
-						++$count;					
+					    }
+						++$count;
 					} 
-					
 				}
 				return redirect('core/users/blast')->with('message','Total '.$count.' Message has been sent')->with('status','success');
-
 			}
 			return redirect('core/users/blast')->with('message','No Message has been sent')->with('status','info');
-			
 
 		} else {
 
 			return redirect('core/users/blast')->with('message', 'The following errors occurred')->with('status','error')
 			->withErrors($validator)->withInput();
 
-		}	
-
+		}
 	}
 
 	public function getSearch( $mode = 'native')
 	{
-
-		$this->data['tableForm'] 	= $this->info['config']['forms'];	
+		$this->data['tableForm'] 	= $this->info['config']['forms'];
 		$this->data['tableGrid'] 	= $this->info['config']['grid'];
 		$this->data['searchMode'] = 'native';
 		$this->data['pageUrl']		= url('core/users');

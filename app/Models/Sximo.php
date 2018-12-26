@@ -170,7 +170,7 @@ class Sximo extends Model {
 	} 
 
     static function getComboselect( $params , $limit =null, $parent = null)
-    {   
+    {
         $limit = explode(':',$limit);
         $parent = explode(':',$parent);
 
