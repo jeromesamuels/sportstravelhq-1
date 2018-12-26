@@ -223,7 +223,7 @@ class UsertripsController extends Controller {
 		if ($validator->passes()) {
 			$data = $this->validatePost(  $request );
 			$this->model->insertRow($data , $request->input('id'));
-			return  Redirect::back()->with('message',__('core.note_success'))->with('status','success');
+			return  Redirect::to('/trips')->with('messagetext', "Thankyou! we've got your booking requst. Our travel coordinator will contact you soon.")->with('status','success');
 		} else {
 			return  Redirect::back()->with('message',__('core.note_error'))->with('status','error')->withErrors($validator)->withInput();
 		}

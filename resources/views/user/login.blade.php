@@ -69,7 +69,7 @@
 			 	@endif	
 
 				<div class="form-group animated fadeInRight delayp1">
-					<button type="submit" class="btn btn-primary btn-block"> Submit </button>
+					<button type="submit" class="btn btn-default btn-block"> Submit </button>
 				</div>			 	
 
 				<div class="animated fadeInLeft delayp1" >					       

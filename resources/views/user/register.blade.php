@@ -77,7 +77,7 @@
 
 		      <div class="row form-group">
 		        <div class="col-sm-12">
-		          <button type="submit" id="signup" style="width:100%;" class="btn btn-primary pull-right"><i class="icon-user-plus"></i> @lang('core.signup')	</button>
+		          <button type="submit" id="signup" style="width:100%;" class="btn btn-default pull-right"><i class="icon-user-plus"></i> @lang('core.signup')	</button>
 		       </div>
 		      </div>
 			  <p style="padding:10px 0" class="text-center">
