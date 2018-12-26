@@ -124,8 +124,10 @@ $agreement_text = '<div id="Translation"><h3>The standard Lorem Ipsum passage, u
 		    e.preventDefault();
 
 			$.confirm({
-			    columnClass: 'col-md-6',
+			    columnClass: 'col-md-10 terms-condition',
 			    title: 'Your Agreement with Sports Travel HQ!',
+			    minHeight: 120,
+            	maxHeight: 200,
 			    content: '<?php echo $agreement_text ?>',
 			    buttons: {
 			        confirm: {

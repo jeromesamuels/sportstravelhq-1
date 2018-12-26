@@ -1,14 +1,14 @@
 <?php  $menus = SiteHelpers::menus('top') ;?>
 <ul class="m-menu__nav  m-menu__nav--submenu-arrow ">
-   <li class="m-menu__item  m-menu__item--active " aria-haspopup="true">
-    <a href="{{ url('') }}" class="m-menu__link "><span class="m-menu__item-here"></span><span class="m-menu__link-text">Home</span></a>
+   <li class="m-menu__item  @if(URL::current() == URL::to('/')) m-menu__item--active @endif " aria-haspopup="true">
+    <a href="{{ url('') }}" class="m-menu__link "><span class="m-menu__item-here"></span><span class="m-menu__link-text"> Home </span></a>
    </li>
 
     @foreach ($menus as $menu)
         @if($menu['module'] =='separator')
         <li class="divider"></li>
         @else
-            <li class="m-menu__item @if(count($menu['childs']) > 0 )  m-menu__item--submenu m-menu__item--rel @endif" m-menu-submenu-toggle="click" ><!-- HOME -->
+            <li class="m-menu__item @if(count($menu['childs']) > 0 )  m-menu__item--submenu m-menu__item--rel @endif @if (strpos(URL::current(), $menu['module']) !== false) m-menu__item--active @endif " m-menu-submenu-toggle="click" ><!-- HOME -->
                 <a class="m-menu__link @if(count($menu['childs']) > 0 ) m-menu__toggle @endif" 
                 @if($menu['menu_type'] =='external')
                     href="{{ URL::to($menu['url'])}}" 
@@ -42,7 +42,7 @@
                         <li class="divider"> </li>        
                     @else
                     <li class="m-menu__item 
-                        @if(Request::is($menu2['module'])) active @endif">
+                        @if(Request::is($menu2['module'])) m-menu__item--active @endif">
                         <a class="m-menu__link " 
                             @if($menu2['menu_type'] =='external')
                                 href="{{ url($menu2['url'])}}" 
