@@ -9,10 +9,112 @@ $(document).ready(function() {
 
 @endif
 
+<style type="text/css">
+	.planned-trips .planned-trip-content {
+		border-bottom: solid 1px #DDD;
+		padding: 10px;
+		position: relative;
+	}
+	.planned-trips .planned-trip-content:hover {
+		background: #eee;
+		cursor: pointer;
+	}
+
+	.planned-trips .planned-trip-content .planned-trip-action {
+		position: absolute;
+		right: 25px;
+		bottom: 15px;
+	}
+
+	.planned-trips .planned-trip-content i {
+	    position: absolute;
+	    top: 15px;
+	    right: 25px;
+	    font-size: 20px;
+	    font-weight: bold;
+	    color: #333!important;
+    }
+
+	.m-portlet .m-portlet__body {
+		text-align: center;
+	}
+
+	.m-portlet__body ul {
+		list-style: none;
+		-webkit-column-count: 2;
+	    -moz-column-count: 2;
+	    column-count: 2;
+		position: relative;
+	}
+
+	.m-portlet__body ul li {
+		text-align: left;
+	}
+
+	.m-portlet__body ul li h4 {
+		position: absolute;right: 10px; top: 20px;
+	}
+
+	.rfp_footer {
+		min-height: 100px;
+		background: #DDD; 
+	}
+
+	.rfp_footer ul {
+		list-style: none;
+	}
+
+	.m-portlet__body a {
+		text-decoration: none;
+		color: #333;
+		display: inline-block;
+		border-bottom: solid 1px #ddd;
+		padding: 20px 0;
+		width: 100%;
+	}
+	.m-portlet__body a:hover {
+		background: #eee;
+	}
+
+	.rfp_footer ul li {
+		float: left;
+		font-weight: bold;
+		min-width: 20%;
+	}
+
+	.rfp_footer ul li span {
+		font-weight: normal;
+	}
 
 
+</style>
 
 
+<script type="text/javascript">
+	
+	$(document).ready(function() {
+		$(".planned-trips .planned-trip-content").on("click", function() {
+			var id = $(this).attr("id");
+
+			$('.m-portlet__body').html('<div class="m-spinner m-spinner--brand m-spinner--lg"></div>');
+
+			var url = '{{ url("/RFPs/") }}' ;
+			$.post(url + '/' + id, function(response) {
+
+			    if(response.success)
+			    {
+			    	$('.m-portlet__body').html("");
+			    	if(!response.rfps.length) 
+				        $('.m-portlet__body').html("<ul><li><b>No RFP Records Found!</b></li></ul>");
+			        $.each(response.rfps, function(k, res){
+			            $('.m-portlet__body').append('<a href="?view=1"><ul><li><b>'+res.added+'</b></li><li><b>'+res.destination+'</b></li><li>'+res.hotel_information+'</li><li>conact: <br /><b>'+res.sales_manager+'</b></li><li><h4> $'+res.offer_rate+'/room </h4></li></ul></a>');
+			        })
+			    }
+			}, 'json');
+		});
+	});
+
+</script>
 
 <div class="row">
 	<div class="col-xl-4">
@@ -37,30 +139,32 @@ $(document).ready(function() {
 					</ul>
 				</div>
 			</div>
-			<div class="m-portlet__body">
+
+
+
+			<div class="">
 				<div class="tab-content">
 					<div class="tab-pane active" id="m_widget4_tab1_content">
 						<div class="m-scrollable m-scroller ps ps--active-y" data-scrollable="true" data-height="400" style="height: 400px; overflow: hidden;">
 							<div class="m-list-timeline m-list-timeline--skin-light">
-								<div class="m-list-timeline__items">
-									<div class="m-list-timeline__item">
-										<span class="m-list-timeline__badge m-list-timeline__badge--success"></span>
-										<span class="m-list-timeline__text">
-										<b>12/26/18 - 12/29/18</b>
-										<p>Concorde Fire U-13 Tampa Sunbowl</p>
+								<div class="planned-trips">
+								@foreach ($rowData as $row)
+									<!--{{ dump($row) }}-->
+									<div class="planned-trip-content" id="{{ $row->id }}">
+										<span class="planned-trip-heading">
+										<b>{{ \Carbon\Carbon::parse($row->check_in)->format('d/m/Y')}} - {{ \Carbon\Carbon::parse($row->check_out)->format('d/m/Y')}}</b>
+										<p>{{ $row->from_address_1 }} {{ $row->from_city }} {{ $row->from_zip }}</p>
+
 										<p>3 RPFs Received</p>
+
+										<i class="la la-ellipsis-h m--font-brand"></i>
 										</span>
-										<span class="m-list-timeline__time">Needs review</span>
+
+										<span class="planned-trip-action">Needs review </span>
 									</div>
-									<div class="m-list-timeline__item">
-										<span class="m-list-timeline__badge m-list-timeline__badge--info"></span>
-										<span class="m-list-timeline__text">
-										<b>11/12/18 - 11/19/18</b>
-										<p>Concorde Fire U-13 Tampa Sunbowl</p>
-										<p>5 RPFs Received</p>
-										</span>
-										<span class="m-list-timeline__time">Approved</span>
-									</div>
+
+								@endforeach
+
 								</div>
 							</div>
 						<div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; height: 400px; right: 4px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 245px;"></div></div></div>
@@ -87,286 +191,30 @@ $(document).ready(function() {
 					</div>
 				</div>
 				<div class="m-portlet__head-tools">
-					<ul class="m-portlet__nav">
-						<li class="m-portlet__nav-item">
-							<div class="m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" m-dropdown-toggle="hover" aria-expanded="true">
-								<a href="#" class="m-portlet__nav-link btn btn-lg btn-secondary  m-btn m-btn--icon m-btn--icon-only m-btn--pill  m-dropdown__toggle">
-									<i class="la la-ellipsis-h m--font-brand"></i>
-								</a>
-								<div class="m-dropdown__wrapper" style="z-index: 101;">
-									<span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust" style="left: auto; right: 21.5px;"></span>
-									<div class="m-dropdown__inner">
-										<div class="m-dropdown__body">
-											<div class="m-dropdown__content">
-												<ul class="m-nav">
-													<li class="m-nav__section m-nav__section--first">
-														<span class="m-nav__section-text">Quick Actions</span>
-													</li>
-													<li class="m-nav__item">
-														<a href="" class="m-nav__link">
-															<i class="m-nav__link-icon flaticon-share"></i>
-															<span class="m-nav__link-text">Create Post</span>
-														</a>
-													</li>
-													<li class="m-nav__item">
-														<a href="" class="m-nav__link">
-															<i class="m-nav__link-icon flaticon-chat-1"></i>
-															<span class="m-nav__link-text">Send Messages</span>
-														</a>
-													</li>
-													<li class="m-nav__item">
-														<a href="" class="m-nav__link">
-															<i class="m-nav__link-icon flaticon-multimedia-2"></i>
-															<span class="m-nav__link-text">Upload File</span>
-														</a>
-													</li>
-													<li class="m-nav__section">
-														<span class="m-nav__section-text">Useful Links</span>
-													</li>
-													<li class="m-nav__item">
-														<a href="" class="m-nav__link">
-															<i class="m-nav__link-icon flaticon-info"></i>
-															<span class="m-nav__link-text">FAQ</span>
-														</a>
-													</li>
-													<li class="m-nav__item">
-														<a href="" class="m-nav__link">
-															<i class="m-nav__link-icon flaticon-lifebuoy"></i>
-															<span class="m-nav__link-text">Support</span>
-														</a>
-													</li>
-													<li class="m-nav__separator m-nav__separator--fit m--hide">
-													</li>
-													<li class="m-nav__item m--hide">
-														<a href="#" class="btn btn-outline-danger m-btn m-btn--pill m-btn--wide btn-sm">Submit</a>
-													</li>
-												</ul>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</li>
-					</ul>
+
 				</div>
 			</div>
 			<div class="m-portlet__body">
-
 				<!--begin: Datatable -->
 				<div class="m_datatable m-datatable m-datatable--default m-datatable--loaded m-datatable--scroll" id="m_datatable_latest_orders" style="">
-	<table class="m-datatable__table" style="display: block; min-height: 300px; max-height: 380px;">
-			<tbody class="m-datatable__body ps ps--active-x ps--active-y" style="max-height: 329px;">
-				<tr data-row="10" class="m-datatable__row" style="left: 0px;">
-					<td class="m-datatable__cell--center m-datatable__cell m-datatable__cell--check" data-field="RecordID">
-						<span style="width: 40px;">
-							<label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand">
-								<input type="checkbox" value="187">&nbsp;
-									<span></span>
-								</label>
-							</span>
-						</td>
-						<td class="m-datatable__cell--sorted m-datatable__cell" data-field="OrderID">
-							<span style="width: 150px;">0093-2046 - PT</span>
-						</td>
-						<td data-field="ShipName" class="m-datatable__cell">
-							<span style="width: 150px;">Russel, Harber and Hamill</span>
-						</td>
-						<td data-field="ShipDate" class="m-datatable__cell">
-							<span style="width: 110px;">4/8/2018</span>
-						</td>
-						<td data-field="Actions" class="m-datatable__cell">
-							<span style="overflow: visible; position: relative; width: 110px;">
-								<div class="dropdown ">
-									<a href="#" class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" data-toggle="dropdown">
-										<i class="la la-ellipsis-h"></i>
-									</a>
-									<div class="dropdown-menu dropdown-menu-right">
-										<a class="dropdown-item" href="#">
-											<i class="la la-edit"></i> Edit Details
-										</a>
-										<a class="dropdown-item" href="#">
-											<i class="la la-leaf"></i> Update Status
-										</a>
-										<a class="dropdown-item" href="#">
-											<i class="la la-print"></i> Generate Report
-										</a>
-									</div>
-								</div>
-								<a href="#" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Edit details">
-									<i class="la la-edit"></i>
-								</a>
-								<a href="#" class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill" title="Delete">
-									<i class="la la-trash"></i>
-								</a>
-							</span>
-						</td>
-					</tr>
-					<tr data-row="11" class="m-datatable__row m-datatable__row--even" style="left: 0px;">
-						<td class="m-datatable__cell--center m-datatable__cell m-datatable__cell--check" data-field="RecordID">
-							<span style="width: 40px;">
-								<label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand">
-									<input type="checkbox" value="304">&nbsp;
-										<span></span>
-									</label>
-								</span>
-							</td>
-							<td class="m-datatable__cell--sorted m-datatable__cell" data-field="OrderID">
-								<span style="width: 150px;">0093-3123 - ZA</span>
-							</td>
-							<td data-field="ShipName" class="m-datatable__cell">
-								<span style="width: 150px;">Stehr-Bins</span>
-							</td>
-							<td data-field="ShipDate" class="m-datatable__cell">
-								<span style="width: 110px;">8/20/2017</span>
-							</td>
-							<td data-field="Actions" class="m-datatable__cell">
-								<span style="overflow: visible; position: relative; width: 110px;">
-									<div class="dropdown ">
-										<a href="#" class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" data-toggle="dropdown">
-											<i class="la la-ellipsis-h"></i>
-										</a>
-										<div class="dropdown-menu dropdown-menu-right">
-											<a class="dropdown-item" href="#">
-												<i class="la la-edit"></i> Edit Details
-											</a>
-											<a class="dropdown-item" href="#">
-												<i class="la la-leaf"></i> Update Status
-											</a>
-											<a class="dropdown-item" href="#">
-												<i class="la la-print"></i> Generate Report
-											</a>
-										</div>
-									</div>
-									<a href="#" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Edit details">
-										<i class="la la-edit"></i>
-									</a>
-									<a href="#" class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill" title="Delete">
-										<i class="la la-trash"></i>
-									</a>
-								</span>
-							</td>
-						</tr>
-						<tr data-row="12" class="m-datatable__row" style="left: 0px;">
-							<td class="m-datatable__cell--center m-datatable__cell m-datatable__cell--check" data-field="RecordID">
-								<span style="width: 40px;">
-									<label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand">
-										<input type="checkbox" value="26">&nbsp;
-											<span></span>
-										</label>
-									</span>
-								</td>
-								<td class="m-datatable__cell--sorted m-datatable__cell" data-field="OrderID">
-									<span style="width: 150px;">0093-5142 - CN</span>
-								</td>
-								<td data-field="ShipName" class="m-datatable__cell">
-									<span style="width: 150px;">Romaguera-Greenholt</span>
-								</td>
-								<td data-field="ShipDate" class="m-datatable__cell">
-									<span style="width: 110px;">3/6/2018</span>
-								</td>
-								<td data-field="Actions" class="m-datatable__cell">
-									<span style="overflow: visible; position: relative; width: 110px;">
-										<div class="dropdown ">
-											<a href="#" class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" data-toggle="dropdown">
-												<i class="la la-ellipsis-h"></i>
-											</a>
-											<div class="dropdown-menu dropdown-menu-right">
-												<a class="dropdown-item" href="#">
-													<i class="la la-edit"></i> Edit Details
-												</a>
-												<a class="dropdown-item" href="#">
-													<i class="la la-leaf"></i> Update Status
-												</a>
-												<a class="dropdown-item" href="#">
-													<i class="la la-print"></i> Generate Report
-												</a>
-											</div>
-										</div>
-										<a href="#" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Edit details">
-											<i class="la la-edit"></i>
-										</a>
-										<a href="#" class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill" title="Delete">
-											<i class="la la-trash"></i>
-										</a>
-									</span>
-								</td>
-							</tr>
-
-							<div class="ps__rail-x" style="width: 786px; left: 0px; bottom: 0px;">
-								<div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 686px;"></div>
-							</div>
-							<div class="ps__rail-y" style="top: 0px; height: 329px; right: 0px;">
-								<div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 193px;"></div>
-							</div>
-						</tbody>
-					</table>
 				</div>
-
 				<!--end: Datatable -->
 			</div>
+
+			<div class="rfp_footer">
+				<ul>
+					<li><span>Group Name </span><br />Concorde Fire</li>
+					<li><span>Event Address </span><br />1320 Birkshire <br />Ave Tampa <br />FL 33213</li>
+					<li><span>Budget </span><br />$89 - $120</li>
+					<li><span>Check-In </span><br />12/26/18</li>
+					<li><span>Total Rooms</span><br />10 DQ / 8 King</li>
+				</ul>
+
+			</div>
+
 		</div>
 	</div>
 </div>
 
 
 
-
-
-<div class="container" style="padding-top:25px;">	
-    <div class="row m-b-lg animated fadeInDown delayp1 text-center">
-        <h3> {{ $pageTitle }} <small> {{ $pageNote }} </small></h3>
-        <hr />       
-    </div>
-</div>
-<div class="container m-t">		
-<div class="table-responsive">    
-    <table class="table table-striped table-bordered">
-        <thead>
-			<tr>
-				<th> No </th>
-				@foreach ($tableGrid as $t)
-					@if($t['view'] =='1')				
-						<?php $limited = isset($t['limited']) ? $t['limited'] :''; ?>
-						@if(SiteHelpers::filterColumn($limited ))
-						
-							<th>{{ $t['label'] }}</th>			
-						@endif 
-					@endif
-				@endforeach
-				<th>
-
-				</th>
-				
-			  </tr>
-        </thead>
-
-        <tbody>        						
-            @foreach ($rowData as $row)
-                <tr>
-				<td> {{ ++$i }}</td>									
-				 @foreach ($tableGrid as $field)
-					 @if($field['view'] =='1')
-					 	<?php $limited = isset($field['limited']) ? $field['limited'] :''; ?>
-					 	@if(SiteHelpers::filterColumn($limited ))
-						 <td>					 
-						 	{!! SiteHelpers::formatRows($row->{$field['field']},$field,$row) !!}						 
-						 </td>
-						@endif	
-					 @endif					 
-				 @endforeach
-				 <td>
-					<a href="?view={{ $row->id }}" oncl> <i class="fa fa-search"></i></a> 				
-					
-				</td>				 
-                </tr>
-				
-            @endforeach
-              
-        </tbody>        
-
-    </table>  
-</div>  
-
-
-
-</div> 

@@ -9,4 +9,9 @@ Route::resource('hotelamenities','HotelamenitiesController');
 Route::resource('usertrips','UsertripsController');
 // End Routes for usertrips 
 
+                    
+// Start Routes for rpfs 
+Route::resource('rpfs','RpfsController');
+// End Routes for rpfs 
+
                     ?>

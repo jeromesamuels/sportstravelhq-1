@@ -50,6 +50,11 @@ Route::get('home/lang/{any}','HomeController@getLang');
 
 Route::get('/set_theme/{any}', 'HomeController@set_theme');
 
+
+
+Route::post('RFPs/{rfp_id}', 'UsertripsController@getRFPs');
+
+
 include('pages.php');
 
 
