@@ -64,35 +64,66 @@ $(document).ready(function() {
 		list-style: none;
 	}
 
-	.m-portlet__body a {
+	.m-portlet__body div.rfp_detail {
 		text-decoration: none;
 		color: #333;
 		display: inline-block;
 		border-bottom: solid 1px #ddd;
 		padding: 20px 0;
 		width: 100%;
+		cursor: pointer;
 	}
-	.m-portlet__body a:hover {
+	.m-portlet__body div.rfp_detail:hover {
 		background: #eee;
 	}
 
 	.rfp_footer ul li {
 		float: left;
 		font-weight: bold;
-		min-width: 20%;
+		width: 20%;
 	}
 
 	.rfp_footer ul li span {
 		font-weight: normal;
 	}
 
+	.rfp-detail {
+		text-align: left;
+		padding: 10px;
+		font-size: 14px;
+	}
 
+	.rfp-detail ul {
+	    -webkit-column-count: 1;
+	    -moz-column-count: 1;
+	    column-count: 1;
+	    padding: 0;
+	}
+
+	.rfp-detail ul li {
+		padding: 10px;
+		background: #eee;
+	}
+
+	.rfp-detail ul li:nth-child(odd) {
+		background: #FFF;
+	}
+
+	.rfp-detail ul li:nth-child(even) {
+	}
+
+	.rfp-detail ul li b {
+		min-width: 200px;
+		display: inline-block;
+
+	}
 </style>
 
 
 <script type="text/javascript">
 	
 	$(document).ready(function() {
+
 		$(".planned-trips .planned-trip-content").on("click", function() {
 			var id = $(this).attr("id");
 
@@ -103,15 +134,45 @@ $(document).ready(function() {
 
 			    if(response.success)
 			    {
+			    	var count = 0;
 			    	$('.m-portlet__body').html("");
 			    	if(!response.rfps.length) 
 				        $('.m-portlet__body').html("<ul><li><b>No RFP Records Found!</b></li></ul>");
-			        $.each(response.rfps, function(k, res){
-			            $('.m-portlet__body').append('<a href="?view=1"><ul><li><b>'+res.added+'</b></li><li><b>'+res.destination+'</b></li><li>'+res.hotel_information+'</li><li>conact: <br /><b>'+res.sales_manager+'</b></li><li><h4> $'+res.offer_rate+'/room </h4></li></ul></a>');
-			        })
+			        $.each(response.rfps, function(k, res) {
+
+			            $('.m-portlet__body').append('<div class="rfp_detail" id="'+res.id+'" ><ul><li><b>'+res.added+'</b></li><li><b>'+res.destination+'</b></li><li>'+res.hotel_information+'</li><li>conact: <br /><b>'+res.sales_manager+'</b></li><li><h4> $'+res.offer_rate+'/room </h4></li></ul></div>');
+			            count++;
+
+			        });
+
+			        $("#rfp_count_header").html('# '+count);
+
+			        $("#rfp_footer_group").html(response.trip_detail.trip_name);
+			        $("#rfp_footer_address").html(response.trip_detail.from_address_1+' <br />'+response.trip_detail.from_city+'<br />'+response.trip_detail.from_state_id+', '+response.trip_detail.from_zip);
+			        $("#rfp_footer_budget").html(response.trip_detail.budget_from+' - '+response.trip_detail.budget_to);
+			        $("#rfp_footer_checkin").html(response.trip_detail.check_in);
+			        $("#rfp_footer_rooms").html(response.trip_detail.double_king_qty+' King / '+response.trip_detail.double_queen_qty+' DQ');
 			    }
 			}, 'json');
 		});
+
+
+
+		$(document).on("click", ".m-portlet__body .rfp_detail", function() {
+			var id = $(this).attr("id");
+
+			$('.m-portlet__body').html('<div class="m-spinner m-spinner--brand m-spinner--lg"></div>');
+
+			var url = '{{ url("/RFP/") }}' ;
+			$.post(url + '/' + id, function(response) {
+
+			    if(response.success)
+			    {
+			        $('.m-portlet__body').html(response.rfp_detail);
+			    }
+			}, 'json');
+		});
+
 	});
 
 </script>
@@ -130,13 +191,43 @@ $(document).ready(function() {
 					</div>
 				</div>
 				<div class="m-portlet__head-tools">
-					<ul class="nav nav-pills nav-pills--brand m-nav-pills--align-right m-nav-pills--btn-pill m-nav-pills--btn-sm" role="tablist">
-						<li class="nav-item m-tabs__item">
-							<a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_widget4_tab1_content" role="tab">
-								Filter
-							</a>
-						</li>
-					</ul>
+
+
+
+				<ul class="m-portlet__nav">
+					<li class="m-portlet__nav-item m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" m-dropdown-toggle="hover" aria-expanded="true">
+						<a href="#" class="m-portlet__nav-link m-dropdown__toggle dropdown-toggle btn btn--sm m-btn--pill btn-secondary m-btn m-btn--label-brand">
+							Filter
+						</a>
+						<div class="m-dropdown__wrapper" style="z-index: 101;">
+							<span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust" style="left: auto; right: 38.5px;"></span>
+							<div class="m-dropdown__inner">
+								<div class="m-dropdown__body">
+									<div class="m-dropdown__content">
+										<ul class="m-nav">
+											<li class="m-nav__item">
+												<a href="" class="m-nav__link">
+													<span class="m-nav__link-text">New</span>
+												</a>
+											</li>
+											<li class="m-nav__item">
+												<a href="" class="m-nav__link">
+													<span class="m-nav__link-text">Accepted</span>
+												</a>
+											</li>
+											<li class="m-nav__item">
+												<a href="" class="m-nav__link">
+													<span class="m-nav__link-text">Declined</span>
+												</a>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</li>
+				</ul>
+
 				</div>
 			</div>
 
@@ -155,7 +246,15 @@ $(document).ready(function() {
 										<b>{{ \Carbon\Carbon::parse($row->check_in)->format('d/m/Y')}} - {{ \Carbon\Carbon::parse($row->check_out)->format('d/m/Y')}}</b>
 										<p>{{ $row->from_address_1 }} {{ $row->from_city }} {{ $row->from_zip }}</p>
 
-										<p>3 RPFs Received</p>
+										<p>
+										@if(isset($rfp_counts[$row->id]))
+											{{ $rfp_counts[$row->id] }}
+										@else 
+											0
+										@endif
+
+										RFPs Received 
+										</p>
 
 										<i class="la la-ellipsis-h m--font-brand"></i>
 										</span>
@@ -186,7 +285,7 @@ $(document).ready(function() {
 				<div class="m-portlet__head-caption">
 					<div class="m-portlet__head-title">
 						<h3 class="m-portlet__head-text">
-							Received RFPs 3
+							Received RFPs&nbsp;<span id="rfp_count_header"></span>
 						</h3>
 					</div>
 				</div>
@@ -203,11 +302,31 @@ $(document).ready(function() {
 
 			<div class="rfp_footer">
 				<ul>
-					<li><span>Group Name </span><br />Concorde Fire</li>
-					<li><span>Event Address </span><br />1320 Birkshire <br />Ave Tampa <br />FL 33213</li>
-					<li><span>Budget </span><br />$89 - $120</li>
-					<li><span>Check-In </span><br />12/26/18</li>
-					<li><span>Total Rooms</span><br />10 DQ / 8 King</li>
+					<li>
+						<span>Group Name </span>
+						<br />
+						<p id="rfp_footer_group"> </p>
+					</li>
+					<li>
+						<span>Event Address </span>
+						<br />
+						<p id="rfp_footer_address"> </p>
+					</li>
+					<li>
+						<span>Budget </span>
+						<br />
+						<p id="rfp_footer_budget"> </p>
+					</li>
+					<li>
+						<span>Check-In </span>
+						<br />
+						<p id="rfp_footer_checkin"> </p>
+					</li>
+					<li>
+						<span>Total Rooms</span>
+						<br />
+						<p id="rfp_footer_rooms"> </p>
+					</li>
 				</ul>
 
 			</div>

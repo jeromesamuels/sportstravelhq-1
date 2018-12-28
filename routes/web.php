@@ -52,7 +52,8 @@ Route::get('/set_theme/{any}', 'HomeController@set_theme');
 
 
 
-Route::post('RFPs/{rfp_id}', 'UsertripsController@getRFPs');
+Route::post('RFPs/{user_trip_id}', 'UsertripsController@getRFPs');
+Route::post('RFP/{rfp_id}', 'UsertripsController@getRFP');
 
 
 include('pages.php');

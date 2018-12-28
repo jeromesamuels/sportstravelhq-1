@@ -23,9 +23,12 @@ class usertrips extends Sximo  {
 		return "  WHERE user_trips.id IS NOT NULL ";
 	}
 	
-	public static function queryGroup(){
+	public static function queryGroup() {
 		return "  ";
 	}
 	
+	public static function getRFPCounts() {
+		return \DB::select('SELECT id, COUNT(id) total FROM rfps GROUP BY `user_trip_id` ');
+	}
 
 }

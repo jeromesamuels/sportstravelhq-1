@@ -71,6 +71,7 @@ class UsertripsController extends Controller {
 	{
 		/* Handle import , export and view */
 		$task =$id;
+
 		switch( $task)
 		{
 			case 'search':
@@ -204,9 +205,17 @@ class UsertripsController extends Controller {
 				'global'	=> 1 
 			);
 
+
 			$result = $model::getRows( $params );
+			$rfp_counts = $model::getRFPCounts( $params );
+			foreach ($rfp_counts as $value) {
+				$RFPs[$value->id] = $value->total;
+			}
+			//echo '<pre>'; print_r($RFPs); die;
+
 			$data['tableGrid'] 	= $info['config']['grid'];
 			$data['rowData'] 	= $result['rows'];
+			$data['rfp_counts'] 	= $RFPs;
 
 			$page = $page >= 1 && filter_var($page, FILTER_VALIDATE_INT) !== false ? $page : 1;	
 			$pagination = new Paginator($result['rows'], $result['total'], $params['limit']);
@@ -230,13 +239,32 @@ class UsertripsController extends Controller {
 		}
 	}
 
-
 	public function getRFPs($trip_id){
 	    //$rfps = rfps::where("user_trip_id", $trip_id)->lists('title', 'id');
         $rfps = DB::table('rfps')->get()->where("user_trip_id", $trip_id);
+        $trip_detail = DB::table('user_trips')->get()->where("id", $trip_id)->first();
 
-	    return response()->json(['success' => true, 'rfps' => $rfps]);
+	    return response()->json([
+	    	'success' => true, 
+	    	'rfps' => $rfps, 
+	    	'trip_detail' => $trip_detail
+	    ]);
 	}
+
+
+	public function getRFP($rfp_id) {
+
+        $rfp = DB::table('rfps')->get()->where("id", $rfp_id)->first();
+
+        $html = '<div class="rfp-detail" ><span>NTH Tophat, <br /><br />Hi John Smith, <br /><br />Please see our hotel availability, rates and amenities below for your requested dates.<br /><br /><br /></span><ul><li><b>Destination: </b>18800 Vista Park Blvd Tampa, FL 33332</li><li><b>Hotel Information: </b>Hilton Tampa Downtown - 211 N Tampa St, FL 33602</li><li><b>Distance to Event: </b>5 Miles</li><li><b>Rate Offer: </b>$123.00</li><li><b>Hotel CC Authorization: </b>Supported</li></ul></div>';
+
+	    return response()->json([
+	    	'success' => true, 
+	    	'rfp' => $rfp, 
+	    	'rfp_detail' => $html, 
+	    ]);
+	}
+
 }
 
 
