@@ -84,8 +84,7 @@ class UserController extends Controller {
 			$authen->email = trim($request->input('email'));
 
 			$authen->group_id = $request->input('group_id');
-			$authen->phone_number = $request->input('phone');
-
+			$authen->phone_number = ($request->input('phone')!='') ? $request->input('phone') : '';
 
 			$authen->activation = $code;
 			$authen->group_id = $this->config['cnf_group'];
@@ -99,12 +98,12 @@ class UserController extends Controller {
 				'email'		=> $request->input('email') ,
 				'password'	=> $request->input('password') ,
 				'code'		=> $code ,
-				'subject'	=> "[ " .$this->config['cnf_appname']." ] REGISTRATION "				
+				'subject'	=> "[ " .$this->config['cnf_appname']." ] REGISTRATION "
 			);
 			if(config('sximo.cnf_activation') == 'confirmation')
 			{ 
 				$to = $request->input('email');
-				$subject = "[ " .$this->config['cnf_appname']." ] REGISTRATION "; 			
+				$subject = "[ " .$this->config['cnf_appname']." ] REGISTRATION ";
 				if($this->config['cnf_mail'] =='swift')
 				{ 				
 					\Mail::send('user.emails.registration', $data, function ($message) use ($data) {
@@ -125,8 +124,7 @@ class UserController extends Controller {
 			} else {
    			 	$message = "Thanks for registering! . Your account is active now ";         
 			
-			}	
-
+			}
 
 			return redirect('user/login')->with(['message' => $message,'status'=>'success']);
 		} else {
@@ -135,7 +133,7 @@ class UserController extends Controller {
 		}
 	}
 	
-	public function getActivation( Request $request  )
+	public function getActivation( Request $request )
 	{
 		$num = $request->input('code');
 		if($num =='')
@@ -146,13 +144,10 @@ class UserController extends Controller {
 		{
 			\DB::table('tb_users')->where('activation', $num )->update(array('active' => 1,'activation'=>''));
 			return redirect('user/login')->with(['message'=>'Your account is active now!','status'=>'success']);
-			
 		} else {
 			return redirect('user/login')->with(['message'=>'Invalid Code Activation!','status'=>'error']);
 		}
-		
-		
-	
+
 	}
 
 	public function getLogin() {
@@ -278,11 +273,17 @@ class UserController extends Controller {
 						} 
 						else {
 
+							if($row->last_login)
+								return redirect('dashboard');
+							else 
+								return redirect('');
+							/*
 							if( $session['level']==2 ) :
-								return redirect('dashboard');						
+								return redirect('dashboard');
 							else :
 								return redirect('');
 							endif;
+							*/
 
 
 							/*

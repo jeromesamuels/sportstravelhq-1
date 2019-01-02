@@ -7537,7 +7537,9 @@ body.ls-closed {
   -webkit-transition: all 0.5s;
   transition: all 0.5s;
   font-family: "Roboto", sans-serif;
-  background: #fdfdfd;
+  /*background: #fdfdfd;*/
+  background: #333;
+  color: #FFF;
   width: 300px;
   overflow: hidden;
   display: inline-block;
@@ -7696,7 +7698,7 @@ body.ls-closed {
           right: 15px; }
         .sidebar .menu .list a span {
           margin: 5px 0 0px 12px;
-          color: #666;
+          color: #FFF;
           font-weight: 500;
           font-size: 13px;
           overflow: hidden; }
@@ -8582,6 +8584,7 @@ ul.parsley-errors-list li{
 }
 .navbar-brand img{
   float: left;
+  display: none;
   }
 
 .sidebar {
@@ -8590,9 +8593,14 @@ ul.parsley-errors-list li{
 
 }
 .navbar-header {
-  padding: 10px 7px; width: 300px; background: #fdfdfd ; margin-left: -15px !important;}
+  padding: 10px 7px; 
+  width: 300px; 
+  /* background: #fdfdfd; */
+  background: #333;
+
+  margin-left: -15px !important;
+}
   .navbar-header a.navbar-brand {
-    color: #222 ;
     display: block;
     height: 40px;
   }
@@ -8603,8 +8611,10 @@ ul.parsley-errors-list li{
     margin-right: 10px;
   }
    .navbar-brand div{
-    padding-left: 60px;
+    padding-left: 10px;
     line-height: 40px;
+    font-size: 2em; 
+    text-transform: none;
    }
    .navbar-nav > li > a {
     margin-top: 12px;

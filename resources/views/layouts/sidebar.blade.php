@@ -25,7 +25,8 @@
                 </div>
             </div>
 
-            <li class="header">Sports Travel HQ</li>
+            <li class="header"> </li>
+
             <li>
                 <a href="{{ url('dashboard') }}">
                     <i class="material-icons">dashboard</i>
