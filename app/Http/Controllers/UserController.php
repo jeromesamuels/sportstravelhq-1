@@ -84,6 +84,8 @@ class UserController extends Controller {
 			$authen->email = trim($request->input('email'));
 
 			$authen->group_id = $request->input('group_id');
+			$authen->phone_number = $request->input('phone');
+
 
 			$authen->activation = $code;
 			$authen->group_id = $this->config['cnf_group'];
