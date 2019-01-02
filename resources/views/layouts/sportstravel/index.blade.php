@@ -138,7 +138,6 @@
                 <div id="m_header_topbar" class="m-topbar  m-stack m-stack--ver m-stack--general">
                   <div class="m-stack__item m-topbar__nav-wrapper">
 
-
                   @if(Auth::check()) 
                     <ul class="m-topbar__nav m-nav m-nav--inline">
                       <li class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img  m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light"
@@ -148,7 +147,7 @@
                             <img src="{{ asset('frontend/sportstravel/assets/app/media/img/users/user4.jpg') }}" class="m--img-rounded m--marginless m--img-centered" alt="" />
                           </span>
                           <span class="m-topbar__welcome">Hello,&nbsp;</span>
-                          <span class="m-topbar__username">Username</span>
+                          <span class="m-topbar__username">{{ Session::get('username') }}</span>
                         </a>
                         <div class="m-dropdown__wrapper">
                           <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
@@ -159,8 +158,8 @@
                                   <img src="{{ asset('frontend/sportstravel/assets/app/media/img/users/user4.jpg') }}" class="m--img-rounded m--marginless" alt="" />
                                 </div>
                                 <div class="m-card-user__details">
-                                  <span class="m-card-user__name m--font-weight-500">Mark Andre</span>
-                                  <a href="" class="m-card-user__email m--font-weight-300 m-link">mark.andre@gmail.com</a>
+                                  <span class="m-card-user__name m--font-weight-500">{{ Session::get('fid') }}</span>
+                                  <a href="" class="m-card-user__email m--font-weight-300 m-link">{{ Session::get('eid') }}</a>
                                 </div>
                               </div>
                             </div>

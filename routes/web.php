@@ -22,6 +22,12 @@ Route::get('dashboard/import', 'DashboardController@getImport');
 Route::get('user/profile','UserController@getProfile');
 Route::get('user/login','UserController@getLogin');
 Route::get('user/register','UserController@getRegister');
+
+//Route::get('user/register_tc/{tc_email}','UserController@getRegisterTC');
+Route::get('user/register_tc', ['as' => 'register_tc', 'uses' => 'UserController@getRegisterTC']);
+
+
+
 Route::get('user/logout','UserController@getLogout');
 Route::get('user/reminder','UserController@getReminder');
 Route::get('user/reset/{any?}','UserController@getReset');

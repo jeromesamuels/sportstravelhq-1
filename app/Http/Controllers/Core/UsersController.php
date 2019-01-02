@@ -59,8 +59,8 @@ class UsersController extends Controller {
 
 		$this->data['id'] = '';
 		return view('core.users.form',$this->data);
-
 	}
+
 	function edit( Request $request , $id ) 
 	{
 		$this->hook( $request , $id );
@@ -86,6 +86,10 @@ class UsersController extends Controller {
 				break;
 			case 'blast':
 				return $this->getBlast( $request);
+				break;
+
+			case 'coordinator':
+				return $this->getCoordinator( $request);
 				break;
 
 			case 'comboselect':
@@ -236,6 +240,17 @@ class UsersController extends Controller {
 		return view('core.users.blast',$this->data);		
 	}
 
+	function getCoordinator()
+	{
+		$this->data = array(
+			'groups'	=> Groups::all(),
+			'pageTitle'	=> 'Invite Travel Coordinator',
+			'pageNote'	=> 'Send email to Travel Coordinators'
+		);	
+		return view('core.users.coordinators',$this->data);		
+	}
+
+
 	function postDoblast( Request $request)
 	{
 		$rules = array(
@@ -294,6 +309,49 @@ class UsersController extends Controller {
 
 		}
 	}
+
+
+
+	function postDoinvite( Request $request)
+	{
+
+		$rules = array(
+			'email'		=> 'required|email|unique:tb_users',
+		);
+
+		$validator = Validator::make($request->all(), $rules);	
+		if ($validator->passes()) 
+		{
+			//$data['note'] 			= $request->input('message');
+			$data['to']				= $request->input('email');
+			$data['subject']		= "Invitation for Travel Coordinator";
+			$data['cnf_appname'] 	= "Sports Travel HQ";	
+			//$this->data['sximoconfig']['cnf_appname'];
+
+			if($this->config['cnf_mail'] && $this->config['cnf_mail'] =='swift')
+			{ 
+				\Mail::send('core.users.inviteemail', $data, function ($message) use ($data) {
+		    		$message->to($data['to'])->subject($data['subject']);
+		    	});
+		    } else {
+
+		    	$message = view('core.users.inviteemail',$data);
+				$headers  = 'MIME-Version: 1.0' . "\r\n";
+				$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+				$headers .= 'From: '.$this->config['cnf_appname'].' <'.$this->config['cnf_email'].'>' . "\r\n";
+					mail($data['to'], $data['subject'], $message, $headers);
+		    }
+
+			return redirect('core/users/coordinator')->with('message','Message has been sent')->with('status','success');
+
+		} else {
+
+			return redirect('core/users/coordinator')->with('message', 'The following errors occurred')->with('status','error')
+			->withErrors($validator)->withInput();
+
+		}
+	}
+
 
 	public function getSearch( $mode = 'native')
 	{

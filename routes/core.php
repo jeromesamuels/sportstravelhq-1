@@ -7,8 +7,11 @@
 // -- Get Method --
 Route::resource('core/users','UsersController');
 Route::get('core/users/blast','UsersController@getBlast');
+
 // -- Post Method --
 Route::post('core/users/doblast','UsersController@postDoblast');
+Route::post('core/users/doinvite','UsersController@postDoinvite');
+
 /* End Users Routes */
 
 //-------------------------------------------------------------------------

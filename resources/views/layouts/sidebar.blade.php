@@ -1,6 +1,6 @@
 <?php $sidebar = SiteHelpers::menus('sidebar') ;?>
 
-  <div class="navbar"> </div>
+ <div class="navbar"> </div>
  <div class="menu">
        <ul class="list">
         <div class="user-info">
@@ -25,28 +25,21 @@
                 </div>
             </div>
 
-            <li class="header">MAIN NAVIGATION</li>
-            <li >
-                        <a href="{{ url('dashboard') }}">
-                            <i class="material-icons">dashboard</i>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-      
-        @foreach ($sidebar as $menu)
-            
+            <li class="header">Sports Travel HQ</li>
+            <li>
+                <a href="{{ url('dashboard') }}">
+                    <i class="material-icons">dashboard</i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
 
-             <li @if(Request::segment(1) == $menu['module']) class="active" @endif>
-
+            @foreach ($sidebar as $menu)
+            <li @if(Request::segment(1) == $menu['module']) class="active" @endif>
             @if($menu['module'] =='separator')
             <li class="header"> <span> {{$menu['menu_name']}} </span></li>
-
-                
             @else
 
-
-                <a data-toggle="tooltip" title="{{  $menu['menu_name'] }}" data-placement="right"
-
+                <a data-toggle="tooltip" title="{{  $menu['menu_name'] }}" data-placement="right" 
                     @if(count($menu['childs']) > 0 ) 
                         href="javascript:void(0);" 
 
@@ -54,14 +47,13 @@
                         href="{{ $menu['url'] }}" 
                     @else
                         href="{{ URL::to($menu['module'])}}" 
-                    @endif              
+                    @endif 
                 
                  @if(count($menu['childs']) > 0 ) class="menu-toggle" @endif>
                     <i class="{{$menu['menu_icons']}}"></i> 
-                    <span>                    
+                    <span>
                         {{ (isset($menu['menu_lang']['title'][session('lang')]) ? $menu['menu_lang']['title'][session('lang')] : $menu['menu_name']) }}
                     </span> 
-                      
                 </a> 
                 @endif  
 
@@ -87,14 +79,13 @@
                                         <a 
                                             @if($menu['menu_type'] =='external')
                                                 href="{{ $menu3['url'] }}" 
-                                            @else
+                                            @else 
                                                 href="{{ URL::to($menu3['module'])}}" 
-                                            @endif                                      
-                                        
+                                            @endif 
                                         >
                                        
                                         <span> 
-                                        {{ (isset($menu3['menu_lang']['title'][session('lang')]) ? $menu3['menu_lang']['title'][session('lang')] : $menu3['menu_name']) }}       </span>                                  
+                                        {{ (isset($menu3['menu_lang']['title'][session('lang')]) ? $menu3['menu_lang']['title'][session('lang')] : $menu3['menu_name']) }} </span>
                                             
                                         </a>
                                     </li>   

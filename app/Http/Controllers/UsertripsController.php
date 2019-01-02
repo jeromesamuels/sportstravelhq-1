@@ -198,8 +198,8 @@ class UsertripsController extends Controller {
 			$page = isset($_GET['page']) ? $_GET['page'] : 1;
 			$params = array(
 				'page'		=> $page ,
-				'limit'		=>  (isset($_GET['rows']) ? filter_var($_GET['rows'],FILTER_VALIDATE_INT) : 10 ) ,
-				'sort'		=> $info['key'] ,
+				'limit'		=>  (isset($_GET['rows']) ? filter_var($_GET['rows'],FILTER_VALIDATE_INT) : 10 ),
+				'sort'		=> $info['key'],
 				'order'		=> 'asc',
 				'params'	=> '',
 				'global'	=> 1 

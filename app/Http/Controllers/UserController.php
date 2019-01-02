@@ -6,7 +6,10 @@ use App\Libary\SiteHelpers;
 use Socialize;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
-use Validator, Input, Redirect ; 
+use Validator, Redirect ; 
+
+use Illuminate\Support\Facades\Input;
+
 
 class UserController extends Controller {
 
@@ -32,9 +35,24 @@ class UserController extends Controller {
 				return view('user.register', $this->data);  
 		 endif ;        
 	}
-	public function postCreate( Request $request) {
-	
 
+	public function getRegisterTC() {
+        
+        $this->data['tc_email'] = Input::get('tc_email');
+
+		if(config('sximo.cnf_regist') =='false') :
+			if(\Auth::check()) :
+				return redirect('')->with(['message'=>'Youre already login','status'=>'error']);
+			else:
+				return redirect('user/login');
+			  endif;
+		else :
+				$this->data['socialize'] =  config('services');
+				return view('user.register_tc', $this->data);  
+		 endif ;
+	}
+
+	public function postCreate( Request $request) {
 		$rules = array(
 			'username'=>'required|alpha|between:3,12|unique:tb_users',
 			'firstname'=>'required|alpha_num|min:2',
@@ -55,15 +73,18 @@ class UserController extends Controller {
 				
 			}
 		}
-				
+		
 		$validator = Validator::make($request->all(), $rules);
 		if ($validator->passes()) {
-			$code = rand(10000,10000000);			
+			$code = rand(10000,10000000);
 			$authen = new User;
 			$authen->username = $request->input('username');
 			$authen->first_name = $request->input('firstname');
 			$authen->last_name = $request->input('lastname');
 			$authen->email = trim($request->input('email'));
+
+			$authen->group_id = $request->input('group_id');
+
 			$authen->activation = $code;
 			$authen->group_id = $this->config['cnf_group'];
 			$authen->password = \Hash::make($request->input('password'));
@@ -133,7 +154,7 @@ class UserController extends Controller {
 	}
 
 	public function getLogin() {
-	
+		
 		if(\Auth::check())
 		{
 			return redirect('')->with(['message'=>'success','Youre already login','status'=>'success']);
@@ -162,7 +183,7 @@ class UserController extends Controller {
 	}
 
 	public function postSignin( Request $request) {
-		
+
 		$rules = array(
 			'email'=>'required',
 			'password'=>'required',
@@ -254,11 +275,21 @@ class UserController extends Controller {
 
 						} 
 						else {
+
+							if( $session['level']==2 ) :
+								return redirect('dashboard');						
+							else :
+								return redirect('');
+							endif;
+
+
+							/*
 							if( config('sximo.cnf_front') =='false') :
 								return redirect('dashboard');						
 							else :
 								return redirect('');
-							endif;	
+							endif;
+							*/
 						}				
 					}	
 				}		
@@ -557,6 +588,23 @@ class UserController extends Controller {
 		}
 
 	}
+
+
+	function coordinator( Request $request ) 
+	{
+		die("asd");
+
+		$this->hook( $request  );
+
+		if($this->access['is_add'] ==0) 
+			return redirect('dashboard')->with('message', __('core.note_restric'))->with('status','error');
+
+		$this->data['row'] = $this->model->getColumnTable( $this->info['table']);
+
+		$this->data['id'] = '';
+		return view('core.users.form',$this->data);
+	}
+
 	
 	
 }
