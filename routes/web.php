@@ -16,7 +16,6 @@ Route::get('/', 'HomeController@index');
 Route::post('/home/submit', 'HomeController@submit');
 Route::get('/home/skin/{any?}', 'HomeController@getSkin');
 
-
 Route::get('dashboard/import', 'DashboardController@getImport');
 /* Auth & Profile */
 Route::get('user/profile','UserController@getProfile');
@@ -25,8 +24,6 @@ Route::get('user/register','UserController@getRegister');
 
 //Route::get('user/register_tc/{tc_email}','UserController@getRegisterTC');
 Route::get('user/register_tc', ['as' => 'register_tc', 'uses' => 'UserController@getRegisterTC']);
-
-
 
 Route::get('user/logout','UserController@getLogout');
 Route::get('user/reminder','UserController@getReminder');
@@ -56,10 +53,9 @@ Route::get('home/lang/{any}','HomeController@getLang');
 
 Route::get('/set_theme/{any}', 'HomeController@set_theme');
 
-
-
 Route::post('RFPs/{user_trip_id}', 'UsertripsController@getRFPs');
 Route::post('RFP/{rfp_id}', 'UsertripsController@getRFP');
+Route::post('compareRFP', 'UsertripsController@compareRFP');
 
 
 include('pages.php');
@@ -74,25 +70,20 @@ $path = base_path().'/routes/custom/';
 $lang = scandir($path);
 foreach($lang as $value) {
 	if($value === '.' || $value === '..') {continue;} 
-	include( 'custom/'. $value );	
-	
+	include( 'custom/'. $value );
 }
+
 // End custom routes
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('dashboard','DashboardController');
 });
 
-
 Route::group(['namespace' => 'Sximo','middleware' => 'auth'], function () {
 	// This is root for superadmin
-		
-		include('sximo.php');
-		
+	include('sximo.php');		
 });
 
 Route::group(['namespace' => 'Core','middleware' => 'auth'], function () {
-
 	include('core.php');
-
 });
 

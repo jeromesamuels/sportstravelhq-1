@@ -41,7 +41,8 @@ class PagesController extends Controller {
 		$param = [
 			'params' => " AND pagetype != 'post' OR pagetype IS NULL "
 		];
-		$this->grab( $request , $param ) ;
+		$this->grab( $request , $param );
+		
 		if($this->access['is_view'] ==0) 
 			return redirect('dashboard')->with('message', __('core.note_restric'))->with('status','error');				
 

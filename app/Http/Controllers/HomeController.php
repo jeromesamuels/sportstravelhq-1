@@ -55,23 +55,25 @@ class HomeController extends Controller {
 
 			// If guest not allowed 
 			if($row->allow_guest !=1)
-			{	
-				$group_id = \Session::get('gid');				
-				$isValid =  (isset($access[$group_id]) && $access[$group_id] == 1 ? 1 : 0 );	
+			{
+				$group_id = \Session::get('gid');
+				$isValid = (isset($access[$group_id]) && $access[$group_id] == 1 ? 1 : 0 );
+				//print_r($access);die;
+
 				if($isValid ==0)
 				{
 					return redirect('')
-						->with(['message' => __('core.note_restric') ,'status'=>'error']);				
+						->with(['message' => __('core.note_restric') ,'status'=>'error']);
 				}
 			}
 
-			$this->data['pages'] = $page_template;				
+			$this->data['pages'] = $page_template;
 			$this->data['title'] = $row->title ;
 			$this->data['subtitle'] = $row->sinopsis ;
 			$this->data['pageID'] = $row->pageID ;
 			$this->data['content'] = \PostHelpers::formatContent($row->note);
 			$this->data['note'] = $row->note;
-			if($row->template =='frontend'){
+			if($row->template =='frontend') {
 				$page = 'layouts.'.config('sximo.cnf_theme').'.index';
 			}
 			else {

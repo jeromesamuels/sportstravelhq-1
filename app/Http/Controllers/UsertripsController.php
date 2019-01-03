@@ -202,16 +202,16 @@ class UsertripsController extends Controller {
 				'sort'		=> $info['key'],
 				'order'		=> 'asc',
 				'params'	=> '',
-				'global'	=> 1 
+				'global'	=> 0
 			);
 
+			$result = $model::getRows( $params, session()->get('uid') );
 
-			$result = $model::getRows( $params );
 			$rfp_counts = $model::getRFPCounts( $params );
 			foreach ($rfp_counts as $value) {
 				$RFPs[$value->id] = $value->total;
 			}
-			//echo '<pre>'; print_r($RFPs); die;
+			//echo '<pre>'; print_r($result); die;
 
 			$data['tableGrid'] 	= $info['config']['grid'];
 			$data['rowData'] 	= $result['rows'];
@@ -239,29 +239,29 @@ class UsertripsController extends Controller {
 		}
 	}
 
-	public function getRFPs($trip_id){
-	    //$rfps = rfps::where("user_trip_id", $trip_id)->lists('title', 'id');
-        $rfps = DB::table('rfps')->get()->where("user_trip_id", $trip_id);
-        $trip_detail = DB::table('user_trips')->get()->where("id", $trip_id)->first();
-
+	public function getRFPs($trip_id) {
+        $data['rfps'] = DB::table('rfps')->get()->where("user_trip_id", $trip_id);
+        $data['trip_detail'] = DB::table('user_trips')->get()->where("id", $trip_id)->first();
 	    return response()->json([
 	    	'success' => true, 
-	    	'rfps' => $rfps, 
-	    	'trip_detail' => $trip_detail
+	    	'view_data' => (string)view('usertrips.public.rfps', $data)
 	    ]);
 	}
 
-
 	public function getRFP($rfp_id) {
-
-        $rfp = DB::table('rfps')->get()->where("id", $rfp_id)->first();
-
-        $html = '<div class="rfp-detail" ><span>NTH Tophat, <br /><br />Hi John Smith, <br /><br />Please see our hotel availability, rates and amenities below for your requested dates.<br /><br /><br /></span><ul><li><b>Destination: </b>18800 Vista Park Blvd Tampa, FL 33332</li><li><b>Hotel Information: </b>Hilton Tampa Downtown - 211 N Tampa St, FL 33602</li><li><b>Distance to Event: </b>5 Miles</li><li><b>Rate Offer: </b>$123.00</li><li><b>Hotel CC Authorization: </b>Supported</li></ul></div>';
-
+        $data['rfp'] = DB::table('rfps')->get()->where("id", $rfp_id)->first();
 	    return response()->json([
 	    	'success' => true, 
-	    	'rfp' => $rfp, 
-	    	'rfp_detail' => $html, 
+	    	'view_data' => (string)view('usertrips.public.rfp', $data)
+	    ]);
+	}
+
+	public function compareRFP() {
+		$data = array();
+        //$data['rfp'] = DB::table('rfps')->get()->where("id", $rfp_id)->first();
+	    return response()->json([
+	    	'success' => true, 
+	    	'view_data' => (string)view('usertrips.public.comparerfp', $data)
 	    ]);
 	}
 

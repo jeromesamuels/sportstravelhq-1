@@ -133,7 +133,7 @@ ol,
 ul,
 dl {
   margin-top: 0;
-  margin-bottom: 1rem; }
+  margin-bottom: 0rem; }
 
 ol ol,
 ul ul,
@@ -19499,7 +19499,7 @@ button:active, button:focus {
     -ms-flex-pack: justify;
     justify-content: space-between;
     padding: 0;
-    padding: 0 2.2rem;
+    padding: 0 20px;
     height: 5.1rem;
     position: relative; }
     .m-portlet .m-portlet__head .m-portlet__head-progress {

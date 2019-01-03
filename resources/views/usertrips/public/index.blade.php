@@ -12,7 +12,7 @@ $(document).ready(function() {
 <style type="text/css">
 	.planned-trips .planned-trip-content {
 		border-bottom: solid 1px #DDD;
-		padding: 10px;
+		padding: 20px;
 		position: relative;
 	}
 	.planned-trips .planned-trip-content:hover {
@@ -49,6 +49,7 @@ $(document).ready(function() {
 
 	.m-portlet__body ul li {
 		text-align: left;
+		float: left;
 	}
 
 	.m-portlet__body ul li h4 {
@@ -58,23 +59,33 @@ $(document).ready(function() {
 	.rfp_footer {
 		min-height: 100px;
 		background: #DDD; 
+		padding: 20px 0;
 	}
 
 	.rfp_footer ul {
 		list-style: none;
 	}
 
-	.m-portlet__body div.rfp_detail {
+	.m-portlet__body table.rfp_detail tr {
 		text-decoration: none;
 		color: #333;
 		display: inline-block;
 		border-bottom: solid 1px #ddd;
 		padding: 20px 0;
 		width: 100%;
-		cursor: pointer;
+		text-align: left;
 	}
-	.m-portlet__body div.rfp_detail:hover {
+	.m-portlet__body table.rfp_detail tr:hover {
 		background: #eee;
+		border-left: solid purple;
+		margin-left: -6px;
+	}
+	.m-portlet__body table.rfp_detail tr td {
+		padding: 0 20px;
+	}
+
+	.m-portlet__body table.rfp_detail tr .rfp_show_detail {
+		cursor: pointer;
 	}
 
 	.rfp_footer ul li {
@@ -93,30 +104,36 @@ $(document).ready(function() {
 		font-size: 14px;
 	}
 
-	.rfp-detail ul {
-	    -webkit-column-count: 1;
-	    -moz-column-count: 1;
-	    column-count: 1;
-	    padding: 0;
-	}
-
-	.rfp-detail ul li {
+	.rfp-detail tr td {
 		padding: 10px;
 		background: #eee;
+		display: inline-block;
+		width: 100%;
 	}
 
-	.rfp-detail ul li:nth-child(odd) {
+	.rfp-detail tr td:nth-child(odd) {
 		background: #FFF;
 	}
 
-	.rfp-detail ul li:nth-child(even) {
+	.rfp-detail tr td:nth-child(even) {
 	}
 
-	.rfp-detail ul li b {
+	.rfp-detail tr td b {
 		min-width: 200px;
 		display: inline-block;
-
 	}
+
+	.m-portlet-comparerfp table tr th, .m-portlet-comparerfp table tr td {
+		padding: 5px 20px;
+	    border-right: solid 1px #AAA;
+	}
+
+	.m-portlet-comparerfp table tr th {
+		padding: 20px;
+		background: #DEDEDE;
+		font-weight: normal;
+	}
+
 </style>
 
 
@@ -131,45 +148,37 @@ $(document).ready(function() {
 
 			var url = '{{ url("/RFPs/") }}' ;
 			$.post(url + '/' + id, function(response) {
-
-			    if(response.success)
-			    {
-			    	var count = 0;
-			    	$('.m-portlet__body').html("");
-			    	if(!response.rfps.length) 
-				        $('.m-portlet__body').html("<ul><li><b>No RFP Records Found!</b></li></ul>");
-			        $.each(response.rfps, function(k, res) {
-
-			            $('.m-portlet__body').append('<div class="rfp_detail" id="'+res.id+'" ><ul><li><b>'+res.added+'</b></li><li><b>'+res.destination+'</b></li><li>'+res.hotel_information+'</li><li>conact: <br /><b>'+res.sales_manager+'</b></li><li><h4> $'+res.offer_rate+'/room </h4></li></ul></div>');
-			            count++;
-
-			        });
-
-			        $("#rfp_count_header").html('# '+count);
-
-			        $("#rfp_footer_group").html(response.trip_detail.trip_name);
-			        $("#rfp_footer_address").html(response.trip_detail.from_address_1+' <br />'+response.trip_detail.from_city+'<br />'+response.trip_detail.from_state_id+', '+response.trip_detail.from_zip);
-			        $("#rfp_footer_budget").html(response.trip_detail.budget_from+' - '+response.trip_detail.budget_to);
-			        $("#rfp_footer_checkin").html(response.trip_detail.check_in);
-			        $("#rfp_footer_rooms").html(response.trip_detail.double_king_qty+' King / '+response.trip_detail.double_queen_qty+' DQ');
-			    }
+			    if(response.success) 
+			    	$('.received_rfps').html(response.view_data);
 			}, 'json');
 		});
 
 
 
-		$(document).on("click", ".m-portlet__body .rfp_detail", function() {
+
+		$(document).on("click", ".m-portlet__body .rfp_detail .rfp_show_detail", function() {
 			var id = $(this).attr("id");
 
 			$('.m-portlet__body').html('<div class="m-spinner m-spinner--brand m-spinner--lg"></div>');
 
 			var url = '{{ url("/RFP/") }}' ;
 			$.post(url + '/' + id, function(response) {
+			    if(response.success) 
+			    	$('.received_rfps').html(response.view_data);
+			}, 'json');
+		});
 
-			    if(response.success)
-			    {
-			        $('.m-portlet__body').html(response.rfp_detail);
-			    }
+
+
+		$(document).on("click", ".m-portlet__header .compare-rfp", function() {
+			//var id = $(this).attr("id");
+
+			$('.m-portlet__body').html('<div class="m-spinner m-spinner--brand m-spinner--lg"></div>');
+
+			var url = '{{ url("/compareRFP/") }}';
+			$.post(url, function(response) {
+			    if(response.success) 
+			    	$('#main-page .container .compare-result').html(response.view_data);
 			}, 'json');
 		});
 
@@ -177,9 +186,14 @@ $(document).ready(function() {
 
 </script>
 
-<div class="row">
-	<div class="col-xl-4">
+<div class="row compare-result">
+	<div class="col-md-12">
+		<a href="{{ URL::to('/') }}" class="btn btn-default btn-md" style="margin: 0 40px 40px; padding: 10px 40px; font-size: 18px;">Book a Hotel</a>
+		<br />
+  	</div>
 
+
+	<div class="col-xl-4">
 		<!--begin:: Widgets/Audit Log-->
 		<div class="m-portlet m-portlet--full-height ">
 			<div class="m-portlet__head">
@@ -199,32 +213,7 @@ $(document).ready(function() {
 						<a href="#" class="m-portlet__nav-link m-dropdown__toggle dropdown-toggle btn btn--sm m-btn--pill btn-secondary m-btn m-btn--label-brand">
 							Filter
 						</a>
-						<div class="m-dropdown__wrapper" style="z-index: 101;">
-							<span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust" style="left: auto; right: 38.5px;"></span>
-							<div class="m-dropdown__inner">
-								<div class="m-dropdown__body">
-									<div class="m-dropdown__content">
-										<ul class="m-nav">
-											<li class="m-nav__item">
-												<a href="" class="m-nav__link">
-													<span class="m-nav__link-text">New</span>
-												</a>
-											</li>
-											<li class="m-nav__item">
-												<a href="" class="m-nav__link">
-													<span class="m-nav__link-text">Accepted</span>
-												</a>
-											</li>
-											<li class="m-nav__item">
-												<a href="" class="m-nav__link">
-													<span class="m-nav__link-text">Declined</span>
-												</a>
-											</li>
-										</ul>
-									</div>
-								</div>
-							</div>
-						</div>
+
 					</li>
 				</ul>
 
@@ -280,7 +269,7 @@ $(document).ready(function() {
 	</div>
 
 	<div class="col-xl-8">
-		<div class="m-portlet m-portlet--mobile ">
+		<div class="m-portlet m-portlet--mobile received_rfps">
 			<div class="m-portlet__head">
 				<div class="m-portlet__head-caption">
 					<div class="m-portlet__head-title">
@@ -333,6 +322,8 @@ $(document).ready(function() {
 
 		</div>
 	</div>
+
+
 </div>
 
 

@@ -1,4 +1,4 @@
-<section class="page-header">
+<section class="page-header" style="display: none;" >
 	<div class="container">		
 		<h2> {{ $title }}</h2>
 		<span> {{ $subtitle }} </span>

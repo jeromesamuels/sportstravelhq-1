@@ -1,7 +1,9 @@
 <?php  $menus = SiteHelpers::menus('top') ;?>
 <ul class="m-menu__nav  m-menu__nav--submenu-arrow ">
    <li class="m-menu__item  @if(URL::current() == URL::to('/')) m-menu__item--active @endif " aria-haspopup="true">
+   <!-- 
     <a href="{{ url('') }}" class="m-menu__link "><span class="m-menu__item-here"></span><span class="m-menu__link-text"> Home </span></a>
+   -->
    </li>
 
     @foreach ($menus as $menu)
