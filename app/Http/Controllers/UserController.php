@@ -277,6 +277,7 @@ class UserController extends Controller {
 								return redirect('trips');
 							else 
 								return redirect('');
+
 							/*
 							if( $session['level']==2 ) :
 								return redirect('dashboard');

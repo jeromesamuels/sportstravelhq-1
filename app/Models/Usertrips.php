@@ -28,7 +28,7 @@ class usertrips extends Sximo  {
 	}
 	
 	public static function getRFPCounts() {
-		return \DB::select('SELECT id, COUNT(id) total FROM rfps GROUP BY `user_trip_id` ');
+		return \DB::select('SELECT `user_trip_id` id, COUNT(id) total FROM rfps GROUP BY `user_trip_id` ');
 	}
 
 }

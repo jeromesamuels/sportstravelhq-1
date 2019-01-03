@@ -208,6 +208,8 @@ class UsertripsController extends Controller {
 			$result = $model::getRows( $params, session()->get('uid') );
 
 			$rfp_counts = $model::getRFPCounts( $params );
+			//echo '<pre>';	print_r($rfp_counts); die;
+			
 			foreach ($rfp_counts as $value) {
 				$RFPs[$value->id] = $value->total;
 			}

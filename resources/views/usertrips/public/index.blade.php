@@ -232,7 +232,7 @@ $(document).ready(function() {
 									<!--{{ dump($row) }}-->
 									<div class="planned-trip-content" id="{{ $row->id }}">
 										<span class="planned-trip-heading">
-										<b>{{ \Carbon\Carbon::parse($row->check_in)->format('d/m/Y')}} - {{ \Carbon\Carbon::parse($row->check_out)->format('d/m/Y')}}</b>
+										<b>{{ \Carbon\Carbon::parse($row->check_in)->format('m/d/Y')}} - {{ \Carbon\Carbon::parse($row->check_out)->format('m/d/Y')}}</b>
 										<p>{{ $row->from_address_1 }} {{ $row->from_city }} {{ $row->from_zip }}</p>
 
 										<p>
