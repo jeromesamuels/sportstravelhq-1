@@ -274,7 +274,7 @@ class UserController extends Controller {
 						else {
 
 							if($row->last_login)
-								return redirect('dashboard');
+								return redirect('trips');
 							else 
 								return redirect('');
 							/*
