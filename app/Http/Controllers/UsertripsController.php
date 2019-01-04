@@ -237,7 +237,7 @@ class UsertripsController extends Controller {
 			$this->model->insertRow($data , $request->input('id'));
 			return  Redirect::to('/trips')->with('messagetext', "Thankyou! we've got your booking requst. Our travel coordinator will contact you soon.")->with('status','success');
 		} else {
-			return  Redirect::back()->with('message',__('core.note_error'))->with('status','error')->withErrors($validator)->withInput();
+			return Redirect::back()->with('message',__('core.note_error'))->with('status','error')->withErrors($validator)->withInput();
 		}
 	}
 
@@ -265,6 +265,29 @@ class UsertripsController extends Controller {
 	    	'success' => true, 
 	    	'view_data' => (string)view('usertrips.public.comparerfp', $data)
 	    ]);
+	}
+
+
+	public function acceptRFP($rfp_id) {
+		DB::table('rfps')
+                ->where('id', $rfp_id)
+                ->update(['status' => 2]);
+
+		return response()->json([
+			'success' => true, 
+			'view_data' => 'Accepted successfully !'
+		]);
+	}
+
+	public function declineRFP($rfp_id) {
+		DB::table('rfps')
+                ->where('id', $rfp_id)
+                ->update(['status' => 3]);
+
+		return response()->json([
+			'success' => true, 
+			'view_data' => 'Declined successfully !'
+		]);
 	}
 
 }

@@ -57,6 +57,9 @@ Route::post('RFPs/{user_trip_id}', 'UsertripsController@getRFPs');
 Route::post('RFP/{rfp_id}', 'UsertripsController@getRFP');
 Route::post('compareRFP', 'UsertripsController@compareRFP');
 
+Route::post('acceptRFP/{rfp_id}', 'UsertripsController@acceptRFP');
+Route::post('declineRFP/{rfp_id}', 'UsertripsController@declineRFP');
+
 
 include('pages.php');
 

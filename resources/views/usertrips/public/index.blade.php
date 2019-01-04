@@ -133,7 +133,6 @@ $(document).ready(function() {
 		background: #DEDEDE;
 		font-weight: normal;
 	}
-
 </style>
 
 
@@ -141,45 +140,100 @@ $(document).ready(function() {
 	
 	$(document).ready(function() {
 
+		var rfp_ids = [];
+
 		$(".planned-trips .planned-trip-content").on("click", function() {
+			rfp_ids = [];
 			var id = $(this).attr("id");
 
 			$('.m-portlet__body').html('<div class="m-spinner m-spinner--brand m-spinner--lg"></div>');
 
-			var url = '{{ url("/RFPs/") }}' ;
+			var url = '{{ url("/RFPs/") }}';
 			$.post(url + '/' + id, function(response) {
 			    if(response.success) 
 			    	$('.received_rfps').html(response.view_data);
 			}, 'json');
 		});
-
-
-
 
 		$(document).on("click", ".m-portlet__body .rfp_detail .rfp_show_detail", function() {
 			var id = $(this).attr("id");
 
 			$('.m-portlet__body').html('<div class="m-spinner m-spinner--brand m-spinner--lg"></div>');
 
-			var url = '{{ url("/RFP/") }}' ;
+			var url = '{{ url("/RFP/") }}';
 			$.post(url + '/' + id, function(response) {
 			    if(response.success) 
 			    	$('.received_rfps').html(response.view_data);
 			}, 'json');
 		});
 
+		
+		$(document).on("click", ".compare_cb", function(e) {
+			var rfp_id = $(this).val();
 
+			if($( this ).prop( "checked" )) {
+				rfp_ids.push(rfp_id);
+				console.log(rfp_ids);
+				$(".compare-rfp span").html('('+rfp_ids.length+')');
+
+			} else {
+
+				rfp_ids = jQuery.grep(rfp_ids, function(value) {
+				  return value != rfp_id;
+				});
+
+				//console.log(rfp_ids);
+				if(rfp_ids.length)
+					$(".compare-rfp span").html('('+rfp_ids.length+')');
+				else 
+					$(".compare-rfp span").html('');
+			}
+		});
+		
 
 		$(document).on("click", ".m-portlet__header .compare-rfp", function() {
 			//var id = $(this).attr("id");
 
-			$('.m-portlet__body').html('<div class="m-spinner m-spinner--brand m-spinner--lg"></div>');
+			if(rfp_ids.length>1) {
+				$('.m-portlet__body').html('<div class="m-spinner m-spinner--brand m-spinner--lg"></div>');
 
-			var url = '{{ url("/compareRFP/") }}';
+				var url = '{{ url("/compareRFP/") }}';
+				$.post(url, function(response) {
+				    if(response.success) 
+				    	$('#main-page .container .compare-result').html(response.view_data);
+				}, 'json');
+			} else {
+				alert("Please select atleast two proposals to compare.");
+			}
+
+		});
+
+
+		$(document).on("click", ".btn-rfp-accept", function() {
+			var id = $(this).attr("title");
+			var url = '{{ url("/acceptRFP/") }}' + '/' + id;
+
 			$.post(url, function(response) {
-			    if(response.success) 
-			    	$('#main-page .container .compare-result').html(response.view_data);
+			    if(response.success) {
+			    	alert(response.view_data);
+			    	location.reload();
+			    }
 			}, 'json');
+
+		});
+
+
+		$(document).on("click", ".btn-rfp-decline", function() {
+			var id = $(this).attr("title");
+			var url = '{{ url("/declineRFP/") }}' + '/' + id;
+
+			$.post(url, function(response) {
+			    if(response.success) {
+			    	alert(response.view_data);
+			    	location.reload();
+		    	}
+			}, 'json');
+
 		});
 
 	});
@@ -206,8 +260,6 @@ $(document).ready(function() {
 				</div>
 				<div class="m-portlet__head-tools">
 
-
-
 				<ul class="m-portlet__nav">
 					<li class="m-portlet__nav-item m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" m-dropdown-toggle="hover" aria-expanded="true">
 						<a href="#" class="m-portlet__nav-link m-dropdown__toggle dropdown-toggle btn btn--sm m-btn--pill btn-secondary m-btn m-btn--label-brand">
@@ -216,11 +268,8 @@ $(document).ready(function() {
 
 					</li>
 				</ul>
-
 				</div>
 			</div>
-
-
 
 			<div class="">
 				<div class="tab-content">
@@ -232,7 +281,7 @@ $(document).ready(function() {
 									<!--{{ dump($row) }}-->
 									<div class="planned-trip-content" id="{{ $row->id }}">
 										<span class="planned-trip-heading">
-										<b>{{ \Carbon\Carbon::parse($row->check_in)->format('m/d/Y')}} - {{ \Carbon\Carbon::parse($row->check_out)->format('m/d/Y')}}</b>
+										<b>{{ \Carbon\Carbon::parse($row->check_in)->format('m/d/Y') }} - {{ \Carbon\Carbon::parse($row->check_out)->format('m/d/Y')}}</b>
 										<p>{{ $row->from_address_1 }} {{ $row->from_city }} {{ $row->from_zip }}</p>
 
 										<p>

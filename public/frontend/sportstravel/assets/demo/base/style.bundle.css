@@ -16251,7 +16251,7 @@ button:active, button:focus {
   outline: none !important; }
 
 .btn.btn-default, .btn.btn-secondary {
-  background: #444;
+  background: #58bfe0;
   color: #fff; 
   }
   .btn.btn-default i, .btn.btn-secondary i {
@@ -35410,7 +35410,7 @@ select.m-select2 {
       padding: 0;
       position: relative;
       z-index: 1;
-      background: #262734;
+      background: #5ebce2;
       height: 70px;
       -webkit-transition: all 0.3s ease;
       transition: all 0.3s ease;

@@ -273,9 +273,13 @@ class UserController extends Controller {
 						} 
 						else {
 
+							if( $session['level']==2 ||  $session['level']==1 ) 
+								return redirect('dashboard');
+
 							if($row->last_login)
 								return redirect('trips');
-							else 
+
+							if(!$row->last_login)
 								return redirect('');
 
 							/*

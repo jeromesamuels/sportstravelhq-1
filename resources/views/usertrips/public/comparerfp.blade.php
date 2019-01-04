@@ -46,12 +46,12 @@
 		    <td></td>
 		    <td>
 		    	<div class="alert alert-success" role="alert">
-					<i class="fa fa-check"></i> The hotel has responded with a proposal
+					<i class="fa fa-check"></i> &nbsp;&nbsp;&nbsp; The hotel has responded with a proposal
 				</div>
 		    </td>
 		    <td>
 		    	<div class="alert alert-success" role="alert">
-					<i class="fa fa-check"></i> The hotel has responded with a proposal
+					<i class="fa fa-check"></i> &nbsp;&nbsp;&nbsp; The hotel has responded with a proposal
 				</div>    	
 		    </td>
 		  </tr>
@@ -138,28 +138,28 @@
 		    <td>
 				<div class="row">
 					<div class="col-md-4">
-						<a href="#" class="btn btn-default btn-md">Decline</a>
+						<a href="javascript:void(0);" class="btn btn-default btn-md btn-rfp-decline">Decline</a>
 					</div>
 					<div class="col-md-2">
 						
 					</div>
 					<div class="col-md-6">
-						<a href="#" class="btn btn-default btn-md">Save</a>
-						<a href="#" class="btn btn-default btn-md">Accept</a>			
+						<a href="javascript:void(0);" class="btn btn-default btn-md btn-rfp-save">Save</a>
+						<a href="javascript:void(0);" class="btn btn-default btn-md btn-rfp-accept">Accept</a>			
 					</div>
 				</div>
 		    </td>
 		    <td>
 				<div class="row">
 					<div class="col-md-4">
-						<a href="#" class="btn btn-default btn-md">Decline</a>
+						<a href="javascript:void(0);" class="btn btn-default btn-md btn-rfp-decline">Decline</a>
 					</div>
 					<div class="col-md-2">
 						
 					</div>
 					<div class="col-md-6">
-						<a href="#" class="btn btn-default btn-md">Save</a>
-						<a href="#" class="btn btn-default btn-md">Accept</a>			
+						<a href="javascript:void(0);" class="btn btn-default btn-md btn-rfp-save">Save</a>
+						<a href="javascript:void(0);" class="btn btn-default btn-md btn-rfp-accept">Accept</a>
 					</div>		
 				</div>
 		    </td>

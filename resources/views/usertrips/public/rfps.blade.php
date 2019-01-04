@@ -6,8 +6,8 @@
 		</div>
 
 		<div class="col-md-3">
-			<a href="#" class="btn btn-default btn-md compare-rfp">Compare</a>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<a href="#" class="btn btn-default btn-md compare-rfp">Compare <span></span> </a>
+			&nbsp;&nbsp;&nbsp;
 			<i class="la la-ellipsis-h "></i>
 		</div>
 
@@ -24,12 +24,17 @@
 <div class="m-portlet__body">
 	<div class="m-portlet__body">
 
-
 		<table class="rfp_detail" >
 
 		@foreach ($rfps as $rfp)
 		<tr>
-			<td><span style="width: 40px;"><label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand"><input type="checkbox" value="222">&nbsp;<span></span></label></span></td>
+			<td>
+				<span style="width: 40px;">
+				<label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand">
+					<input type="checkbox" class="compare_cb" name="compare_cb" value="{{ $rfp->id }}" />&nbsp;
+					<span></span>
+				</label></span>
+			</td>
 
 			<td width="45%">
 				<b>{{ $rfp->added }}</b><br />
@@ -72,7 +77,7 @@
 		<li>
 			<span>Check-In </span>
 			<br>
-			<p>{{ $trip_detail->check_in }}</p>
+			<p>{{ \Carbon\Carbon::parse($trip_detail->check_in)->format('m/d/Y') }}</p>
 		</li>
 		<li>
 			<span>Total Rooms</span>
