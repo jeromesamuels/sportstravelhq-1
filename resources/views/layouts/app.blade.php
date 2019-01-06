@@ -38,32 +38,29 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->         
 
-
 </head>
 
-<body class="theme-deep-purple ">
+
+<body class="theme-deep-purple theme-pink open-sidebar pace-done close-sidemenu">
 <div id="wrapper">
 
       <aside id="leftsidebar" class="sidebar">
-         @include('layouts.sidebar')             
+        @include('layouts.sidebar') 
       </aside>
 
-      <aside id="rightsidebar" class="right-sidebar">
-         @include('layouts.rightbar')            
-        </aside>   
-  
-        <section class="content">
-           @include('layouts.header') 
-          <div class="container-fluid">
-            <div class="ajaxLoading"></div>
-            @yield('content') 
-          </div>  
-        </section>  
-        
+      <aside id="rightsidebar" class="right-sidebar hide">
+        @include('layouts.rightbar') 
+      </aside>
+
+      <section class="content">
+         @include('layouts.header') 
+        <div class="container-fluid">
+          <div class="ajaxLoading"></div>
+          @yield('content') 
+        </div>  
+      </section> 
 
 
-
-   
 <div class="modal fade" id="sximo-modal" tabindex="-1" role="dialog">
 <div class="modal-dialog  ">
   <div class="modal-content">

@@ -8,7 +8,7 @@ return [
 'cnf_metadesc' 		=> 'Booking Hotels for Sports Team Made Easy',
 'cnf_group' 			=> '3',
 'cnf_activation' 		=> 'confirmation',
-'cnf_multilang' 		=> '1',
+'cnf_multilang' 		=> '0',
 'cnf_lang' 			=> 'en',
 'cnf_regist' 			=> 'true',
 'cnf_front' 			=> 'true',
