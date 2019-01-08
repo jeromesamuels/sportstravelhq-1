@@ -81,7 +81,7 @@
 
         <div class="row">
             <div class="col-md-4">
-                <div class="info-boxes">
+                <div class="info-boxes" style="background: #088fc9; color: #ffffff;">
                     Travel Coordinators
                     <h3>405</h3>
                     <br />
@@ -91,7 +91,7 @@
             </div>
 
             <div class="col-md-4">
-                <div class="info-boxes">
+                <div class="info-boxes" style="background: #24034a; color: #ffffff;">
                     Hotels
                     <h3>186</h3>
                     <br />
@@ -101,7 +101,7 @@
             </div>
 
             <div class="col-md-4">
-                <div class="info-boxes">
+                <div class="info-boxes" style="background: #13bd54; color: #ffffff;">
                     Trips Booked
                     <h3>2,300</h3>
                     <br />

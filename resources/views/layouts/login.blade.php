@@ -91,7 +91,7 @@
     <div class="m-grid m-grid--hor m-grid--root m-page">
 
       <!-- begin::Header -->
-      <header id="m_header" class="m-grid__item m-header " m-minimize="minimize" m-minimize-offset="200" m-minimize-mobile-offset="200">
+      <header id="m_header" class="m-grid__item m-header " style="display: none;" m-minimize-mobile-offset="200">
         <div class="m-header__top">
           <div class="m-container m-container--responsive m-container--xxl m-container--full-height m-page__container">
             <div class="m-stack m-stack--ver m-stack--desktop">
@@ -101,7 +101,7 @@
                 <div class="m-stack m-stack--ver m-stack--general m-stack--inline">
                   <div class="m-stack__item m-stack__item--middle m-brand__logo">
                     <a class="navbar-brand" href="{{ url('') }}">
-                     <img src="{{ asset('frontend/sportstravel/assets/images/logo_black.jpg') }}" title="{{ config('sximo.cnf_appname') }}" alt="{{ config('sximo.cnf_appname') }}" >
+                     <img src="{{ asset('frontend/sportstravel/assets/images/logo_blue.png') }}" title="{{ config('sximo.cnf_appname') }}" alt="{{ config('sximo.cnf_appname') }}" height="30" >
                     </a>
                   </div>
                   <div class="m-stack__item m-stack__item--middle m-brand__tools">
@@ -401,7 +401,7 @@
       <!-- end::Body -->
 
       <!-- begin::Footer -->
-      <footer class="m-grid__item m-footer ">
+      <footer class="m-grid__item m-footer " style="display: none;">
         <div class="m-container m-container--responsive m-container--xxl m-container--full-height m-page__container">
           <div class="m-footer__wrapper">
             <div class="m-stack m-stack--flex-tablet-and-mobile m-stack--ver m-stack--desktop">

@@ -29,8 +29,8 @@
 			<i class="fa fa-check"></i> &nbsp;&nbsp;&nbsp; The hotel has responded with a proposal
 		</div>
 
-		<div style="text-align: left;padding: 20px;">
-			<span>NTH Tophat, <br /><br />Hi John Smith, <br /><br />Please see our hotel availability, rates and amenities below for your requested dates.<br /><br /><br /></span>
+		<div style="text-align: left;padding: 20px;font-size: 16px;color: #2c2e2e;">
+			NTH Tophat, <br /><br />Hi John Smith, <br />Please see our hotel availability, rates and amenities below for your requested dates.<br />
 		</div>
 
 		<table class="rfp-detail" >
@@ -58,17 +58,17 @@
 </div>
 
 
-<div class="rfp_footer" style="padding: 20px;">
+<div class="rfp_footer" style="padding: 20px; background: #eae7ee;">
 	<div class="row">
 		<div class="col-md-4">
-			<button data-toggle="modal" data-target="#confirm_decline" class="btn btn-default btn-md">Decline</button>
+			<button data-toggle="modal" data-target="#confirm_decline" class="btn btn-default btn-secondary btn-md">Decline</button>
 		</div>
 		<div class="col-md-2">
 
 		</div>
 		<div class="col-md-6">
-			<a href="javascript:void(0);" title="{{ $rfp->id }}" class="btn btn-default btn-md btn-rfp-compare">Add to compare</a>
-			<a href="javascript:void(0);" title="{{ $rfp->id }}" class="btn btn-default btn-md btn-rfp-save">Save</a>
+			<a href="javascript:void(0);" title="{{ $rfp->id }}" class="btn btn-default btn-secondary btn-md btn-rfp-compare">Add to compare</a>
+			<a href="javascript:void(0);" title="{{ $rfp->id }}" class="btn btn-default btn-secondary btn-md btn-rfp-save">Save</a>
 			<button data-toggle="modal" data-target="#confirm_accept" title="{{ $rfp->id }}" class="btn btn-default btn-md">Accept</button>
 		</div>		
 	</div>

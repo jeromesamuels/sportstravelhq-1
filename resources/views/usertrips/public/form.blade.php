@@ -46,16 +46,17 @@
   width: 20px;
   height: 20px;
   background: white;
-  border: solid #EEE;
+  border: solid #AAA 1px;
+  border-radius: 4px;
 }
 .styled-checkbox:hover + label:before {
-  background: #f35429;
+  background: #0bd641;
 }
 .styled-checkbox:focus + label:before {
   box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
 }
 .styled-checkbox:checked + label:before {
-  background: #f35429;
+  background: #0bd641;
 }
 .styled-checkbox:disabled + label {
   color: #b8b8b8;
@@ -265,9 +266,6 @@
 	    // In your Javascript (external .js resource or <script> tag)
 	    $('.select2').select2();
 	
-
-
-
 
 
 	var separator = ' - ', dateFormat = 'YYYY/MM/DD';

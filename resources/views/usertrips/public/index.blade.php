@@ -37,6 +37,7 @@ $(document).ready(function() {
 
 	.m-portlet .m-portlet__body {
 		text-align: center;
+		min-height: 400px;
 	}
 
 	.m-portlet__body ul {
@@ -58,7 +59,8 @@ $(document).ready(function() {
 
 	.rfp_footer {
 		min-height: 100px;
-		background: #DDD; 
+		background: #5e6668; 
+		color: #FFF;
 		padding: 20px 0;
 	}
 
@@ -77,7 +79,7 @@ $(document).ready(function() {
 	}
 	.m-portlet__body table.rfp_detail tr:hover {
 		background: #eee;
-		border-left: solid purple;
+		border-left: solid #18c942;
 		margin-left: -6px;
 	}
 	.m-portlet__body table.rfp_detail tr td {
@@ -102,17 +104,18 @@ $(document).ready(function() {
 		text-align: left;
 		padding: 10px;
 		font-size: 14px;
+		margin: 10px;
 	}
 
 	.rfp-detail tr td {
 		padding: 10px;
-		background: #eee;
+		background: #ffffff;
 		display: inline-block;
 		width: 100%;
 	}
 
 	.rfp-detail tr td:nth-child(odd) {
-		background: #FFF;
+		background: #f1f1f1;
 	}
 
 	.rfp-detail tr td:nth-child(even) {
@@ -130,9 +133,18 @@ $(document).ready(function() {
 
 	.m-portlet-comparerfp table tr th {
 		padding: 20px;
-		background: #DEDEDE;
+		background: #5e6668;
+		color: #ffffff;
 		font-weight: normal;
 	}
+
+	.m-portlet-comparerfp table tr th a { color: #ffffff; text-decoration: none; }
+
+	.alert-success:not(.m-alert--outline) {
+		background-color: #d2f5de;
+		color: #434343;
+	}
+
 </style>
 
 
@@ -174,6 +186,8 @@ $(document).ready(function() {
 			if($( this ).prop( "checked" )) {
 				rfp_ids.push(rfp_id);
 				console.log(rfp_ids);
+				
+				$(".compare-rfp").removeClass('btn-secondary');
 				$(".compare-rfp span").html('('+rfp_ids.length+')');
 
 			} else {
@@ -183,10 +197,14 @@ $(document).ready(function() {
 				});
 
 				//console.log(rfp_ids);
-				if(rfp_ids.length)
+				if(rfp_ids.length) {
+					$(".compare-rfp").removeClass('btn-secondary');
 					$(".compare-rfp span").html('('+rfp_ids.length+')');
-				else 
+				}
+				else {
+					$(".compare-rfp").addClass('btn-secondary');
 					$(".compare-rfp span").html('');
+				}
 			}
 		});
 		
@@ -242,7 +260,7 @@ $(document).ready(function() {
 
 <div class="row compare-result">
 	<div class="col-md-12">
-		<a href="{{ URL::to('/') }}" class="btn btn-default btn-md" style="margin: 0 40px 40px; padding: 10px 40px; font-size: 18px;">Book a Hotel</a>
+		<a href="{{ URL::to('/') }}" class="btn btn-default btn-md" style="margin: 0 40px 40px 0; padding: 10px 40px; font-size: 18px;">Book a Hotel</a>
 		<br />
   	</div>
 

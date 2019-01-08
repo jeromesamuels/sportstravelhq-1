@@ -7,6 +7,14 @@
 	.form-signup {
 		background: #FFF;
 	}
+
+	.form-signup h5 {
+	  font-size: 20px;
+	  font-weight: bold;
+	  color: #223a40;
+	  margin: 20px 0;
+	}
+
 </style>
 
 <div class="home-banner">
@@ -17,13 +25,19 @@
 			@if(!Auth::check()) 
 
 			<div class="col-md-6">
-				<div class="sbox" > 
+				<div class="sbox text-center" > 
+
+
+				<img src="{{ asset('frontend/sportstravel/assets/images/logo.png') }}" title="{{ config('sximo.cnf_appname') }}" alt="{{ config('sximo.cnf_appname') }}" height="50" >
+
+
 
 			 {!! Form::open(array('url'=>'user/create', 'class'=>'form-signup','parsley-validate'=>'','novalidate'=>' ','id'=>'register-form' )) !!}
-			    	@if(Session::has('message'))
-						{!! Session::get('message') !!}
-					@endif
+		    	@if(Session::has('message'))
+					{!! Session::get('message') !!}
+				@endif
 				<h5>Enter your name and contact information to register</h5>
+
 				<ul class="parsley-error-list">
 					@foreach($errors->all() as $error)
 						<li>{{ $error }}</li>
@@ -34,37 +48,31 @@
 				
 			  {!! Form::text('username', null, array('class'=>'form-control','required'=>'true'  ,'placeholder'=> __('core.username') )) !!}
 				
-			</div>	
-			<div class="form-group has-feedback row">
-				<div class="col-md-6">
-				
-				  {!! Form::text('firstname', null, array('class'=>'form-control','required'=>'true' ,'placeholder'=> __('core.firstname') )) !!}
-					
-				</div>
-				<div class="col-md-6">
-					
-				 {!! Form::text('lastname', null, array('class'=>'form-control', 'required'=>'' ,'placeholder'=> __('core.lastname') )) !!}
-					
-				</div>	
 			</div>
+
+			<div class="form-group has-feedback">
+			
+			  {!! Form::text('firstname', null, array('class'=>'form-control','required'=>'true' ,'placeholder'=> __('core.firstname') )) !!}
+		  	</div>
+
+			<div class="form-group has-feedback">
+				
+			 {!! Form::text('lastname', null, array('class'=>'form-control', 'required'=>'' ,'placeholder'=> __('core.lastname') )) !!}
+		 	</div>
 			
 			
 			<div class="form-group has-feedback">
 			 {!! Form::text('email', null, array('class'=>'form-control', 'required'=>'true','placeholder'=> __('core.email'))) !!}
 			</div>
 
-			<div class="form-group has-feedback row">
-				<div class="col-md-6">
-					
-			 		{!! Form::password('password', array('class'=>'form-control','required'=>'true' ,'placeholder'=> __('core.password'))) !!}
-					
-				</div>
-				<div class="col-md-6">
-					
-					{!! Form::password('password_confirmation', array('class'=>'form-control','required'=>'true' ,'placeholder'=> __('core.repassword'))) !!}
-					
-				</div>	
+			<div class="form-group has-feedback">
+	 		{!! Form::password('password', array('class'=>'form-control','required'=>'true' ,'placeholder'=> __('core.password'))) !!}
+	 		</div>
+
+			<div class="form-group has-feedback">
+			{!! Form::password('password_confirmation', array('class'=>'form-control','required'=>'true' ,'placeholder'=> __('core.repassword'))) !!}
 			</div>
+
 
 				@if(config('sximo.cnf_recaptcha') =='true') 
 				<div class="form-group has-feedback  animated fadeInLeft delayp1">
@@ -81,7 +89,7 @@
 		       </div>
 		      </div>
 			  <p style="padding:10px 0" class="text-center">
-			  <a href="{{ URL::to('user/login')}}"> @lang('core.signin')   </a>
+			  Already a user? <a href="{{ URL::to('user/login')}}"> @lang('core.signin')   </a>
 		   		</p>
 			{!! Form::close() !!}
 
@@ -168,6 +176,7 @@ $agreement_text = '<div id="Translation"><h3>The standard Lorem Ipsum passage, u
 		position: absolute;
 		left: 10px;
 	}
+
 
 </style>
 

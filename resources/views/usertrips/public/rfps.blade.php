@@ -6,7 +6,7 @@
 		</div>
 
 		<div class="col-md-3">
-			<a href="#" class="btn btn-default btn-md compare-rfp">Compare <span></span> </a>
+			<a href="#" class="btn btn-default btn-secondary btn-md compare-rfp">Compare <span></span> </a>
 			&nbsp;&nbsp;&nbsp;
 			<i class="la la-ellipsis-h "></i>
 		</div>
