@@ -25,11 +25,7 @@
              </li>
           </ul>
 
-
-
-
           <ul class="nav navbar-nav navbar-right">
-
             <li class="sidemenu-bar">
               <i style="color: #FFF; position: relative; top: 12px; font-size: 32px;" class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">notifications</i>
                 
@@ -44,8 +40,6 @@
               </ul>
             </li>
 
-
-
             <li><a href="javascript:void(0);" >{{ session('fid')}}</a></li>
 
             <li class="sidemenu-bar">
@@ -53,18 +47,15 @@
                   {!! SiteHelpers::avatar( 48 ) !!}
               </div>
             </li>
-
           </ul>
 
-
-
-          <ul class="nav navbar-nav navbar-right hide">
+          <ul class="nav navbar-nav navbar-right ">
             <li class="sidemenu-bar">
                   <a href="{{ url('') }}" >
                       <i class="material-icons">place</i>
                   </a>
-             </li>     
-                          <!-- Notifications -->
+             </li>
+            <!-- Notifications -->
               @if(config('sximo.cnf_multilang') ==1)
             <li class="dropdown tasks-menu ">
               <?php 
@@ -79,8 +70,7 @@
               endforeach;?>
               <a href="#"  data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                 <img class="flag-lang" src="{{ asset('sximo5/images/flags/'.$flag.'.png') }}" width="16" height="12" alt="lang" /> {{ strtoupper($flag) }}
-                <span class="hidden-xs">
-                
+                <span class="hidden-xs">                
                 </span>
               </a>
 
@@ -92,7 +82,7 @@
 
             </li> 
             @endif 
-                        
+
               <li class="dropdown">
                   <a href="javascript:void(0);"  data-toggle="dropdown" role="button">
                        <i class="material-icons">notifications</i>
@@ -117,7 +107,7 @@
                             </li>
                         </ul>
                      </li>
-                  </ul>            
+                  </ul>
               </li> 
 
             @if(Auth::user()->group_id == 1 or Auth::user()->group_id == 2 ) 
@@ -127,7 +117,6 @@
                     </a>
                 <ul class="dropdown-menu">
                      
-    
                   <li ><a href="{{ url('core/users')}}">  @lang('core.m_users') <br /></a> </li> 
 
                 @if(Auth::user()->group_id == 1) 
@@ -163,16 +152,9 @@
                   
                   <li> <a href="{{ url('sximo/config/clearlog')}}" class="clearCache"> @lang('core.m_clearcache')</a> </li>
                  
-
-
                 </ul>
             </li>
             @endif
-
-           
-
-              
-  
 
               <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="material-icons">more_vert</i></a></li>  
           </ul>

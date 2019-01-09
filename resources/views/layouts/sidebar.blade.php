@@ -21,7 +21,7 @@
                     @if(count($menu['childs']) > 0 ) 
                         href="javascript:void(0);" 
 
-                    @elseif($menu['menu_type'] =='external')
+                    @elseif($menu['menu_type']=='external')
                         href="{{ $menu['url'] }}" 
                     @else
                         href="{{ URL::to($menu['module'])}}" 

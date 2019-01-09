@@ -29,92 +29,90 @@
 
 {!! Form::open(array('url'=>'core/users?return='.$return, 'class'=>'form-horizontal validated','files' => true )) !!}
 		<div class="col-md-6">
-					
-									
-								  <div class="form-group hidethis " style="display:none;">
-									<label for="Id" class=" control-label col-md-4 text-left"> Id </label>
-									<div class="col-md-6">
-									  {!! Form::text('id', $row['id'],array('class'=>'form-control input-sm', 'placeholder'=>'',   )) !!} 
-									 </div> 
-									 <div class="col-md-2">
-									 	
-									 </div>
-								  </div> 					
-								  <div class="form-group  " >
-									<label for="Group / Level" class=" control-label col-md-4 text-left"> Group / Level <span class="asterix"> * </span></label>
-									<div class="col-md-6">
-									  <select name="group_id" rows="5" id="group_id" code="{$group_id}" class="select2 -- form-control input-sm select2-hidden-accessible" required="" tabindex="-1" aria-hidden="true"><option value="">-- Please Select --</option><option value="2">Administrator </option><option value="3">Users </option></select>
-									 </div> 
-									 <div class="col-md-2">
-									 	
-									 </div>
-								  </div> 					
-								  <div class="form-group  " >
-									<label for="Username" class=" control-label col-md-4 text-left"> Username <span class="asterix"> * </span></label>
-									<div class="col-md-6">
-									  {!! Form::text('username', $row['username'],array('class'=>'form-control  input-sm', 'placeholder'=>'', 'required'=>'true'  )) !!} 
-									 </div> 
-									 <div class="col-md-2">
-									 	
-									 </div>
-								  </div> 					
-								  <div class="form-group  " >
-									<label for="First Name" class=" control-label col-md-4 text-left"> First Name <span class="asterix"> * </span></label>
-									<div class="col-md-6">
-									  {!! Form::text('first_name', $row['first_name'],array('class'=>'form-control  input-sm', 'placeholder'=>'', 'required'=>'true'  )) !!} 
-									 </div> 
-									 <div class="col-md-2">
-									 	
-									 </div>
-								  </div> 					
-								  <div class="form-group  " >
-									<label for="Last Name" class=" control-label col-md-4 text-left"> Last Name </label>
-									<div class="col-md-6">
-									  {!! Form::text('last_name', $row['last_name'],array('class'=>'form-control  input-sm', 'placeholder'=>'',   )) !!} 
-									 </div> 
-									 <div class="col-md-2">
-									 	
-									 </div>
-								  </div> 					
-								  <div class="form-group  " >
-									<label for="Email" class=" control-label col-md-4 text-left"> Email <span class="asterix"> * </span></label>
-									<div class="col-md-6">
-									  {!! Form::text('email', $row['email'],array('class'=>'form-control  input-sm', 'placeholder'=>'', 'required'=>'true', 'parsley-type'=>'email'   )) !!} 
-									 </div> 
-									 <div class="col-md-2">
-									 	
-									 </div>
-								  </div> 					
-					
-								  <div class="form-group  " >
-									<label for="Status" class=" control-label col-md-4 text-left"> Status <span class="asterix"> * </span></label>
-									<div class="col-md-6">
-										<input type='radio' name='active' value ='1' required @if($row['active'] == '1') checked="checked" @endif class="minimal-red" > Active 
+			  <div class="form-group hidethis " style="display:none;">
+				<label for="Id" class=" control-label col-md-4 text-left"> Id </label>
+				<div class="col-md-6">
+				  {!! Form::text('id', $row['id'],array('class'=>'form-control input-sm', 'placeholder'=>'',   )) !!} 
+				 </div> 
+				 <div class="col-md-2">
+				 	
+				 </div>
+			  </div>
+			  <div class="form-group  " >
+				<label for="Group / Level" class=" control-label col-md-4 text-left"> Group / Level <span class="asterix"> * </span> </label>
+				<div class="col-md-6">
 
-										<input type='radio' name='active' value ='0' required @if($row['active'] == '0') checked="checked" @endif class="minimal-red" > Inactive
+				  {{ Form::select('group_id', ['2'=>'Administrator', '3'=>'Users / Client', '4' => 'Travel Coordinator', '5' => 'Hotel Manager', '6' => 'Corporate'], $row['group_id'], ['id' => 'group_id', 'class' => 'select2 -- form-control input-sm select2-hidden-accessible']) }}
 
-										<input type='radio' name='active' value ='2' required @if($row['active'] == '2') checked="checked" @endif class="minimal-red" > Banned
-									 </div> 
-									 <div class="col-md-2">
-									 	
-									 </div>
-								  </div> 
+				 </div> 
+				 <div class="col-md-2">
+				 </div>
+			  </div>
+			  <div class="form-group  " >
+				<label for="Username" class=" control-label col-md-4 text-left"> Username <span class="asterix"> * </span></label>
+				<div class="col-md-6">
+				  {!! Form::text('username', $row['username'],array('class'=>'form-control  input-sm', 'placeholder'=>'', 'required'=>'true'  )) !!} 
+				 </div> 
+				 <div class="col-md-2">
+				 	
+				 </div>
+			  </div>
+			  <div class="form-group  " >
+				<label for="First Name" class=" control-label col-md-4 text-left"> First Name <span class="asterix"> * </span></label>
+				<div class="col-md-6">
+				  {!! Form::text('first_name', $row['first_name'],array('class'=>'form-control  input-sm', 'placeholder'=>'', 'required'=>'true'  )) !!} 
+				 </div> 
+				 <div class="col-md-2">
+				 	
+				 </div>
+			  </div>
+			  <div class="form-group  " >
+				<label for="Last Name" class=" control-label col-md-4 text-left"> Last Name </label>
+				<div class="col-md-6">
+				  {!! Form::text('last_name', $row['last_name'],array('class'=>'form-control  input-sm', 'placeholder'=>'',   )) !!} 
+				 </div> 
+				 <div class="col-md-2">
+				 	
+				 </div>
+			  </div>
+			  <div class="form-group  " >
+				<label for="Email" class=" control-label col-md-4 text-left"> Email <span class="asterix"> * </span></label>
+				<div class="col-md-6">
+				  {!! Form::text('email', $row['email'],array('class'=>'form-control  input-sm', 'placeholder'=>'', 'required'=>'true', 'parsley-type'=>'email' )) !!} 
+				 </div> 
+				 <div class="col-md-2">
+				 	
+				 </div>
+			  </div>
+
+			  <div class="form-group  " >
+				<label for="Status" class=" control-label col-md-4 text-left"> Status <span class="asterix"> * </span></label>
+				<div class="col-md-6">
+					<input type='radio' name='active' value ='1' required @if($row['active'] == '1') checked="checked" @endif class="minimal-red" > Active 
+
+					<input type='radio' name='active' value ='0' required @if($row['active'] == '0') checked="checked" @endif class="minimal-red" > Inactive
+
+					<input type='radio' name='active' value ='2' required @if($row['active'] == '2') checked="checked" @endif class="minimal-red" > Banned
+				 </div> 
+				 <div class="col-md-2">
+				 	
+				 </div>
+			  </div> 
 
 
-								  <div class="form-group  " >
-									<label for="Avatar" class=" control-label col-md-4 text-left"> Avatar </label>
-									<div class="col-md-6">
-									  <input  type='file' name='avatar' id='avatar' @if($row['avatar'] =='') class='required' @endif style='width:150px !important;'  />
-										 	<div >
-											{!! SiteHelpers::showUploadedFile($row['avatar'],'/uploads/users/') !!}
-											
-									</div>					
-				 
-									 </div> 
-									 <div class="col-md-2">
-									 	
-									 </div>
-								  </div> 
+			  <div class="form-group  " >
+				<label for="Avatar" class=" control-label col-md-4 text-left"> Avatar </label>
+				<div class="col-md-6">
+				  <input  type='file' name='avatar' id='avatar' @if($row['avatar'] =='') class='required' @endif style='width:150px !important;'  />
+			 	<div >
+				{!! SiteHelpers::showUploadedFile($row['avatar'],'/uploads/users/') !!}	
+				</div>
+
+				 </div> 
+				 <div class="col-md-2">
+				 	
+				 </div>
+			  </div> 
 			</div>
 			
 
@@ -151,31 +149,25 @@
 			<input name="password_confirmation" type="password" id="password_confirmation" class="form-control input-sm" value=""
 			@if($row['id'] =='')
 				required
-			@endif		
-			 />  
+			@endif
+			 />
 			 </div> 
-		  </div>  				  
-				  
+		  </div> 
 
-		 
 		 </div>			
-			
-			
-			<div style="clear:both"></div>	
-				
-					
+
+			<div style="clear:both"></div>
 				  <div class="form-group">
 					<label class="col-sm-4 text-right">&nbsp;</label>
 					<div class="col-sm-8">	
 					<button type="submit" name="apply" class="btn btn-info btn-sm" ><i class="fa  fa-check-circle"></i> {{ Lang::get('core.sb_apply') }}</button>
 					<button type="submit" name="submit" class="btn btn-primary btn-sm" ><i class="fa  fa-save "></i> {{ Lang::get('core.sb_save') }}</button>
 					<button type="button" onclick="location.href='{{ URL::to('core/users?return='.$return) }}' " class="btn btn-success btn-sm "><i class="fa  fa-arrow-circle-left "></i>  {{ Lang::get('core.sb_cancel') }} </button>
-					</div>	  
-			
+					</div>
 				  </div> 
+
 		 <input type="hidden" name="action_task" value="save" />
 		 {!! Form::close() !!}
-
 
 			</div>
 		</div>

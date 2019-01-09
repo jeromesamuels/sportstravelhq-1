@@ -88,9 +88,17 @@ class UsersController extends Controller {
 				return $this->getBlast( $request);
 				break;
 
+
 			case 'coordinator':
 				return $this->getCoordinator( $request);
 				break;
+			case 'hotelmanager':
+				return $this->getHotelManager( $request);
+				break;
+			case 'corporate':
+				return $this->getCorporate( $request);
+				break;
+
 
 			case 'comboselect':
 				return $this->getComboselect( $request );
@@ -245,10 +253,31 @@ class UsersController extends Controller {
 		$this->data = array(
 			'groups'	=> Groups::all(),
 			'pageTitle'	=> 'Invite Travel Coordinator',
-			'pageNote'	=> 'Send email to Travel Coordinators'
+			'pageNote'	=> 'Send email to Travel Coordinator'
 		);	
 		return view('core.users.coordinators',$this->data);		
 	}
+
+	function getHotelManager()
+	{
+		$this->data = array(
+			'groups'	=> Groups::all(),
+			'pageTitle'	=> 'Invite Hotel Manager',
+			'pageNote'	=> 'Send email to Hotel Manager'
+		);	
+		return view('core.users.coordinators',$this->data);		
+	}
+
+	function getCorporate()
+	{
+		$this->data = array(
+			'groups'	=> Groups::all(),
+			'pageTitle'	=> 'Invite Corporate',
+			'pageNote'	=> 'Send email to Corporate'
+		);	
+		return view('core.users.coordinators',$this->data);		
+	}
+
 
 
 	function postDoblast( Request $request)

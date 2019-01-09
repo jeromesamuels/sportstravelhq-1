@@ -70,10 +70,7 @@
         -moz-box-shadow: 0px 2px 20px 0px rgba(153,153,153,0.5);
         box-shadow: 0px 2px 20px 0px rgba(153,153,153,0.5);
     }
-
-
 </style>
-
 
 <div class="sbox" style="border-top: none">
     <div class="sbox-title"> <b>Dashboard</b></div>
@@ -83,35 +80,33 @@
             <div class="col-md-4">
                 <div class="info-boxes" style="background: #088fc9; color: #ffffff;">
                     Travel Coordinators
-                    <h3>405</h3>
+                    <h3>{{ $tc_users }}</h3>
                     <br />
                     Roasters
-                    <h3>780</h3>
+                    <h3>{{ $ro_users }}</h3>
                 </div>
             </div>
 
             <div class="col-md-4">
                 <div class="info-boxes" style="background: #24034a; color: #ffffff;">
                     Hotels
-                    <h3>186</h3>
+                    <h3>{{ $hotels }}</h3>
                     <br />
                     RFPs Sent
-                    <h3>224</h3>
+                    <h3>{{ $rfps }}</h3>
                 </div>
             </div>
 
             <div class="col-md-4">
                 <div class="info-boxes" style="background: #13bd54; color: #ffffff;">
                     Trips Booked
-                    <h3>2,300</h3>
+                    <h3>{{ $trips }}</h3>
                     <br />
                     Active Requests
-                    <h3>105</h3>
+                    <h3>{{ $a_req }}</h3>
                 </div>
             </div>
         </div>
-
-
 
 
         <div class="row">
