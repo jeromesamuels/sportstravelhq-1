@@ -599,23 +599,4 @@ class UserController extends Controller {
 		}
 
 	}
-
-
-	function coordinator( Request $request ) 
-	{
-		die("asd");
-
-		$this->hook( $request  );
-
-		if($this->access['is_add'] ==0) 
-			return redirect('dashboard')->with('message', __('core.note_restric'))->with('status','error');
-
-		$this->data['row'] = $this->model->getColumnTable( $this->info['table']);
-
-		$this->data['id'] = '';
-		return view('core.users.form',$this->data);
-	}
-
-	
-	
 }

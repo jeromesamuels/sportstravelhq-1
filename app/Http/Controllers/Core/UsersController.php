@@ -88,9 +88,17 @@ class UsersController extends Controller {
 				return $this->getBlast( $request);
 				break;
 
+
 			case 'coordinator':
 				return $this->getCoordinator( $request);
 				break;
+			case 'hotelmanager':
+				return $this->getHotelManager( $request);
+				break;
+			case 'corporate':
+				return $this->getCorporate( $request);
+				break;
+
 
 			case 'comboselect':
 				return $this->getComboselect( $request );
@@ -240,17 +248,6 @@ class UsersController extends Controller {
 		return view('core.users.blast',$this->data);		
 	}
 
-	function getCoordinator()
-	{
-		$this->data = array(
-			'groups'	=> Groups::all(),
-			'pageTitle'	=> 'Invite Travel Coordinator',
-			'pageNote'	=> 'Send email to Travel Coordinators'
-		);	
-		return view('core.users.coordinators',$this->data);		
-	}
-
-
 	function postDoblast( Request $request)
 	{
 		$rules = array(
@@ -312,17 +309,54 @@ class UsersController extends Controller {
 
 
 
+
+
+	function getCoordinator()
+	{
+		$this->data = array(
+			'invitations' => \DB::table('invitations')->where('group_id', 4)->get(), 
+			'roleTitle'	=> 'Travel Coordinator',
+			'roleID'	=> '4', 
+		);	
+		return view('core.users.invite',$this->data);		
+	}
+
+	function getHotelManager()
+	{
+		$this->data = array(
+			'invitations' => \DB::table('invitations')->where('group_id', 3)->get(), 
+			'roleTitle'	=> 'Hotel Manager',
+			'roleID'	=> '4', 
+		);	
+		return view('core.users.invite',$this->data);		
+	}
+
+	function getCorporate()
+	{
+		$this->data = array(
+			'invitations' => \DB::table('invitations')->where('group_id', 6)->get(), 
+			'roleTitle'	=> 'Corporate',
+			'roleID'	=> '4', 
+		);	
+		return view('core.users.invite',$this->data);		
+	}
+
+
 	function postDoinvite( Request $request)
 	{
 
 		$rules = array(
-			'email'		=> 'required|email|unique:tb_users',
+			'email'		=> 'required|email|unique:tb_users|unique:invitations',
 		);
 
-		$validator = Validator::make($request->all(), $rules);	
+		$messages = [
+		    'unique' => 'Invitation already sent and/or this email is already registered.',
+		];
+
+		$validator = Validator::make($request->all(), $rules, $messages);
+
 		if ($validator->passes()) 
 		{
-			//$data['note'] 			= $request->input('message');
 			$data['to']				= $request->input('email');
 			$data['subject']		= "Invitation for Travel Coordinator";
 			$data['cnf_appname'] 	= "Sports Travel HQ";	
@@ -341,6 +375,10 @@ class UsersController extends Controller {
 				$headers .= 'From: '.$this->config['cnf_appname'].' <'.$this->config['cnf_email'].'>' . "\r\n";
 					mail($data['to'], $data['subject'], $message, $headers);
 		    }
+
+		    \DB::table('invitations')->insert(
+			    ['email' => $request->input('email'), 'group_id' => $request->input('group_id')]
+			);
 
 			return redirect('core/users/coordinator')->with('message','Message has been sent')->with('status','success');
 

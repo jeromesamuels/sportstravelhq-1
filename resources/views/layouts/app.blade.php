@@ -68,9 +68,8 @@
 <div class="modal-dialog  ">
   <div class="modal-content">
     <div class="modal-header bg-default">
-        
-        <button type="button " class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Modal title</h4>
+      <button type="button " class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      <h4 class="modal-title">Modal title</h4>
     </div>
     <div class="modal-body" id="sximo-modal-content">
 
@@ -89,16 +88,14 @@ jQuery(document).ready(function ($) {
         $.get('{{ url("home/load") }}',function(data){
           $('.notif-alert').html(data.total);
           var html = '';
-          $.each( data.note, function( key, val ) {     
+          $.each( data.note, function( key, val ) {
            html += '<li><a href="'+val.url+'"><div class="icon-circle bg-light-green"><i class="'+val.icon+'"></i></div><div class="menu-info"><h4>'+val.title+'</h4><p>'+val.text+'</p> <p><i class="material-icons">access_time</i>'+val.date+'</p> </div></a></li>' ;
             });
           $('#notification-menu').html(html); 
         });
-              
 
     }, 60000); 
 })
-
 
 </script>
 
