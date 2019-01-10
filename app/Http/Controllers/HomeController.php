@@ -34,6 +34,7 @@ class HomeController extends Controller {
 		endif;
 
 		$page = $request->segment(1);
+
 		\DB::table('tb_pages')->where('alias',$page)->update(array('views'=> \DB::raw('views+1')));
 
 		if($page !='') {
@@ -96,11 +97,15 @@ class HomeController extends Controller {
 				}
 				$this->data['pages'] = $page_template;
 				$this->data['pageID'] = $row->pageID ;
+				
 				$this->data['content'] = \PostHelpers::formatContent($row->note);
 
 				$this->data['note'] = $row->note;
 
 				$page = 'layouts.'.config('sximo.cnf_theme').'.index';
+
+				// return $this->data;
+				// die();
 				return view( $page, $this->data);
 
 			} else {

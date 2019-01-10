@@ -90,3 +90,9 @@ Route::group(['namespace' => 'Core','middleware' => 'auth'], function () {
 	include('core.php');
 });
 
+Route::group(['namespace' => 'HotelManager','middleware' => 'auth','prefix'=>"hotelmanager"], function () {
+	Route::get('/','HotelManagerController@index')->name('hotelmanger.home');
+	Route::get('/trips','TripsController@index')->name('hotelmanager.trips.index');
+	Route::get('/trips/{id}','TripsController@show')->name('hotelmanager.trips.show');
+});
+

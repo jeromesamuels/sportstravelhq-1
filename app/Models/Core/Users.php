@@ -14,7 +14,7 @@ class Users extends Sximo  {
 		
 	}
 
-	public static function querySelect(  ){
+	public static function querySelect(){
 		
 		return " 
 			SELECT  tb_users.*,  tb_groups.name 

@@ -273,8 +273,11 @@ class UserController extends Controller {
 						} 
 						else {
 
-							if( $session['level']==2 ||  $session['level']==1 ) 
+							if( $session['level']== 2 ||  $session['level']== 1 ) 
 								return redirect('dashboard');
+
+							if( $session['level'] == 5) 
+								return redirect(route('hotelmanger.home'));
 
 							if($row->last_login)
 								return redirect('trips');

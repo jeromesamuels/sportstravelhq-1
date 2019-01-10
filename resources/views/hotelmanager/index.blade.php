@@ -80,22 +80,11 @@
     <div class="sbox-content dashboard-container"> 
        
         <div class="row">
-            @if (Session::get('level') == 1)
+            @if (Session::get('level') == 5)
                 <div class="col-sm-12">
-                    <h1>You are LoggedIn As Super Admin</h1>
+                    <h1>Hotel Manager</h1>
                 </div>
             @endif
-            @if (Session::get('level') == 2)
-                <div class="col-sm-12">
-                    <h1>You are LoggedIn As Administrator</h1>
-                </div>
-            @endif
-            @if (Session::get('level') == 3)
-                <div class="col-sm-12">
-                    <h1>You are LoggedIn As Guest User</h1>
-                </div>
-            @endif
-            
             <div class="col-md-4">
                 <div class="info-boxes" style="background: #088fc9; color: #ffffff;">
                     Travel Coordinators

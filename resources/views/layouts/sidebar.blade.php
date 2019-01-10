@@ -10,7 +10,14 @@
                     <span>Dashboard</span>
                 </a>
             </li>
-
+            @if (Session::get('level') == 5)
+                <li>
+                    <a href="{{ route('hotelmanager.trips.index') }}">
+                        <i class="material-icons">dashboard</i>
+                        <span>View Trips</span>
+                    </a>
+                </li>
+            @endif
             @foreach ($sidebar as $menu)
             <li @if(Request::segment(1) == $menu['module']) class="active" @endif>
             @if($menu['module'] =='separator')

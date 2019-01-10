@@ -2,9 +2,6 @@
 
 @section('content')
 
-
-
-
 <style type="text/css">
 	.form-signup {
 		background: #FFF;
