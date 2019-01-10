@@ -316,6 +316,7 @@ class UsersController extends Controller {
 		$this->data = array(
 			'invitations' => \DB::table('invitations')->where('group_id', 4)->get(), 
 			'roleTitle'	=> 'Travel Coordinator',
+			'slug' => 'coordinator', 
 			'roleID'	=> '4', 
 		);	
 		return view('core.users.invite',$this->data);		
@@ -326,6 +327,7 @@ class UsersController extends Controller {
 		$this->data = array(
 			'invitations' => \DB::table('invitations')->where('group_id', 3)->get(), 
 			'roleTitle'	=> 'Hotel Manager',
+			'slug' => 'hotelmanager', 
 			'roleID'	=> '4', 
 		);	
 		return view('core.users.invite',$this->data);		
@@ -336,6 +338,7 @@ class UsersController extends Controller {
 		$this->data = array(
 			'invitations' => \DB::table('invitations')->where('group_id', 6)->get(), 
 			'roleTitle'	=> 'Corporate',
+			'slug' => 'corporate', 
 			'roleID'	=> '4', 
 		);	
 		return view('core.users.invite',$this->data);		
@@ -359,7 +362,8 @@ class UsersController extends Controller {
 		{
 			$data['to']				= $request->input('email');
 			$data['subject']		= "Invitation for Travel Coordinator";
-			$data['cnf_appname'] 	= "Sports Travel HQ";	
+			$data['cnf_appname'] 	= "Sports Travel HQ";
+			$data['group_id'] 		= $request->input('group_id');
 			//$this->data['sximoconfig']['cnf_appname'];
 
 			if($this->config['cnf_mail'] && $this->config['cnf_mail'] =='swift')
@@ -369,7 +373,7 @@ class UsersController extends Controller {
 		    	});
 		    } else {
 
-		    	$message = view('core.users.inviteemail',$data);
+		    	$message = view('core.users.inviteemail', $data);
 				$headers  = 'MIME-Version: 1.0' . "\r\n";
 				$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 				$headers .= 'From: '.$this->config['cnf_appname'].' <'.$this->config['cnf_email'].'>' . "\r\n";
@@ -380,11 +384,11 @@ class UsersController extends Controller {
 			    ['email' => $request->input('email'), 'group_id' => $request->input('group_id')]
 			);
 
-			return redirect('core/users/coordinator')->with('message','Message has been sent')->with('status','success');
+			return redirect('core/users/'.$request->input('redirect_to'))->with('message','Message has been sent')->with('status','success');
 
 		} else {
 
-			return redirect('core/users/coordinator')->with('message', 'The following errors occurred')->with('status','error')
+			return redirect('core/users/'.$request->input('redirect_to'))->with('message', 'The following errors occurred')->with('status','error')
 			->withErrors($validator)->withInput();
 
 		}

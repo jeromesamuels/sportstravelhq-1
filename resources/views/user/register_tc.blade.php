@@ -50,10 +50,9 @@
 
 			<div class="form-group has-feedback" style="display: none;">
 			 {!! Form::text('email', $tc_email, array('class'=>'form-control', 'required'=>'true','placeholder'=> __('core.email'))) !!}
-			</div>
 
-			<div class="form-group has-feedback" style="display: none;">
-			 {!! Form::text('group_id', 4, array('class'=>'form-control', 'required'=>'true')) !!}
+             {!! Form::hidden('group_id',$group_id,array()) !!} 
+
 			</div>
 
 			<div class="form-group has-feedback row">
