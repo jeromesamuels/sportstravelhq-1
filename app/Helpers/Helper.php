@@ -16,7 +16,7 @@ class Helper
 		foreach ($amenities as $key => $value) {
 
 			$r .= '<li>
-				    <input class="styled-checkbox" id="styled-checkbox-'.$value->id.'" type="checkbox" value="'.$value->id.'">
+				    <input class="styled-checkbox" id="styled-checkbox-'.$value->id.'" type="checkbox" value="'.$value->id.'" name="trip_amenities[]">
 				    <label for="styled-checkbox-'.$value->id.'">'.$value->title.'</label>
 				  </li>';
 
