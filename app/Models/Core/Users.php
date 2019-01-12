@@ -14,6 +14,10 @@ class Users extends Sximo  {
 		
 	}
 
+	public function rfps(){
+		return $this->hasMany('App\Models\Rfp','user_id');
+	}
+
 	public static function querySelect(){
 		
 		return " 

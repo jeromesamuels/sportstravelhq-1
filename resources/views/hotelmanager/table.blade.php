@@ -18,8 +18,20 @@
                                     </p>
                                     {{ $trip->trip_name }}
                                 </td>
-                                <td>4</td>
-                                <td>Bids Sent Out</td>
+                                <td>{{ count($trip->rfps) }}</td>
+                                <td>
+                                    @php
+                                        $rfpUserIds = [];
+                                        foreach ($trip->rfps as $rfp){
+                                            $rfpUserIds[count($rfpUserIds)] = $rfp->user_id;
+                                        }
+                                    @endphp
+                                    @if (in_array(Session::get('uid'), $rfpUserIds))
+                                        Bid Sent Out
+                                    @else
+                                        No Bid Sent
+                                    @endif
+                                </td>
                                 <td>
                                     <div class="dropdown">
                                           <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown"> Action </button>

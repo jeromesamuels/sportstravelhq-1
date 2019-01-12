@@ -21,7 +21,7 @@ class TripsController extends Controller
 	}
 
 	public function index(){
-		$trips = DB::table('user_trips')->get();
+		$trips = usertrips::all();
 		$amenities = hotelamenities::all();
 		return view('hotelmanager.viewtrips',compact('trips','amenities'));
 	}
@@ -33,7 +33,6 @@ class TripsController extends Controller
 
 	public function filterByAmenities(Request $request)
 	{
-
 		if($request->data){ 
 			$trips = usertrips::join('trip_amenities','trip_amenities.trip_id','=','user_trips.id')->whereIn('trip_amenities.amenity_id', explode(',', $request->data))->get();
 		}
