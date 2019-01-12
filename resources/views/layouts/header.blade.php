@@ -49,7 +49,7 @@
             </li>
           </ul>
 
-          <ul class="nav navbar-nav navbar-right ">
+          <ul class="nav navbar-nav navbar-right hide">
             <li class="sidemenu-bar">
                   <a href="{{ url('') }}" >
                       <i class="material-icons">place</i>

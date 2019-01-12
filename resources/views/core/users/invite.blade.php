@@ -37,6 +37,7 @@
              {!! Form::text('email',null,array('class'=>'form-control input-sm', 'placeholder'=>'','required'=>'true')) !!} 
 
             {!! Form::hidden('group_id',$roleID,array()) !!} 
+            {!! Form::hidden('redirect_to',$slug,array()) !!} 
           </div> 
           </div>
       </div>
