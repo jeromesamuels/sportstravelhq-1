@@ -78,7 +78,6 @@
 <div class="sbox" style="border-top: none">
     <div class="sbox-title"> <b>Dashboard</b></div>
     <div class="sbox-content dashboard-container"> 
-       
         <div class="row">
             @if (Session::get('level') == 5)
                 <div class="col-sm-12">

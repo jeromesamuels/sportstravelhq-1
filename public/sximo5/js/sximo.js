@@ -3,6 +3,13 @@
 */
 
 jQuery(document).ready(function($){
+   
+    // Custom
+    $.ajaxSetup({
+    	'_token': $('meta[name="_token"]').attr('content')
+    });
+
+
 	$('.sidemenu').click(function () {
       	var w = $("body");
 	//	w.toggleClass("close-sidemenu");

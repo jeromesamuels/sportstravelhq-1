@@ -94,5 +94,6 @@ Route::group(['namespace' => 'HotelManager','middleware' => 'auth','prefix'=>"ho
 	Route::get('/','HotelManagerController@index')->name('hotelmanger.home');
 	Route::get('/trips','TripsController@index')->name('hotelmanager.trips.index');
 	Route::get('/trips/{id}','TripsController@show')->name('hotelmanager.trips.show');
+	Route::post('filter-amenities', 'TripsController@filterByAmenities')->name('filter-amenities');
 });
 

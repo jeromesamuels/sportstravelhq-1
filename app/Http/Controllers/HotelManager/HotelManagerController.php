@@ -20,8 +20,4 @@ class HotelManagerController extends Controller
     public function index(){
     	return view('hotelmanager.index');
     }
-
-
-
-    //test
 }

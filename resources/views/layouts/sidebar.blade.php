@@ -17,6 +17,30 @@
                         <span>View Trips</span>
                     </a>
                 </li>
+                <li>
+                    <a href="#">
+                        <i class="material-icons">dashboard</i>
+                        <span>View Bids</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="material-icons">dashboard</i>
+                        <span>Agreement Forms</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="material-icons">dashboard</i>
+                        <span>Room Listings</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="material-icons">dashboard</i>
+                        <span>Final Receipt</span>
+                    </a>
+                </li>
             @endif
             @foreach ($sidebar as $menu)
             <li @if(Request::segment(1) == $menu['module']) class="active" @endif>

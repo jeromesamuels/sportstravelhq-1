@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="_token" content="{{ csrf_token() }}">
 <title> {{ config('sximo.cnf_appname')}} </title>
 
 <link rel="shortcut icon" href="{{ asset('favicon.ico')}}" type="image/x-icon">
@@ -24,6 +25,7 @@
 <link href="{{ asset('sximo5/css/all-themes.css')}}" rel="stylesheet">
 <!--<link href="{{ asset('sximo5/css/sximo.css')}}" rel="stylesheet"> -->
 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 
 <script type="text/javascript" src="{{ asset('sximo5/sximo.min.js') }}"></script>
 
@@ -38,7 +40,11 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->         
 
-
+<style>
+    .amenityFilter + * .select2-selection__rendered{
+      border: 1px solid #dddddd !important;
+    }
+</style>
 </head>
 
 <body class="theme-deep-purple ">
@@ -80,6 +86,8 @@
 </div>
 
 {{ SiteHelpers::showNotification() }} 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <script type="text/javascript">
 jQuery(document).ready(function ($) {
 
@@ -99,5 +107,7 @@ jQuery(document).ready(function ($) {
 
 </script>
 
+@section('pageLevelScripts')
+@show
 </body>
 </html>
