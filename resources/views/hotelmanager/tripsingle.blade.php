@@ -13,19 +13,8 @@
                 <h1> Trip Detail</h1>
             </div>
             <div class="sbox-content">
-                @foreach ($errors->all() as $error)
-                    <div class="alert alert-danger alert-dismissible">
-                      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                      <strong>Error:</strong> {{ $error }}
-                    </div>
-                @endforeach
-
-                @if (Session::has('success'))
-                    <div class="alert alert-success alert-dismissible">
-                      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                      <strong>Success:</strong> {{ Session::get('success') }}
-                    </div>
-                @endif
+                
+                @include('includes.alerts')
                 <div class="row">
                     <div class="col-sm-8">
                         <p>

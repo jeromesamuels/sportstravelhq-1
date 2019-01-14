@@ -18,8 +18,6 @@
 @endif
 
 
-
-
 <style type="text/css">
 .unstyled {
 	list-style: none;
@@ -350,11 +348,6 @@
     	$(".another_location").toggle("slow");
     });
 })();
-
-
-
-
-
 
 
 

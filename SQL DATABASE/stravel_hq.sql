@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 12, 2019 at 03:47 PM
+-- Generation Time: Jan 14, 2019 at 02:37 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -21,6 +21,39 @@ SET time_zone = "+00:00";
 --
 -- Database: `stravel_hq`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `agreement_forms`
+--
+
+CREATE TABLE `agreement_forms` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `sender_id` int(11) NOT NULL,
+  `reciever_id` int(11) NOT NULL,
+  `reciever_group` int(11) NOT NULL,
+  `coordinator_id` int(11) NOT NULL,
+  `reciever_email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `hotel_name` varchar(191) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `hotel_details` varchar(191) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `file` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `agreement_text` text COLLATE utf8_unicode_ci NOT NULL,
+  `for_rfp` int(11) NOT NULL,
+  `downloaded` tinyint(1) DEFAULT NULL,
+  `agreement_sent` timestamp NULL DEFAULT NULL,
+  `coordinator_sign` timestamp NULL DEFAULT NULL,
+  `hotel_sign` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `agreement_forms`
+--
+
+INSERT INTO `agreement_forms` (`id`, `sender_id`, `reciever_id`, `reciever_group`, `coordinator_id`, `reciever_email`, `hotel_name`, `hotel_details`, `file`, `agreement_text`, `for_rfp`, `downloaded`, `agreement_sent`, `coordinator_sign`, `hotel_sign`, `created_at`, `updated_at`) VALUES
+(1, 1, 41, 5, 37, 'hotelmanager@gmail.com', 'XYZ Hotel', 'ABC Street, USA', 'uploads\\agreements\\hotelContract.doc', 'US DEV CO.. \r\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eleifend tempor enim eget pretium. Vivamus at euismod tellus. Etiam interdum, augue a congue aliquam, elit purus elementum urna, ut eleifend dolor purus ac nisi. Etiam in ex veh', 8, 0, '2019-01-13 19:00:00', NULL, NULL, NULL, '2019-01-14 07:03:37');
 
 -- --------------------------------------------------------
 
@@ -66,7 +99,8 @@ CREATE TABLE `migrations` (
 --
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-(1, '2019_01_10_115303_trip_amenties', 1);
+(1, '2019_01_10_115303_trip_amenties', 1),
+(2, '2019_01_14_095120_create_agreement_forms_table', 2);
 
 -- --------------------------------------------------------
 
@@ -102,14 +136,15 @@ CREATE TABLE `rfps` (
 --
 
 INSERT INTO `rfps` (`id`, `user_trip_id`, `user_id`, `added`, `status`, `destination`, `hotel_information`, `distance_event`, `offer_rate`, `cc_authorization`, `offer_validity`, `check_in`, `check_out`, `sales_manager`, `king_beedrooms`, `queen_beedrooms`, `amenitie_ids`, `hotels_message`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, '2018-12-27 17:09:02', 1, '18800 Vista Park Blvd Tampa, FL 33332 ', 'Hilton Tampa Downtown - 211 N Tampa St, Tampa, FL 33602', 5, 123, 1, '2018-12-01', '2018-12-26', '2018-12-28', 'Sarah Barnes', 8, 10, '', 'Please see our hotel availability, rates and amenities below for your requested dates.  ', '2019-01-12 14:45:09', '2019-01-12 14:45:09'),
-(2, 1, 1, '2018-12-27 18:45:29', 1, '19900 Vista Park Blvd Tampa, FL 33333 ', 'Hilton Tampa Downtown - 222 N Tampa St, Tampa, FL 33603', 6, 124, 1, '2018-12-02', '2018-12-28', '2018-12-31', 'Richard Martin', 6, 7, '', 'Please see our hotel availability, rates and amenities below for your requested dates.  ', '2019-01-12 14:45:09', '2019-01-12 14:45:09'),
-(3, 1, 1, '2018-12-27 18:47:48', 1, '2225 N Lois Ave, Tampa, FL, 33607', 'Hilton Tampa Airport Westshore', 6, 118, 1, '2018-12-02', '2018-12-28', '2018-12-31', 'Rebecca Wordsmith', 6, 7, '', 'Please see our hotel availability, rates and amenities below for your requested dates.  ', '2019-01-12 14:45:09', '2019-01-12 14:45:09'),
-(4, 18, 36, '2018-12-27 17:09:02', 1, '18800 Vista Park Blvd Tampa, FL 33332 ', 'Hilton Tampa Downtown - 211 N Tampa St, Tampa, FL 33602', 5, 123, 1, '2018-12-01', '2018-12-26', '2018-12-28', 'Sarah Barnes', 8, 10, '', 'Please see our hotel availability, rates and amenities below for your requested dates.  ', '2019-01-12 14:45:09', '2019-01-12 14:45:09'),
-(5, 18, 36, '2018-12-27 18:45:29', 1, '19900 Vista Park Blvd Tampa, FL 33333 ', 'Hilton Tampa Downtown - 222 N Tampa St, Tampa, FL 33603', 6, 124, 1, '2018-12-02', '2018-12-28', '2018-12-31', 'Richard Martin', 6, 7, '', 'Please see our hotel availability, rates and amenities below for your requested dates.  ', '2019-01-12 14:45:09', '2019-01-12 14:45:09'),
-(6, 19, 36, '2018-12-27 18:47:48', 2, '2225 N Lois Ave, Tampa, FL, 33607', 'Hilton Tampa Airport Westshore', 6, 118, 1, '2018-12-02', '2018-12-28', '2018-12-31', 'Rebecca Wordsmith', 6, 7, '', 'Please see our hotel availability, rates and amenities below for your requested dates.  ', '2019-01-12 14:45:09', '2019-01-12 14:45:09'),
-(7, 25, 41, '2019-01-12 14:45:15', 1, 'New York', 'XYZ Brooklyn', 5, 50, 1, '2019-01-29', '2019-01-13', '2019-02-13', 'hotel manager', 4, 2, '[1,2]', 'Core Features', '2019-01-12 14:45:15', '2019-01-12 14:45:15'),
-(8, 1, 41, '2019-01-12 14:46:18', 1, 'Miami', 'YHN Hotel', 1, 127, 1, '2019-01-21', '2018-12-26', '2019-01-29', 'hotel manager', 1, 2, '[]', 'Best Hotel', '2019-01-12 14:46:18', '2019-01-12 14:46:18');
+(1, 1, 1, '2018-12-27 17:09:02', 1, '18800 Vista Park Blvd Tampa, FL 33332 ', 'Hilton Tampa Downtown - 211 N Tampa St, Tampa, FL 33602', 5, 123, 1, '2018-12-01', '2018-12-26', '2018-12-28', 'Sarah Barnes', 8, 10, '', 'Please see our hotel availability, rates and amenities below for your requested dates.  ', '2019-01-12 08:46:54', '2019-01-12 08:46:54'),
+(2, 1, 1, '2018-12-27 18:45:29', 1, '19900 Vista Park Blvd Tampa, FL 33333 ', 'Hilton Tampa Downtown - 222 N Tampa St, Tampa, FL 33603', 6, 124, 1, '2018-12-02', '2018-12-28', '2018-12-31', 'Richard Martin', 6, 7, '', 'Please see our hotel availability, rates and amenities below for your requested dates.  ', '2019-01-12 08:46:54', '2019-01-12 08:46:54'),
+(3, 1, 1, '2018-12-27 18:47:48', 1, '2225 N Lois Ave, Tampa, FL, 33607', 'Hilton Tampa Airport Westshore', 6, 118, 1, '2018-12-02', '2018-12-28', '2018-12-31', 'Rebecca Wordsmith', 6, 7, '', 'Please see our hotel availability, rates and amenities below for your requested dates.  ', '2019-01-12 08:46:54', '2019-01-12 08:46:54'),
+(4, 18, 36, '2018-12-27 17:09:02', 1, '18800 Vista Park Blvd Tampa, FL 33332 ', 'Hilton Tampa Downtown - 211 N Tampa St, Tampa, FL 33602', 5, 123, 1, '2018-12-01', '2018-12-26', '2018-12-28', 'Sarah Barnes', 8, 10, '', 'Please see our hotel availability, rates and amenities below for your requested dates.  ', '2019-01-12 08:46:54', '2019-01-12 08:46:54'),
+(5, 18, 36, '2018-12-27 18:45:29', 1, '19900 Vista Park Blvd Tampa, FL 33333 ', 'Hilton Tampa Downtown - 222 N Tampa St, Tampa, FL 33603', 6, 124, 1, '2018-12-02', '2018-12-28', '2018-12-31', 'Richard Martin', 6, 7, '', 'Please see our hotel availability, rates and amenities below for your requested dates.  ', '2019-01-12 08:46:54', '2019-01-12 08:46:54'),
+(6, 19, 36, '2018-12-27 18:47:48', 2, '2225 N Lois Ave, Tampa, FL, 33607', 'Hilton Tampa Airport Westshore', 6, 118, 1, '2018-12-02', '2018-12-28', '2018-12-31', 'Rebecca Wordsmith', 6, 7, '', 'Please see our hotel availability, rates and amenities below for your requested dates.  ', '2019-01-12 08:46:54', '2019-01-12 08:46:54'),
+(7, 25, 41, '2019-01-12 03:46:59', 1, 'New York', 'XYZ Hotel Street F1', 5, 50, 1, '2019-01-13', '2019-01-13', '2019-02-13', 'hotel manager', 4, 2, '', 'We Provide very good services', '2019-01-12 03:46:59', '2019-01-12 03:46:59'),
+(8, 25, 41, '2019-01-12 03:52:48', 1, 'New York', 'ABC Hotel', 10, 127, 1, '2019-01-24', '2019-01-13', '2019-02-13', 'hotel manager', 4, 2, '[1,2]', 'All Services will be given', '2019-01-12 03:52:48', '2019-01-12 03:52:48'),
+(9, 3, 42, '2019-01-12 09:30:16', 1, 'Miami', 'ABC Hotel XYZ location', 15, 127, 1, '2019-01-22', '2018-12-26', '2018-12-29', 'john singh', 2, 2, '[]', 'Enjoy Our Services', '2019-01-12 09:30:16', '2019-01-12 09:30:16');
 
 -- --------------------------------------------------------
 
@@ -330,13 +365,16 @@ INSERT INTO `tb_groups_access` (`id`, `group_id`, `module_id`, `access_data`) VA
 (598, 1, 7, '{\"is_global\":\"1\",\"is_view\":\"1\",\"is_detail\":\"1\",\"is_add\":\"1\",\"is_edit\":\"1\",\"is_remove\":\"1\",\"is_excel\":\"1\"}'),
 (599, 2, 7, '{\"is_global\":\"1\",\"is_view\":\"1\",\"is_detail\":\"1\",\"is_add\":\"1\",\"is_edit\":\"1\",\"is_remove\":\"1\",\"is_excel\":\"1\"}'),
 (600, 3, 7, '{\"is_global\":\"0\",\"is_view\":\"0\",\"is_detail\":\"0\",\"is_add\":\"0\",\"is_edit\":\"0\",\"is_remove\":\"0\",\"is_excel\":\"0\"}'),
-(604, 1, 55, '{\"is_global\":\"1\",\"is_view\":\"1\",\"is_detail\":\"1\",\"is_add\":\"1\",\"is_edit\":\"1\",\"is_remove\":\"1\",\"is_excel\":\"1\"}'),
-(605, 2, 55, '{\"is_global\":\"0\",\"is_view\":\"0\",\"is_detail\":\"0\",\"is_add\":\"0\",\"is_edit\":\"0\",\"is_remove\":\"0\",\"is_excel\":\"0\"}'),
-(606, 3, 55, '{\"is_global\":\"0\",\"is_view\":\"0\",\"is_detail\":\"0\",\"is_add\":\"0\",\"is_edit\":\"0\",\"is_remove\":\"0\",\"is_excel\":\"0\"}'),
-(619, 1, 57, '{\"is_global\":\"1\",\"is_view\":\"1\",\"is_detail\":\"1\",\"is_add\":\"1\",\"is_edit\":\"1\",\"is_remove\":\"1\",\"is_excel\":\"1\"}'),
-(620, 2, 57, '{\"is_global\":\"0\",\"is_view\":\"1\",\"is_detail\":\"1\",\"is_add\":\"1\",\"is_edit\":\"0\",\"is_remove\":\"0\",\"is_excel\":\"0\"}'),
-(621, 3, 57, '{\"is_global\":\"0\",\"is_view\":\"1\",\"is_detail\":\"1\",\"is_add\":\"1\",\"is_edit\":\"0\",\"is_remove\":\"0\",\"is_excel\":\"0\"}'),
-(622, 4, 57, '{\"is_global\":\"0\",\"is_view\":\"1\",\"is_detail\":\"1\",\"is_add\":\"1\",\"is_edit\":\"0\",\"is_remove\":\"0\",\"is_excel\":\"0\"}');
+(623, 1, 55, '{\"is_global\":\"1\",\"is_view\":\"1\",\"is_detail\":\"1\",\"is_add\":\"1\",\"is_edit\":\"1\",\"is_remove\":\"1\",\"is_excel\":\"1\"}'),
+(624, 2, 55, '{\"is_global\":\"0\",\"is_view\":\"0\",\"is_detail\":\"0\",\"is_add\":\"0\",\"is_edit\":\"0\",\"is_remove\":\"0\",\"is_excel\":\"0\"}'),
+(625, 3, 55, '{\"is_global\":\"0\",\"is_view\":\"0\",\"is_detail\":\"0\",\"is_add\":\"0\",\"is_edit\":\"0\",\"is_remove\":\"0\",\"is_excel\":\"0\"}'),
+(626, 4, 55, '{\"is_global\":\"0\",\"is_view\":\"0\",\"is_detail\":\"0\",\"is_add\":\"0\",\"is_edit\":\"0\",\"is_remove\":\"0\",\"is_excel\":\"0\"}'),
+(627, 5, 55, '{\"is_global\":\"0\",\"is_view\":\"1\",\"is_detail\":\"1\",\"is_add\":\"0\",\"is_edit\":\"0\",\"is_remove\":\"0\",\"is_excel\":\"0\"}'),
+(628, 1, 57, '{\"is_global\":\"1\",\"is_view\":\"1\",\"is_detail\":\"1\",\"is_add\":\"1\",\"is_edit\":\"1\",\"is_remove\":\"1\",\"is_excel\":\"1\"}'),
+(629, 2, 57, '{\"is_global\":\"0\",\"is_view\":\"1\",\"is_detail\":\"1\",\"is_add\":\"1\",\"is_edit\":\"0\",\"is_remove\":\"0\",\"is_excel\":\"0\"}'),
+(630, 3, 57, '{\"is_global\":\"1\",\"is_view\":\"1\",\"is_detail\":\"1\",\"is_add\":\"1\",\"is_edit\":\"0\",\"is_remove\":\"0\",\"is_excel\":\"0\"}'),
+(631, 4, 57, '{\"is_global\":\"0\",\"is_view\":\"1\",\"is_detail\":\"1\",\"is_add\":\"1\",\"is_edit\":\"0\",\"is_remove\":\"0\",\"is_excel\":\"0\"}'),
+(632, 5, 57, '{\"is_global\":\"0\",\"is_view\":\"0\",\"is_detail\":\"0\",\"is_add\":\"0\",\"is_edit\":\"0\",\"is_remove\":\"0\",\"is_excel\":\"0\"}');
 
 -- --------------------------------------------------------
 
@@ -539,7 +577,7 @@ INSERT INTO `tb_pages` (`pageID`, `title`, `alias`, `sinopsis`, `note`, `created
 (72, 'Pricing', 'pricing', 'Here are a few sample from our works', '<br><div><div class=\"section\"><div class=\"container\"><p align=\"center\">This is simple gallery mosaic , you can manage image via Backend CMS <br></p>\r\n	[sc:cms fnc=gallery|id=7 ] [/sc]\r\n\r\n	</div><p></p>\r\n</div>	</div>', '1970-01-01 00:00:00', '2017-11-04 03:52:43', 'page', 'enable', '{\"1\":\"1\",\"2\":\"0\",\"3\":\"0\"}', '1', 'frontend', '', '', '0', 'page', '', 26, 0, ''),
 (73, 'Team', 'team', '', '<div class=\"row teams clearfix\">\r\n	\r\n	<div class=\"container-title title-border mb-40\">\r\n		<h4> 3 Columns </h4>\r\n	</div>\r\n\r\n	<div class=\"col-md-4\">\r\n		<div class=\"image\">\r\n			<img src=\"./uploads/images/team/2.jpg\">\r\n		</div>\r\n		<div class=\"info\">\r\n			<h4> Mangopik </h4>\r\n			<span> CEO Sximo NET </span>\r\n			<div class=\"social\">\r\n				<a href=\"#\" class=\"social-icon \">\r\n					<i class=\"fa fa-facebook\"></i>\r\n					<i class=\"fa fa-facebook\"></i>\r\n				</a>\r\n				<a href=\"#\" class=\"social-icon \">\r\n					<i class=\"fa fa-twitter\"></i>\r\n					<i class=\"fa fa-twitter\"></i>\r\n				</a>\r\n				<a href=\"#\" class=\"social-icon\">\r\n					<i class=\"fa fa-google\"></i>\r\n					<i class=\"fa fa-google\"></i>\r\n				</a>\r\n			</div>\r\n		</div>\r\n	</div>\r\n\r\n	<div class=\"col-md-4\">\r\n		<div class=\"image\">\r\n			<img src=\"./uploads/images/team/3.jpg\">\r\n		</div>\r\n		<div class=\"info\">\r\n			<h4> Ivan </h4>\r\n			<span> Senior Programmer </span>\r\n			<div class=\"social\">\r\n				<a href=\"#\" class=\"social-icon \">\r\n					<i class=\"fa fa-facebook\"></i>\r\n					<i class=\"fa fa-facebook\"></i>\r\n				</a>\r\n				<a href=\"#\" class=\"social-icon \">\r\n					<i class=\"fa fa-twitter\"></i>\r\n					<i class=\"fa fa-twitter\"></i>\r\n				</a>\r\n				<a href=\"#\" class=\"social-icon\">\r\n					<i class=\"fa fa-google\"></i>\r\n					<i class=\"fa fa-google\"></i>\r\n				</a>\r\n			</div>\r\n		</div>\r\n	</div>\r\n\r\n	<div class=\"col-md-4\">\r\n		<div class=\"image\">\r\n			<img src=\"./uploads/images/team/4.jpg\">\r\n		</div>\r\n		<div class=\"info\">\r\n			<h4> Santo </h4>\r\n			<span> Creative Design </span>\r\n			<div class=\"social\">\r\n				<a href=\"#\" class=\"social-icon \">\r\n					<i class=\"fa fa-facebook\"></i>\r\n					<i class=\"fa fa-facebook\"></i>\r\n				</a>\r\n				<a href=\"#\" class=\"social-icon \">\r\n					<i class=\"fa fa-twitter\"></i>\r\n					<i class=\"fa fa-twitter\"></i>\r\n				</a>\r\n				<a href=\"#\" class=\"social-icon\">\r\n					<i class=\"fa fa-google\"></i>\r\n					<i class=\"fa fa-google\"></i>\r\n				</a>\r\n			</div>\r\n		</div>\r\n	</div>\r\n\r\n	<div class=\"container-title title-border mb-40\">\r\n		<h4> 4 Columns </h4>\r\n	</div>\r\n\r\n	<div class=\"col-md-3\">\r\n		<div class=\"image\">\r\n			<img src=\"./uploads/images/team/2.jpg\">\r\n		</div>\r\n		<div class=\"info\">\r\n			<h4> Mangopik </h4>\r\n			<span> CEO Sximo NET </span>\r\n			<div class=\"social\">\r\n				<a href=\"#\" class=\"social-icon \">\r\n					<i class=\"fa fa-facebook\"></i>\r\n					<i class=\"fa fa-facebook\"></i>\r\n				</a>\r\n				<a href=\"#\" class=\"social-icon \">\r\n					<i class=\"fa fa-twitter\"></i>\r\n					<i class=\"fa fa-twitter\"></i>\r\n				</a>\r\n				<a href=\"#\" class=\"social-icon\">\r\n					<i class=\"fa fa-google\"></i>\r\n					<i class=\"fa fa-google\"></i>\r\n				</a>\r\n			</div>\r\n		</div>\r\n	</div>\r\n\r\n	<div class=\"col-md-3\">\r\n		<div class=\"image\">\r\n			<img src=\"./uploads/images/team/3.jpg\">\r\n		</div>\r\n		<div class=\"info\">\r\n			<h4> Ivan </h4>\r\n			<span> Senior Programmer </span>\r\n			<div class=\"social\">\r\n				<a href=\"#\" class=\"social-icon \">\r\n					<i class=\"fa fa-facebook\"></i>\r\n					<i class=\"fa fa-facebook\"></i>\r\n				</a>\r\n				<a href=\"#\" class=\"social-icon \">\r\n					<i class=\"fa fa-twitter\"></i>\r\n					<i class=\"fa fa-twitter\"></i>\r\n				</a>\r\n				<a href=\"#\" class=\"social-icon\">\r\n					<i class=\"fa fa-google\"></i>\r\n					<i class=\"fa fa-google\"></i>\r\n				</a>\r\n			</div>\r\n		</div>\r\n	</div>\r\n\r\n	<div class=\"col-md-3\">\r\n		<div class=\"image\">\r\n			<img src=\"./uploads/images/team/4.jpg\">\r\n		</div>\r\n		<div class=\"info\">\r\n			<h4> Santo </h4>\r\n			<span> Creative Design </span>\r\n			<div class=\"social\">\r\n				<a href=\"#\" class=\"social-icon \">\r\n					<i class=\"fa fa-facebook\"></i>\r\n					<i class=\"fa fa-facebook\"></i>\r\n				</a>\r\n				<a href=\"#\" class=\"social-icon \">\r\n					<i class=\"fa fa-twitter\"></i>\r\n					<i class=\"fa fa-twitter\"></i>\r\n				</a>\r\n				<a href=\"#\" class=\"social-icon\">\r\n					<i class=\"fa fa-google\"></i>\r\n					<i class=\"fa fa-google\"></i>\r\n				</a>\r\n			</div>\r\n		</div>\r\n	</div>\r\n	<div class=\"col-md-3\">\r\n		<div class=\"image\">\r\n			<img src=\"./uploads/images/team/8.jpg\">\r\n		</div>\r\n		<div class=\"info\">\r\n			<h4> Margareta </h4>\r\n			<span> Finance </span>\r\n			<div class=\"social\">\r\n				<a href=\"#\" class=\"social-icon \">\r\n					<i class=\"fa fa-facebook\"></i>\r\n					<i class=\"fa fa-facebook\"></i>\r\n				</a>\r\n				<a href=\"#\" class=\"social-icon \">\r\n					<i class=\"fa fa-twitter\"></i>\r\n					<i class=\"fa fa-twitter\"></i>\r\n				</a>\r\n				<a href=\"#\" class=\"social-icon\">\r\n					<i class=\"fa fa-google\"></i>\r\n					<i class=\"fa fa-google\"></i>\r\n				</a>\r\n			</div>\r\n		</div>\r\n	</div>\r\n</div>		', '1970-01-01 00:00:00', '2017-11-04 02:12:18', 'page', 'enable', '', '1', 'frontend', '', '', '0', 'page', '', 17, 0, ''),
 (80, 'Preferences ', 'preferences', NULL, 'This is preferences page', NULL, NULL, 'page', 'enable', '{\"1\":\"1\",\"2\":\"0\",\"3\":\"0\"}', NULL, 'frontend', NULL, NULL, '0', NULL, NULL, 14, NULL, NULL),
-(78, 'Trips', 'trips', NULL, '[sc:Sximo fnc=render|id=usertrips] [/sc]', NULL, NULL, 'page', 'enable', '{\"1\":\"1\",\"2\":\"1\",\"3\":\"0\",\"4\":\"1\"}', NULL, 'frontend', NULL, NULL, '0', NULL, NULL, 212, NULL, NULL),
+(78, 'Trips', 'trips', NULL, '[sc:Sximo fnc=render|id=usertrips] [/sc]', NULL, NULL, 'page', 'enable', '{\"1\":\"1\",\"2\":\"1\",\"3\":\"0\",\"4\":\"1\"}', NULL, 'frontend', NULL, NULL, '0', NULL, NULL, 211, NULL, NULL),
 (79, 'Teams', 'teams', NULL, 'This is teams page . . .', NULL, NULL, 'page', 'enable', '{\"1\":\"1\",\"2\":\"0\",\"3\":\"0\"}', NULL, 'frontend', NULL, NULL, '0', NULL, NULL, 27, NULL, NULL);
 
 -- --------------------------------------------------------
@@ -596,8 +634,8 @@ CREATE TABLE `tb_users` (
 --
 
 INSERT INTO `tb_users` (`id`, `group_id`, `username`, `password`, `email`, `phone_number`, `first_name`, `last_name`, `avatar`, `active`, `login_attempt`, `last_login`, `created_at`, `updated_at`, `reminder`, `activation`, `remember_token`, `last_activity`, `config`) VALUES
-(1, 1, 'superadmin', '$2y$10$xRZW6STnwneDrSjVnwPScucZASq4BIAJRrSGUY/JZjhOYYMgwhIli', 'superadmin@mail.com', '', 'Root', 'Admin', '1.jpg', 1, 12, '2019-01-11 11:24:51', '2014-03-12 09:18:46', '2017-05-05 05:01:33', 'SNLyM4Smv12Ck8jyopZJMfrypTbEDtVhGT5PMRzxs', NULL, '9QrXRwblOZLqR26BbjoALvFmnsMahN2mCcDrW6jlhpMW4IEfXn6fpKDtajKv', 1485431605, NULL),
-(5, 2, 'admin', '$2y$10$xRZW6STnwneDrSjVnwPScucZASq4BIAJRrSGUY/JZjhOYYMgwhIli', 'eric.gil@usdevco.com', '', 'Eric', 'Gill', NULL, 1, 0, '2019-01-11 10:09:40', '2018-12-17 18:15:19', NULL, NULL, NULL, 'mq9zGnfC80I0J6VD8CUPkY2amUywnwaffAAh3GGeOlPlnrXxWDS4oFlM2vg5', NULL, NULL),
+(1, 1, 'superadmin', '$2y$10$xRZW6STnwneDrSjVnwPScucZASq4BIAJRrSGUY/JZjhOYYMgwhIli', 'superadmin@mail.com', '', 'Root', 'Admin', '1.jpg', 1, 12, '2019-01-14 08:39:06', '2014-03-12 09:18:46', '2017-05-05 05:01:33', 'SNLyM4Smv12Ck8jyopZJMfrypTbEDtVhGT5PMRzxs', NULL, 'ljOCXBjOlpBFTbrKpwiZLnujlksoueT1oAPXMSr3DWieVOZqJ3ZFgJ4CpShG', 1485431605, NULL),
+(5, 2, 'admin', '$2y$10$xRZW6STnwneDrSjVnwPScucZASq4BIAJRrSGUY/JZjhOYYMgwhIli', 'eric.gil@usdevco.com', '', 'Eric', 'Gill', NULL, 1, 0, '2019-01-14 08:14:36', '2018-12-17 18:15:19', NULL, NULL, NULL, '4iD1HkpfIGGuDiXV1zx3G6EhWOimJLBTq8Qb2M0bXYbYANsjmzZmhYBvDBTE', NULL, NULL),
 (11, 3, 'Joewilson', '$2y$10$EGQdeJBplGinD2Mq00Abjuik1w9YrHQXa5ZTZ2NoTkmT8EcVpTeDi', 'Jwilson@test.com', '', 'Joe', 'Wilson', NULL, 1, 0, NULL, '2018-12-18 04:20:04', '2018-12-18 04:20:04', NULL, '2994683', NULL, NULL, NULL),
 (12, 3, 'Ericgildev', '$2y$10$xCi.OIW7PBTFvLAkaIenIuNPVrwwT6S6/iOWZuOj4QxOvQ1pRztkm', 'Ericgildev1979@gmail.com', '', 'Eric', 'Gil', NULL, 1, 0, NULL, '2018-12-18 04:21:22', '2018-12-18 04:21:22', NULL, '3890393', NULL, NULL, NULL),
 (15, 3, 'Champion', '$2y$10$jbwIoSgHP3VGS4FEbGAoNei.P0loTcnYrS/IYnscWHT07Yf6z3sUu', 'Eric@deepblue.com', '', 'Eric', 'Gil', NULL, 1, 0, NULL, '2018-12-18 15:26:55', '2018-12-18 15:26:55', NULL, '', NULL, NULL, NULL),
@@ -616,8 +654,9 @@ INSERT INTO `tb_users` (`id`, `group_id`, `username`, `password`, `email`, `phon
 (35, 3, 'olivemgil', '$2y$10$Jv/m8LYx45bRnp1kL6PsPOi/h9jagIJ9KqT0as1hG9dw.ayI1QrWu', 'OLIVERSPORTHQ7@gmail.com', '', 'oliver', 'gil', NULL, 0, 0, NULL, '2018-12-26 20:07:34', '2018-12-26 20:07:34', NULL, '4665984', NULL, NULL, NULL),
 (36, 4, 'elizgil', '$2y$10$GbDWdbyczWGoApwlsJlKb.aFuLWQELkBv27.cn3c85V9IY4ALB.oa', 'elizgil.01@gmail.com', '', 'John', 'Goodman', NULL, 1, 0, '2019-01-09 06:32:04', '2019-01-01 18:12:28', '2019-01-01 18:12:28', NULL, '', 'UYJkJwW28F5O9M57Uiq4seayYsrNEKbJW8kSpnkmkLF0ozOtcaxHmWME2fCP', NULL, NULL),
 (37, 4, 'cordinator', '$2y$10$xRZW6STnwneDrSjVnwPScucZASq4BIAJRrSGUY/JZjhOYYMgwhIli', 'mohsin.ali8541@gmail.com', '', 'Andy', 'Carlyle', NULL, 1, 0, '2019-01-10 06:59:43', '2019-01-04 22:25:51', '2019-01-04 22:25:51', NULL, '', 'PC0k90uqnquXI3LeK8fvfmZjicpqWvpNgXemzC8hKa4yMIAdI1A29ru9eC1i', NULL, NULL),
-(40, 3, 'guest', '$2y$10$xRZW6STnwneDrSjVnwPScucZASq4BIAJRrSGUY/JZjhOYYMgwhIli', 'guest@gmail.com', '', 'guest', 'guestuser', NULL, 1, 0, '2019-01-11 10:17:22', '2019-01-09 05:43:39', '2019-01-09 05:43:39', NULL, '', 'onGGWwH8Bvl1g4iqnZSRkhdK9E7URjAcZa3Th5ZEzGS02YifjKwPbqnX7G60', NULL, NULL),
-(41, 5, 'hotelmanager', '$2y$10$nN2zM7Zce0oKWTAIo3d6dutDU.u0AjBEb/uOUY0V2Qd9t6wWeiEwC', 'hotelmanager@gmail.com', '', 'hotel', 'manager', NULL, 1, 0, '2019-01-12 14:42:57', '2019-01-10 02:59:09', '2019-01-10 02:59:09', NULL, '', 'zkInn0E9UhU4pNBZlnkra5RjW4H2xDl3oawUtjGQ3LGDp6GAQ4RNwn4irup0', NULL, NULL);
+(40, 3, 'guest', '$2y$10$xRZW6STnwneDrSjVnwPScucZASq4BIAJRrSGUY/JZjhOYYMgwhIli', 'guest@gmail.com', '', 'guest', 'guestuser', NULL, 1, 0, '2019-01-11 12:11:06', '2019-01-09 05:43:39', '2019-01-09 05:43:39', NULL, '', 'KWdJqP0CoUqYnT6X18EjDTao43h9AH2uuS8w4XAGv27NpohVyuCTAM7vcETV', NULL, NULL),
+(41, 5, 'hotelmanager', '$2y$10$nN2zM7Zce0oKWTAIo3d6dutDU.u0AjBEb/uOUY0V2Qd9t6wWeiEwC', 'hotelmanager@gmail.com', '', 'hotel', 'manager', NULL, 1, 0, '2019-01-14 12:26:09', '2019-01-10 02:59:09', '2019-01-10 02:59:09', NULL, '', '0DQwaDXkr7fxDJ7DeZTsrF7GnnpOOgEsNjAZ0yTLJRKXTjFBytsQeZDxYSQ0', NULL, NULL),
+(42, 5, 'johnsingh', '$2y$10$LylIZ6ps6fcb/LmpJuflS.DG7hs3VYeqEvuO8XZlivcJa4HHpvozu', 'johnsingh@gmail.com', '', 'john', 'singh', NULL, 1, 0, '2019-01-14 12:19:15', '2019-01-12 09:27:12', '2019-01-12 09:27:12', NULL, '', 'wBFlb5dgPl8ZP3lXF6S8kFzbuKBq2LWcWVCOh1Xu54P8u7Ds0dKL89DqMIoU', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -702,6 +741,12 @@ INSERT INTO `user_trips` (`id`, `entry_by`, `trip_name`, `from_address_1`, `from
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `agreement_forms`
+--
+ALTER TABLE `agreement_forms`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `hotel_amenities`
@@ -816,6 +861,12 @@ ALTER TABLE `user_trips`
 --
 
 --
+-- AUTO_INCREMENT for table `agreement_forms`
+--
+ALTER TABLE `agreement_forms`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `hotel_amenities`
 --
 ALTER TABLE `hotel_amenities`
@@ -825,13 +876,13 @@ ALTER TABLE `hotel_amenities`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `rfps`
 --
 ALTER TABLE `rfps`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `room_qty`
@@ -867,7 +918,7 @@ ALTER TABLE `tb_groups`
 -- AUTO_INCREMENT for table `tb_groups_access`
 --
 ALTER TABLE `tb_groups_access`
-  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=623;
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=633;
 
 --
 -- AUTO_INCREMENT for table `tb_logs`
@@ -909,7 +960,7 @@ ALTER TABLE `tb_restapi`
 -- AUTO_INCREMENT for table `tb_users`
 --
 ALTER TABLE `tb_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `trip_amenities`

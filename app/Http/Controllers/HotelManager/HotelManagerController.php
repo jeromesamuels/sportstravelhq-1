@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\HotelManager;
 
 use App\Http\Controllers\Controller;
+use App\Models\AgreementForm;
 use App\Models\Core\Users;
 use App\Models\Rfp;
 use App\Models\usertrips;
@@ -64,5 +65,51 @@ class HotelManagerController extends Controller
     	Session::flash('success','Bid has been sent successfully');
     	return redirect()->back();
 
+    }
+
+    public function viewAgreements(){
+        $agreements = AgreementForm::where('reciever_id',Session::get('uid'))->get();
+        return view('hotelmanager.viewagreements',compact('agreements'));
+    }
+
+    public function downloadAgreement($id){
+        $agreement = AgreementForm::find($id);
+        if(Session::get('uid') != $agreement->reciever_id){
+            return redirect()->back();
+        }
+        if($agreement->downloaded == true){
+            Session::flash('error','You cannot Download Agreement for the Second Time');
+            return redirect()->back();
+        }
+
+        $response = -1;
+        $response =  response()->download(public_path($agreement->file));
+        if($response  !== -1){
+            $agreement->downloaded = true;
+            $agreement->save();
+            return $response;
+        }
+    }
+
+    public function agreementDetails($id){
+        $agreement = AgreementForm::find($id);
+        if(Session::get('uid') != $agreement->reciever_id){
+            return redirect()->back();
+        }
+
+        if($agreement){
+            return view('hotelmanager.agreementDetails',compact('agreement'));
+        }
+    }
+
+    public function RFPDetails($id){
+        $rfp = Rfp::find($id);
+        if(Session::get('uid') != $rfp->user_id){
+            return redirect()->back();
+        }
+
+        if($rfp){
+            return view('hotelmanager.rfpdetails',compact('rfp'));
+        }
     }
 }

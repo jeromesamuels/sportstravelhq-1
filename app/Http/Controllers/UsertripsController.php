@@ -234,7 +234,19 @@ class UsertripsController extends Controller {
 		$validator = Validator::make($request->all(), $rules);
 		if ($validator->passes()) {
 			$data = $this->validatePost(  $request );
+			
+			//echo '<pre>'; print_r($trip_amenities); print_r($data); die;
+
 			$this->model->insertRow($data , $request->input('id'));
+			$trip_id = DB::getPdo()->lastInsertId();;
+
+			foreach ($request->input('trip_amenities') as $amenity_id) {
+				$trip_amenities[] = array('trip_id'=>$trip_id, 'amenity_id'=>$amenity_id);
+			}
+			DB::table('trip_amenities')->where('trip_id', '=', $trip_id)->delete();
+			DB::table('trip_amenities')->insert($trip_amenities);
+			
+
 			return  Redirect::to('/trips')->with('messagetext', "Thankyou! we've got your booking requst. Our travel coordinator will contact you soon.")->with('status','success');
 		} else {
 			return Redirect::back()->with('message',__('core.note_error'))->with('status','error')->withErrors($validator)->withInput();

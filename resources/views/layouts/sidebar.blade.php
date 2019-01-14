@@ -18,13 +18,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
-                        <i class="material-icons">dashboard</i>
-                        <span>View Bids</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
+                    <a href="{{ route('hotelmanager.viewAgreements') }}">
                         <i class="material-icons">dashboard</i>
                         <span>Agreement Forms</span>
                     </a>

@@ -96,5 +96,13 @@ Route::group(['namespace' => 'HotelManager','middleware' => 'auth','prefix'=>"ho
 	Route::get('/trips/{id}','TripsController@show')->name('hotelmanager.trips.show');
 	Route::post('filter-amenities', 'TripsController@filterByAmenities')->name('filter-amenities');
 	Route::post('/submitBid','HotelManagerController@saveBid')->name('hotelmanager.saveBid');
+
+	// Agreement Form
+	Route::get('/agreements','HotelManagerController@viewAgreements')->name('hotelmanager.viewAgreements');
+	Route::get('/agreements/download/{id}','HotelManagerController@downloadAgreement')->name('hotelmanager.agreementDownload');
+	Route::get('/agreements/{id}','HotelManagerController@agreementDetails')->name('hotelmanager.agreementDetails');
+
+	// View Bids
+	Route::get('/RFP/{id}','HotelManagerController@RFPDetails')->name('hotelmanager.rfpDetails');
 });
 
