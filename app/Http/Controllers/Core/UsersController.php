@@ -248,38 +248,6 @@ class UsersController extends Controller {
 		return view('core.users.blast',$this->data);		
 	}
 
-	function getCoordinator()
-	{
-		$this->data = array(
-			'groups'	=> Groups::all(),
-			'pageTitle'	=> 'Invite Travel Coordinator',
-			'pageNote'	=> 'Send email to Travel Coordinator'
-		);	
-		return view('core.users.coordinators',$this->data);		
-	}
-
-	function getHotelManager()
-	{
-		$this->data = array(
-			'groups'	=> Groups::all(),
-			'pageTitle'	=> 'Invite Hotel Manager',
-			'pageNote'	=> 'Send email to Hotel Manager'
-		);	
-		return view('core.users.coordinators',$this->data);		
-	}
-
-	function getCorporate()
-	{
-		$this->data = array(
-			'groups'	=> Groups::all(),
-			'pageTitle'	=> 'Invite Corporate',
-			'pageNote'	=> 'Send email to Corporate'
-		);	
-		return view('core.users.coordinators',$this->data);		
-	}
-
-
-
 	function postDoblast( Request $request)
 	{
 		$rules = array(
@@ -341,6 +309,8 @@ class UsersController extends Controller {
 
 
 
+
+
 	function getCoordinator()
 	{
 		$this->data = array(
@@ -375,18 +345,21 @@ class UsersController extends Controller {
 	}
 
 
-
 	function postDoinvite( Request $request)
 	{
 
 		$rules = array(
-			'email'		=> 'required|email|unique:tb_users',
+			'email'		=> 'required|email|unique:tb_users|unique:invitations',
 		);
 
-		$validator = Validator::make($request->all(), $rules);	
+		$messages = [
+		    'unique' => 'Invitation already sent and/or this email is already registered.',
+		];
+
+		$validator = Validator::make($request->all(), $rules, $messages);
+
 		if ($validator->passes()) 
 		{
-			//$data['note'] 			= $request->input('message');
 			$data['to']				= $request->input('email');
 			$data['subject']		= "Invitation for Travel Coordinator";
 			$data['cnf_appname'] 	= "Sports Travel HQ";
@@ -407,15 +380,11 @@ class UsersController extends Controller {
 					mail($data['to'], $data['subject'], $message, $headers);
 		    }
 
-
-			return redirect('core/users/coordinator')->with('message','Message has been sent')->with('status','success');
-
 		    \DB::table('invitations')->insert(
 			    ['email' => $request->input('email'), 'group_id' => $request->input('group_id')]
 			);
 
 			return redirect('core/users/'.$request->input('redirect_to'))->with('message','Message has been sent')->with('status','success');
-
 
 		} else {
 
@@ -433,7 +402,6 @@ class UsersController extends Controller {
 		$this->data['searchMode'] = 'native';
 		$this->data['pageUrl']		= url('core/users');
 		return view('sximo.module.utility.search',$this->data);
-	
 	}
 
 }

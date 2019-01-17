@@ -68,6 +68,7 @@ class HotelManagerController extends Controller
     }
 
     public function viewAgreements(){
+        $this->checkAgreementFormAvailability();
         $agreements = AgreementForm::where('reciever_id',Session::get('uid'))->get();
         return view('hotelmanager.viewagreements',compact('agreements'));
     }
@@ -111,5 +112,22 @@ class HotelManagerController extends Controller
         if($rfp){
             return view('hotelmanager.rfpdetails',compact('rfp'));
         }
+    }
+
+    public function checkAgreementFormAvailability(){
+       $agreementsToDelete = AgreementForm::where('reciever_id',Session::get('uid'))->get();
+       $expired = [];
+       foreach($agreementsToDelete as $agreement){
+            $difference = Carbon::now()->diffInHours(new Carbon($agreement->agreement_sent));
+            if($difference > 72){
+                $expired[] = $agreement->id;
+            }
+       }
+
+       if(count($expired) > 0){
+            foreach($expired as $id){
+                AgreementForm::find($id)->delete();
+            }
+       }
     }
 }

@@ -7,11 +7,7 @@
 		<p>Hello  ,</p>
 		<p> You are invited to join <b>{{ $cnf_appname }}</b>, Bellow is the link for registering with us:  </p>
 
-
-		<a href="http://40.121.90.145/demo/public/user/register_tc?tc_email={{ $to }}" >Click Here</a>
-
 		<a href="{{ URL::to('/') }}/user/register_tc?tc_email={{ $to }}&group_id={{ $group_id }}" >Click Here</a>
-
 		
 		<p> Thank You </p><br /><br />
 		

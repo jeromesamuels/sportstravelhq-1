@@ -18,6 +18,11 @@ class hotelamenities extends Sximo  {
 		return $this->belongsToMany(usertrips::class,'trip_amenities','amenity_id','trip_id');
 	}
 
+	// Many To Many Relation With Hotels
+	public function hotels(){
+		return $this->belongsToMany(Hotel::class,'h_amenity_pivot','amenity_id','hotel_id');
+	}
+
 	public static function querySelect(  ){
 		
 		return "  SELECT hotel_amenities.* FROM hotel_amenities  ";

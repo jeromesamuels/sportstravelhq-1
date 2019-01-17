@@ -104,5 +104,20 @@ Route::group(['namespace' => 'HotelManager','middleware' => 'auth','prefix'=>"ho
 
 	// View Bids
 	Route::get('/RFP/{id}','HotelManagerController@RFPDetails')->name('hotelmanager.rfpDetails');
+
+	// Room Listing
+	Route::get('/room-listing','BillingController@showRoomListing')->name('hotelmanager.showRoomListing');
+	Route::get('/room-listing/download/{id}','BillingController@downloadRoomListing')->name('hotelmanager.roomListingDownload');
+	Route::delete('/room-listing/{id}','BillingController@destroyRoomListing')->name('hotelmanager.destroyRoomListing');
+});
+
+
+Route::group(['namespace' => 'SystemAdmin','middleware' => 'auth','prefix'=>"systemadmin"], function () {
+	Route::get('hotels','HotelsController@viewHotels')->name('systemadmin.viewHotels');
+	Route::get('hotels/create','HotelsController@createHotels')->name('systemadmin.createHotels');
+	Route::post('hotels/create','HotelsController@storeHotels')->name('systemadmin.storeHotels');
+	Route::delete('hotels/delete/{id}','HotelsController@deleteHotels')->name('systemadmin.deleteHotels');
+	Route::get('hotels/edit/{id}','HotelsController@editHotels')->name('systemadmin.editHotels');
+	Route::put('hotels/update/{id}','HotelsController@updateHotels')->name('systemadmin.updateHotels');
 });
 

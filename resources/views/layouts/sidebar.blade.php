@@ -24,7 +24,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="{{ route('hotelmanager.showRoomListing') }}">
                         <i class="material-icons">dashboard</i>
                         <span>Room Listings</span>
                     </a>
@@ -33,6 +33,20 @@
                     <a href="#">
                         <i class="material-icons">dashboard</i>
                         <span>Final Receipt</span>
+                    </a>
+                </li>
+            @endif
+            @if (Session::get('level') == 1)
+                <li>
+                    <a href="{{ route('systemadmin.viewHotels') }}">
+                        <i class="material-icons">dashboard</i>
+                        <span>View Hotels</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('systemadmin.createHotels') }}">
+                        <i class="material-icons">dashboard</i>
+                        <span>Create Hotel</span>
                     </a>
                 </li>
             @endif
