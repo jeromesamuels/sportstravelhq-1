@@ -34,7 +34,6 @@
 
 <script type="text/javascript" src="{{ asset('sximo5/js/admin.js') }}"></script>
 
-
 <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -56,31 +55,25 @@
 
       <aside id="rightsidebar" class="right-sidebar">
          @include('layouts.rightbar')            
-        </aside>   
-  
+        </aside>
+
         <section class="content">
            @include('layouts.header') 
           <div class="container-fluid">
             <div class="ajaxLoading"></div>
             @yield('content') 
           </div>  
-        </section>  
-        
+        </section>
 
-
-
-   
 <div class="modal fade" id="sximo-modal" tabindex="-1" role="dialog">
-<div class="modal-dialog  ">
+<div class="modal-dialog">
   <div class="modal-content">
     <div class="modal-header bg-default">
       <button type="button " class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
       <h4 class="modal-title">Modal title</h4>
     </div>
     <div class="modal-body" id="sximo-modal-content">
-
     </div>
-
   </div>
 </div>
 </div>

@@ -182,26 +182,25 @@
 
 		  <div class="form-group" >
 		  	<h4>Room Types - Select all that apply</h4>
-			<label for="Double Queen Rooms" class=" control-label col-md-5 text-left"> Double Queen Rooms 
+			<label for="Double Queen Rooms" class="control-label col-md-5 text-left"> Double Queen Rooms 
 			<select name='double_queen_qty' rows='5' id='double_queen_qty' class='select2' ></select> 
 			</label>
 
 			<label for="Double King Rooms" class=" control-label col-md-5 text-left"> Double King Rooms 
 		  	<select name='double_king_qty' rows='5' id='double_king_qty' class='select2' ></select> 
 			</label>
-
 		  </div>
 
 		  <div class="form-group" >
 		  	<h4>Amenities</h4>
 			<div class="col-md-11">
-				{!! Helper::showAmenities() !!}  
+				{!! Helper::showAmenities() !!}
 			 </div> 
 		  </div>
 
 		  <div class="form-group" >
 		  	<h4>Comments/Needs</h4>
-			<label for="Comment" class=" control-label col-md-8 text-left"> Anything we missed? </label>
+			<label for="Comment" class="control-label col-md-8 text-left"> Anything we missed? </label>
 			<div class="col-md-11">
 			  <textarea name='comment' rows='5' id='comment' class='form-control input-sm' >{{ $row['comment'] }}</textarea> 
 			 </div> 
