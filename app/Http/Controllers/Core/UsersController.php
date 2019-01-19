@@ -402,7 +402,6 @@ class UsersController extends Controller {
 		$this->data['searchMode'] = 'native';
 		$this->data['pageUrl']		= url('core/users');
 		return view('sximo.module.utility.search',$this->data);
-	
 	}
 
 }

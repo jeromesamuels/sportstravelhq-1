@@ -18,9 +18,14 @@ class usertrips extends Sximo  {
 		return $this->belongsTo(Core\Users::class,"entry_by");
 	}
 
-	// Many To Many Relation width Hotal Amenties 
+	// Many To Many Relation with Hotal Amenties 
 	public function amenities(){
 		return $this->belongsToMany(hotelamenities::class,'trip_amenities','trip_id','amenity_id');
+	}
+
+	// One To Many Relation with RFPS
+	public function rfps(){
+		return $this->hasMany(Rfp::class,'user_trip_id');
 	}
 
 	public static function querySelect(  ){

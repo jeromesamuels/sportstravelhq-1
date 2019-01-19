@@ -13,17 +13,19 @@
                 <h1> Trip Detail</h1>
             </div>
             <div class="sbox-content">
+                
+                @include('includes.alerts')
                 <div class="row">
                     <div class="col-sm-8">
                         <p>
                             <span>Hi Hotel Manager</span><br>
-                            Us Dev Co. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil, maiores error. Iste amet voluptatibus magni, dolorem optio debitis dolor ipsam asperiores exercitationem. Amet ut deserunt atque. Commodi corrupti, sint beatae!
+                            {{ $trip->comment }}
                         </p>
                     </div>
                     <div class="col-sm-4">
                         <p class="text-right">
                             <span>{{ $trip->check_in }} To {{ $trip->check_out }}</span><br>
-                            <span>3 RFPs Reserved For this Trip</span>
+                            <span>{{ count($trip->rfps) }} RFPs Reserved For this Trip</span>
                         </p>
                     </div>
                 </div>
@@ -74,8 +76,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="text-right">
-                            <button class="btn btn-danger">Canel</button>
-                            <button class="btn btn-success">Bid Now</button>
+                            <button class="btn btn-success" data-toggle="modal" data-target="#myModal">Bid Now</button>
                         </div>
                     </div>
                 </div>
@@ -83,5 +84,52 @@
         </div>
     </div>
 </div>
-    
+
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Bid Form</h4>
+      </div>
+      <div class="modal-body">
+        <form action="{{ route('hotelmanager.saveBid') }}" method="post">
+            {{ csrf_field() }}
+            <input type="hidden" name="trip_id" value="{{ $trip->id }}">
+            <div class="form-group">
+                <label>Enter Your Offer Rate (In Dollars)</label>
+                <input type="number" class="form-control" name="offer_rate" min="0">
+            </div>
+            <div class="form-group">
+                <label>Hotel Details</label>
+                <input type="text" class="form-control" name="hotelDetails">
+            </div>
+            <div class="form-group">
+                <label>Distance From Event (Unit Kilometers)</label>
+                <input type="number" class="form-control" name="eventDistance" min="0">
+            </div>
+            <div class="form-group">
+                <label>Your offer will be valid till ?</label>
+                <input type="date" class="form-control" name="offerValidityDate">
+            </div>
+            <div class="form-group">
+                <label>Message</label>
+                <textarea name="message" class="form-control" rows="4"></textarea>
+            </div>
+            <div class="form-group text-right">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-success">Submit</button>
+            </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
 @stop

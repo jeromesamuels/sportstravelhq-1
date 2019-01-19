@@ -14,6 +14,10 @@ class Users extends Sximo  {
 		
 	}
 
+	public function rfps(){
+		return $this->hasMany('App\Models\Rfp','user_id');
+	}
+
 	public static function querySelect(){
 		
 		return " 
@@ -21,7 +25,7 @@ class Users extends Sximo  {
 			FROM tb_users LEFT JOIN tb_groups ON tb_groups.group_id = tb_users.group_id 
 		";
 	}	
-
+	
 	public static function queryWhere(  ){
 		
 		return "    WHERE tb_users.id !=''   ";
