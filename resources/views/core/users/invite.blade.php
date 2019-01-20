@@ -58,8 +58,6 @@
 
 
 
-
-
 @if(count($invitations)) 
 
 <table class="table table-striped table-hover " id="core/usersTable">
@@ -107,6 +105,59 @@
 
 
 
+
+@if(($roleTitle=='Corporate') && count($corporates)) 
+
+<h4 class="text-center">Assign Hotel to Corporate Users</h4>
+<table class="table table-striped table-hover " id="core/usersTable">
+    <thead>
+      <tr>
+        <th style="width: 3% !important;" class="number"> No </th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Status</th>
+        <th>Assign Hotel</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <?php $i = 0 ?>
+        @foreach ($corporates as $users)
+          <tr>
+            <td> {{ ++$i }} </td>
+            <td> {{ $users->first_name }} {{ $users->last_name }} </td>
+            <td> {{ $users->email }} </td>
+            <td> 
+              @if($users->active==1) 
+                <span class="label label-primary"> Active </span> 
+              @else 
+                <span class="label label-danger"> Not Active </span>
+              @endif
+            </td>
+            <td>
+              <?php $hotel_select[0] = 'Choose Hotel'; ?>
+              @foreach ($hotels as $hotel)
+                <?php $hotel_select[$hotel->id] = $hotel->name ?>
+              @endforeach 
+
+              {!! Form::open(array('url'=>'user/corporate_hotel', 'class'=>'form-horizontal validated','files' => true )) !!}
+
+              {!! Form::hidden('user_id',$users->id,array()) !!} 
+
+              {{ Form::select('hotel_id', $hotel_select, $users->hotel_id, ['id' => 'hotel_id', 'class' => 'select2 input-xs select2-hidden-accessible']) }}
+
+              <input type="submit" name="assign_hotel" class="btn btn-primary btn-xs" value="Assign">
+              {!! Form::close() !!}
+            </td>
+
+          </tr>
+
+        @endforeach 
+
+    </tbody>
+</table>
+
+@endif
 
 
     </div>

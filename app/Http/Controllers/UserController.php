@@ -54,6 +54,7 @@ class UserController extends Controller {
 	}
 
 	public function postCreate( Request $request) {
+		
 		$rules = array(
 			'username'=>'required|alpha|between:3,12|unique:tb_users',
 			'firstname'=>'required|alpha_num|min:2',
@@ -424,7 +425,18 @@ class UserController extends Controller {
 			->withErrors($validator)->withInput();
 		}	
 	
-	}	
+	}
+
+	public function postSavehotel( Request $request)
+	{
+		if ($request->has('assign_hotel')) {
+			\DB::table('tb_users')
+                ->where('id', $request->user_id)
+                ->update(['hotel_id' => $request->hotel_id]);
+			return redirect('core/users/corporate')->with(['status' => 'success', 'message' => 'Hotel assigned to corporate!'] );
+		}
+	}
+
 	
 	public function getReminder()
 	{

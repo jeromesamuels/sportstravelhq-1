@@ -41,6 +41,9 @@ Route::post('user/savepassword','UserController@postSavepassword');
 Route::post('user/doreset/{any?}','UserController@postDoreset');
 Route::post('user/request','UserController@postRequest');
 
+Route::post('user/corporate_hotel','UserController@postSavehotel');
+
+
 /* Posts & Blogs */
 Route::get('posts','HomeController@posts');
 Route::get('posts/{any}','HomeController@posts');

@@ -41,9 +41,9 @@ class UsersController extends Controller {
 			'params' => " AND tb_groups.level > '".Users::level(session('gid'))."'" 
 		];
 
-		$this->grab( $request , $filter ) ;
+		$this->grab( $request , $filter );
 		if($this->access['is_view'] ==0) 
-			return redirect('dashboard')->with('message', __('core.note_restric'))->with('status','error');				
+			return redirect('dashboard')->with('message', __('core.note_restric'))->with('status','error');
 		// Render into template
 		return view( 'core.'. $this->module.'.index',$this->data);
 	}
@@ -96,7 +96,7 @@ class UsersController extends Controller {
 				return $this->getHotelManager( $request);
 				break;
 			case 'corporate':
-				return $this->getCorporate( $request);
+				return $this->getCorporate( $request );
 				break;
 
 
@@ -333,15 +333,18 @@ class UsersController extends Controller {
 		return view('core.users.invite',$this->data);		
 	}
 
-	function getCorporate()
+	function getCorporate( )
 	{
+
 		$this->data = array(
 			'invitations' => \DB::table('invitations')->where('group_id', 6)->get(), 
-			'roleTitle'	=> 'Corporate',
+			'corporates' => \DB::table('tb_users')->where('group_id', 6)->get(), 
+			'hotels' => \DB::table('hotels')->where('active', 1)->get(), 
+			'roleTitle'	=> 'Corporate', 
 			'slug' => 'corporate', 
 			'roleID'	=> '4', 
-		);	
-		return view('core.users.invite',$this->data);		
+		);
+		return view('core.users.invite',$this->data);
 	}
 
 
