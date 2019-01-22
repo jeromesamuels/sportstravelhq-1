@@ -56,6 +56,7 @@ class UsersController extends Controller {
 			return redirect('dashboard')->with('message', __('core.note_restric'))->with('status','error');
 
 		$this->data['row'] = $this->model->getColumnTable( $this->info['table']);
+		$this->data['hotels'] = \DB::table('hotels')->where('active', 1)->get();
 
 		$this->data['id'] = '';
 		return view('core.users.form',$this->data);
@@ -72,6 +73,8 @@ class UsersController extends Controller {
 
 
 		$this->data['row'] = (array) $this->data['row'];
+		$this->data['hotels'] = \DB::table('hotels')->where('active', 1)->get();
+
 		$this->data['id'] = $id;
 		return view('core.users.form',$this->data);
 	}	
@@ -163,6 +166,7 @@ class UsersController extends Controller {
 				$rules['password_confirmation'] ='required|between:6,12';			
 			}
 		}
+
 		if(!is_null($request->file('avatar'))) $rules['avatar'] = 'mimes:jpg,jpeg,png,gif,bmp';
 
 		$validator = Validator::make($request->all(), $rules);	
@@ -179,6 +183,8 @@ class UsersController extends Controller {
 					unset($data['password']);
 				}
 			}
+
+			$data['hotel_id'] = $request->input('hotel_id');
 			
 			$id = $this->model->insertRow($data , $request->input('id'));
 
@@ -188,8 +194,9 @@ class UsersController extends Controller {
 				$file = $request->file('avatar'); 
 				$destinationPath = './uploads/users/';
 				$filename = $file->getClientOriginalName();
-				$extension = $file->getClientOriginalExtension(); //if you need extension of the file
-				 $newfilename = $id.'.'.$extension;
+				$extension = $file->getClientOriginalExtension(); 
+				//if you need extension of the file
+				$newfilename = $id.'.'.$extension;
 				$uploadSuccess = $request->file('avatar')->move($destinationPath, $newfilename);				 
 				if( $uploadSuccess ) {
 				    $updates['avatar'] = $newfilename; 
@@ -307,10 +314,6 @@ class UsersController extends Controller {
 		}
 	}
 
-
-
-
-
 	function getCoordinator()
 	{
 		$this->data = array(
@@ -346,7 +349,6 @@ class UsersController extends Controller {
 		);
 		return view('core.users.invite',$this->data);
 	}
-
 
 	function postDoinvite( Request $request)
 	{
@@ -396,7 +398,6 @@ class UsersController extends Controller {
 
 		}
 	}
-
 
 	public function getSearch( $mode = 'native')
 	{

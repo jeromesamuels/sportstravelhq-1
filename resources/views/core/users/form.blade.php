@@ -39,7 +39,7 @@
 				 </div>
 			  </div>
 			  <div class="form-group  " >
-				<label for="Group / Level" class=" control-label col-md-4 text-left"> Group / Level <span class="asterix"> * </span> </label>
+				<label for="group_id" class=" control-label col-md-4 text-left"> Group / Level <span class="asterix"> * </span> </label>
 				<div class="col-md-6">
 
 				  {{ Form::select('group_id', ['2'=>'Administrator', '3'=>'Users / Client', '4' => 'Travel Coordinator', '5' => 'Hotel Manager', '6' => 'Corporate'], $row['group_id'], ['id' => 'group_id', 'class' => 'select2 -- form-control input-sm select2-hidden-accessible']) }}
@@ -48,22 +48,43 @@
 				 <div class="col-md-2">
 				 </div>
 			  </div>
+
+
+			  <div class="form-group choose_hotel_dd hide " >
+				<label for="hotel_id" class="control-label col-md-4 text-left"> Hotel <span class="asterix"> * </span> </label>
+				<div class="col-md-6">
+
+	              <?php $hotel_select[0] = 'Choose Hotel'; ?>
+	              @foreach ($hotels as $hotel)
+	                <?php $hotel_select[$hotel->id] = $hotel->name ?>
+	              @endforeach 
+
+					{{ Form::select('hotel_id', $hotel_select, $row['hotel_id'], ['id' => 'hotel_id', 'class' => 'select2 -- form-control input-sm select2-hidden-accessible']) }}
+				 </div> 
+				 <div class="col-md-2">
+				 </div>
+			  </div>
+
+
+
+              
+
+
+
 			  <div class="form-group  " >
 				<label for="Username" class=" control-label col-md-4 text-left"> Username <span class="asterix"> * </span></label>
 				<div class="col-md-6">
-				  {!! Form::text('username', $row['username'],array('class'=>'form-control  input-sm', 'placeholder'=>'', 'required'=>'true'  )) !!} 
+				  {!! Form::text('username', $row['username'], array('class'=>'form-control input-sm', 'placeholder'=>'', 'required'=>'true' )) !!} 
 				 </div> 
 				 <div class="col-md-2">
-				 	
 				 </div>
 			  </div>
-			  <div class="form-group  " >
+			  <div class="form-group" >
 				<label for="First Name" class=" control-label col-md-4 text-left"> First Name <span class="asterix"> * </span></label>
 				<div class="col-md-6">
 				  {!! Form::text('first_name', $row['first_name'],array('class'=>'form-control  input-sm', 'placeholder'=>'', 'required'=>'true'  )) !!} 
 				 </div> 
 				 <div class="col-md-2">
-				 	
 				 </div>
 			  </div>
 			  <div class="form-group  " >
@@ -173,4 +194,29 @@
 		</div>
 	</div>
 </div>
+
+
+<script type="text/javascript">
+
+  $(document).ready(function() { 
+
+    $("#group_id").on("change", function() {
+    	console.log($(this).val());
+    	if($(this).val()>=5) {
+	    	$(".choose_hotel_dd").removeClass('hide');
+    	} else {
+    		$("#hotel_id").val(0);
+	    	$(".choose_hotel_dd").addClass('hide');
+    	}
+    });
+
+    $("#group_id").trigger("change");
+
+
+  });
+
+</script>
+
 @stop
+
+

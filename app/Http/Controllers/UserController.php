@@ -86,6 +86,7 @@ class UserController extends Controller {
 			$authen->email = trim($request->input('email'));
 
 			$authen->group_id = $request->input('group_id');
+			$authen->hotel_id = $request->input('hotel_id');
 
 			$authen->phone_number = ($request->input('phone')!='') ? $request->input('phone') : '';
 
