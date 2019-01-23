@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 17, 2019 at 05:35 PM
+-- Generation Time: Jan 23, 2019 at 03:36 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.2.12
 
@@ -79,10 +79,10 @@ CREATE TABLE `hotels` (
 --
 
 INSERT INTO `hotels` (`id`, `name`, `address`, `city`, `zip`, `type`, `rating`, `active`, `created_at`, `updated_at`) VALUES
-(2, 'My Hotel', 'YHQV Address', 'City Hk Korla', 81719, 'Hilton', 3, 0, '2019-01-17 02:50:10', '2019-01-17 11:34:04'),
 (3, 'Hotel XYZ', 'ABC Address', 'abc city', 40100, 'IHG', 1, 1, '2019-01-17 02:50:18', '2019-01-17 11:29:38'),
-(5, 'Summer Slam', 'Moja Moja Street', 'Cobi Roda City', 8169, 'Marriott', 4, 0, '2019-01-17 03:34:18', '2019-01-17 11:34:52'),
-(6, 'Test Hotel', 'address', '123', 49101, 'Marriott', 2, 1, '2019-01-17 10:53:47', '2019-01-17 11:35:09');
+(5, 'Summer Slam', 'Moja Moja Street', 'Cobi Roda City', 8169, 'Hyatt', 4, 0, '2019-01-17 03:34:18', '2019-01-19 09:28:48'),
+(6, 'Test Hotel', 'address', '123', 49101, 'Marriott', 2, 1, '2019-01-17 10:53:47', '2019-01-17 11:35:09'),
+(7, 'Sargodha Hotel', 'Khayam Chock Sargodha', 'Sargodha', 40100, 'IHG', 4, 1, '2019-01-23 06:42:22', '2019-01-23 06:45:04');
 
 -- --------------------------------------------------------
 
@@ -135,7 +135,12 @@ INSERT INTO `h_amenity_pivot` (`id`, `hotel_id`, `amenity_id`) VALUES
 (7, 3, 5),
 (8, 5, 2),
 (9, 5, 5),
-(10, 6, 8);
+(10, 6, 8),
+(11, 7, 1),
+(12, 7, 6),
+(13, 7, 8),
+(14, 7, 3),
+(15, 7, 5);
 
 -- --------------------------------------------------------
 
@@ -150,6 +155,52 @@ CREATE TABLE `invitations` (
   `sent` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0:Not Registered, 1:Registered '
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `invoices`
+--
+
+CREATE TABLE `invoices` (
+  `id` int(11) NOT NULL,
+  `trip_status` varchar(20) DEFAULT NULL,
+  `check_in` date NOT NULL,
+  `check_out` date NOT NULL,
+  `trip_request_num` int(11) NOT NULL,
+  `hotel_name` varchar(50) NOT NULL,
+  `hotel_addr` varchar(100) NOT NULL,
+  `amount` double NOT NULL,
+  `hotel_manager` varchar(30) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  `total_rooms` int(11) NOT NULL,
+  `room_rate` double NOT NULL,
+  `actual_rooms` int(11) NOT NULL,
+  `commision_rate` int(11) NOT NULL,
+  `payment_status` varchar(20) DEFAULT NULL,
+  `due_date` date NOT NULL,
+  `estimated_amount_due` double NOT NULL,
+  `amount_paid` double NOT NULL,
+  `payment_mode` varchar(20) NOT NULL,
+  `check_number` int(20) NOT NULL,
+  `notes` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `invoices`
+--
+
+INSERT INTO `invoices` (`id`, `trip_status`, `check_in`, `check_out`, `trip_request_num`, `hotel_name`, `hotel_addr`, `amount`, `hotel_manager`, `email`, `phone`, `total_rooms`, `room_rate`, `actual_rooms`, `commision_rate`, `payment_status`, `due_date`, `estimated_amount_due`, `amount_paid`, `payment_mode`, `check_number`, `notes`, `created_at`, `updated_at`) VALUES
+(1, 'pending', '2019-01-24', '2019-01-29', 1231, 'Test Hotel', 'Test Address', 1981, 'Test Manager', 'test@gmail.com', '+31-123123123', 4, 48, 3, 2, '', '2019-01-31', 2312, 1234, 'Test Mode', 1231971268, 'Test Notes', '2019-01-23 09:10:11', '2019-01-23 09:10:11'),
+(2, 'pending', '2019-01-24', '2019-01-29', 1231, 'Test Hotel', 'Test Address', 1981, 'Test Manager', 'test@gmail.com', '+31-123123123', 4, 48, 3, 2, '', '2019-01-31', 2312, 1234, 'Test Mode', 1231971268, 'Test Notes', '2019-01-23 09:10:25', '2019-01-23 09:10:25'),
+(3, 'completed', '0000-00-00', '0000-00-00', 0, 'Test Hotel', '', 0, '', '', '', 0, 0, 0, 0, NULL, '0000-00-00', 0, 0, '', 0, '', '2019-01-23 09:21:22', '2019-01-23 09:21:22'),
+(4, NULL, '0000-00-00', '0000-00-00', 0, '', '', 0, '', '', '', 0, 0, 0, 0, NULL, '0000-00-00', 0, 0, '', 0, '', '2019-01-23 09:21:46', '2019-01-23 09:21:46'),
+(5, NULL, '0000-00-00', '0000-00-00', 0, '', '', 0, '', '', '', 0, 0, 0, 0, NULL, '0000-00-00', 0, 0, '', 0, '', '2019-01-23 09:27:30', '2019-01-23 09:27:30'),
+(6, NULL, '0000-00-00', '0000-00-00', 0, '', '', 0, '', '', '', 0, 0, 0, 0, NULL, '0000-00-00', 0, 0, '', 0, '', '2019-01-23 09:28:07', '2019-01-23 09:28:07'),
+(7, NULL, '0000-00-00', '0000-00-00', 0, '', '', 0, '', '', '', 0, 0, 0, 0, NULL, '0000-00-00', 0, 123, '', 0, '', '2019-01-23 09:29:35', '2019-01-23 09:29:35');
 
 -- --------------------------------------------------------
 
@@ -729,8 +780,8 @@ CREATE TABLE `tb_users` (
 --
 
 INSERT INTO `tb_users` (`id`, `group_id`, `username`, `password`, `email`, `phone_number`, `first_name`, `last_name`, `avatar`, `active`, `login_attempt`, `last_login`, `created_at`, `updated_at`, `reminder`, `activation`, `remember_token`, `last_activity`, `config`) VALUES
-(1, 1, 'superadmin', '$2y$10$xRZW6STnwneDrSjVnwPScucZASq4BIAJRrSGUY/JZjhOYYMgwhIli', 'superadmin@mail.com', '', 'Root', 'Admin', '1.jpg', 1, 12, '2019-01-17 15:27:30', '2014-03-12 09:18:46', '2017-05-05 05:01:33', 'SNLyM4Smv12Ck8jyopZJMfrypTbEDtVhGT5PMRzxs', NULL, 'i0gERAgU6gomWS08EMIZjynAfkfF5uTb9pwYS3KiirZdLuMKRYWpK9pp4MBS', 1485431605, NULL),
-(5, 2, 'admin', '$2y$10$xRZW6STnwneDrSjVnwPScucZASq4BIAJRrSGUY/JZjhOYYMgwhIli', 'eric.gil@usdevco.com', '', 'Eric', 'Gill', NULL, 1, 0, '2019-01-16 05:41:55', '2018-12-17 18:15:19', NULL, NULL, NULL, 'uAKgnnLuVfmyugVw5x1IWsO5SXdjhTolWe11DWgHXuSqsULjqiJbpWuqT85F', NULL, NULL),
+(1, 1, 'superadmin', '$2y$10$xRZW6STnwneDrSjVnwPScucZASq4BIAJRrSGUY/JZjhOYYMgwhIli', 'superadmin@mail.com', '', 'Root', 'Admin', '1.jpg', 1, 12, '2019-01-23 14:29:02', '2014-03-12 09:18:46', '2017-05-05 05:01:33', 'SNLyM4Smv12Ck8jyopZJMfrypTbEDtVhGT5PMRzxs', NULL, 'Df2dgHfpX3yzW09lf1J8wjWBg0FR8DUPGE0UWpQ5dPmk7T6bqkreDF4fLlMY', 1485431605, NULL),
+(5, 2, 'admin', '$2y$10$xRZW6STnwneDrSjVnwPScucZASq4BIAJRrSGUY/JZjhOYYMgwhIli', 'eric.gil@usdevco.com', '', 'Eric', 'Gill', NULL, 1, 0, '2019-01-23 14:27:10', '2018-12-17 18:15:19', NULL, NULL, NULL, 'Lqgo62rd7ppnoDSWLXao07b1gZlmPEGsnU9B9XeQUTQzUTg0Fsj2Z5BuIgK0', NULL, NULL),
 (11, 4, 'coordinator', '$2y$10$xRZW6STnwneDrSjVnwPScucZASq4BIAJRrSGUY/JZjhOYYMgwhIli', '1Jwilson@test.com', '', 'Joe', 'Wilson', NULL, 1, 0, '2019-01-15 10:45:46', '2018-12-18 04:20:04', '2018-12-18 04:20:04', NULL, '2994683', 'dS5a7gBJjXkUbCtEaaVoV18eD40YNUQQBqMTofdPuk4NjAuIwgvpHo2GtI5R', NULL, NULL),
 (12, 5, 'manager', '$2y$10$xRZW6STnwneDrSjVnwPScucZASq4BIAJRrSGUY/JZjhOYYMgwhIli', '1Ericgildev1979@gmail.com', '', 'Eric', 'Gil', NULL, 1, 0, '2019-01-14 17:51:47', '2018-12-18 04:21:22', '2018-12-18 04:21:22', NULL, '3890393', 'PCIClWA8llYVWiWTH2bfxuwqIRQ5Ick5O1m0nGD5792uocNfGhhB3xs51rw7', NULL, NULL),
 (15, 6, 'corporate', '$2y$10$xRZW6STnwneDrSjVnwPScucZASq4BIAJRrSGUY/JZjhOYYMgwhIli', '1Eric@deepblue.com', '', 'Eric', 'Gil', NULL, 1, 0, '2019-01-13 12:31:53', '2018-12-18 15:26:55', '2018-12-18 15:26:55', NULL, '', 'KBDr2UUB3acdSXfhfYQqMYaeV3w444CJvrsdpQqwOqWrf1bmOdY9BvAHZd1H', NULL, NULL),
@@ -873,6 +924,12 @@ ALTER TABLE `invitations`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `invoices`
+--
+ALTER TABLE `invoices`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `migrations`
 --
 ALTER TABLE `migrations`
@@ -982,7 +1039,7 @@ ALTER TABLE `user_trips`
 -- AUTO_INCREMENT for table `hotels`
 --
 ALTER TABLE `hotels`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `hotel_amenities`
@@ -994,13 +1051,19 @@ ALTER TABLE `hotel_amenities`
 -- AUTO_INCREMENT for table `h_amenity_pivot`
 --
 ALTER TABLE `h_amenity_pivot`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `invitations`
 --
 ALTER TABLE `invitations`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `invoices`
+--
+ALTER TABLE `invoices`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `migrations`

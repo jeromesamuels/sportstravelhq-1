@@ -119,5 +119,8 @@ Route::group(['namespace' => 'SystemAdmin','middleware' => 'auth','prefix'=>"sys
 	Route::delete('hotels/delete/{id}','HotelsController@deleteHotels')->name('systemadmin.deleteHotels');
 	Route::get('hotels/edit/{id}','HotelsController@editHotels')->name('systemadmin.editHotels');
 	Route::put('hotels/update/{id}','HotelsController@updateHotels')->name('systemadmin.updateHotels');
+
+	Route::get('invoice/create','InvoiceController@create')->name('invoice.create');
+	Route::post('invoice/create','InvoiceController@store')->name('invoice.store');
 });
 

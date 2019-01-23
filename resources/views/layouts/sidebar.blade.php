@@ -50,6 +50,15 @@
                     </a>
                 </li>
             @endif
+
+            @if (Session::get('level') == 1 || Session::get('level') == 2)
+                <li>
+                    <a href="{{ route('invoice.create') }}">
+                        <i class="material-icons">dashboard</i>
+                        <span>Create Invoice</span>
+                    </a>
+                </li>
+            @endif
             @foreach ($sidebar as $menu)
             <li @if(Request::segment(1) == $menu['module']) class="active" @endif>
             @if($menu['module'] =='separator')

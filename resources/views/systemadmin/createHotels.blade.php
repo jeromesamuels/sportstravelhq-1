@@ -64,9 +64,11 @@
                                     <label>Hotel Type</label>
                                     <select name="type" class="form-control">
                                         <option disabled>Select Hotel Type</option>
-                                        <option value="hilton">Hilton</option>
+                                        <option value="Hilton">Hilton</option>
                                         <option value="Marriott">Marriott</option>
                                         <option value="IHG">IHG</option>
+                                        <option value="Hyatt">Hyatt</option>
+                                        <option value="Wyndham">Wyndham</option>
                                     </select>
                                 </div>
                             </div>

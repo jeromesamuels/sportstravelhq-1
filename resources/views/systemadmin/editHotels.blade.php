@@ -68,6 +68,8 @@
                                         <option value="Hilton" {{ $hotel->type == "Hilton" ? "selected" : "" }}>Hilton</option>
                                         <option value="Marriott" {{ $hotel->type == "Marriott" ? "selected" : "" }}>Marriott</option>
                                         <option value="IHG" {{ $hotel->type == "IHG" ? "selected" : "" }}>IHG</option>
+                                        <option value="Hyatt" {{ $hotel->type == "Hyatt" ? "selected" : "" }}>Hyatt</option>
+                                        <option value="Wyndham" {{ $hotel->type == "Wyndham" ? "selected" : "" }}>Wyndham</option>
                                     </select>
                                 </div>
                             </div>
