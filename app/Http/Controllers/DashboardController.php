@@ -29,8 +29,14 @@ class DashboardController extends Controller {
 
         $this->data['trips'] = DB::table('user_trips')->get()->count();
         $this->data['a_req'] = "101";
+        
+        if(\Session::get('level') == 5) {
+        	return redirect(route('hotelmanger.home'));
+        }
 
-        //print_r($data);die();
+        if(\Session::get('level') == 6) {
+        	return redirect(route('corporate.home'));
+        }
 
 		return view('dashboard.index', $this->data);
 	}

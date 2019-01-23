@@ -93,6 +93,8 @@ Route::group(['namespace' => 'Core','middleware' => 'auth'], function () {
 	include('core.php');
 });
 
+
+
 Route::group(['namespace' => 'HotelManager','middleware' => 'auth','prefix'=>"hotelmanager"], function () {
 	Route::get('/','HotelManagerController@index')->name('hotelmanger.home');
 	Route::get('/trips','TripsController@index')->name('hotelmanager.trips.index');
@@ -112,6 +114,12 @@ Route::group(['namespace' => 'HotelManager','middleware' => 'auth','prefix'=>"ho
 	Route::get('/room-listing','BillingController@showRoomListing')->name('hotelmanager.showRoomListing');
 	Route::get('/room-listing/download/{id}','BillingController@downloadRoomListing')->name('hotelmanager.roomListingDownload');
 	Route::delete('/room-listing/{id}','BillingController@destroyRoomListing')->name('hotelmanager.destroyRoomListing');
+});
+
+
+
+Route::group(['namespace' => 'Corporate','middleware' => 'auth', 'prefix'=>"corporate"], function () {
+	Route::get('/','CorporateController@index')->name('corporate.home');
 });
 
 

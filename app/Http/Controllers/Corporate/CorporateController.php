@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\HotelManager;
+namespace App\Http\Controllers\Corporate;
 
 use App\Http\Controllers\Controller;
 use App\Models\AgreementForm;
@@ -11,7 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
-class HotelManagerController extends Controller
+class CorporateController extends Controller
 {
 	public function __construct(){
 		if(Session::has('level')){
@@ -23,11 +23,10 @@ class HotelManagerController extends Controller
 	}
 
     public function index() {
-        //dd(Session::all());
         $this->data['tc_users'] = \DB::table('tb_users')->get()->where("group_id", 4)->count();
         $this->data['hotel_info'] = \DB::table('hotels')->get()->where("id", Session::get('hid'))->first();
 
-    	return view('hotelmanager.index', $this->data);
+    	return view('corporate.index', $this->data);
     }
 
     public function saveBid(Request $request){
@@ -74,7 +73,7 @@ class HotelManagerController extends Controller
     public function viewAgreements(){
         $this->checkAgreementFormAvailability();
         $agreements = AgreementForm::where('reciever_id',Session::get('uid'))->get();
-        return view('hotelmanager.viewagreements',compact('agreements'));
+        return view('corporate.viewagreements',compact('agreements'));
     }
 
     public function downloadAgreement($id){
@@ -103,7 +102,7 @@ class HotelManagerController extends Controller
         }
 
         if($agreement){
-            return view('hotelmanager.agreementDetails',compact('agreement'));
+            return view('corporate.agreementDetails',compact('agreement'));
         }
     }
 
@@ -114,7 +113,7 @@ class HotelManagerController extends Controller
         }
 
         if($rfp){
-            return view('hotelmanager.rfpdetails',compact('rfp'));
+            return view('corporate.rfpdetails',compact('rfp'));
         }
     }
 

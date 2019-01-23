@@ -79,31 +79,34 @@
     <div class="sbox-title"> <b>Dashboard</b></div>
     <div class="sbox-content dashboard-container"> 
         <div class="row">
-            <div class="col-sm-12">
-                <h1>Hotel {{ $hotel_info->name }} ({{ $hotel_info->type }})</h1>
-                <h4>{{ $hotel_info->address }}</h4>
-                <h5>{{ $hotel_info->city }} - {{ $hotel_info->zip }}</h5>
+            @if (Session::get('level') == 6)
+                <div class="col-sm-12">
+                    <h1>Hotel {{ $hotel_info->name }} ({{ $hotel_info->type }})</h1>
+                    <h4>{{ $hotel_info->address }}</h4>
+                    <h5>{{ $hotel_info->city }} - {{ $hotel_info->zip }}</h5>
+                </div>
+            @endif
+
+            <div class="col-md-6">
+                <div class="info-boxes" style="background: #088fc9; color: #ffffff;">
+                    Corporate Users
+                    <h3>4</h3>
+                    <br />
+                    RFPs Received 
+                    <h3>18</h3>
+                </div>
             </div>
 
             <div class="col-md-6">
                 <div class="info-boxes" style="background: #24034a; color: #ffffff;">
-                    Bids Sent 
-                    <h3>36</h3>
+                    Total Billing  
+                    <h3>$ 12,350</h3>
                     <br />
-                    Signed Contracts
-                    <h3>11</h3>
+                    Hotel/Brand Booked
+                    <h3>24</h3>
                 </div>
             </div>
 
-            <div class="col-md-6">
-                <div class="info-boxes" style="background: #13bd54; color: #ffffff;">
-                    Rooming List
-                    <h3>140</h3>
-                    <br />
-                    Total Billing
-                    <h3>$ 10,575</h3>
-                </div>
-            </div>
         </div>
 
 

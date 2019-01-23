@@ -13,31 +13,29 @@ use Illuminate\Support\Facades\Input;
 
 class UserController extends Controller {
 
-	
 	protected $layout = "layouts.main";
 
 	public function __construct() {
 		parent::__construct();
 		$this->data = array();
-
 	} 
 
 	public function getRegister() {
-        
-		if(config('sximo.cnf_regist') =='false') :    
+
+		if(config('sximo.cnf_regist') =='false') :
 			if(\Auth::check()):
-				 return redirect('')->with(['message'=>'Youre already login','status'=>'error']);
+				return redirect('')->with(['message'=>'Youre already login','status'=>'error']);
 			else:
-				 return redirect('user/login');
-			  endif;			  
+			 	return redirect('user/login');
+		  	endif;
 		else :
-				$this->data['socialize'] =  config('services');
-				return view('user.register', $this->data);  
+			$this->data['socialize'] =  config('services');
+			return view('user.register', $this->data);  
 		 endif ;        
 	}
 
 	public function getRegisterTC() {
-        
+
         $this->data['tc_email'] = Input::get('tc_email');
         $this->data['group_id'] = Input::get('group_id');
 
@@ -46,10 +44,10 @@ class UserController extends Controller {
 				return redirect('')->with(['message'=>'Youre already login','status'=>'error']);
 			else:
 				return redirect('user/login');
-			  endif;
+			endif;
 		else :
-				$this->data['socialize'] =  config('services');
-				return view('user.register_tc', $this->data);  
+			$this->data['socialize'] =  config('services');
+			return view('user.register_tc', $this->data);  
 		 endif ;
 	}
 
@@ -247,6 +245,7 @@ class UserController extends Controller {
 
 						$session = array(
 							'gid' => $row->group_id,
+							'hid' => $row->hotel_id,
 							'uid' => $row->id,
 							'eid' => $row->email,
 							'll' => $row->last_login,
@@ -277,11 +276,15 @@ class UserController extends Controller {
 						} 
 						else {
 
-							if( $session['level']== 2 ||  $session['level']== 1 ) 
+							if( $session['level']== 2 || $session['level']== 1 ) 
 								return redirect('dashboard');
 
 							if( $session['level'] == 5) 
 								return redirect(route('hotelmanger.home'));
+
+							if( $session['level'] == 6) 
+								return redirect(route('corporate.home'));
+
 
 							if($row->last_login)
 								return redirect('trips');
@@ -593,6 +596,7 @@ class UserController extends Controller {
 				} else {
 					$session = array(
 						'gid' => $row->group_id,
+						'hid' => $row->hotel_id,
 						'uid' => $row->id,
 						'eid' => $row->email,
 						'll' => $row->last_login,
@@ -600,6 +604,7 @@ class UserController extends Controller {
 						'username' =>  $row->username ,
 						'join'	=>  $row->created_at
 					);
+
 					if($this->config['cnf_front'] =='false') :
 						return redirect('dashboard');						
 					else :

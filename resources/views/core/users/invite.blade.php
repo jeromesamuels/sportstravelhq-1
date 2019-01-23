@@ -104,8 +104,6 @@
 @endif
 
 
-
-
 @if(($roleTitle=='Corporate') && count($corporates)) 
 
 <h4 class="text-center">Assign Hotel to Corporate Users</h4>
@@ -158,7 +156,6 @@
 </table>
 
 @endif
-
 
     </div>
   </div>
