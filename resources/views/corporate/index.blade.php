@@ -76,7 +76,7 @@
 
 
 <div class="sbox" style="border-top: none">
-    <div class="sbox-title"> <b>Dashboard</b></div>
+    <div class="sbox-title"> <b>Corporate's Dashboard</b></div>
     <div class="sbox-content dashboard-container"> 
         <div class="row">
             @if (Session::get('level') == 6)
