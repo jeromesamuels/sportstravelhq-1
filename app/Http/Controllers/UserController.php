@@ -119,12 +119,12 @@ class UserController extends Controller {
 						mail($to, $subject, $message, $headers);	
 				}
 
-				$message = "Thanks for registering! . Please check your inbox and follow activation link";
+				$message = "Thanks for registering!. Please check your inbox and follow activation link";
 								
 			} elseif($this->config['cnf_activation']=='manual') {
-				$message = "Thanks for registering! . We will validate you account before your account active";
+				$message = "Thanks for registering!. We will validate you account before your account active";
 			} else {
-   			 	$message = "Thanks for registering! . Your account is active now ";         
+   			 	$message = "Thanks for registering!. Your account is active now ";
 			
 			}
 
@@ -260,9 +260,7 @@ class UserController extends Controller {
 							$session['lang'] = $request->input('language');		
 						} else {
 							$session['lang'] = config('sximo.cnf_lang');
-							
 						}
-
 
 						session($session);
 						if($request->ajax() == true )
@@ -532,7 +530,7 @@ class UserController extends Controller {
 				$user = User::find($data[0]->id);
 				$user->reminder = '';
 				$user->password = \Hash::make($request->input('password'));
-				$user->save();			
+				$user->save();
 			}
 
 			return redirect('user/login')->with(['message'=>'Password has been saved!','status'=>'success'] );
@@ -560,18 +558,15 @@ class UserController extends Controller {
 
 		if(count($users)){
 			$row = $users[0];
-			return self::autoSignin($row->id);		
-
+			return self::autoSignin($row->id);
 		} else {
 			return redirect('user/login')
 				->with(['message'=>'You have not registered yet ','status'=>'error']);
 		}
-			
 	}
 
 	function autoSignin($id)
 	{
-		
 		if(is_null($id)){
 		  return redirect('user/login')
 				->with(['message'=>'You have not registered yet ','status'=>'error']);

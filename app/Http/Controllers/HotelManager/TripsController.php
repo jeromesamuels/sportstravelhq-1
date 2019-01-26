@@ -23,12 +23,15 @@ class TripsController extends Controller
 	public function index(){
 		$trips = usertrips::all();
 		$amenities = hotelamenities::all();
+
 		return view('hotelmanager.viewtrips',compact('trips','amenities'));
 	}
 
-	public function show($id){
+	public function show($id) {
 		$trip = usertrips::find($id);
-		return view('hotelmanager.tripsingle',compact('trip'));
+        $rfp = DB::table('rfps')->where('user_trip_id', '=', $id)->where('user_id', '=', session('uid'))->first();
+
+		return view('hotelmanager.tripsingle', compact('trip', 'rfp'));
 	}
 
 	public function filterByAmenities(Request $request)
@@ -38,8 +41,8 @@ class TripsController extends Controller
 		}
 		else{ 
 		 	$trips = usertrips::all();
-		 }
-
+		}
 		return view('hotelmanager.table')->withTrips($trips);
+
 	}
 }

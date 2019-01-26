@@ -76,7 +76,12 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="text-right">
-                            <button class="btn btn-success" data-toggle="modal" data-target="#myModal">Bid Now</button>
+                            @if($rfp) 
+                            <button class="btn btn-success" data-toggle="modal" data-target="#myModal"> View Bid </button>
+
+                            @else 
+                            <button class="btn btn-info" data-toggle="modal" data-target="#myModal"> Bid Now </button>
+                            @endif 
                         </div>
                     </div>
                 </div>
@@ -86,7 +91,50 @@
 </div>
 
 
+
+
 <!-- Modal -->
+@if($rfp) 
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Sent Bid</h4>
+      </div>
+      <div class="modal-body">
+        <form action="{{ route('hotelmanager.saveBid') }}" method="post">
+            {{ csrf_field() }}
+            <input type="hidden" name="trip_id" value="{{ $trip->id }}">
+            <div class="form-group">
+                <label>Enter Your Offer Rate (In Dollars)</label>
+                <strong> {{ $rfp->offer_rate }} </strong>
+            </div>
+            <div class="form-group">
+                <label>Hotel Details</label>
+                <strong> {{ $rfp->hotel_information }} </strong>
+            </div>
+            <div class="form-group">
+                <label>Distance From Event (Unit Kilometers)</label>
+                <strong> {{ $rfp->distance_event }} </strong>
+            </div>
+            <div class="form-group">
+                <label>Your offer will be valid till ?</label>
+                <strong> {{ $rfp->offer_validity }} </strong>
+            </div>
+            <div class="form-group">
+                <label>Message</label>
+                <strong> {{ $rfp->hotels_message }} </strong>
+            </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+@else
 <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
@@ -130,6 +178,6 @@
 
   </div>
 </div>
-
+@endif
 
 @stop

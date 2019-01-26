@@ -14,4 +14,16 @@ Route::resource('usertrips','UsertripsController');
 Route::resource('invoices','InvoicesController');
 // End Routes for invoices 
 
+                    
+// Start Routes for tripstatussettings 
+Route::resource('tripstatussettings','TripstatussettingsController');
+// End Routes for tripstatussettings 
+
+                    
+// Start Routes for tripstatuslogs 
+Route::resource('tripstatuslogs','TripstatuslogsController');
+// -- Post Method --
+
+// End Routes for tripstatuslogs 
+
                     ?>

@@ -30,7 +30,8 @@ class HotelManagerController extends Controller
     	return view('hotelmanager.index', $this->data);
     }
 
-    public function saveBid(Request $request){
+    public function saveBid(Request $request) {
+
     	$this->validate($request,[
     		'trip_id' => 'required|numeric|min:0',
     		'offer_rate' => 'required|numeric|min:0',
@@ -66,6 +67,10 @@ class HotelManagerController extends Controller
     	$rfp->hotels_message = $request->message;
 
     	$rfp->save();
+
+        $r = \Helper::addTripStatusLog(2, $trip->id, $rfp->id);
+
+
     	Session::flash('success','Bid has been sent successfully');
     	return redirect()->back();
 
