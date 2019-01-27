@@ -5,7 +5,7 @@
 	</head>
 	<body>
 
-		{{ $mail_body }}
+		{!! $mail_body !!}
 
 	</body>
 </html>
