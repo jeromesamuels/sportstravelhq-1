@@ -95,37 +95,36 @@ class UserController extends Controller {
 			$authen->save();
 			
 			$data = array(
-				'firstname'	=> $request->input('firstname') ,
-				'lastname'	=> $request->input('lastname') ,
-				'email'		=> $request->input('email') ,
-				'password'	=> $request->input('password') ,
-				'code'		=> $code ,
+				'firstname'	=> $request->input('firstname'),
+				'lastname'	=> $request->input('lastname'),
+				'email'		=> $request->input('email'),
+				'password'	=> $request->input('password'),
+				'code'		=> $code,
 				'subject'	=> "[ " .$this->config['cnf_appname']." ] REGISTRATION "
 			);
 			if(config('sximo.cnf_activation') == 'confirmation')
-			{ 
+			{
 				$to = $request->input('email');
 				$subject = "[ " .$this->config['cnf_appname']." ] REGISTRATION ";
-				if($this->config['cnf_mail'] =='swift')
-				{ 				
+				if($this->config['cnf_mail']=='swift')
+				{
 					\Mail::send('user.emails.registration', $data, function ($message) use ($data) {
 			    		$message->to($data['email'])->subject($data['subject']);
-			    	});				    	
-				}  else {		
+			    	});
+				}  else {
 					$message = view('user.emails.registration', $data);
 					$headers  = 'MIME-Version: 1.0' . "\r\n";
 					$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 					$headers .= 'From: '.$this->config['cnf_appname'].' <'.$this->config['cnf_email'].'>' . "\r\n";
-						mail($to, $subject, $message, $headers);	
+						mail($to, $subject, $message, $headers);
 				}
 
 				$message = "Thanks for registering!. Please check your inbox and follow activation link";
-								
+
 			} elseif($this->config['cnf_activation']=='manual') {
 				$message = "Thanks for registering!. We will validate you account before your account active";
 			} else {
    			 	$message = "Thanks for registering!. Your account is active now ";
-			
 			}
 
 			return redirect('user/login')->with(['message' => $message,'status'=>'success']);

@@ -208,16 +208,14 @@ class UsertripsController extends Controller {
 			$result = $model::getRows( $params, session()->get('uid') );
 
 			$rfp_counts = $model::getRFPCounts( $params );
-			//echo '<pre>';	print_r($rfp_counts); die;
-			
+
 			foreach ($rfp_counts as $value) {
 				$RFPs[$value->id] = $value->total;
 			}
-			//echo '<pre>'; print_r($result); die;
 
 			$data['tableGrid'] 	= $info['config']['grid'];
 			$data['rowData'] 	= $result['rows'];
-			$data['rfp_counts']	= $RFPs;
+			$data['rfp_counts']	= isset($RFPs) ? $RFPs : 0;
 
 			$page = $page >= 1 && filter_var($page, FILTER_VALIDATE_INT) !== false ? $page : 1;	
 			$pagination = new Paginator($result['rows'], $result['total'], $params['limit']);

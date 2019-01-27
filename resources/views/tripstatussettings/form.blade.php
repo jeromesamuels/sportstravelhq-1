@@ -30,10 +30,21 @@
 		@endforeach
 	</ul>		
 <div class="col-md-12">
-						<fieldset><legend> Trip Status Settings</legend>
+				<fieldset><legend> Trip Status Settings</legend>
+				<div>
+					<b>You can use following variables in Mail Subject and Body </b>
+					<ul>
+						<li>{coordinator_name}: </li>
+						<li>{manager_name}: </li>
+						<li>{trip_title}: </li>
+						<li>{trip_id}: </li>
+						<li>{rfp_id}: </li>
+					</ul>
+				</div>
+
 				{!! Form::hidden('id', $row['id']) !!}					
 									  <div class="form-group  " >
-										<label for="Color" class=" control-label col-md-4 text-left"> Color <span class="asterix"> * </span></label>
+										<label for="Color" class=" control-label col-md-4 text-left"> Color </label>
 										<div class="col-md-6">
 										  <input  type='text' name='color' id='color' value='{{ $row['color'] }}' 
 						     class='form-control  colorpicker' /> 
@@ -43,7 +54,7 @@
 										 </div>
 									  </div> 					
 									  <div class="form-group  " >
-										<label for="Title" class=" control-label col-md-4 text-left"> Title <span class="asterix"> * </span></label>
+										<label for="Title" class=" control-label col-md-4 text-left"> Title </label>
 										<div class="col-md-6">
 										  <input  type='text' name='title' id='title' value='{{ $row['title'] }}' 
 						     class='form-control input-sm ' /> 
@@ -53,7 +64,7 @@
 										 </div>
 									  </div> 					
 									  <div class="form-group  " >
-										<label for="Description" class=" control-label col-md-4 text-left"> Description <span class="asterix"> * </span></label>
+										<label for="Description" class=" control-label col-md-4 text-left"> Description </label>
 										<div class="col-md-6">
 										  <textarea name='description' rows='5' id='description' class='form-control input-sm '  
 				           >{{ $row['description'] }}</textarea> 
@@ -63,7 +74,7 @@
 										 </div>
 									  </div> 					
 									  <div class="form-group  " >
-										<label for="Mail Subject" class=" control-label col-md-4 text-left"> Mail Subject <span class="asterix"> * </span></label>
+										<label for="Mail Subject" class=" control-label col-md-4 text-left"> Mail Subject </label>
 										<div class="col-md-6">
 										  <input  type='text' name='mail_subject' id='mail_subject' value='{{ $row['mail_subject'] }}' 
 						     class='form-control input-sm ' /> 
@@ -73,7 +84,7 @@
 										 </div>
 									  </div> 					
 									  <div class="form-group  " >
-										<label for="Mail" class=" control-label col-md-4 text-left"> Mail <span class="asterix"> * </span></label>
+										<label for="Mail Body" class=" control-label col-md-4 text-left"> Mail Body </label>
 										<div class="col-md-6">
 										  <textarea name='mail' rows='5' id='mail' class='form-control input-sm '  
 				           >{{ $row['mail'] }}</textarea> 
