@@ -313,6 +313,3 @@ class UsertripsController extends Controller {
 	}
 
 }
-
-
-

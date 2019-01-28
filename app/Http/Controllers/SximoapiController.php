@@ -190,7 +190,6 @@ class SximoapiController extends Controller {
 						->join('tb_users', 'tb_users.id', '=', 'tb_restapi.apiuser')
 						->where('apikey',"$key")->where("email","$user")->get();
 
-				
 				if(count($auth) <=0 )
 				{
 					 return array([
@@ -236,13 +235,11 @@ class SximoapiController extends Controller {
 
 				} else {
 
-	
 					if(isset($_POST[$field]))
 					{
 						$data[$field] = $_POST[$field];				
 					}
-					// if post is file or image		
-
+					// if post is file or image
 
 					if($f['type'] =='file')
 					{	
@@ -264,7 +261,7 @@ class SximoapiController extends Controller {
 								if(!is_null(Input::file($field)))
 								{
 
-									$destinationPath = '.'. $f['option']['path_to_upload']; 	
+									$destinationPath = '.'. $f['option']['path_to_upload'];
 									foreach($_FILES[$field]['tmp_name'] as $key => $tmp_name ){
 									 	$file_name = $_FILES[$field]['name'][$key];
 										$file_tmp =$_FILES[$field]['tmp_name'][$key];
@@ -272,14 +269,13 @@ class SximoapiController extends Controller {
 										{
 											move_uploaded_file($file_tmp,$destinationPath.'/'.$file_name);
 											$files .= $file_name.',';
-
 										}
 										
 									}
 									
 									if($files !='')	$files = substr($files,0,strlen($files)-1);	
-								}	
-								$data[$field] = $files;													
+								}
+								$data[$field] = $files;
 
 							} else {
 

@@ -80,9 +80,11 @@
     <div class="sbox-content dashboard-container"> 
         <div class="row">
             <div class="col-sm-12">
+                @if($hotel_info) 
                 <h1>Hotel {{ $hotel_info->name }} ({{ $hotel_info->type }})</h1>
                 <h4>{{ $hotel_info->address }}</h4>
                 <h5>{{ $hotel_info->city }} - {{ $hotel_info->zip }}</h5>
+                @endif
             </div>
 
             <div class="col-md-6">
