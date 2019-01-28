@@ -54,12 +54,12 @@ class UserController extends Controller {
 	public function postCreate( Request $request) {
 		
 		$rules = array(
-			'username'=>'required|alpha|between:3,12|unique:tb_users',
+			'username'=>'required|unique:tb_users',
 			'firstname'=>'required|alpha_num|min:2',
 			'lastname'=>'required|alpha_num|min:2',
 			'email'=>'required|email|unique:tb_users',
-			'password'=>'required|between:6,12|confirmed',
-			'password_confirmation'=>'required|between:6,12'
+			'password'=>'required|confirmed',
+			'password_confirmation'=>'required'
 		);	
 		if(config('sximo.cnf_recaptcha') =='true') 
 		{
@@ -411,8 +411,8 @@ class UserController extends Controller {
 	public function postSavepassword( Request $request)
 	{
 		$rules = array(
-			'password'=>'required|between:6,12',
-			'password_confirmation'=>'required|between:6,12'
+			'password'=>'required',
+			'password_confirmation'=>'required'
 			);		
 		$validator = Validator::make($request->all(), $rules);
 		if ($validator->passes()) {
@@ -516,8 +516,8 @@ class UserController extends Controller {
 	public function postDoreset( Request $request , $token = '')
 	{
 		$rules = array(
-			'password'=>'required|alpha_num|between:6,12|confirmed',
-			'password_confirmation'=>'required|alpha_num|between:6,12'
+			'password'=>'required|alpha_num|confirmed',
+			'password_confirmation'=>'required|alpha_num'
 			);		
 		$validator = Validator::make($request->all(), $rules);
 		if ($validator->passes()) {

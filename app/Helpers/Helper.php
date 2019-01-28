@@ -38,7 +38,6 @@ class Helper
 
         $trip_statuses = DB::table('trip_statuses')->where('step', '=', $step)->get();
 
-
         $str_search = array('{coordinator_name}', 
                             '{manager_name}', 
                             '{trip_title}', 
@@ -91,8 +90,7 @@ class Helper
                     $manager->first_name.' '.$manager->last_name, 
                     $user_trip->trip_name, 
                     $trip_id, 
-                    $rfp_id); 
-
+                    $rfp_id);
 
                     $to = $manager->email;
                     $subject = "[ " .config('sximo.cnf_appname')." ]".$trip_status->mail_subject; 
