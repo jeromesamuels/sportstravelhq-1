@@ -10,7 +10,8 @@
 	border-radius:6px;
 	text-align:center;
 	cursor: move;
-	z-index: 999;
+	z-index: 9;
+	display: none;
 }
 
 .reset_timer_text{
