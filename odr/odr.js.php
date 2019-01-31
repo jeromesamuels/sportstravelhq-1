@@ -81,7 +81,7 @@ initJQuery();
 
 function check_demo_reset(){
 if($('#reset_demo_widget').length==0){
-$('body').append('<div id="reset_demo_widget" data-draggable="true"><div class="reset_timer_text">Time until demo reset:</div><div class="reset_timer_time">-- : -- : --</div></div>');
+$('body').append('<div id="reset_demo_widget" data-draggable="false"><div class="reset_timer_text">Time until demo reset:</div><div class="reset_timer_time">-- : -- : --</div></div>');
 }
 
 $.get( demo_reset_domain+"odr/functions.php", function( data ) {
