@@ -29,8 +29,6 @@ class TripstatuslogsController extends Controller {
 			
 		),$this->data);
 
-
-		
 	}
 
 	public function index( Request $request )

@@ -109,9 +109,7 @@
                 <li class="nav-item">
                   <a class="nav-link" href="{{ url('toc') }}">Terms of services</a>
                 </li>
-
             </ul>
-            
           </div><!-- Footer Widget Ends -->
 
           <!-- Footer Widget Starts -->

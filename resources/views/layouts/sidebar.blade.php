@@ -70,7 +70,7 @@
                                     href="{{ $menu2['url']}}" 
                                 @else
                                     href="{{ URL::to($menu2['module'])}}"  
-                                @endif                                  
+                                @endif
                             >
                             
                             
@@ -95,8 +95,8 @@
                                     </li>   
                                 @endforeach
                             </ul>
-                            @endif                          
-                        </li>                           
+                            @endif
+                        </li>
                         @endforeach
                     </ul>
                 @endif

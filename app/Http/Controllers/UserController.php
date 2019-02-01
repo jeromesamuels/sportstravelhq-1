@@ -70,7 +70,6 @@ class UserController extends Controller {
 				{
 					return response()->json(['status' => $return['success'], 'message' =>'Invalid reCpatcha']);	
 				}
-				
 			}
 		}
 		
@@ -177,7 +176,7 @@ class UserController extends Controller {
         else
         {
            return false ;
-        }		
+        }
 	}
 
 	public function postSignin( Request $request) {
@@ -185,7 +184,7 @@ class UserController extends Controller {
 		$rules = array(
 			'email'=>'required',
 			'password'=>'required',
-		);		
+		);
 		if(config('sximo.cnf_recaptcha') =='true') {
 			$return = $this->reCaptcha($request->all());
 			if($return !== false)
@@ -209,7 +208,7 @@ class UserController extends Controller {
 			) {
 				if(\Auth::check())
 				{
-					$row = User::find(\Auth::user()->id); 	
+					$row = User::find(\Auth::user()->id);
 					if($row->active =='Inactive')
 					{
 						// inactive 

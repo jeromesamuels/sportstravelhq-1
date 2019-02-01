@@ -223,7 +223,6 @@
                                   </li>
 
 
-
                                   <li class="m-nav__separator m-nav__separator--fit">
                                   </li>
                                   <li class="m-nav__item">
@@ -237,19 +236,14 @@
                       </li>
 
                     </ul>
-                  @else
-                      
+                  @else                      
                       <a class="m-menu__link " href="{{ url('user/login') }}" onclick="SximoModal(this.href , '{{ __('core.signin') }}'); return false;"> {{ __('core.signin') }} </a>
 
-
                       <a class="m-menu__link " href="{{ url('user/register') }}" onclick="SximoModal(this.href , '{{ __('core.signup') }}'); return false;"> {{ __('core.signup') }} </a>
-
                   @endif  
-
                   </div>
                 </div>
               </div>
-
               <!-- end::Topbar -->
             </div>
           </div>
@@ -260,7 +254,6 @@
         <div class="m-header__bottom" >
           <div class="m-container m-container--responsive m-container--xxl m-container--full-height m-page__container">
             <div class="m-stack m-stack--ver m-stack--desktop">
-
               <!-- begin::Horizontal Menu -->
               <div class="m-stack__item m-stack__item--middle m-stack__item--fluid">
                 <button class="m-aside-header-menu-mobile-close  m-aside-header-menu-mobile-close--skin-light " id="m_aside_header_menu_mobile_close_btn"><i class="la la-close"></i></button>
@@ -272,11 +265,7 @@
             </div>
           </div>
         </div>
-
-
-
       </header>
-
       <!-- end::Header -->
 
       <!-- begin::Body -->

@@ -108,11 +108,7 @@
                     <h3>24</h3>
                 </div>
             </div>
-
         </div>
-
-
-
 
         <div class="row">
             <div class="col-md-6">

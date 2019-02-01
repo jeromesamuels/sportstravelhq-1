@@ -32,7 +32,7 @@ class HotelsController extends Controller
     	return view('systemadmin.viewHotels',compact('hotels','searchField'));
     }
 
-    public function createHotels(){
+    public function createHotels() {
         $amenities = hotelamenities::all();
     	return view('systemadmin.createHotels',compact('amenities'));
     }

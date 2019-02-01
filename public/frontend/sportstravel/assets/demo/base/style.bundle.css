@@ -39429,7 +39429,7 @@ select.m-select2 {
 
 
 
-.m-menu__item--active a {
+.m-menu__item--active>a {
   font-weight: bold;
   border-bottom: solid 1px #223a40;
 }
@@ -39504,5 +39504,71 @@ select.m-select2 {
   }
 }
 
+
+
+#custom_navigation {
+    min-width: 200px;
+    z-index: 99;
+}
+
+
+#custom_navigation a {
+    text-decoration: none;
+}
+
+#custom_navigation nav {
+    font-family: monospace;
+}
+
+#custom_navigation ul {
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+}
+
+#custom_navigation li {
+    color: #fff;
+    display: block;
+    float: left;
+    padding: 1rem;
+    position: relative;
+    text-decoration: none;
+    transition-duration: 0.5s;
+}
+
+#custom_navigation nav {
+    font-family: monospace;
+}
+
+#custom_navigation ul {
+
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+}
+
+#custom_navigation ul li ul {
+    background: orange;
+    visibility: hidden;
+    opacity: 0;
+    min-width: 5rem;
+    position: absolute;
+    transition: all 0.5s ease;
+    margin-top: 1rem;
+    left: 0;
+    display: none;
+}
+
+#custom_navigation ul li:hover > ul,
+#custom_navigation ul li ul:hover {
+    visibility: visible;
+    opacity: 1;
+    display: block;
+}
+
+#custom_navigation ul li ul li {
+    clear: both;
+    min-width: 100px;
+}
 /*** CUSTOM CSS ENDS HERE **/ 
 

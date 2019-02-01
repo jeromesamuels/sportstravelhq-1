@@ -94,9 +94,10 @@ class InvoicesController extends Controller {
 					return redirect('dashboard')->with('message', __('core.note_restric'))->with('status','error');
 
 				return view($this->module.'.view',$this->data);	
-				break;		
+				break;
 		}
 	}
+
 	function store( Request $request  )
 	{
 		$task = $request->input('action_task');
@@ -170,7 +171,7 @@ class InvoicesController extends Controller {
 
 	}	
 	
-	public static function display(  )
+	public static function display()
 	{
 		$mode  = isset($_GET['view']) ? 'view' : 'default' ;
 		$model  = new Invoices();
@@ -218,19 +219,15 @@ class InvoicesController extends Controller {
 	}
 	function store_public( $request)
 	{
-		
 		$rules = $this->validateForm();
 		$validator = Validator::make($request->all(), $rules);	
 		if ($validator->passes()) {
-			$data = $this->validatePost(  $request );		
-			 $this->model->insertRow($data , $request->input('id'));
+			$data = $this->validatePost(  $request );
+			$this->model->insertRow($data , $request->input('id'));
 			return  Redirect::back()->with('message',__('core.note_success'))->with('status','success');
 		} else {
-
 			return  Redirect::back()->with('message',__('core.note_error'))->with('status','error')
 			->withErrors($validator)->withInput();
-
-		}	
-	
+		}
 	}
 }

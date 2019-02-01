@@ -46,14 +46,14 @@
 </style>
 </head>
 
-<body class="theme-deep-purple ">
+<body class="theme-deep-purple theme-pink open-sidebar pace-done close-sidemenu">
 <div id="wrapper">
 
       <aside id="leftsidebar" class="sidebar">
          @include('layouts.sidebar')             
       </aside>
 
-      <aside id="rightsidebar" class="right-sidebar">
+      <aside id="rightsidebar" class="right-sidebar hide">
          @include('layouts.rightbar')            
         </aside>
 
