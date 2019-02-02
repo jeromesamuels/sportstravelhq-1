@@ -47,10 +47,8 @@ class SximoapiController extends Controller {
 			{
 				$rows = array();
 				foreach($tables as $table)
-				{				
-					
+				{
 					$rows[$table['field']] = \SiteHelpers::formatRows($row->{$table['field']},$table, $row)	;
-											
 				}
 				$json[] = $rows;
 

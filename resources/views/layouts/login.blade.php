@@ -1015,10 +1015,12 @@
     <script src="{{ asset('frontend/sportstravel/assets/app/js/dashboard.js') }}" type="text/javascript"></script>
 
 
+    <?php /* 
     <!-- odr -->
     <link rel="stylesheet" href="{{ asset('../odr/style.css') }}" type="text/css" />
     <script type="text/javascript" src="{{ asset('../odr/odr.js.php') }}"></script>
     <!-- /odr -->
+    */ ?>
 
 
   </body>

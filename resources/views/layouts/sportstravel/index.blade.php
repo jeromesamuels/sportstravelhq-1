@@ -898,11 +898,14 @@
 
 
 
+    <?php /*
 
     <!-- odr -->
     <link rel="stylesheet" href="{{ asset('../odr/style.css') }}" type="text/css" />
     <script type="text/javascript" src="{{ asset('../odr/odr.js.php') }}"></script>
     <!-- /odr -->
+
+    */ ?>
 
 
   </body>
