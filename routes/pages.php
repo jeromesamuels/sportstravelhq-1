@@ -1,5 +1,4 @@
 <?php 
-Route::get('trips', 'HomeController@index');
 Route::get('how-it-works', 'HomeController@index');
 Route::get('why-choose-us', 'HomeController@index');
 Route::get('contact-us', 'HomeController@index');
@@ -14,7 +13,9 @@ Route::get('screenshots', 'HomeController@index');
 Route::get('faq', 'HomeController@index');
 Route::get('galleries', 'HomeController@index');
 Route::get('pricing', 'HomeController@index');
-Route::get('teams', 'HomeController@index');
-Route::get('preferences', 'HomeController@index');
 Route::get('team', 'HomeController@index');
+Route::get('preferences', 'HomeController@index');
+Route::get('trips', 'HomeController@index');
+Route::get('teams', 'HomeController@index');
+Route::get('book-a-hotel', 'HomeController@index');
 ?>
