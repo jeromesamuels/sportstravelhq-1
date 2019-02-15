@@ -25,7 +25,7 @@
 	<div class="m-portlet__body">
 
 		<table class="rfp_detail" >
-
+     
 		@foreach ($rfps as $rfp)
 		<tr>
 			<td>

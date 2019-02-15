@@ -211,18 +211,23 @@ $(document).ready(function() {
 
 		$(document).on("click", ".m-portlet__header .compare-rfp", function() {
 			//var id = $(this).attr("id");
-
+         
 			if(rfp_ids.length>1) {
 				$('.m-portlet__body').html('<div class="m-spinner m-spinner--brand m-spinner--lg"></div>');
-
+				//rfp_ids = [];
+			    //var id = $(this).attr("id");
+				 console.log(rfp_ids);
+                
 				var url = '{{ url("/compareRFP/") }}';
-				$.post(url, function(response) {
+				$.post(url + '/' + rfp_ids, function(response) {
 				    if(response.success) 
 				    	$('#main-page .container .compare-result').html(response.view_data);
 				}, 'json');
+				
 			} else {
 				alert("Please select atleast two proposals to compare.");
 			}
+
 
 		});
 
@@ -243,9 +248,12 @@ $(document).ready(function() {
 
 		$(document).on("click", ".btn-rfp-decline", function() {
 			var id = $(this).attr("title");
-			var url = '{{ url("/declineRFP/") }}' + '/' + id;
+			var e = document.getElementById ("decline_reason_select");
+			var reason = e.options [e.selectedIndex] .value;
+			//alert(reason);
+			var url = '{{ url("/declineRFP/") }}' + '/' + id + '/' + reason;
 
-			$.post(url, function(response) {
+			$.post(url,'/' + reason, function(response) {
 			    if(response.success) {
 			    	alert(response.view_data);
 			    	location.reload();
@@ -296,7 +304,7 @@ $(document).ready(function() {
 							<div class="m-list-timeline m-list-timeline--skin-light">
 								<div class="planned-trips">
 								@foreach ($rowData as $row)
-									<!--{{ dump($row) }}-->
+									
 									<div class="planned-trip-content" id="{{ $row->id }}">
 										<span class="planned-trip-heading">
 										<b>{{ \Carbon\Carbon::parse($row->check_in)->format('m/d/Y') }} - {{ \Carbon\Carbon::parse($row->check_out)->format('m/d/Y')}}</b>

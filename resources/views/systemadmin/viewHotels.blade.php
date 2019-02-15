@@ -6,10 +6,15 @@
     <h2>Hotels Listing <small> Here all hotel listings are listed </small></h2>
 </section>
     
-
+<?php  $hotel_manager_id=Session::get('uid');
+$user_group_id= DB::table('tb_users')->where('id', $hotel_manager_id)->pluck('group_id');
+foreach($user_group_id as $item_new) {
+$user_group_id_new = $item_new;
+}
+ ?>
     <div class="page-content row">
         <div class="page-content-wrapper no-margin">
-
+         <?php  if($user_group_id_new != 5){ ?>
             <div class="sbox">
                 <div class="sbox-title">
                     <div class="row">
@@ -35,6 +40,7 @@
                     
                 </div>
             </div>
+        <?php } ?>
         </div>
     </div>
     
@@ -61,6 +67,8 @@
                             <th>Address</th>
                             <th>Zip</th>
                             <th>Type</th>
+                            <th>Logo</th>
+                            <th>Property</th>
                             <th>Rating</th>
                             <th>Status</th>
                             <th>Action</th>
@@ -73,6 +81,8 @@
                                 <td>{{ $hotel->address }}</td>
                                 <td>{{ $hotel->zip }}</td>
                                 <td>{{ $hotel->type }}</td>
+                                <td> <img alt="" src="../uploads/users/{{ $hotel->logo }}" width="150" height="100%" class="img-responsive" /></td>
+                                <td><img alt="" src="../uploads/users/{{ $hotel->property }}" width="150" height="50" class="img-responsive" /></td></td>
                                 <td>
                                     @for ($i = 0; $i < $hotel->rating; $i++)
                                         <span class="fa fa-star" style="color:#a9a902"></span>

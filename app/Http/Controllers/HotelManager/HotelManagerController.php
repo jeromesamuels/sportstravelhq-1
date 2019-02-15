@@ -7,9 +7,11 @@ use App\Models\AgreementForm;
 use App\Models\Core\Users;
 use App\Models\Rfp;
 use App\Models\usertrips;
+use App\Models\Invoices;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 
 class HotelManagerController extends Controller
 {
@@ -26,7 +28,7 @@ class HotelManagerController extends Controller
         //dd(Session::all());
         $this->data['tc_users'] = \DB::table('tb_users')->get()->where("group_id", 4)->count();
         $this->data['hotel_info'] = \DB::table('hotels')->get()->where("id", Session::get('hid'))->first();
-
+              
     	return view('hotelmanager.index', $this->data);
     }
 
@@ -69,7 +71,7 @@ class HotelManagerController extends Controller
     	$rfp->save();
 
         $r = \Helper::addTripStatusLog(2, $trip->id, $rfp->id);
-
+    
 
     	Session::flash('success','Bid has been sent successfully');
     	return redirect()->back();
@@ -138,5 +140,94 @@ class HotelManagerController extends Controller
                 AgreementForm::find($id)->delete();
             }
        }
+    }
+
+     public function makeInvoice(Request $request) {
+
+        $this->validate($request,[
+            'trip_id' => 'required|numeric|min:0',
+            'actualized_room_count' => 'required|numeric|min:0',
+            'room_rate' => 'required|numeric',
+            'amt_paid' => 'required|numeric',
+        ]);
+
+        $trip = usertrips::find($request->trip_id);
+
+        //geting Trip Amenities
+        $amenitie_ids = [];
+        foreach ($trip->amenities as $amenity) {
+            $amenitie_ids[count($amenitie_ids)] = $amenity->id;
+        }
+        // Getting manager info
+        $hotel_manager_id=Session::get('uid');
+        $hotel_manger_info =  DB::table('tb_users')->where('id', $hotel_manager_id)->first();
+       
+        $email = $hotel_manger_info->email;
+        $phone_number = $hotel_manger_info->phone_number;
+        $hotel_id = $hotel_manger_info->hotel_id;
+        
+        //Getting hotel info
+        $hotel_info = DB::table('hotels')->where('id', $hotel_id)->first();
+       
+        $hotel_name = $hotel_info->name;
+        $hotel_address = $hotel_info->address;
+       
+         $a = mt_rand(100000,999999); 
+
+      
+         $rfp = new Invoices();
+        $record_exists = DB::table('invoices')->where('rfp_id', '=', $request->trip_id)->first();
+        
+        
+        if (is_null($record_exists)) {
+
+        $rfp->invoice_id =$a; 
+        $rfp->trip_status =$trip->status; 
+        $rfp->trip_name =$trip->trip_name; 
+        $rfp->trip_address =$trip->from_address_1; 
+        $rfp->check_in = $trip->check_in;
+        $rfp->check_out = $trip->check_out;
+        $rfp->rfp_id = $request->trip_id;
+        $rfp->hotel_name =$hotel_name;
+        $rfp->hotel_add =$hotel_address;
+        $rfp->hotel_manager =Session::get('fid');
+        $rfp->email =$email;
+        $rfp->phone =$phone_number;
+        $rfp->total_room = $trip->double_king_qty + $trip->double_queen_qty;
+        $rfp->room_rate = $request->room_rate;
+        $rfp->actualized_room_count = $request->actualized_room_count;
+        $rfp->commissoin_rate = 10;
+        $rfp->amt_paid = $request->amt_paid;
+        $rfp->entry_by = $trip->entry_by;
+       
+         $rfp->save();
+           
+        }
+
+         else{
+           Session::flash('error','Already created Invoice by this Trip');
+            $rfp->invoice_id =$record_exists->invoice_id; 
+            $rfp->trip_status =$trip->status; 
+            $rfp->trip_name =$trip->trip_name; 
+            $rfp->trip_address =$trip->from_address_1; 
+            $rfp->check_in = $trip->check_in;
+            $rfp->check_out = $trip->check_out;
+            $rfp->rfp_id = $request->trip_id;
+            $rfp->hotel_name =$hotel_name;
+            $rfp->hotel_add =$hotel_address;
+            $rfp->hotel_manager =Session::get('fid');
+            $rfp->email =$email;
+            $rfp->phone =$phone_number;
+            $rfp->total_room = $trip->double_king_qty + $trip->double_queen_qty;
+            $rfp->room_rate = $record_exists->room_rate;
+            $rfp->actualized_room_count = $record_exists->actualized_room_count;
+            $rfp->commissoin_rate = 10;
+            $rfp->amt_paid = $record_exists->amt_paid;
+            $rfp->entry_by = $trip->entry_by;
+       
+         $rfp->save();
+         }
+        
+          return view('hotelmanager.tripInvoice',compact('rfp'));
     }
 }

@@ -21,7 +21,7 @@
                 <div class="sbox-content">
                     @include('includes.alerts')
                     
-                    <form action="{{ route('systemadmin.storeHotels') }}" method="post">
+                    <form action="{{ route('systemadmin.storeHotels') }}" method="post" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div class="row">
                             <div class="col-sm-6">
@@ -38,7 +38,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label>Hotel Adress</label>
+                                    <label>Hotel Address</label>
                                     <input type="text" class="form-control" placeholder="Enter Hotel Address" name="address">
                                 </div>
                             </div>
@@ -67,9 +67,20 @@
                                         <option value="Hilton">Hilton</option>
                                         <option value="Marriott">Marriott</option>
                                         <option value="IHG">IHG</option>
-                                        <option value="Hyatt">Hyatt</option>
-                                        <option value="Wyndham">Wyndham</option>
+                                      
                                     </select>
+                                </div>
+                            </div>
+                             <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Hotel Type Logo</label>
+                                   <input type="file" name="logo" id="logo" class="inputfile" />
+                                </div>
+                            </div>
+                                <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Hotel Type Property</label>
+                                     <input type="file" name="property" id="property" class="inputfile" />
                                 </div>
                             </div>
                             <div class="col-sm-12">

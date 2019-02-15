@@ -34,6 +34,13 @@ class TripsController extends Controller
 		return view('hotelmanager.tripsingle', compact('trip', 'rfp'));
 	}
 
+	public function invoice($invoice_id) {
+		/*$trip = usertrips::find($id);
+        $rfp = DB::table('rfps')->where('user_trip_id', '=', $id)->where('user_id', '=', session('uid'))->first();*/
+
+		return view('hotelmanager.tripInvoice');
+	}
+
 	public function filterByAmenities(Request $request)
 	{
 		if($request->data){ 
