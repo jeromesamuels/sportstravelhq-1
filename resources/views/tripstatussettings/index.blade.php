@@ -2,6 +2,7 @@
 
 @section('content')
 {{--*/ usort($tableGrid, "SiteHelpers::_sort") /*--}}
+
 <section class="page-header row">
 	<h2> {{ $pageTitle }} <small> {{ $pageNote }} </small></h2>
 	<ol class="breadcrumb">
@@ -9,6 +10,7 @@
 		<li class="active"> {{ $pageTitle }} </li>		
 	</ol>
 </section>
+
 <div class="page-content row">
 	<div class="page-content-wrapper no-margin">
 
@@ -51,7 +53,7 @@
 				        </ul>
 				    </div>    
 				</div>
-				<div class="col-md-4 pull-right">
+				<div class="col-md-8 pull-right">
 					<div class="input-group">
 					      <div class="input-group-btn">
 					        <button type="button" class="btn btn-default btn-sm " 
@@ -67,9 +69,9 @@
 			<div class="table-responsive" style="padding-bottom: 70px;">
  			{!! Form::open(array('url'=>'tripstatussettings?'.$return, 'class'=>'form-horizontal m-t' ,'id' =>'SximoTable' )) !!}
 			
-		    <table class="table table-striped table-hover " id="{{ $pageModule }}Table">
+		    <table class="table table-hover " id="{{ $pageModule }}Table">
 		        <thead>
-					<tr>
+					<tr style="border-bottom-style: dashed;border-color: #eee;">
 						<th style="width: 3% !important;" class="number"> No </th>
 						<th  style="width: 3% !important;"> <input type="checkbox" class="checkall minimal-green" /></th>
 						<th  style="width: 10% !important;">{{ __('core.btn_action') }}</th>
@@ -96,13 +98,13 @@
 
 		        <tbody>        						
 		            @foreach ($rowData as $row)
-		                <tr>
+		                <tr style="border-bottom-style: dashed;border-color: #eee;">
 							<td > {{ ++$i }} </td>
 							<td ><input type="checkbox" class="ids minimal-green" name="ids[]" value="{{ $row->id }}" />  </td>
 							<td>
 
 							 	<div class="dropdown">
-								  <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown"> Action </button>
+								  <button class="btn btn-light btn-xs dropdown-toggle" type="button" data-toggle="dropdown"> View Details </button>
 								  <ul class="dropdown-menu">
 								 	@if($access['is_detail'] ==1)
 									<li><a href="{{ url('tripstatussettings/'.$row->id.'?return='.$return)}}" class="tips" title="{{ __('core.btn_view') }}"> {{ __('core.btn_view') }} </a></li>

@@ -31,6 +31,7 @@ class InvoicesController extends Controller {
 
 	public function index( Request $request )
 	{
+
 		// Make Sure users Logged 
 		if(!\Auth::check()) 
 			return redirect('user/login')->with('status', 'error')->with('message','You are not login');
@@ -38,6 +39,7 @@ class InvoicesController extends Controller {
 		if($this->access['is_view'] ==0) 
 			return redirect('dashboard')->with('message', __('core.note_restric'))->with('status','error');				
 		// Render into template
+	
 		return view( $this->module.'.index',$this->data);
 	}	
 
@@ -66,6 +68,8 @@ class InvoicesController extends Controller {
 	}	
 	function show( Request $request , $id ) 
 	{
+
+                   
 		/* Handle import , export and view */
 		$task =$id ;
 		switch( $task)
@@ -173,6 +177,7 @@ class InvoicesController extends Controller {
 	
 	public static function display()
 	{
+		
 		$mode  = isset($_GET['view']) ? 'view' : 'default' ;
 		$model  = new Invoices();
 		$info = $model::makeInfo('invoices');

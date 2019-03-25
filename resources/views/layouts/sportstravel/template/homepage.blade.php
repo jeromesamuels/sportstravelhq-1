@@ -20,6 +20,8 @@
 		<div class="col-md-12">
 			<div class="sbox">
 				<!--<b>Powered by: <img src="{{ asset('frontend/sportstravel/assets/images/logo_white.png') }}" /></b>-->
+				<?php //echo "hii";
+	   //die;?>	
 				<?php echo $content ;?>
 			</div>
 		</div>

@@ -105,7 +105,15 @@
 				 	
 				 </div>
 			  </div>
-
+               <div class="form-group  " >
+				<label for="Phone Number" class=" control-label col-md-4 text-left"> Phone Number <span class="asterix"> * </span></label>
+				<div class="col-md-6">
+				  {!! Form::text('phone', $row['phone_number'],array('class'=>'form-control  input-sm', 'placeholder'=>'', 'required'=>'true' )) !!} 
+				 </div> 
+				 <div class="col-md-2">
+				 	
+				 </div>
+			  </div>
 			  <div class="form-group  " >
 				<label for="Status" class=" control-label col-md-4 text-left"> Status <span class="asterix"> * </span></label>
 				<div class="col-md-6">

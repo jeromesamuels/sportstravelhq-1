@@ -82,7 +82,121 @@
 
 
     <script src="{{ asset('frontend/sportstravel/vendors/jquery/dist/jquery.js') }}" type="text/javascript"></script>
-
+<style>
+  .m-header .m-header__top {
+    background: #5dbbe0;
+}
+.m-brand,.m-badge.m-badge--danger{
+      background: transparent;
+}
+.m-topbar__username,.m-topbar .m-topbar__nav.m-nav > .m-nav__item > .m-nav__link .m-nav__link-icon .m-nav__link-icon-wrapper > i{
+  color: #fff;
+}
+   .m-header--fixed .m-body {
+        padding-top: 20px !important;
+    }
+.cus-blackhead-part {
+            width:100%;
+            background-color: #000;
+            padding: 10px 0;
+                margin-top: 90px;
+            }
+            .cus-blackhead-part ul li a:active {
+            color: #fff;
+            }
+            .collapse:not(.show) {
+                display: block;
+            }
+            .cus-blackhead-part .m-menu__nav li:active:after {
+            content: '';
+            background-image: url(../uploads/images/triangle.png);
+            width: 60px;
+            height: 20px;
+            display: block;
+            background-repeat: no-repeat;
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -29px;
+            }
+            .cus-blackhead-part .m-menu__nav li ul.ml-menu li:active:after, .cus-blackhead-part .m-menu__nav li ul.ml-menu li:hover:after {
+            display: none !important;  
+            }
+            .cus-blackhead-part .m-menu__nav li ul.ml-menu li:hover {
+            opacity: 1;
+            display: block;
+            visibility: visible;
+            }
+            #myNavbar a {
+            color: #88cee8;
+            font-size: 17px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            }
+            .navbar-collapse {
+            padding-right: 0;
+            padding-left: 0;
+            }
+            #myNavbar li{
+            padding: 0px 14px;
+            }
+            #myNavbar ul{
+            margin: 0px 0 30px;
+            }
+            .m-header .m-header__top {
+            background: #5dbbe0;
+            height: 90px;
+            }
+            .m-topbar .m-topbar__nav.m-nav > .m-nav__item > .m-nav__link .m-nav__link-icon .m-nav__link-icon-wrapper > i {
+            color: #5dbbe0;
+            }
+            .m-nav__link-icon-wrapper{
+            background: #000;
+            }
+            .m-grid{
+            background-color: #eee;
+            }
+            #myNavbar ul li ul {
+            background: #5dbbe0;
+            min-width: 200px;
+            padding: 10px;
+            z-index: 999;
+            }
+            #myNavbar ul li ul li a{
+            color: #fff;
+            }
+            #myNavbar ul li ul li a:hover,#myNavbar ul li a:hover {
+            color: #fff !important;
+            }
+            #myNavbar ul li a:active {
+            color: #fff;
+            }
+            #myNavbar ul li:hover:after {
+            content: '';
+            background-image: url(http://13.92.240.159/demo/public/uploads/images/triangle.png);
+            width: 60px;
+            height: 20px;
+            display: block;
+            background-repeat: no-repeat;
+            position: absolute;
+            left: 0;
+            margin: 0 auto;
+            right: 0;
+            bottom: -38px;
+            }
+            .info-boxes{
+            margin: 10px 0;
+            padding: 10px 0;
+            font-size: 20px;
+            }
+            .sbox b {
+            width: auto;
+            }
+            .pagination li,.page-item.disabled .page-link,.pagination > li > a,.page-item:last-child .page-link{
+            border-radius: 50%;
+            border: 1px solid #eee;
+            }
+</style>
       
   </head>
   <!-- end::Head -->
@@ -108,7 +222,7 @@
                 <div class="m-stack m-stack--ver m-stack--general m-stack--inline">
                   <div class="m-stack__item m-stack__item--middle m-brand__logo">
                     <a class="navbar-brand" href="{{ url('') }}">
-                     <img src="{{ asset('frontend/sportstravel/assets/images/logo_blue.png') }}" title="{{ config('sximo.cnf_appname') }}" alt="{{ config('sximo.cnf_appname') }}" height="30" >
+                   <img src="{{ asset('uploads/images/Logo_white.png') }}" title="{{ config('sximo.cnf_appname') }}" alt="{{ config('sximo.cnf_appname') }}" height="40" >
                     </a>
                   </div>
                   <div class="m-stack__item m-stack__item--middle m-brand__tools">
@@ -141,6 +255,16 @@
 
                   @if(Auth::check()) 
                     <ul class="m-topbar__nav m-nav m-nav--inline">
+                      <li class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img  m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light" style="padding-right: 20px;">
+                                            <a href="{{ url('dashboard') }}" class="m-nav__link">
+                                            <i class="m-nav__link-icon flaticon-profile-1" style="color: #000;font-size: 22px;"></i>
+                                            <span class="m-nav__link-title">
+                                            <span class="m-nav__link-wrap">
+                                            <span class="m-nav__link-text"></span>
+                                            </span>
+                                            </span>
+                                            </a>
+                                        </li>
                       <li class="m-nav__item m-topbar__notifications m-topbar__notifications--img m-dropdown m-dropdown--large m-dropdown--header-bg-fill m-dropdown--arrow m-dropdown--align-center  m-dropdown--mobile-full-width" m-dropdown-toggle="click"
                        m-dropdown-persistent="1">
                         <a href="#" class="m-nav__link m-dropdown__toggle" id="m_topbar_notification_icon">
@@ -167,16 +291,22 @@
                         </div>
                       </li>
 
-
+                       <?php 
+                                            $user_photo = DB::table('tb_users')->where('username', Session::get('username'))->pluck('avatar');
+                                            foreach($user_photo as $user_photo_new){
+                                              $userphoto=$user_photo_new;
+                                            }
+                                             
+                                            ?>
                       <li class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img  m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light"
                        m-dropdown-toggle="click">
-                        <a href="#" class="m-nav__link m-dropdown__toggle">
-                          <span class="m-topbar__userpic m--hide">
-                            <img src="{{ asset('frontend/sportstravel/assets/app/media/img/users/user4.jpg') }}" class="m--img-rounded m--marginless m--img-centered" alt="" />
-                          </span>
-                          <span class="m-topbar__welcome">Hello,&nbsp;</span>
-                          <span class="m-topbar__username">{{ Session::get('username') }}</span>
-                        </a>
+                         <a href="#" class="m-nav__link m-dropdown__toggle">
+                                            <span class="m-topbar__userpic m--hide">
+                                            <img src="http://13.92.240.159/demo/public/uploads/users/<?php echo $userphoto;?>" class="m--img-rounded m--marginless m--img-centered" width="50" height="50" alt="" />
+                                            </span>
+                                            <span class="m-topbar__username" style="color:#fff;">{{ Session::get('username') }}</span>
+                                            <span class="m-topbar__welcome"><i class="fa fa-chevron-down" aria-hidden="true" style="color: #fff;padding-top: 5px;padding-left: 10px;"></i></span>
+                                            </a>
                         <div class="m-dropdown__wrapper">
                           <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
                           <div class="m-dropdown__inner">
@@ -267,7 +397,23 @@
         </div>
       </header>
       <!-- end::Header -->
-
+          <div class="cus-blackhead-part">
+            <div class="m-container m-container--responsive m-container--xxl m-container--full-height m-page__container">
+                <div class="row">
+                    <!--  <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span> 
+                        </button>
+                        </div> -->
+                    <div class="collapse navbar-collapse" id="myNavbar">
+                        @include('layouts.sportstravel.header_new')
+                    </div>
+                </div>
+                <!-- end::Body -->
+            </div>
+        </div>
       <!-- begin::Body -->
       <div class="m-grid__item m-grid__item--fluid  m-grid m-grid--ver-desktop m-grid--desktop  m-container m-container--responsive m-container--xxl m-page__container m-body">
         <div class="m-grid__item m-grid__item--fluid m-wrapper">

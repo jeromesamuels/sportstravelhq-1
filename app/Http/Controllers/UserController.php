@@ -1,5 +1,5 @@
 <?php namespace App\Http\Controllers;
-
+use Twilio\Rest\Client;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Libary\SiteHelpers;
@@ -7,8 +7,10 @@ use Socialize;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Validator, Redirect ; 
-
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 
 class UserController extends Controller {
@@ -82,15 +84,60 @@ class UserController extends Controller {
 			$authen->last_name = $request->input('lastname');
 			$authen->email = trim($request->input('email'));
 
-			$authen->group_id = $request->input('group_id');
-			$authen->hotel_id = $request->input('hotel_id');
-
+			/*new fields */
+			$user_type = $request->input('user_type');
+			$authen->hotel_type = $request->input('hotel_type');
+			$authen->hotel_code = $request->input('hotel_code');
+			$authen->hotel_address = $request->input('hotel_address');
+			$authen->service_type = $request->input('service_type');
+			$authen->o_name = $request->input('o_name');
+            
+            $hotel_id=DB::table('hotels')->where("type", $request->input('hotel_type'))->pluck('id');
+            foreach($hotel_id as $hotel_id_new){
+			$authen->hotel_id = $hotel_id_new;
+            }
+            $authen->group_id = $request->input('group_id');
 			$authen->phone_number = ($request->input('phone')!='') ? $request->input('phone') : '';
 
 			$authen->activation = $code;
+
+			$email = $authen->email;
+			$domain_name = substr(strrchr($email, "@"), 1);
+			
+            if($user_type== 1){
+            $authen->group_id = 5;
+            }
+            elseif($user_type== 2){
+              $authen->group_id = 4;
+            }
+            else{
 			$authen->group_id = $this->config['cnf_group'];
+			}
+
 			$authen->password = \Hash::make($request->input('password'));
 			if($this->config['cnf_activation'] == 'auto') { $authen->active = '1'; } else { $authen->active = '0'; }
+
+             $new_code=URL::to('user/activation?code='.$code);
+         	 
+			// Your Account SID and Auth Token from twilio.com/console
+			$account_sid = 'AC4174865c2b5f392f5ffe63f9cd5123fb';
+			$auth_token = '424cddd97c717bd28f77b212168b6ad2';
+			// In production, these should be environment variables. E.g.:
+			// $auth_token = $_ENV["TWILIO_ACCOUNT_SID"]
+
+			// A Twilio number you own with SMS capabilities
+			$twilio_number = "+13055703074";
+
+			$client = new Client($account_sid, $auth_token);
+			$client->messages->create(
+			    // Where to send a text message (your cell phone?)
+			    $request->input('phone'),
+			    array(
+			        'from' => $twilio_number,
+			        'body' => 'Thank You for registering with SportsTravel HQ! Please check your inbox and click on the activation link below' .$new_code
+			    )
+			);
+			
 			$authen->save();
 			
 			$data = array(
@@ -118,12 +165,12 @@ class UserController extends Controller {
 						mail($to, $subject, $message, $headers);
 				}
 
-				$message = "Thanks for registering!. Please check your inbox and follow activation link";
+				$message = "Thank You for registering with SportsTravel HQ! Please check your inbox and click on the activation link below";
 
 			} elseif($this->config['cnf_activation']=='manual') {
-				$message = "Thanks for registering!. We will validate you account before your account active";
+				$message = "Thank You for registering with SportsTravel HQ!. We will validate you account before your account active";
 			} else {
-   			 	$message = "Thanks for registering!. Your account is active now ";
+   			 	$message = "Thank You for registering with SportsTravel HQ!. Your account is active now ";
 			}
 
 			return redirect('user/login')->with(['message' => $message,'status'=>'success']);
@@ -246,6 +293,7 @@ class UserController extends Controller {
 							'hid' => $row->hotel_id,
 							'uid' => $row->id,
 							'eid' => $row->email,
+							'phn' => $row->phone_number,
 							'll' => $row->last_login,
 							'fid' =>  $row->first_name.' '. $row->last_name,
 							'username' =>  $row->username ,
@@ -279,11 +327,11 @@ class UserController extends Controller {
 								return redirect(route('hotelmanger.home'));
 
 							if( $session['level'] == 6) 
-								return redirect(route('corporate.home'));
+								return redirect('corporate/user');
 
 
 							if($row->last_login)
-								return redirect('trips');
+								return redirect('client');
 
 							if(!$row->last_login)
 								return redirect('');

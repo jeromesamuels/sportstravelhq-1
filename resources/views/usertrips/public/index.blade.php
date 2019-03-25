@@ -153,6 +153,7 @@ $(document).ready(function() {
 	$(document).ready(function() {
 
 		var rfp_ids = [];
+		var rfp_ids_array = [];
 
 		$(".planned-trips .planned-trip-content").on("click", function() {
 			rfp_ids = [];
@@ -182,14 +183,27 @@ $(document).ready(function() {
 		
 		$(document).on("click", ".compare_cb", function(e) {
 			var rfp_id = $(this).val();
+			var arr=[];
+			if(rfp_id.includes(',')){
+			arr = rfp_id.split(',');
 
+			}else{
+				arr[0] = rfp_id;
+			}
+
+			
 			if($( this ).prop( "checked" )) {
-				rfp_ids.push(rfp_id);
-				console.log(rfp_ids);
+				//if(rfp_id.includes(',')){
+					$.each(arr,function(key,value){
+						rfp_ids_array.push(value);
+					})
+					console.log(rfp_ids_array.length);
 				
 				$(".compare-rfp").removeClass('btn-secondary');
-				$(".compare-rfp span").html('('+rfp_ids.length+')');
+				$(".compare-rfp span").html('('+rfp_ids_array.length+')');
 
+				rfp_ids = rfp_ids_array;
+				
 			} else {
 
 				rfp_ids = jQuery.grep(rfp_ids, function(value) {
@@ -203,7 +217,7 @@ $(document).ready(function() {
 				}
 				else {
 					$(".compare-rfp").addClass('btn-secondary');
-					$(".compare-rfp span").html('');
+					$(".compare-rfp span").html('rfp_ids_array.length');
 				}
 			}
 		});
@@ -211,18 +225,22 @@ $(document).ready(function() {
 
 		$(document).on("click", ".m-portlet__header .compare-rfp", function() {
 			//var id = $(this).attr("id");
-
+          console.log(rfp_ids.length);
+        
 			if(rfp_ids.length>1) {
 				$('.m-portlet__body').html('<div class="m-spinner m-spinner--brand m-spinner--lg"></div>');
-
+				 console.log(rfp_ids);
+                
 				var url = '{{ url("/compareRFP/") }}';
-				$.post(url, function(response) {
+				$.post(url + '/' + rfp_ids, function(response) {
 				    if(response.success) 
 				    	$('#main-page .container .compare-result').html(response.view_data);
 				}, 'json');
+				
 			} else {
 				alert("Please select atleast two proposals to compare.");
 			}
+
 
 		});
 
@@ -242,10 +260,15 @@ $(document).ready(function() {
 
 
 		$(document).on("click", ".btn-rfp-decline", function() {
-			var id = $(this).attr("title");
-			var url = '{{ url("/declineRFP/") }}' + '/' + id;
 
-			$.post(url, function(response) {
+			var id = $(this).attr("title");
+			
+			var e = document.getElementById ("decline_reason_select");
+			var reason = e.options [e.selectedIndex] .value;
+			//alert(reason);
+			var url = '{{ url("/declineRFP/") }}' + '/' + id + '/' + reason;
+
+			$.post(url,'/' + reason, function(response) {
 			    if(response.success) {
 			    	alert(response.view_data);
 			    	location.reload();
@@ -257,6 +280,26 @@ $(document).ready(function() {
 	});
 
 </script>
+<style>
+.hide {
+    display: none;
+}
+.dropdown{
+	border: 1px solid #18c942;
+    font-size: 16px;
+    padding: 5px 20px;
+    border-radius: 5px;
+    color: #000;
+}
+.dropdown a{
+	color: #000;
+    text-decoration: none;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+}
+
+</style>
+
 
 <div class="row compare-result">
 	<div class="col-md-12">
@@ -279,31 +322,149 @@ $(document).ready(function() {
 				<div class="m-portlet__head-tools">
 
 				<ul class="m-portlet__nav">
-					<li class="m-portlet__nav-item m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" m-dropdown-toggle="hover" aria-expanded="true">
+					<!--<li class="m-portlet__nav-item m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" m-dropdown-toggle="hover" aria-expanded="true">
 						<a href="#" class="m-portlet__nav-link m-dropdown__toggle dropdown-toggle btn btn--sm m-btn--pill btn-secondary m-btn m-btn--label-brand">
 							Filter
 						</a>
 
-					</li>
+					</li>-->
+					<li class="dropdown">
+			          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Filter <span class="caret"></span></a>
+			          <ul class="dropdown-menu">
+			            <li><a id="Information_click" href="#">View All</a></li>
+			             <li role="separator" class="divider"></li>
+			            <li><a id="pending-link" href="#">Pending</a></li>
+			             <li role="separator" class="divider"></li>
+			            <li><a id="accept-link" href="#">Accept</a></li>
+			            <li role="separator" class="divider"></li>
+			            <li><a id="decline-link" href="#">Decline</a></li>
+			            <li role="separator" class="divider"></li>
+			             
+			          </ul>
+			        </li>
 				</ul>
 				</div>
 			</div>
-
-			<div class="">
-				<div class="tab-content">
+			<script>
+			$(document).ready(function() {
+		    $("#Information_click").on('click', function() {
+		        $("#pages .page:not('.hide')").stop().fadeOut('fast', function() {
+		            $(this).addClass('hide');
+		            $('#information').fadeIn('slow').removeClass('hide');
+		        });
+		    });
+		    $("#pending-link").on('click', function() {
+		        $("#pages .page:not('.hide')").stop().fadeOut('fast', function() {
+		            $(this).addClass('hide');
+		            $('#pending').fadeIn('slow').removeClass('hide');
+		        });
+		    });
+		    $("#accept-link").on('click', function() {
+		        $("#pages .page:not('.hide')").stop().fadeOut('fast', function() {
+		            $(this).addClass('hide');
+		            $('#accept').fadeIn('slow').removeClass('hide');
+		        });
+		    });
+		    $("#decline-link").on('click', function() {
+		        $("#pages .page:not('.hide')").stop().fadeOut('fast', function() {
+		            $(this).addClass('hide');
+		            $('#decline').fadeIn('slow').removeClass('hide');
+		        });
+		    });
+		});
+			</script>
+			<div id="pages" >
+				<div id="information" class="page"  >
 					<div class="tab-pane active" id="m_widget4_tab1_content">
 						<div class="m-scrollable m-scroller ps ps--active-y" data-scrollable="true" data-height="400" style="height: 400px; overflow: hidden;">
 							<div class="m-list-timeline m-list-timeline--skin-light">
 								<div class="planned-trips">
 								@foreach ($rowData as $row)
-									<!--{{ dump($row) }}-->
+                                   <?php
+												$trip_status = DB::table('rfps')->where('user_trip_id', $row->id)->pluck('status');
+												foreach($trip_status as $item_new) {
+												$trip_status_id = $item_new;
+												}
+												$rfp_id = DB::table('rfps')->where('user_trip_id', $row->id)->pluck('id');
+	
+												
+                                ?>
 									<div class="planned-trip-content" id="{{ $row->id }}">
+											<span style="width: 40px;">
+										    <?php $rfp_value='';
+										    if($rfp_id->count() > 0){
+										    foreach($rfp_id as $rfp) { 
+										    	$rfp_value.= $rfp.",";	
+										    } 
+										    $rfp_value = rtrim($rfp_value,',');
+										    ?>
+										    <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand">
+												<input type="checkbox" class="compare_cb" name="compare_cb" value="{{ $rfp_value }}" />&nbsp;
+												<span></span>
+											</label>
+										<?php } ?>
+										</span>
 										<span class="planned-trip-heading">
 										<b>{{ \Carbon\Carbon::parse($row->check_in)->format('m/d/Y') }} - {{ \Carbon\Carbon::parse($row->check_out)->format('m/d/Y')}}</b>
 										<p>{{ $row->from_address_1 }} {{ $row->from_city }} {{ $row->from_zip }}</p>
+                                        
+										<p>
+											
+										@if(isset($rfp_counts[$row->id]))
+											{{ $rfp_counts[$row->id] }}
+										
+										@else 
+											0
+										@endif
 
+										RFPs Received 
+										</p>
+
+										<i class="la la-ellipsis-h m--font-brand"></i>
+										</span>
+
+										<span class="planned-trip-action">Needs review  </span>
+									</div>
+								
+                                   
+								@endforeach
+
+								</div>
+							</div>
+						<div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; height: 400px; right: 4px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 245px;"></div></div></div>
+					</div>
+					<div class="tab-pane" id="m_widget4_tab2_content">
+					
+					</div>
+					<div class="tab-pane" id="m_widget4_tab3_content">
+					</div>
+				</div>
+				<?php  
+                foreach($rfp_id as $rfp) { 
+				if($rfp != ''){?>
+                   <div>
+				    <div id="pending" class="page hide">
+			        	<div class="tab-pane active" id="m_widget4_tab1_content">
+						<div class="m-scrollable m-scroller ps ps--active-y" data-scrollable="true" data-height="400" style="height: 400px; overflow: hidden;">
+							<div class="m-list-timeline m-list-timeline--skin-light">
+								<div class="planned-trips">
+								@foreach ($rowData as $row)
+									<?php
+												$trip_status = DB::table('rfps')->where('user_trip_id', $row->id)->pluck('status');
+												foreach($trip_status as $item_new) {
+												$trip_status_id = $item_new;
+												}
+                                    if($trip_status_id== 1){
+									?>
+									<div class="planned-trip-content" id="{{ $row->id }}">
+									
+										<span class="planned-trip-heading">
+										<b>{{ \Carbon\Carbon::parse($row->check_in)->format('m/d/Y') }} - {{ \Carbon\Carbon::parse($row->check_out)->format('m/d/Y')}}</b>
+										<p>{{ $row->from_address_1 }} {{ $row->from_city }} {{ $row->from_zip }}</p>
+										
 										<p>
 										@if(isset($rfp_counts[$row->id]))
+
 											{{ $rfp_counts[$row->id] }}
 										@else 
 											0
@@ -317,6 +478,7 @@ $(document).ready(function() {
 
 										<span class="planned-trip-action">Needs review </span>
 									</div>
+								<?php } ?>
 
 								@endforeach
 
@@ -324,11 +486,102 @@ $(document).ready(function() {
 							</div>
 						<div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; height: 400px; right: 4px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 245px;"></div></div></div>
 					</div>
-					<div class="tab-pane" id="m_widget4_tab2_content">
+			    </div>
+			    <div id="accept" class="page hide">
+			        	<div class="tab-pane active" id="m_widget4_tab1_content">
+						<div class="m-scrollable m-scroller ps ps--active-y" data-scrollable="true" data-height="400" style="height: 400px; overflow: hidden;">
+							<div class="m-list-timeline m-list-timeline--skin-light">
+								<div class="planned-trips">
+								@foreach ($rowData as $row)
+									<?php
+												$trip_status = DB::table('rfps')->where('user_trip_id', $row->id)->pluck('status');
+												foreach($trip_status as $item_new) {
+												$trip_status_id = $item_new;
+												}
+                                    if($trip_status_id== 2){
+									?>
+									<div class="planned-trip-content" id="{{ $row->id }}">
+										
+										<span class="planned-trip-heading">
+										<b>{{ \Carbon\Carbon::parse($row->check_in)->format('m/d/Y') }} - {{ \Carbon\Carbon::parse($row->check_out)->format('m/d/Y')}}</b>
+										<p>{{ $row->from_address_1 }} {{ $row->from_city }} {{ $row->from_zip }}</p>
+										
+										<p>
+										@if(isset($rfp_counts[$row->id]))
+
+											{{ $rfp_counts[$row->id] }}
+										@else 
+											0
+										@endif
+
+										RFPs Received 
+										</p>
+
+										<i class="la la-ellipsis-h m--font-brand"></i>
+										</span>
+
+										<span class="planned-trip-action">Needs review </span>
+									</div>
+								<?php } ?>
+
+								@endforeach
+
+								</div>
+							</div>
+						<div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; height: 400px; right: 4px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 245px;"></div></div></div>
 					</div>
-					<div class="tab-pane" id="m_widget4_tab3_content">
+			    </div>
+			    <div id="decline" class="page hide">
+			    	  <div class="tab-pane active" id="m_widget4_tab1_content">
+						<div class="m-scrollable m-scroller ps ps--active-y" data-scrollable="true" data-height="400" style="height: 400px; overflow: hidden;">
+							<div class="m-list-timeline m-list-timeline--skin-light">
+								<div class="planned-trips">
+								@foreach ($rowData as $row)
+									<?php
+												$trip_status = DB::table('rfps')->where('user_trip_id', $row->id)->pluck('status');
+												foreach($trip_status as $item_new) {
+												$trip_status_id = $item_new;
+												}
+                                   if($trip_status_id== 3){
+									?>
+									<div class="planned-trip-content" id="{{ $row->id }}">
+											
+										<span class="planned-trip-heading">
+										<b>{{ \Carbon\Carbon::parse($row->check_in)->format('m/d/Y') }} - {{ \Carbon\Carbon::parse($row->check_out)->format('m/d/Y')}}</b>
+										<p>{{ $row->from_address_1 }} {{ $row->from_city }} {{ $row->from_zip }}</p>
+										
+										<p>
+										@if(isset($rfp_counts[$row->id]))
+
+											{{ $rfp_counts[$row->id] }}
+										@else 
+											0
+										@endif
+
+										RFPs Received 
+										</p>
+
+										<i class="la la-ellipsis-h m--font-brand"></i>
+										</span>
+
+										<span class="planned-trip-action">Needs review </span>
+									</div>
+								<?php } ?>
+
+								@endforeach
+
+								</div>
+							</div>
+						<div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; height: 400px; right: 4px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 245px;"></div></div></div>
 					</div>
-				</div>
+			    </div>
+
+			</div>
+		<?php } else{
+			echo "No more Record for this trip";
+		}
+	} ?>
+
 			</div>
 		</div>
 

@@ -4,11 +4,12 @@
         <hr />       
     </div>
 </div>
+
 <div class="container m-t">		
 <div class="table-responsive">    
-    <table class="table table-striped table-bordered">
+    <table class="table  table-bordered">
         <thead>
-			<tr>
+			<tr style="border-bottom-style: dashed;border-color: #eee;">
 				<th> No </th>
 				@foreach ($tableGrid as $t)
 					@if($t['view'] =='1')				
@@ -28,7 +29,7 @@
 
         <tbody>        						
             @foreach ($rowData as $row)
-                <tr>
+                <tr style="border-bottom-style: dashed;border-color: #eee;">
 				<td> {{ ++$i }}</td>									
 				 @foreach ($tableGrid as $field)
 					 @if($field['view'] =='1')

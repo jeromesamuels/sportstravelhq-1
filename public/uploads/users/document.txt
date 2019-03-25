@@ -1,0 +1,81 @@
+
+
+File documentation
+Formatted following files
+1. core/elFinderVolumeMySQL.class.php
+2. core/filemanager.blade.php
+3. core/form-1.blade
+4. core/form.blade	
+5. core/public/index.blade.php		
+6. core/view.blade.php	
+7. core/configuration.blade.php			
+8. core/docs.blade.php
+9. core/field.blade.php
+10. core/public/form.blade.php
+11. core/templates.form.blade
+12. core/forms/view.blade.php
+13. core/logs/view.blade.php
+14. core/pages/form.blade.php
+15. core/pages/index.blade.php
+16. core/posts/form.blade.php
+17. core/posts/index.blade.php
+18. core/template/Changelog.blade.php
+19. core/template/forms.blade.php
+20. core/template/icons.blade.php
+21. core/template/index.blade.php
+22. core/template/panel.blade.php
+23. core/template/tab.blade.php
+24. core/template/tables.blade.php
+25. core/template/typography.blade.php
+26. core/users/blast.blade.php
+27. core/users/coordinators.blade.php
+28. core/users/email.blade.php
+29. core/users/form.blade.php
+30. core/users/index.blade.php
+31. core/users/invite.blade.php
+32. core/users/inviteemail.blade.php
+33. core/users/view.blade.php
+34. corporate/user/blast.blade.php
+35. corporate/user/coordinators.blade.php
+36. corporate/user/email.blade.php
+37. corporate/user/form.blade.php
+38. corporate/user/index.blade.php
+39. corporate/user/invite.blade.php
+40. corporate/user/inviteemail.blade.php
+41. corporate/user/view.blade.php
+42. corporate/corporate_users.blade.php
+43. corporate/index.blade.php
+44. dashboard/index.blade.php
+45. errors/404.blade.php
+46. errrs/503.blade.php
+47. errors/bloacked.blade.php
+48. hotelamenities/public/form.blade.php
+49. hotelamenities/public/index.blade.php
+50. hotelamenities/form.blade.php
+51. hotelamenities/index.blade.php
+52. hotelamenities/table.blade.php
+53. hotelamenities/toolbar.blade.php
+54. hotelamenities/view.blade.php
+55.hotelmanager/viewagreements.blade.php
+56.hotelmanager/viewRoomListing.blade.php
+57. invoices/public/form.blade.php
+58. invoices/public/index.blade.php
+59. invoices/public/view.blade.php
+60. invoices/index.blade.php
+61. invoices/view.blade.php
+62. layouts/default/blog/view.blade.php
+63. layouts/default/navigation.blade.php
+64. notifications/form.blade.php
+65. notifications/index.blade.php
+66. notifications/view.blade.php
+67. sximo/code/index.blade.php
+68. sximo/config/blast.blade.php
+69. sximo/config/email.blade.php
+70. sximo/config/index.blade.php
+71. sximo/config/log.blade.php
+72. sximo/config/security.blade.php
+73. sximo/form/manage.blade.php
+74. sximo/menu/index.blade.php
+
+
+

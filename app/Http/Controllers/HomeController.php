@@ -5,6 +5,7 @@ use App\Library\Markdown;
 use Mail;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
+use Illuminate\Support\Facades\DB;
 use Validator, Input, Redirect ; 
 
 class HomeController extends Controller {
@@ -350,5 +351,19 @@ class HomeController extends Controller {
 	public function set_theme( $id ) {
 		session(['set_theme'=> $id ]);
 		return response()->json(['status'=>'success']);
+	}
+	public function revenue() {
+		return view('invoices.revenue');	
+	}
+	public function booking() {
+		return view('invoices.booking');	
+	}
+	public function client() {
+		return view('client.index');	
+	}
+	public function clientProfile($id) {
+		$clientTrips = DB::table('user_trips')->where('entry_by', $id)->paginate(10);
+		//$clientTrips= usertrips::where('entry_by', $id)->paginate(15);
+        return view('client.clientProfile',compact('clientTrips'));		
 	}
 }

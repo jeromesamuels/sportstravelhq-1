@@ -21,7 +21,7 @@
                 <div class="sbox-content">
                     @include('includes.alerts')
                     
-                    <form action="{{ route('systemadmin.updateHotels',$hotel->id) }}" method="post">
+                    <form action="{{ route('systemadmin.updateHotels',$hotel->id) }}" method="post" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         {{ method_field("PUT") }}
                         <div class="row">
@@ -68,9 +68,20 @@
                                         <option value="Hilton" {{ $hotel->type == "Hilton" ? "selected" : "" }}>Hilton</option>
                                         <option value="Marriott" {{ $hotel->type == "Marriott" ? "selected" : "" }}>Marriott</option>
                                         <option value="IHG" {{ $hotel->type == "IHG" ? "selected" : "" }}>IHG</option>
-                                        <option value="Hyatt" {{ $hotel->type == "Hyatt" ? "selected" : "" }}>Hyatt</option>
-                                        <option value="Wyndham" {{ $hotel->type == "Wyndham" ? "selected" : "" }}>Wyndham</option>
+                                       
                                     </select>
+                                </div>
+                            </div>
+                              <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Hotel Type Logo</label>
+                                   <input type="file" name="logo" id="logo" class="inputfile" value="{{ $hotel->logo }}" />
+                                </div>
+                            </div>
+                                <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Hotel Type Property</label>
+                                     <input type="file" name="property" id="property" class="inputfile" value="{{ $hotel->property }}" />
                                 </div>
                             </div>
                             <div class="col-sm-12">

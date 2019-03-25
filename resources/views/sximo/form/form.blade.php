@@ -20,9 +20,6 @@
 	        <input type="text" name="email" value="" class="form-control input-sm" />		       
 		</div>
 	
-
-
-
 		<div class="form-group">
 			<label class=""> Success Note </label>			
 	       	<input type="text" name="success" value="" class="form-control input-sm" />	      

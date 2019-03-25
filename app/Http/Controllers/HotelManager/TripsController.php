@@ -11,19 +11,18 @@ use Illuminate\Support\Facades\Session;
 
 class TripsController extends Controller
 {
-    public function __construct(){
+    public function __construct() {
 		if(Session::has('level')){
 			if(Session::get('level') != 5)
-				return redirect()->back();
+			return redirect()->back();
 		}
 		else
 			return redirect()->back();
 	}
 
 	public function index(){
-		$trips = usertrips::all();
+		$trips = usertrips::all()->sortByDesc('added');
 		$amenities = hotelamenities::all();
-
 		return view('hotelmanager.viewtrips',compact('trips','amenities'));
 	}
 
@@ -34,10 +33,17 @@ class TripsController extends Controller
 		return view('hotelmanager.tripsingle', compact('trip', 'rfp'));
 	}
 
+	public function invoice($invoice_id) {
+		/*$trip = usertrips::find($id);
+        $rfp = DB::table('rfps')->where('user_trip_id', '=', $id)->where('user_id', '=', session('uid'))->first();*/
+
+		return view('hotelmanager.tripInvoice');
+	}
+
 	public function filterByAmenities(Request $request)
 	{
 		if($request->data){ 
-			$trips = usertrips::join('trip_amenities','trip_amenities.trip_id','=','user_trips.id')->whereIn('trip_amenities.amenity_id', explode(',', $request->data))->get();
+			$trips = usertrips::join('trip_amenities','trip_amenities.trip_id','=','user_trips.id')->whereIn('trip_amenities.amenity_id', explode(',', $request->data))->all();
 		}
 		else{ 
 		 	$trips = usertrips::all();

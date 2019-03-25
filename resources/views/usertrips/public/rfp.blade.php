@@ -1,4 +1,40 @@
 <div class="m-portlet__header" style="padding: 20px;">
+	
+      <?php
+                        /*Get user id of sales manger*/
+                          $user_lid = DB::table('rfps')->where('sales_manager', $rfp->sales_manager)->pluck('user_id');    
+                                             
+                          foreach($user_lid as $item) {
+                            $user_id = $item;
+                          } 
+                        
+                          /*Get hotel id of sales manger*/
+                          $hotel_lid = DB::table('tb_users')->where('id', $user_id)->pluck('hotel_id');    
+                                             
+                          foreach($hotel_lid as $item1) {
+                            $hotel_id = $item1;
+                          }
+                        
+                        
+                          /*Get hotel details of sales manger*/
+                         
+                           $hotel_details = DB::table('hotels')->select('name', 'address', 'property', 'rating')->where('id',$hotel_id)->first();    
+                              
+                             if ($hotel_details) {
+		                        $name = $hotel_details->name;
+		                        $address = $hotel_details->address;
+		                        $property = $hotel_details->property;
+		                        $rating = $hotel_details->rating;
+                        
+	                        } else {
+	                        
+	                        }  
+                        
+                        /*Get hotel Aminities of sales manger*/         
+                         
+                        
+             ?>
+
 	<div class="row">
 
 		<div class="col-md-4">
@@ -8,8 +44,8 @@
 		</div>
 		<div class="col-md-4" style="text-align: center;">
 
-			<h5>Hilton Tampa Downtown </h5>
-			<h4>$123/room</h4>
+			<h5><?php echo  $name; ?></h5>
+			<h4>{{ $rfp->queen_beedrooms + $rfp->king_beedrooms }} / room</h4>
 
 		</div>
 		<div class="col-md-4">
@@ -18,19 +54,27 @@
 		</div>
 
 	</div>
+	<div class="row">
+        <div class="col-md-2">
+		</div>
+		<div class="col-md-8">
+         <img alt="" src="../public/uploads/users/<?php echo $property; ?>"  class="img-responsive" width="100%"/>
+		</div>
+		<div class="col-md-2">
+		</div>
+	</div>		
 </div>
-
 
 
 <div class="m-portlet__body">
 	<div class="m-portlet__body" >
-
+       
     	<div class="alert alert-success text-left" role="alert" style="margin: 0 20px;">
 			<i class="fa fa-check"></i> &nbsp;&nbsp;&nbsp; The hotel has responded with a proposal
 		</div>
 
 		<div style="text-align: left;padding: 20px;font-size: 16px;color: #2c2e2e;">
-			NTH Tophat, <br /><br />Hi John Smith, <br />Please see our hotel availability, rates and amenities below for your requested dates.<br />
+			<br />Hi  <br />Please see our hotel availability, rates and amenities below for your requested dates.<br />
 		</div>
 
 		<table class="rfp-detail" >
@@ -67,7 +111,7 @@
 
 		</div>
 		<div class="col-md-6">
-			<a href="javascript:void(0);" title="{{ $rfp->id }}" class="btn btn-default btn-secondary btn-md btn-rfp-compare">Add to compare</a>
+			<a href="javascript:void(0);" title="{{ $rfp->id }}" class="btn btn-default btn-secondary btn-md  btn-rfp-compare">Add to compare</a>
 			<a href="javascript:void(0);" title="{{ $rfp->id }}" class="btn btn-default btn-secondary btn-md btn-rfp-save">Save</a>
 			<button data-toggle="modal" data-target="#confirm_accept" title="{{ $rfp->id }}" class="btn btn-default btn-md">Accept</button>
 		</div>		
@@ -88,11 +132,20 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<p>Are you sure want to decline this proposal ?</p>
+				<h5>Select a Reason</h5>
+
+				<select id="decline_reason_select" name='decline_reason_select' rows='5' class='select2'>
+				    <option value="">--Please select a reason for Declining--</option>
+				    <option value="1">No availability for dates requested</option>
+				    <option value="2">Budget too low</option>
+				    <option value="3">To many Concessions</option>
+				    <option value="4">Property under renovation</option>
+				</select>
+
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-				<button type="button" class="btn btn-primary btn-rfp-decline" title="{{ $rfp->id }}" >Yes Decline</button>
+				<button type="button" class="btn btn-primary btn-rfp-decline" title="{{ $rfp->id }}" >Submit</button>
 			</div>
 		</div>
 	</div>
@@ -110,11 +163,12 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<p>Are you sure want to accept this proposal ?</p>
+				<p>You have clicked on the Accept proposal button and will now be sent to your hotel agreement, </p>
+				<p>Are you sure you want to continue?</p>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-				<button type="button" class="btn btn-primary btn-rfp-accept" title="{{ $rfp->id }}" >Yes Accept</button>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+				<button type="button" class="btn btn-primary btn-rfp-accept" title="{{ $rfp->id }}" >Yes</button>
 			</div>
 		</div>
 	</div>

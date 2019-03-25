@@ -29,10 +29,7 @@
 
 
 				<img src="{{ asset('frontend/sportstravel/assets/images/logo.png') }}" title="{{ config('sximo.cnf_appname') }}" alt="{{ config('sximo.cnf_appname') }}" height="50" >
-
-
-
-			 {!! Form::open(array('url'=>'user/create', 'class'=>'form-signup','parsley-validate'=>'','novalidate'=>' ','id'=>'register-form' )) !!}
+			     {!! Form::open(array('url'=>'user/create', 'class'=>'form-signup','parsley-validate'=>'','novalidate'=>' ','id'=>'register-form' )) !!}
 		    	@if(Session::has('message'))
 					{!! Session::get('message') !!}
 				@endif
@@ -43,6 +40,78 @@
 						<li>{{ $error }}</li>
 					@endforeach
 				</ul>
+            
+            <div class="form-group has-feedback">
+				
+			<!--   {!! Form::text('user_type', null, array('class'=>'form-control','required'=>'true'  ,'placeholder'=> __('Type') )) !!} -->
+				<select class="selectpicker form-control" name="user_type" id="user_type">
+					<option value="0">Please select user type</option>
+  					<option value="1">Hotel Manager</option>
+   					<option value="2">Coordinator</option>
+   				</select>
+			</div>
+			<script type="text/javascript">
+				$(document).ready(function(){
+				    $('#user_type').on('change', function() {
+				      if ( this.value == '1')
+				      //.....................^.......
+				      {
+				        $("#hotel_manager").show();
+				         $("#coordinator").hide();
+				      }
+				      else if(this.value == '2')
+				      {
+				      	$("#coordinator").show();
+				      	 $("#hotel_manager").hide();
+				      
+				      }
+				      else{
+				      	 $("#hotel_manager").hide();
+				      	 $("#coordinator").hide();
+				      }
+				    });
+				});
+			</script>
+				<div id="hotel_manager" style='display:none;'>
+						
+					<div class="form-group has-feedback">
+					<select class="selectpicker form-control" name="hotel_type" id="hotel_type" >
+						<option value="" >Please select Hotel type</option>
+						<?php 
+                          $hotel_type=DB::table('hotels')->get();
+                          foreach ($hotel_type as $value_type) {
+                        
+						?>
+	  					<option value="{{ $value_type->domain }}" >{{ $value_type->type }} </option>
+	   					<?php } ?>
+	   				</select>
+					</div>
+
+					<div class="form-group has-feedback">
+					
+					  {!! Form::text('hotel_code', null, array('class'=>'form-control' ,'placeholder'=> __('Hotel Code') )) !!}
+				  	</div>
+
+					<div class="form-group has-feedback">
+						
+					 {!! Form::text('hotel_address', null, array('class'=>'form-control' ,'placeholder'=> __('Hotel Address') )) !!}
+				 	</div>
+					
+					<div class="form-group has-feedback">
+					<select class="selectpicker form-control" name="service_type" id="service_type" >
+	  					<option value="1" data-toggle="tooltip" title="Prepared Meals (Full Service)">Full service </option>
+	   					<option value="2">Limited service</option>
+	   				</select>
+					</div>
+
+
+				</div>
+				<div id="coordinator" style='display:none;'>
+						<div class="form-group has-feedback">
+					  {!! Form::text('o_name', null, array('class'=>'form-control', 'placeholder'=> __('Organization name') )) !!}
+						
+					</div>
+				</div>
 
 			<div class="form-group has-feedback">
 				
@@ -62,7 +131,11 @@
 			
 			
 			<div class="form-group has-feedback">
-			 {!! Form::text('email', null, array('class'=>'form-control', 'required'=>'true','placeholder'=> __('core.email'))) !!}
+			 {!! Form::text('email', null, array('class'=>'form-control', 'id'=>'email' ,'required'=>'true', 'placeholder'=> __('core.email'))) !!}
+			</div>
+			<p id="show_error" style="color:red;display: none;">Email must be a Hotel type related e-mail address </p>
+			<div class="form-group has-feedback">
+			 {!! Form::text('phone', null, array('class'=>'form-control', 'required'=>'true','placeholder'=> __('Phone Number'))) !!}
 			</div>
 
 			<div class="form-group has-feedback">
@@ -82,7 +155,7 @@
 					<div class="clr"></div>
 				</div>	
 			 	@endif						
-
+             	
 		      <div class="row form-group">
 		        <div class="col-sm-12">
 		          <button type="submit" id="signup" style="width:100%;" class="btn btn-default pull-right"><i class="icon-user-plus"></i> @lang('core.signup')	</button>
@@ -107,15 +180,13 @@
 				</ol>
 			</div>
 		</div>
+	
 
-		@else
+			@else
 
+			  <script>window.location = "{{ URL::to('/') }}";</script>
 
-
-		  <script>window.location = "{{ URL::to('/') }}";</script>
-
-
-		@endif  
+			@endif  
 
 <?php 
 
@@ -156,6 +227,10 @@ $agreement_text = '<div id="Translation"><h3>The standard Lorem Ipsum passage, u
 		});
 
 	});
+
+	$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip();   
+});
 </script>
 <style type="text/css">
 
@@ -179,7 +254,35 @@ $agreement_text = '<div id="Translation"><h3>The standard Lorem Ipsum passage, u
 
 
 </style>
-
+<script type="text/javascript">
+				$(document).ready(function() {
+				 	//e.preventDefault();
+				
+                  $("#email").keyup(function(e){
+		          e.preventDefault();
+			       validateEmail($('#email').val());
+	               return false;
+				    
+	            });
+	          });
+				function validateEmail(email) {
+					var htype=document.getElementById("hotel_type").value;
+					
+				    var re = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/;
+	               
+				    if (re.test(email)) {
+				        if (email.indexOf('@'+htype, email.length - '@'+htype.length) !== -1) {
+				          
+				            $("#show_error").hide();
+				            $("#email").val();
+	                        
+				        } else {
+				           $("#show_error").show();
+				           $("#email").val("");
+				        }
+				    } 
+				}
+			</script>
 	  </div>
 	</div>  
 </div>

@@ -127,6 +127,7 @@ class UsersController extends Controller {
 
 	function store( Request $request  )
 	{
+		
 		$task = $request->input('action_task');
 		switch ($task)
 		{
@@ -158,6 +159,7 @@ class UsersController extends Controller {
 			$rules['password'] 				= 'required|between:6,12|confirmed';
 			$rules['password_confirmation'] = 'required|between:6,12';
 			$rules['email'] 				= 'required|email|unique:tb_users';
+			$rules['phone'] 				= 'required';
 			$rules['username'] 				= 'required|alpha_num|min:2|unique:tb_users';
 		} else {
 			if($request->input('password') !='')
@@ -206,7 +208,7 @@ class UsersController extends Controller {
 
 			if(!is_null($request->input('apply')))
 			{
-				$return = 'core/users/update/'.$id.'?return='.self::returnUrl();
+				$return = 'core/users/'.$id.'?return='.self::returnUrl();
 			} else {
 				$return = 'core/users?return='.self::returnUrl();
 			}

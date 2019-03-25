@@ -164,7 +164,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
-
+        
         /*
          * Package Service Providers...
          */
@@ -240,7 +240,7 @@ return [
         'PDF'       => 'Vsmoraes\Pdf\PdfFacade',  
         'Cart'      => Gloudemans\Shoppingcart\Facades\Cart::class, 
         'Helper' => App\Helpers\Helper::class,
-
+        'Twilio' => 'Aloha\Twilio\Support\Laravel\Facade',
     ],
 
 ];

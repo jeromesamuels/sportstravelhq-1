@@ -2,6 +2,11 @@
 
 @section('content')
 {{--*/ usort($tableGrid, "SiteHelpers::_sort") /*--}}
+<style>
+	 .m-header--fixed .m-body {
+        padding-top: 20px !important;
+    }
+</style>
 <section class="page-header row">
 	<h2> {{ $pageTitle }} <small> {{ $pageNote }} </small></h2>
 	<ol class="breadcrumb">
