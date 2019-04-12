@@ -327,8 +327,10 @@ abstract class Controller extends BaseController {
 				} 
 			}							
 		}	
+		
 		return $rules ;
 
+        	
 
 	}	
 
@@ -348,6 +350,7 @@ abstract class Controller extends BaseController {
 	{	
 		$str = $this->info['config']['forms'];
 		$data = array();
+
 		foreach($str as $f){
 			$field = $f['field'];
 			// Update for V5.1.5 issue on Autofilled createOn and updatedOn fields
@@ -561,9 +564,11 @@ abstract class Controller extends BaseController {
 		$global	= (isset($this->access['is_global']) ? $this->access['is_global'] : 0 );
 		
 		if($global == 0 )
-			$data['entry_by'] = \Session::get('uid');
+		$data['entry_by'] = \Session::get('uid');
 		/* Added for Compatibility laravel 5.2 */
 		$values = array();
+
+			
 		foreach($data as $key=>$val)
 		{
 			if($val !='') $values[$key] = $val;
@@ -1086,7 +1091,8 @@ function detailviewsave( $model ,$request , $detail , $id )
 			return false;
 		}			
 	
-	}		
+	}	
+		
 
 }
 
