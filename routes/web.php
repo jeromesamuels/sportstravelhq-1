@@ -17,6 +17,7 @@ Route::get('dashboard/import', 'DashboardController@getImport');
 /* Auth & Profile */
 Route::get('user/profile','UserController@getProfile');
 Route::get('user/login','UserController@getLogin');
+Route::get('user/login/code','UserController@getLoginCodePage')->name('login_code');
 Route::get('user/register','UserController@getRegister');
 //Route::get('user/register_tc/{tc_email}','UserController@getRegisterTC');
 Route::get('user/register_tc', ['as' => 'register_tc', 'uses' => 'UserController@getRegisterTC']);
@@ -25,6 +26,12 @@ Route::get('user/reminder','UserController@getReminder');
 Route::get('user/reset/{any?}','UserController@getReset');
 Route::get('user/reminder','UserController@getReminder');
 Route::get('user/activation','UserController@getActivation');
+Route::get('user/code','UserController@getCode');
+Route::get('user/guestLogin','UserController@guestLogin');
+Route::get('user/trips','UserController@userTrips');
+Route::post('user/guestLoginStore','UserController@guestLoginStore');
+Route::get('/TripDetails/{id}/{email}','UserController@TripDetails')->name('hotelmanager.trips.guestShow');
+Route::post('/saveguestBid','UserController@saveguestBid')->name('hotelmanager.saveuserBid');
 // Social Login
 Route::get('user/socialize/{any?}','UserController@socialize');
 Route::get('user/autosocialize/{any?}','UserController@autosocialize');
@@ -53,8 +60,10 @@ Route::post('RFP/{rfp_id}', 'UsertripsController@getRFP');
 Route::post('compareRFP/{rfp_id}', 'UsertripsController@compareRFP');
 Route::post('acceptRFP/{rfp_id}', 'UsertripsController@acceptRFP');
 Route::post('declineRFP/{rfp_id}/{reason}', 'UsertripsController@declineRFP');
+Route::post('acceptAgree/{rfp_id}', 'UsertripsController@acceptAgree');
 
 Route::get('teams', 'UsertripsController@getTeamview')->name('usertrips.team');
+Route::get('compare', 'UsertripsController@compare');
 Route::get('teams/create','UsertripsController@getTeam')->name('usertrips.team');
 Route::post('teams/store','UsertripsController@getTeamstore')->name('usertrips.team');
 Route::delete('teams/delete/{id}','UsertripsController@getTeamdelete')->name('usertrips.team');
@@ -93,6 +102,12 @@ Route::post('/submitBid','HotelManagerController@saveBid')->name('hotelmanager.s
 Route::post('/makeInvoice','HotelManagerController@makeInvoice')->name('hotelmanager.makeInvoice');
 Route::post('/uploadInvoice','HotelManagerController@uploadInvoice')->name('hotelmanager.uploadInvoice');
 Route::get('/bidSent/{id}','HotelManagerController@bidSent')->name('hotelmanager.bidSent');
+Route::post('/uploadRoomingList','TripsController@uploadRoomingList')->name('hotelmanager.uploadRoomingList');
+Route::get('/blackout','HotelManagerController@blackoutDates')->name('hotelmanager.blackoutDates');
+Route::post('/blackoutStore','HotelManagerController@blackoutStore')->name('hotelmanager.blackoutStore');
+Route::get('/blackoutReport','HotelManagerController@blackoutReport')->name('hotelmanager.blackoutReport');
+
+
 // Agreement Form
 Route::get('/agreements','HotelManagerController@viewAgreements')->name('hotelmanager.viewAgreements');
 Route::get('/agreements/download/{id}','HotelManagerController@downloadAgreement')->name('hotelmanager.agreementDownload');
@@ -122,4 +137,10 @@ Route::get('clientProfile/{id}','HomeController@clientProfile')->name('client.cl
 
 Route::get('trips/','UsertripsController@show_trips');
 Route::get('/trips/{id}','UsertripsController@show_trip_detail')->name('coordinator.trips.show');
+
+Route::get('get-location-from-ip',function(){
+    $ip= \Request::ip();
+    $data = \Location::get($ip);
+    
+});
 

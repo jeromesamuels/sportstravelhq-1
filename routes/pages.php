@@ -21,6 +21,7 @@ Route::get('book-a-hotel', 'HomeController@index');
 Route::get('revenue', 'HomeController@revenue');
 Route::get('booking', 'HomeController@booking');
 Route::get('client', 'HomeController@client');
+//Route::get('compare', 'UsertripsController@compare');
 
 
 ?>

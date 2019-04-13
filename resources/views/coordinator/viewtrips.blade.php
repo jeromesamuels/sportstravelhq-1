@@ -5,6 +5,143 @@
 <section class="page-header row" style="margin-top: 30px;">
     <h1>Dashboard </h1><span style="padding: 10px 15px;font-size: 16px;"><i class="fa fa-home" aria-hidden="true"></i> - Trip Status </span>
 </section>
+<script type="text/javascript">
+    
+    $(document).ready(function() {
+
+        var rfp_ids = [];
+        var rfp_ids_array = [];
+
+        $(".planned-trips .planned-trip-content").on("click", function() {
+            rfp_ids = [];
+            var id = $(this).attr("id");
+
+            $('.m-portlet__body').html('<div class="m-spinner m-spinner--brand m-spinner--lg"></div>');
+
+            var url = '{{ url("/RFPs/") }}';
+            $.post(url + '/' + id, function(response) {
+                if(response.success) 
+                    $('.received_rfps').html(response.view_data);
+            }, 'json');
+        });
+
+        $(document).on("click", ".m-portlet__body .rfp_detail .rfp_show_detail", function() {
+            var id = $(this).attr("id");
+
+            $('.m-portlet__body').html('<div class="m-spinner m-spinner--brand m-spinner--lg"></div>');
+
+            var url = '{{ url("/RFP/") }}';
+            $.post(url + '/' + id, function(response) {
+                if(response.success) 
+                    $('.received_rfps').html(response.view_data);
+            }, 'json');
+        });
+
+        
+        $(document).on("click", ".compare_cb", function(e) {
+            var rfp_id = $(this).val();
+            var arr=[];
+            if(rfp_id.includes(',')){
+            arr = rfp_id.split(',');
+
+            }else{
+                arr[0] = rfp_id;
+            }
+
+            
+            if($( this ).prop( "checked" )) {
+                //if(rfp_id.includes(',')){
+                    $.each(arr,function(key,value){
+                        rfp_ids_array.push(value);
+                    })
+                    console.log(rfp_ids_array.length);
+                
+                $(".compare-rfp").removeClass('btn-secondary');
+                $(".compare-rfp span").html('('+rfp_ids_array.length+')');
+
+                rfp_ids = rfp_ids_array;
+                
+            } else {
+
+                rfp_ids = jQuery.grep(rfp_ids, function(value) {
+                  return value != rfp_id;
+                });
+
+                console.log(rfp_ids);
+                if(rfp_ids.length) {
+                    $(".compare-rfp").removeClass('btn-secondary');
+                    $(".compare-rfp span").html('('+rfp_ids.length+')');
+                }
+                else {
+                    $(".compare-rfp").addClass('btn-secondary');
+                    $(".compare-rfp span").html('rfp_ids_array.length');
+                }
+            }
+        });
+        
+
+        $(document).on("click", ".m-portlet__header .compare-rfp", function() {
+            //var id = $(this).attr("id");
+          console.log(rfp_ids.length);
+        
+            if(rfp_ids.length>1) {
+                $('.m-portlet__body').html('<div class="m-spinner m-spinner--brand m-spinner--lg"></div>');
+                 console.log(rfp_ids);
+                
+                var url = '{{ url("/compareRFP/") }}';
+                $.post(url + '/' + rfp_ids, function(response) {
+                    if(response.success) 
+                        //$('#main-page .container .compare-result').html(response.view_data);
+                      $('div.compare-result').html(response.view_data);
+                      $('html, body').animate({
+                            'scrollTop' : $("#dynamictabstrp").position().top
+                      });
+                }, 'json');
+                
+            } else {
+                alert("Please select atleast two proposals to compare.");
+            }
+
+
+        });
+
+
+        $(document).on("click", ".btn-rfp-accept", function() {
+            var id = $(this).attr("title");
+            var url = '{{ url("/acceptRFP/") }}' + '/' + id;
+
+            $.post(url, function(response) {
+                if(response.success) {
+                    alert(response.view_data);
+                    location.reload();
+                }
+            }, 'json');
+
+        });
+
+
+        $(document).on("click", ".btn-rfp-decline", function() {
+
+            var id = $(this).attr("title");
+            
+            var e = document.getElementById ("decline_reason_select");
+            var reason = e.options [e.selectedIndex] .value;
+            //alert(reason);
+            var url = '{{ url("/declineRFP/") }}' + '/' + id + '/' + reason;
+
+            $.post(url,'/' + reason, function(response) {
+                if(response.success) {
+                    alert(response.view_data);
+                    location.reload();
+                }
+            }, 'json');
+
+        });
+
+    });
+
+</script>
+
 <div class="page-content row">
 <div class="page-content-wrapper no-margin">
 <div class="sbox" style="border-top: none">
@@ -14,6 +151,11 @@
             <h2 style="padding-bottom: 20px;">Trips Status Overview</h2>
         </div>
         <div class="row">
+            <div class="col-md-12">
+                <a href="{{ URL('/') }}" class="btn btn-default btn-md" style="margin: 10px 0px; background: #5dbbe0!important; color: #fff;">Book a Hotel</a>
+                <br>
+            </div>
+
             <div class="col-md-3" style="border-right: 1px solid #c3bfbf;">
                 <div class="info-boxes" style="background: #fff; color: #000;">
                     <h3>Total RFP</h3>
@@ -186,7 +328,8 @@
     </div>
     </div>
     </div>
-
+    </div>
+<div class="page-content row compare-result " id="dynamictabstrp"></div>
 
 @stop
 

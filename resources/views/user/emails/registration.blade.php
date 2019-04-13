@@ -14,7 +14,7 @@
 			<b>Email</b> : {{ $email }} <br />
 			<b>Password</b> : {{ $password }}<br />
 		</p>
-		<p> To sign into your account, please visit  <a href="{{ URL::to('user/activation?code='.$code) }}">{{ URL::to('user/activation?code='.$code) }}</a>
+ 		<p> To sign into your account, please visit  <a href="{{ URL::to('user/activation?code='.$code) }}">{{ URL::to('user/activation?code='.$code) }}</a>
 			or <span><a href="{{ URL::to('user/activation?code='.$code) }}">Click here</a></span></p>
 
 		<p> If you have any questions regarding your account, click 'Reply' in your emil client we'll be only to happy to help.</p>

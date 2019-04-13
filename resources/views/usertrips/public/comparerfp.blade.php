@@ -49,6 +49,9 @@
      width: 250px;
     margin-top: 40px;
     }
+    .btn.btn-default, .btn.btn-secondary{
+            color: #000;
+    }
     .compare-head{margin-top:77px;}
     .compare-rfp-table tr,td {text-align:left;}
 </style>
@@ -59,7 +62,7 @@
                 <th><a href="{{ URL::to('/trips') }}"><i class="la la-angle-left"></i> Back </a></th>
                 <th colspan="10">
                     <div class="row">
-                        <h1 >Compare Hotel Proposals</h1>
+                        <h2 style="padding: 25px 0px;">Compare Hotel Proposals</h2>
                     </div>
                 </th>
             </tr>
@@ -118,38 +121,40 @@
                         </tr>
                     </table>
                 </td>
+
                 @foreach ($rfps as $rfpt)
                 @foreach ($rfpt as $rfp)
                 <td>
                     <?php
                         /*Get user id of sales manger*/
-                          $user_lid = DB::table('rfps')->where('sales_manager', $rfp->sales_manager)->pluck('user_id');    
+
+                          $user_lid = DB::table('rfps')->where('user_id', $rfp->user_id)->get();    
                                              
                           foreach($user_lid as $item) {
                             $user_id = $item;
                           } 
                         
                           /*Get hotel id of sales manger*/
-                          $hotel_lid = DB::table('tb_users')->where('id', $user_id)->pluck('hotel_id');    
+                          $hotel_lid = DB::table('tb_users')->where('id', $user_id->user_id)->get();    
                                              
                           foreach($hotel_lid as $item1) {
                             $hotel_id = $item1;
                           }
-                        
+                          
                         
                           /*Get hotel details of sales manger*/
                          
-                           $hotel_details = DB::table('hotels')->select('name', 'address', 'property', 'rating')->where('id',$hotel_id)->first();    
+                           $hotel_details = DB::table('hotels')->select('name', 'address', 'property', 'rating')->where('id',$hotel_id->hotel_id)->first();    
                               
                              if ($hotel_details) {
-                        $name = $hotel_details->name;
-                        $address = $hotel_details->address;
-                        $property = $hotel_details->property;
-                        $rating = $hotel_details->rating;
-                        
-                        } else {
-                        
-                        }  
+                            $name = $hotel_details->name;
+                            $address = $hotel_details->address;
+                            $property = $hotel_details->property;
+                            $rating = $hotel_details->rating;
+                            
+                            } else {
+                            
+                            }  
                         
                         /*Get hotel Aminities of sales manger*/         
                          
@@ -181,13 +186,13 @@
                             <td>${{ $rfp->offer_rate }}</td>
                         </tr>
                         <tr>
-                            <td >Supported</td>
+                            <td >Supported {{$rfp->user_id}}</td>
                         </tr>
                         <tr>
                             <td>{{ \Carbon\Carbon::parse($rfp->offer_validity)->format('m/d/Y') }}</td>
                         </tr>
                         <tr>
-                            <td>{{ $rfp->sales_manager }}</td>
+                            <td>{{ $rfp->sales_manager }} (Contact: <b>{{$hotel_id->phone_number}}</b> )</td>
                         </tr>
                         <tr>
                             <td>{{ $rfp->king_beedrooms }}</td>
@@ -232,10 +237,10 @@
                             <td >
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <button data-toggle="modal" data-target="#confirm_decline" class="btn btn-default btn-secondary btn-md">Decline</button>
+                                        <button data-toggle="modal" data-target="#confirm_decline" data-id="{{ $rfp->id }}" title="{{ $rfp->id }}" class="btn btn-default btn-secondary btn-md">Decline</button>
                                     </div>
                                     <div class="col-md-6">
-                                        <button data-toggle="modal" data-target="#confirm_accept" title="{{ $rfp->id }}" class="btn btn-default btn-md">Accept</button>		
+                                        <button data-toggle="modal" data-target="#confirm_accept"  data-id="{{ $rfp->id }}" title="{{ $rfp->id }}" class="btn btn-default btn-md">Accept</button>		
                                     </div>
                                 </div>
                             </td>
@@ -247,7 +252,7 @@
             </tr>
         </table>
         <!--begin::DeclineModal-->
-        <div class="modal fade" id="confirm_decline" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!--     <div class="modal fade" id="confirm_decline" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -265,7 +270,79 @@
                     </div>
                 </div>
             </div>
+        </div> -->
+        <script>
+    $(document).ready(function(){
+    $('#myModal').on('show.bs.modal', function (e) {
+        var rowid = $(e.relatedTarget).data('id');
+        //$('#trip_id').value=rowid;
+        document.getElementById('trip_id').value = rowid;
+        document.getElementById('rfp_decline').title = rowid;
+       
+     });
+    
+    $('#confirm_decline').on('show.bs.modal', function (e) {
+        var rowid = $(e.relatedTarget).data('id');
+        //$('#trip_id').value=rowid;
+        document.getElementById('rfp_decline').title = rowid;
+       
+     });
+    $('#confirm_accept').on('show.bs.modal', function (e) {
+        var rowid = $(e.relatedTarget).data('id');
+        //$('#trip_id').value=rowid;
+        document.getElementById('rfp-accept').title = rowid;
+       
+     });
+    });
+    
+</script>
+  <div class="modal fade" id="confirm_decline" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                 
+                <h5>Select a Reason</h5>
+                <select id="decline_reason_select" name='decline_reason_select' rows='5' class='select2'>
+                    <option value="">--Please select a reason for Declining--</option>
+                    <option value="1">No availability for dates requested</option>
+                    <option value="2">Budget too low</option>
+                    <option value="3">To many Concessions</option>
+                    <option value="4">Property under renovation</option>
+                </select>
+            
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary btn-rfp-decline" id="rfp_decline" title="" >Submit</button>
+            </div>
         </div>
+    </div>
+</div>
+<script>
+    $(document).on("click", ".btn-rfp-decline", function() {
+    
+        var id = $(this).attr("title");
+        
+        var e = document.getElementById ("decline_reason_select");
+        var reason = e.options [e.selectedIndex] .value;
+        //alert(reason);
+        var url = '{{ url("/declineRFP/") }}' + '/' + id + '/' + reason;
+    
+        $.post(url,'/' + reason, function(response) {
+            if(response.success) {
+              alert(response.view_data);
+              location.reload();
+            }
+        }, 'json');
+    
+      });
+</script>
         <!--begin::AcceptModal-->
         <div class="modal fade" id="confirm_accept" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -281,7 +358,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary btn-rfp-accept" title="{{ $rfp->id }}" >Yes Accept</button>
+                        <button type="button" class="btn btn-primary btn-rfp-accept" id="rfp-accept" title="" >Yes Accept</button>
                     </div>
                 </div>
             </div>

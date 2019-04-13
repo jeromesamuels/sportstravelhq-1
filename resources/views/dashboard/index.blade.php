@@ -76,7 +76,6 @@
     height: 6px;
     border-radius: 5px;
     }
-    
     .skills {
     text-align: right;
     padding: 0;
@@ -195,10 +194,9 @@
         </div>
         <?php 
             $currentMonth = date('m');
-                         // $year=date("Y",$time);  
-                  /*Amount Paid*/
-                     $purchases_month = DB::table('invoices')->whereRaw('MONTH(check_out) = ?',[$currentMonth])->sum('invoices.amt_paid');    
-                         
+                 
+                     $purchases_month = DB::table('invoices')->sum('invoices.amt_paid');    
+                       
             ?>
         <div class="sbox" style="border-top: none;padding: 0;background: transparent; box-shadow: none;">
             <div class="sbox-content dashboard-container" style=" padding: 0;">
@@ -240,11 +238,16 @@
                                     
                                     $playerson = $y;
                                      $maxplayers = $sum;
-                                    
+                                     if($maxplayers ==0){
+                                     $maxplayers=1;
+                                     }
+                                     else{
+                                        $maxplayers=$sum;
+                                     }
                                      $percentage =($playerson / $maxplayers) * 100; // floor (round down) optional
                                      $type_percent=round($percentage);
-
-
+                                     
+                                    
                                     ?>
                                 <div class="col-sm-4" >
                                     <div class="info-boxes" style="background: #fff; color: #000;">
@@ -259,7 +262,6 @@
                                 </div>
                                 <?php } ?>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -292,7 +294,7 @@
                                               $sum =array_sum($array);
                                               //$count = count( $value->type);
                                               $purchases_all = DB::table('invoices')->where('hotel_type', $value->type)->get();
-                                     
+                                            
                                               ?>
                                         <tr>
                                             <td style="width: 20%;">  <img alt="" src="../uploads/users/<?php echo $value->logo;?>" id="div_corporate_img" border="0" width="60" style="margin-top: 30px;" class="img-responsive"></td>
@@ -304,6 +306,12 @@
                                                         $playerson = $y;
                                                          $maxplayers = $sum;
                                                         
+                                                         if($maxplayers ==0){
+                                                        $maxplayers=1;
+                                                        }
+                                                        else{
+                                                        $maxplayers=$sum;
+                                                        }
                                                          $percentage =($playerson / $maxplayers) * 100; // floor (round down) optional
                                                          $type_percent=round($percentage);
                                                         ?>
@@ -382,9 +390,9 @@
                     @if($data_value->avatar=='')
                     <img alt="" src="http://www.gravatar.com/avatar/4b3dc6054330df941dfadba06c65100a" width="70" height="70" class="img-circle" style=" float: left;
                         margin-right: 15px;">
-                     @else
-                       <img alt="" src="uploads/users/{{ $data_value->avatar }}"  border="0" width="70" class="img-circle" height="70" style=" float: left;margin-right: 15px;" />
-                     @endif
+                    @else
+                    <img alt="" src="uploads/users/{{ $data_value->avatar }}"  border="0" width="70" class="img-circle" height="70" style=" float: left;margin-right: 15px;" />
+                    @endif
                     <b style="display:block;"><?php echo $data_value->first_name.''.$data_value->last_name; ?></b>
                     <p><?php echo $data_value->email ?></p>
                 </div>
@@ -394,7 +402,6 @@
                 <h3 style="padding-top:30px;">Corporate Hotels</h3>
                 <p style="font-size: 14px;">Prefered Corporate hotels by clients</p>
                 <br />
-         
                 <script>
                     window.onload = function () {
                     
@@ -418,10 +425,10 @@
                             indexLabel: "{name} - #percent%",
                             dataPoints: [
                               <?php  
-                               foreach($data_hotel as $value){
-                                $hotel_type=$value->type; 
-                                $y = $array[$value->type];
-                                 ?>
+                        foreach($data_hotel as $value){
+                         $hotel_type=$value->type; 
+                         $y = $array[$value->type];
+                          ?>
                                  { y: <?php echo  $y; ?>, name: '<?php echo  $hotel_type; ?>' },
                                 
                              <?php  } ?>

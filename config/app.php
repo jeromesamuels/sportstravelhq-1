@@ -164,6 +164,8 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
+        //\Torann\GeoIP\GeoIPServiceProvider::class,
+        Stevebauman\Location\LocationServiceProvider::class,
         
         /*
          * Package Service Providers...
@@ -241,6 +243,8 @@ return [
         'Cart'      => Gloudemans\Shoppingcart\Facades\Cart::class, 
         'Helper' => App\Helpers\Helper::class,
         'Twilio' => 'Aloha\Twilio\Support\Laravel\Facade',
+        //'GeoIP' => \Torann\GeoIP\Facades\GeoIP::class,
+        'Location' => Stevebauman\Location\Facades\Location::class,
     ],
 
 ];

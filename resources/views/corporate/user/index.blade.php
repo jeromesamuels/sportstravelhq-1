@@ -20,14 +20,10 @@
     object-fit: cover;
     margin: 20px;
     }
+    .dropdown .dropdown-menu{
+    opacity: 1;
+    }
 </style>
-<!-- <section class="page-header row">
-    <h2> {{ $pageTitle }} <small> {{ $pageNote }} </small></h2>
-    <ol class="breadcrumb">
-        <li><a href="{{ url('') }}"> Dashboard </a></li>
-        <li class="active"> {{ $pageTitle }} </li>
-    </ol>
-    </section> -->
 <section class="page-header row" style="margin-top: 30px;">
     <h1>Dashboard </h1>
     <span style="padding: 10px 15px;font-size: 16px;"><i class="fa fa-home" aria-hidden="true"></i> - Corporate </span>
@@ -40,11 +36,9 @@
                     $data_hotel= DB::table('hotels')->groupBy('type')->get();
                     foreach($data_hotel as $value){
                        $name=$value->type;
-                          
-                        //$current_date= date('F');
+                      
                       $currentMonth = date('m');
-                       // $year=date("Y",$time);  
-                    /*Amount Paid*/
+                    
                     $purchases = DB::table('invoices')->where('invoices.hotel_type', '=', $name)->whereRaw('MONTH(check_out) = ?',[$currentMonth])->sum('invoices.amt_paid');    
                         $array[$name] = $purchases;
                          $y = $array[$value->type];
@@ -59,7 +53,7 @@
                     
                     }
                     
-                     /*Total Booking of this month*/
+                    
                     $trip_booking = DB::table('user_trips')->whereRaw('MONTH(added) = ?',[$currentMonth])->get();
                     
                     
@@ -128,12 +122,7 @@
                             <div class="col-md-6">
                                 <?php
                                     $user_id = session('uid');
-                                                   /*$grp_id = DB::table('tb_users')->where('id', $user_id)->pluck('group_id');    
-                                         
-                                            foreach($grp_id as $item_grpid) {
-                                                    $item_grpid_new = $item_grpid;
-                                                }
-                                              */
+                                     
                                     ?>
                                 @if($access['is_add'] ==1 && $user_id==5 || $user_id==1 || $user_id==2)
                                 <a href="{{ url('corporate/user/create?return='.$return) }}" class="btn btn-default btn-sm"  
@@ -258,14 +247,14 @@
                                         @if($user_id==5 || $user_id==1 || $user_id==2)
                                         <td>
                                             <div class="dropdown">
-                                                 <button class="btn btn-light btn-xs dropdown-toggle" type="button" data-toggle="dropdown"> View Corporate </button>
+                                                <button class="btn btn-light btn-xs dropdown-toggle" type="button" data-toggle="dropdown"> View Corporate </button>
                                                 <ul class="dropdown-menu">
                                                     @if($access['is_detail'] ==1)
                                                     <?php //echo "id=".$row->id; ?>
                                                     <li><a href="{{ url('corporate/user/'.$row->id.'?return='.$return)}}" class="tips" title="{{ __('core.btn_view') }}" data-id="{{$row->id}}"> {{ __('core.btn_view') }} </a></li>
                                                     @endif
                                                     @if($access['is_edit'] ==1)
-                                                    <li><a  href="{{ url('corporate/user/'.$row->id.'/edit?return='.$return) }}" class="tips" title="{{ __('core.btn_edit') }}" data-id="{{$row->id}}"> {{ __('core.btn_edit') }} </a></li>
+                                                    <li><a  href="{{ url('corporate/user/'.$row->id.'/edit?return='.$return) }}" class="tips" target="_blank" title="{{ __('core.btn_edit') }}" data-id="{{$row->id}}"> {{ __('core.btn_edit') }} </a></li>
                                                     @endif
                                                     <li class="divider" role="separator"></li>
                                                     @if($access['is_remove'] ==1)

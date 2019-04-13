@@ -42,12 +42,19 @@
 						<th>{{ $t['label'] }}</th>
 					@endif
 				@endforeach
+				<th>IP Address</th>
+				<th>Country</th>
+				<th>Location</th>
 			  </tr>
         </thead>
-
+      
+       
         <tbody>
 						
             @foreach ($rowData as $row)
+            <?php  $trip_log =  DB::table('trip_status_logs')->where('trip_id', $row->trip_id)->get();
+             foreach($trip_log as $trip_log_new){}
+           ?>
                 <tr>
 					<td width="30"> {{ ++$i }} </td>	
 				@foreach ($tableGrid as $field)
@@ -60,7 +67,9 @@
 						@endif	
 					 @endif					 
 				 @endforeach				 
-				
+				   <td><?php echo $trip_log_new->ip;?></td>
+				    <td><?php echo $trip_log_new->country;?> </td>
+				     <td><?php echo $trip_log_new->location;?></td>
                 </tr>
 				
             @endforeach

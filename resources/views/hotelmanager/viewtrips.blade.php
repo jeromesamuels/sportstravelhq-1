@@ -20,8 +20,12 @@
                     <p style="font-size: 14px;">Customers</p>
                 </div>
                  <?php 
-                    $data_all= DB::table('rfps')->get();
-                    
+                  if(session('level') != 1){
+                    $data_all= DB::table('rfps')->where('user_id', session('uid'))->get();
+                   }
+                   else{
+                     $data_all= DB::table('rfps')->get();
+                   } 
                     ?>
                 <div class="info-boxes" style="background: #fff; color: #000;float:right;">
                     <h3 style="float:right;top: 30px;position: absolute;right: 25px;">{{ count($data_all) }}</h3>
@@ -40,7 +44,7 @@
                     <p style="font-size: 14px;">Corporate</p>
                 </div>
                 <?php 
-                    $data= DB::table('rfps')->get()->where("status", 1)->all();
+                    $data= DB::table('user_trips')->get()->where("status", 6)->all();
                     
                     ?>
                 <div class="info-boxes" style="background: #fff; color: #000;float:right;">
@@ -77,7 +81,7 @@
             <div class="col-md-3" style="border-right: 1px solid #c3bfbf;">
                 <div class="info-boxes" style="background: #fff; color: #000;">
                     <h4 >Accepted Proposals</h4>
-                    <p style="font-size: 14px;">Customers</p>
+                    <p style="font-size: 14px;">Client</p>
                 </div>
                 <?php 
                     $data3= DB::table('rfps')->get()->where("status",2)->all();
@@ -173,9 +177,13 @@
                     <div class="head">
                         <h3 >Clients</h3>
                     </div><br />
+                    <?php 
+                      $data_grp= DB::table('tb_users')->where('group_id',4)->get();
+                            
+                    ?>
                     <div class="body">
-                           <h1 style="color:#5dbbe0;font-size: 40px;">800</h1>
-                       <p>Total Customers</p>
+                           <h1 style="color:#5dbbe0;font-size: 40px;">{{ count($data_grp) }}</h1>
+                       <p>Total Coordinators</p>
                     </div>
                 </div>
             </div>

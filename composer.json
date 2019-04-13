@@ -13,7 +13,8 @@
         "laravel/socialite": "~3.0",
         "vsmoraes/laravel-pdf": "^1.0",
         "gloudemans/shoppingcart": "^2.3",
-        "aloha/twilio": "^4.0"          
+        "aloha/twilio": "^4.0",
+        "stevebauman/location": "^3.0"          
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

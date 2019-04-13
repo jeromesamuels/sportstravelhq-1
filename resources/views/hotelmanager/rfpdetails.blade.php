@@ -15,6 +15,7 @@
             <div class="sbox-content">
                 
                 @include('includes.alerts')
+            
                 <div class="row">
                     <div class="col-sm-8">
                         <p>
@@ -23,6 +24,7 @@
                         </p>
                     </div>
                 </div>
+
                 <table class="table table-striped" >
                     <tbody>
                         <tr>

@@ -7,10 +7,15 @@
 </section>
 <div class="page-content row">
     <div class="page-content-wrapper no-margin">
-
+          <?php 
+                 
+                    $IATA_number = DB::table('hotels')->where('name', '=', $agreement->hotel_name)->pluck('IATA_number');
+                     foreach($IATA_number as $number){}
+                ?>
         <div class="sbox">
-            <div class="sbox-title">
-                <h1>Agreement</h1>
+            <div class="sbox-title1">
+                <h3>Agreement</h3><br />
+                <h5>IATA number: # {{ $number }}</h5>
             </div>
             <div class="sbox-content">
                 

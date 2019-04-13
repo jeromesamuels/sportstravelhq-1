@@ -3068,7 +3068,7 @@
             <div class="m-stack m-stack--flex-tablet-and-mobile m-stack--ver m-stack--desktop">
               <div class="m-stack__item m-stack__item--left m-stack__item--middle m-stack__item--last">
                 <span class="m-footer__copyright">
-                  2017 &copy; Metronic theme by <a href="https://keenthemes.com" class="m-link">Keenthemes</a>
+                   2019 &copy; Copyright <a href="http://13.92.240.159/demo/public/" class="m-link">Sports Travel HQ</a>
                 </span>
               </div>
               <div class="m-stack__item m-stack__item--right m-stack__item--middle m-stack__item--first">

@@ -32,9 +32,23 @@
                         <legend> Invoices</legend>
                         {!! Form::hidden('id', $row['id']) !!}
                         <div class="form-group" >
+                            <?php 
+                         
+                         if($row['room_rate'] !='' && $row['actualized_room_count'] !='' && $row['commissoin_rate'] !=''){
+                            $room_rate=$row['room_rate'] * $row['actualized_room_count'];
+                            $room_total=($room_rate * ($row['commissoin_rate']/100));
+                        }
+                        else{
+                             $room_total=0;
+                        }
+                            ?>
                             <div class="col-md-4">
                                 <label for="Check Out" class="control-label text-left"> Invoice ID: </label>
-                                #{{ $row['invoice_id'] }}
+                                # {{ $row['invoice_id'] }}
+                            </div>
+                             <div class="col-md-4">
+                                <label for="Check Out" class="control-label text-left"> IATA: </label>
+                                # 11725383
                             </div>
                         </div>
                         <div class="form-group" >
@@ -104,6 +118,10 @@
                                 <label for="Check Out" class="control-label text-left">Commission Rate: </label>
                                 {{ $row['commissoin_rate'] }}%
                             </div>
+                             <div class="col-md-4">
+                                <label for="Amount" class="control-label text-left"> Amount Paid (In Doller) After Commission Rate {{ $row['commissoin_rate'] }}% </label>
+                                {{ $room_total }}$
+                            </div>
                             <div class="col-md-4">
                                 <label for="Check Out" class="control-label text-left">Payment Status: </label>
                                 {{ $row['payment_status'] }}
@@ -118,15 +136,16 @@
                             <label for="Est Amt Due" class=" control-label col-md-3 text-left" style="text-align: left;" > Estmiated Amount Due: 
                             <input  type='text' name='est_amt_due' id='est_amt_due' value='{{ $row['est_amt_due'] }}' class='form-control input-sm ' /> 
                             </label>
-                            <label for="Amt Paid" class=" control-label col-md-3 text-left" style="text-align: left;" > Amount Paid:
+                            <label for="Amt Paid" class=" control-label col-md-3 text-left" style="text-align: left;" > Amount to Paid:
                             <input  type='text' name='amt_paid' id='amt_paid' value='{{ $row['amt_paid'] }}' class='form-control input-sm ' /> 
                             </label>
-                            <label for="payment_mode" class=" control-label col-md-3 text-left" style="text-align: left;" > Payment Mode:
+                            <label for="payment_mode" class=" control-label col-md-3 text-left" style="text-align: left;" > Payment Mode :
                             <input  type='text' name='payment_mode' id='payment_mode' value='{{ $row['payment_mode'] }}' class='form-control input-sm ' /> 
                             </label>
                             <label for="Payment Ref Num" class=" control-label col-md-3 text-left" style="text-align: left;" > Direct Deposit/Cheque ID:
                             <input  type='text' name='payment_ref_num' id='payment_ref_num' value='{{ $row['payment_ref_num'] }}' class='form-control input-sm ' /> 
                             </label>
+                           
                         </div>
                         <div class="form-group" >
                             <div class="col-md-12">

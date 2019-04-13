@@ -235,6 +235,7 @@ $(document).ready(function() {
 				$.post(url + '/' + rfp_ids, function(response) {
 				    if(response.success) 
 				    	$('#main-page .container .compare-result').html(response.view_data);
+				    
 				}, 'json');
 				
 			} else {

@@ -21,8 +21,8 @@ class Sximo extends Model {
         extract( array_merge( array(
 			'page' 		=> '0' ,
 			'limit'  	=> '0' ,
-			'sort' 		=> '' ,
-			'order' 	=> '' ,
+			'sort' 		=> 'desc' ,
+			'order' 	=> 'desc' ,
 			'params' 	=> '' ,
 			'flimit' 	=> '' ,
 			'fstart' 	=> '' ,

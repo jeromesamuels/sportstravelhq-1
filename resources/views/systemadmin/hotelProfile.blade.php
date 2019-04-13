@@ -192,7 +192,7 @@
                                                     
                                     foreach($user_lid as $item) {
                                     
-                                     $hotel_trips = DB::table('rfps')->where('user_id', $item->id)->get();   
+                                     $hotel_trips = DB::table('rfps')->where('user_id', $item->id)->orderBy('created_at','desc')->get();   
                                     
                                     ?>
                                 @foreach ($hotel_trips as $hotel_trips_new)

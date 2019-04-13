@@ -72,17 +72,19 @@
 				    });
 				});
 			</script>
+
 				<div id="hotel_manager" style='display:none;'>
 						
 					<div class="form-group has-feedback">
 					<select class="selectpicker form-control" name="hotel_type" id="hotel_type" >
 						<option value="" >Please select Hotel type</option>
 						<?php 
-                          $hotel_type=DB::table('hotels')->get();
+                          $hotel_type=DB::table('hotels')->groupBy('type')->get();
                           foreach ($hotel_type as $value_type) {
-                        
+                           $hotel_type_new=ucfirst($value_type->type);
 						?>
-	  					<option value="{{ $value_type->domain }}" >{{ $value_type->type }} </option>
+	  					<option value="{{ $value_type->type }}" >{{ $hotel_type_new }} </option>
+
 	   					<?php } ?>
 	   				</select>
 					</div>
@@ -99,8 +101,9 @@
 					
 					<div class="form-group has-feedback">
 					<select class="selectpicker form-control" name="service_type" id="service_type" >
-	  					<option value="1" data-toggle="tooltip" title="Prepared Meals (Full Service)">Full service </option>
-	   					<option value="2">Limited service</option>
+						<option value="">Please select the service provide </option>
+	  					<option value="1" title="Prepared Meals (Full Service)">Full service </option>
+	   					<option value="2" title="Limited service">Limited service</option>
 	   				</select>
 					</div>
 

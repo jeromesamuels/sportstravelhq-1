@@ -73,9 +73,10 @@
 						<p class="text-center ">						
 							<a href="javascript:void(0)" class="forgot"> @lang('core.forgotpassword') ? </a> | 
 							<a href="{{ url('user/register')}}"> @lang('core.registernew') </a>
+						<!-- 	<a href="{{ url('user/guestLogin')}}">Send a Bid Request </a> -->
 						</p>
 				</div>	
-				<div class="animated fadeInUp delayp1">
+		 <div class="animated fadeInUp delayp1">
 			<div class="form-group  ">
 				@if($socialize['google']['client_id'] !='' || $socialize['twitter']['client_id'] !='' || $socialize['facebook'] ['client_id'] !='') 
 				

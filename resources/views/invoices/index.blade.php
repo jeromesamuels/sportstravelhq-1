@@ -5,18 +5,11 @@
 <section class="page-header row" style="margin-top: 30px;">
     <h1>Dashboard </h1><span style="padding: 10px 15px;font-size: 16px;"><i class="fa fa-home" aria-hidden="true"></i> - Invoices </span>
 </section>
-<!-- <section class="page-header row">
-	<h2> {{ $pageTitle }} <small> {{ $pageNote }} </small></h2>
-	<ol class="breadcrumb">
-		<li><a href="{{ url('') }}"> Dashboard </a></li>
-		<li class="active"> {{ $pageTitle }} </li>		
-	</ol>
-</section> -->
+
        <?php 
            $currentMonth = date('m');
-        /*Amount Paid*/
-           $purchases = DB::table('invoices')->whereRaw('MONTH(check_out) = ?',[$currentMonth])->sum('invoices.amt_paid');    
-              
+          /*Amount Paid*/
+            $purchases = DB::table('invoices')->whereRaw('MONTH(created_at) = ?',[$currentMonth])->sum('invoices.amt_paid');    
            /* pending amount*/
             $purchases_due = DB::table('invoices')->sum('invoices.est_amt_due');    
             
@@ -143,7 +136,7 @@
 									$addClass='class="tbl-sorting" ';
 									if($insort ==$t['field'])
 									{
-										$dir_order = ($inorder =='desc' ? 'sort-desc' : 'sort-asc'); 
+										$dir_order = ($inorder =='desc' ? 'sort-desc' : 'sort-desc'); 
 										$addClass='class="tbl-sorting '.$dir_order.'" ';
 									}
 									echo '<th align="'.$t['align'].'" '.$addClass.' width="'.$t['width'].'">'.\SiteHelpers::activeLang($t['label'],(isset($t['language'])? $t['language'] : array())).'</th>';				
@@ -156,22 +149,40 @@
 						
 					  </tr>
 		        </thead>
+                <?php 
+                 $users = DB::table('tb_users')->where('id', '=', session('uid'))->pluck('hotel_id');
+			        foreach ($users as $user) {
+			          $user_email_new=$user;
+			        }
+                  
+                  $hotel_name = DB::table('hotels')->where('id', $user_email_new)->pluck('name');
+					foreach($hotel_name as $item_new1) {
+					 $hotel_name_new = $item_new1;
+					}
 
+               
+			      
+                ?>
 		        <tbody>        						
 		            @foreach ($rowData as $row)
-		            <?php
-		            //echo $row->hotel_name;
-		            $hotel_type = DB::table('hotels')->where('name', $row->hotel_name)->pluck('type');
+		           <?php 
+                     $hotel_type = DB::table('hotels')->where('name', $row->hotel_name)->pluck('type');
 					foreach($hotel_type as $item_new) {
 					 $hotel_type_new = $item_new;
 					}
+                     
+		           ?>
+		          
+		            <?php
 
+		            //echo $row->hotel_name;
+		            
 					   /* $room_rate=$row->room_rate * $row->actualized_room_count;
                         $room_total=($room_rate * ($row->commissoin_rate/100));*/
 					    	
 					?>
 					<?php
-
+                    if($row->hotel_name==$hotel_name_new){
 
 					/*include '../config/fpdf.php';
 
@@ -183,6 +194,48 @@
 					die;*/
 					?>
 		                <tr style="border-bottom-style: dashed;border-color: #eee;">
+							<td> {{ ++$i }} </td>
+							<td ><input type="checkbox" class="ids minimal-green" name="ids[]" value="{{ $row->id }}" />  </td>
+							<td > {{ $row->created_at }} </td>
+							<td > {{ $row->updated_at }} </td>	
+							<td > {{ $hotel_type_new }} </td>	
+							<td > {{ $row->commissoin_rate }} </td>			
+						 @foreach ($tableGrid as $field)
+							 @if($field['view'] =='1')
+
+							 	<?php $limited = isset($field['limited']) ? $field['limited'] :''; ?>
+							 	@if(SiteHelpers::filterColumn($limited ))
+							 	 <?php $addClass= ($insort ==$field['field'] ? 'class="tbl-sorting-active" ' : ''); ?>
+								 <td align="{{ $field['align'] }}" width=" {{ $field['width'] }}"  {!! $addClass !!} >					 
+								 	{!! SiteHelpers::formatRows($row->{$field['field']},$field ,$row ) !!}						 
+								 </td>
+								@endif	
+							 @endif					 
+						 @endforeach
+
+							<td>
+                       
+	                           <div class="dropdown trips-dropdown">
+	                   
+			                    <a href="#" style="color: #5dbbe0;font-weight: bold;font-size: 14px;" class="dropdown-toggle" data-toggle="dropdown">Invoice <i class="fa fa-chevron-down" aria-hidden="true" style="color: #000;padding-top: 5px;"></i></a>
+			                    <ul class="dropdown-menu">
+			                    <li ><a href="{{ url('invoices/'.$row->id.'/edit?return='.$return) }}" class="btn btn-light " title="{{ __('core.btn_edit') }}"> View Details </a></li>
+			                     @if($row->invoice_file!=='')
+			                    <li ><a href="uploads/users/{{ $row->invoice_file }}" class="btn btn-light " title="{{ __('core.btn_edit') }}" target="_blank">  Invoice File </a></li>
+			                    @else
+			                    <li ><button href="uploads/users/{{ $row->invoice_file }}" class="btn btn-light  " title="{{ __('core.btn_edit') }}" target="_blank" style="padding: 10px 0;text-align: center;margin: 0 auto;display: block;" disabled>  Invoice File </button></li>
+			                    @endif
+				                </ul>
+
+				              </div>
+
+							</td>	
+							
+		                </tr>
+						<?php 
+                        }
+						elseif(session('level')==1){ ?>
+						    <tr style="border-bottom-style: dashed;border-color: #eee;">
 							<td> {{ ++$i }} </td>
 							<td ><input type="checkbox" class="ids minimal-green" name="ids[]" value="{{ $row->id }}" />  </td>
 							<td > {{ $row->created_at }} </td>
@@ -222,6 +275,7 @@
 							</td>	
 							
 		                </tr>
+		               <?php } else{}?>
 						
 		            @endforeach
 		              

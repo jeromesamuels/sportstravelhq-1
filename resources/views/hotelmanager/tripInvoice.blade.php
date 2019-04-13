@@ -12,20 +12,40 @@
 .sbox-title{
     padding: 10px 0px 10px;
 }
+.page-header {
+    margin-top: 0px;
+    margin-bottom: 25px;
+    padding: 5px 25px;
+    border-bottom: 5px solid #95d1ea;
+}
+.sbox-content{
+      border-bottom: 5px solid #eee;  
+}
+.table-bordered thead tr th,.table-bordered tbody tr td, .table-bordered tbody tr th{
+    padding: 10px;
+    border: 1px solid #080707;
+}
+
 </style>
 
 <div class="container">
 <div class="page-content row">
     <div class="page-content-wrapper no-margin">
 
- 
+                 <?php 
+                 
+                     ?>
  
         <div class="sbox">
         	<section class="page-header row">
-				 <h2>INVOICE</h2>
+                <img src="http://13.92.240.159/demo/public/uploads/images/invoice-logo.jpg" title="Sports Travel HQ" alt="Sports Travel HQ" class="invoice-logo">
+				 
 			</section>
         <?php 
         $record_exists = DB::table('invoices')->where('rfp_id', '=', $rfp->rfp_id)->first();
+            $IATA_number = DB::table('hotels')->where('name', '=', $record_exists->hotel_name)->pluck('IATA_number');
+                     foreach($IATA_number as $number){}
+
         if (is_null($record_exists)) {
         ?>
             <div class="sbox-content">
@@ -36,13 +56,16 @@
                 	 <div class="col-sm-1">
                 	 </div>
                     <div class="col-sm-3">
+                            <h2>INVOICE</h2>
                             <div class="sbox-title">
+                               
 				                <h1> Invoice #{{$rfp->invoice_id}} </h1>
+                                 <h1> IATA # {{$number}} </h1>
 				            </div>
-                            <h5>{{ $rfp->hotel_manager }}</h5>
+                            <h5 style="margin: 20px 0px 10px;">{{ $rfp->hotel_manager }}</h5>
 
                             <span><a href="{{ $rfp->email }}">{{ $rfp->email }}</a></span><br>
-                             <span><b>{{ $rfp->phone }}</b></span><br>
+                             <span><b style="margin-top: 10px;">{{ $rfp->phone }}</b></span><br>
                         
                     </div>
                     
@@ -99,7 +122,7 @@
             <div class="table-responsive">
                   <table class="table table-bordered" >
 					    <thead>
-					      <tr style="background: #95d1ea;">
+					      <tr style="background: #124052;color: #fff;">
 					        <th>Description</th>
 					        <th>Rooms</th>
 					        <th>Revenue(Room Rate)</th>
@@ -129,10 +152,10 @@
 					    </tbody>
 					</table>
 				</div>
-				<div>
+				<div style="margin: 20px;font-size: 14px;">
 					<p>Thank you for your Trip, It's Pleasure to work with you.</p>
 					<p>Sincearly Your's</p>
-					<h6>{{ $rfp->hotel_manager }}</h6>
+					<h5>{{ $rfp->hotel_manager }}</h5>
 				</div>
                 </div>
                  <div class="col-sm-1">
@@ -151,14 +174,18 @@
                 <div class="row">
                 	 <div class="col-sm-1">
                 	 </div>
+                   
                     <div class="col-sm-3">
+                          <h2>INVOICE</h2>
                             <div class="sbox-title">
-				                <h1> Invoice #{{$record_exists->invoice_id}} </h1>
+
+				                <h1> Invoice # {{$record_exists->invoice_id}} </h1>
+                                 <h1> IATA # {{$number}} </h1>
 				            </div>
-                            <h5>{{ $record_exists->hotel_manager }}</h5>
+                            <h5 style="margin: 20px 0px 10px;">{{ $record_exists->hotel_manager }}</h5>
 
                             <span><a href="{{ $rfp->email }}">{{ $record_exists->email }}</a></span><br>
-                             <span><b>{{ $record_exists->phone }}</b></span><br>
+                             <span><b style="margin-top: 10px;">{{ $record_exists->phone }}</b></span><br>
                         
                     </div>
                     
@@ -215,7 +242,7 @@
             <div class="table-responsive">
                   <table class="table table-bordered" >
 					    <thead>
-					      <tr style="background: #95d1ea;">
+					      <tr style="background: #124052;color: #fff;">
 					        <th>Description</th>
 					        <th>Rooms</th>
 					        <th>Revenue(Room Rate)</th>
@@ -245,10 +272,10 @@
 					    </tbody>
 					</table>
 				</div>
-				<div>
+				<div style="margin: 20px;font-size: 14px;">
 					<p>Thank you for your Trip, It's Pleasure to work with you.</p>
 					<p>Sincearly Your's</p>
-					<h6>{{ $record_exists->hotel_manager }}</h6>
+					<h5>{{ $record_exists->hotel_manager }}</h5>
 				</div>
                 </div>
                  <div class="col-sm-1">

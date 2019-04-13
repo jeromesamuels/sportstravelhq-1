@@ -30,7 +30,8 @@
                         </label>
                         <div class="col-md-9">
                             {!! Form::text('email',null,array('class'=>'form-control input-sm', 'placeholder'=>'','required'=>'true')) !!} 
-                            {!! Form::hidden('group_id',$roleID,array()) !!} 
+                            {!! Form::hidden('group_id',$roleID,array()) !!}
+                            {!! Form::hidden('group_name',$roleTitle,array()) !!} 
                             {!! Form::hidden('redirect_to',$slug,array()) !!} 
                         </div>
                     </div>

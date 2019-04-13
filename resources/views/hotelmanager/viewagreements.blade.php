@@ -47,10 +47,28 @@
                                        <a href="{{ route('hotelmanager.agreementDownload',$agreement->id) }}">Download</a>
                                    </td>
                                    <td>
+                                    <?php 
+                                      $users_status= DB::table('rfps')->where('id', '=', $agreement->for_rfp)->pluck('status');
+                                        foreach ($users_status as $user) {
+                                                $user_status_new=$user;
+                                        }
+                                      
+
+                                    ?>
                                        <div class="dropdown">
                                              <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown"> Action </button>
                                              <ul class="dropdown-menu">
                                                <li><a href="{{ route('hotelmanager.agreementDetails',$agreement->id) }}" class="tips" title="View Trips">View Details</a></li>
+                                               <?php if(session('level')==4 && $user_status_new !=5 && $user_status_new !=6){?>
+                                                <li > <button data-toggle="modal" data-target="#confirm_agree"  data-id="{{ $agreement->for_rfp }}" title="{{ $agreement->for_rfp }}" class="btn btn-light ">Accept Aggreement(For client)</button> </li>
+                                               <?php }
+                                                 elseif(session('level')==5 && $user_status_new ==5 && $user_status_new !=6){  ?>
+                                                <li > <button data-toggle="modal" data-target="#confirm_agree"  data-id="{{ $agreement->for_rfp }}" title="{{ $agreement->for_rfp }}" class="btn btn-light ">Accept Aggreement(For Manager)</button> </li>
+                                               <?php } 
+                                                else{
+                                               ?>
+                                               <li > <button data-toggle="modal" data-target="#confirm_agree"  data-id="{{ $agreement->for_rfp }}" title="{{ $agreement->for_rfp }}" class="btn btn-light " disabled="">Accept Aggreement</button> </li>
+                                               <?php }?>
                                              </ul>
                                        </div>
                                    </td>
@@ -62,8 +80,54 @@
                 <!-- End Table Grid -->
                 </div>
             </div>
+<script>
+    $(document).ready(function(){
+  
+     $('#confirm_agree').on('show.bs.modal', function (e) {
+        var rowid = $(e.relatedTarget).data('id');
+        //$('#trip_id').value=rowid;
+        document.getElementById('rfp-agree').title = rowid;
+       
+     });
+
+      $(document).on("click", ".btn-rfp-agree", function() {
+            var id = $(this).attr("title");
+            var url = '{{ url("/acceptAgree/") }}' + '/' + id;
+
+            $.post(url, function(response) {
+                if(response.success) {
+                    alert(response.view_data);
+                    location.reload();
+                }
+            }, 'json');
+
+        });
+
+    });
+    
+</script>
+<div class="modal fade" id="confirm_agree" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure want to accept this Aggreement ?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary btn-rfp-agree" id="rfp-agree" title="" >Yes Accept</button>
+            </div>
         </div>
     </div>
+</div>
+
+  </div>
+ </div>
     
 @stop
 

@@ -27,6 +27,28 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
+                                    <label>Hotel Code</label>
+                                    <input type="text" class="form-control" placeholder="Enter Hotel Name" name="hotel_code" value="{{ $hotel->hotel_code }}">
+                                </div>
+                            </div>
+                             <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Hotel Code</label>
+                                    <input type="text" class="form-control" placeholder="Enter IATA number for Hotel" name="IATA_number" value="{{ $hotel->IATA_number }}">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                            <div class="form-group">
+                                    <label>Service Type</label>
+                                    <select class=" form-control" name="service_type" id="service_type" >
+                                    <option value="1" title="Prepared Meals (Full Service)">Full service </option>
+                                     <option value="2" title="Limited service">Limited service</option>
+                                    </select>
+                                    
+                                </div>
+                                 </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
                                     <label>Hotel Name</label>
                                     <input type="text" class="form-control" placeholder="Enter Hotel Name" name="name" value="{{ $hotel->name }}">
                                 </div>
@@ -63,12 +85,24 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Hotel Type</label>
-                                    <select name="type" class="form-control">
+                                   <!--  <select name="type" class="form-control">
                                         <option disabled>Select Hotel Type</option>
                                         <option value="Hilton" {{ $hotel->type == "Hilton" ? "selected" : "" }}>Hilton</option>
                                         <option value="Marriott" {{ $hotel->type == "Marriott" ? "selected" : "" }}>Marriott</option>
                                         <option value="IHG" {{ $hotel->type == "IHG" ? "selected" : "" }}>IHG</option>
                                        
+                                    </select> -->
+                                    <select class=" form-control" name="type" id="type" >
+                                          <option value="{{ $hotel->type }}" selected=""><?php echo ucfirst($hotel->type) ?></option>
+                                        <?php 
+                                          $hotel_type=DB::table('hotels')->where('type', '!=' ,$hotel->type )->groupBy('type')->pluck('type');
+                                          foreach ($hotel_type as $value_type) {
+                                           $hotel_type_new=ucfirst($value_type);
+                                        ?>
+
+                                        <option value="{{ $value_type }}" >{{ $hotel_type_new }} </option>
+
+                                        <?php } ?>
                                     </select>
                                 </div>
                             </div>

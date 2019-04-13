@@ -51,15 +51,21 @@
 
 
 			  <div class="form-group choose_hotel_dd hide " >
-				<label for="hotel_id" class="control-label col-md-4 text-left"> Hotel <span class="asterix"> * </span> </label>
+				<label for="hotel_id" class="control-label col-md-4  text-left"> Hotel <span class="asterix"> * </span> </label>
 				<div class="col-md-6">
 
-	              <?php $hotel_select[0] = 'Choose Hotel'; ?>
-	              @foreach ($hotels as $hotel)
-	                <?php $hotel_select[$hotel->id] = $hotel->name ?>
+	             <?php $hotel_id = DB::table('hotels')->where('id', '=',$row['hotel_id'])->get();
+                   foreach($hotel_id as $hotel_id_new){
+                    $hotel_select[$hotel_id_new->id] = $hotel_id_new->name." (".$hotel_id_new->hotel_code.")";
+                   }
+	              ?>
+                 @foreach ($hotels as $hotel)
+	                <?php $hotel_select[$hotel->id] = $hotel->name." (".$hotel->hotel_code.")" ?>
 	              @endforeach 
-
+                                                                                                                       
+	             
 					{{ Form::select('hotel_id', $hotel_select, $row['hotel_id'], ['id' => 'hotel_id', 'class' => 'select2 -- form-control input-sm select2-hidden-accessible']) }}
+
 				 </div> 
 				 <div class="col-md-2">
 				 </div>

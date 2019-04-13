@@ -45,11 +45,11 @@ class ModuleController extends Controller {
         if(!is_null($request->input('t')))
         {
             $rowData = \DB::table('tb_module')->where('module_type','=','core')
-                    ->orderby('module_title','asc')->get();    
+                    ->orderby('module_title','desc')->get();    
             $type = 'core';        
         } else {
             $rowData = \DB::table('tb_module')->where('module_type','!=','core')
-                        ->orderby('module_title','asc')->get();
+                        ->orderby('module_title','desc')->get();
             $type = 'addon';
         }           
         
@@ -318,7 +318,7 @@ class ModuleController extends Controller {
         $this->data['setting'] = array(
             'gridtype'        => (isset($config['setting']) ? $config['setting']['gridtype'] : 'native'  ),
             'orderby'        => (isset($config['setting']) ? $config['setting']['orderby'] : $row->module_db_key  ),
-            'ordertype'        => (isset($config['setting']) ? $config['setting']['ordertype'] : 'asc'  ),
+            'ordertype'        => (isset($config['setting']) ? $config['setting']['ordertype'] : 'desc'  ),
             'perpage'        => (isset($config['setting']) ? $config['setting']['perpage'] : '10'  ),
             'frozen'        => (isset($config['setting']['frozen'])  ? $config['setting']['frozen'] : 'false'  ),
             'form-method'        => (isset($config['setting']['form-method'])  ? $config['setting']['form-method'] : 'native'  ),

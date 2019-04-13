@@ -304,7 +304,7 @@
                             </tr>
                         </thead>
                            <?php 
-                        $data_client= DB::table('tb_users')->where('group_id', 4)->get();
+                        $data_client= DB::table('tb_users')->where('group_id', 4)->where('id', session('uid'))->get();
                         foreach($data_client as $client_value){
                         
                         ?>

@@ -1385,7 +1385,7 @@ var Dashboard = function() {
             }, {
                 field: "OrderID",
                 title: "Order ID",
-                sortable: 'asc',
+                sortable: 'desc',
                 filterable: false,
                 width: 150,
                 template: '{{OrderID}} - {{ShipCountry}}'

@@ -69,7 +69,7 @@
     margin-top: 40px;
     background: #f5f5f5;
     padding: 25px 50px;
-    height: 150px;
+    height: 180px;
     }
     .progress p{
     font-size: 16px;
@@ -186,15 +186,310 @@
                         </div>
                     </div>
                 </div>
+                 <?php 
+                       
+                $trip_id_new= DB::table('rfps')->where("user_trip_id",$trip->id)->get(); 
+                foreach($trip_id_new as $trip_id) {}
+                if(count($trip_id_new) >= 1){  
+
+                    if($trip_id->status==1){
+                   ?>
                 <div class="row" id="progress_bar">
                     <div class="col-md-12">
                         <div class="progress">
                             <div class="one success-color">
-                                <p>Step 1</p>
+                                <p>Step 1 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
                                 <h6>Client Submitted RFP</h6>
                             </div>
                             <div class="two no-color">
-                                <p>Step 2</p>
+                                <p>Step 2 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Corporate Viewed RFP</h6>
+                            </div>
+                            <div class="three no-color">
+                                <p>Step 3 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Hotel Manager Send Proposals</h6>
+                            </div>
+                            <div class="four no-color">
+                                <p>Step 4</p>
+                                <h6>Client review and compare proposals</h6>
+                            </div>
+                            <div class="five no-color">
+                                <p>Step 5</p>
+                                <h6>Client choose winner</h6>
+                            </div>
+                            <div class="six no-color">
+                                <p>Step 6</p>
+                                <h6>Client sign the hotel agreement</h6>
+                            </div>
+                            <div class="seven no-color">
+                                <p>Step 7</p>
+                                <h6>Hotel manager sign the contract</h6>
+                            </div>
+                            <div class="eight no-color">
+                                <p>Step 8</p>
+                                <h6>Client submit the rooming list</h6>
+                            </div>
+                            <div class="nine no-color">
+                                <p>Step 9</p>
+                                <h6>Hotel Manager upload the billing receipt</h6>
+                            </div>
+                            <div class="progress-bar no-color" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+                <?php 
+            }
+            elseif( $trip_id->status==4){ ?>
+                        <div class="row" id="progress_bar">
+                    <div class="col-md-12">
+                        <div class="progress">
+                            <div class="one success-color">
+                                <p>Step 1 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Client Submitted RFP</h6>
+                            </div>
+                            <div class="two no-color">
+                                <p>Step 2 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Corporate Viewed RFP</h6>
+                            </div>
+                            <div class="three no-color">
+                                <p>Step 3 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Hotel Manager Send Proposals</h6>
+                            </div>
+                            <div class="four no-color">
+                                <p>Step 4 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Client review and compare proposals</h6>
+                            </div>
+                            <div class="five no-color">
+                                <p>Step 5 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Client choose winner</h6>
+                            </div>
+                            <div class="six no-color">
+                                <p>Step 6 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Client sign the hotel agreement</h6>
+                            </div>
+                            <div class="seven no-color">
+                                <p>Step 7 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Hotel manager sign the contract</h6>
+                            </div>
+                            <div class="eight no-color">
+                                <p>Step 8 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Client submit the rooming list</h6>
+                            </div>
+                            <div class="nine no-color">
+                                <p>Step 9 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Hotel Manager upload the billing receipt</h6>
+                            </div>
+                            <div class="progress-bar no-color" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                         <?php 
+            }
+            elseif( $trip_id->status==8){ ?>
+                        <div class="row" id="progress_bar">
+                    <div class="col-md-12">
+                        <div class="progress">
+                            <div class="one success-color">
+                                <p>Step 1 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Client Submitted RFP</h6>
+                            </div>
+                            <div class="two no-color">
+                                <p>Step 2 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Corporate Viewed RFP</h6>
+                            </div>
+                            <div class="three no-color">
+                                <p>Step 3 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Hotel Manager Send Proposals</h6>
+                            </div>
+                            <div class="four no-color">
+                                <p>Step 4 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Client review and compare proposals</h6>
+                            </div>
+                            <div class="five no-color">
+                                <p>Step 5 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Client choose winner</h6>
+                            </div>
+                            <div class="six no-color">
+                                <p>Step 6 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Client sign the hotel agreement</h6>
+                            </div>
+                            <div class="seven no-color">
+                                <p>Step 7 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Hotel manager sign the contract</h6>
+                            </div>
+                            <div class="eight no-color">
+                                <p>Step 8 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Client submit the rooming list</h6>
+                            </div>
+                            <div class="nine no-color">
+                                <p>Step 9 </p>
+                                <h6>Hotel Manager upload the billing receipt</h6>
+                            </div>
+                            <div class="progress-bar no-color" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+               <?php   }
+              
+               elseif( $trip_id->status==5){
+                ?>
+                         <div class="row" id="progress_bar">
+                    <div class="col-md-12">
+                        <div class="progress">
+                            <div class="one success-color">
+                                <p>Step 1 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Client Submitted RFP</h6>
+                            </div>
+                            <div class="two no-color">
+                                <p>Step 2 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Corporate Viewed RFP</h6>
+                            </div>
+                            <div class="three no-color">
+                                <p>Step 3 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Hotel Manager Send Proposals</h6>
+                            </div>
+                            <div class="four no-color">
+                                <p>Step 4 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Client review and compare proposals</h6>
+                            </div>
+                            <div class="five no-color">
+                                <p>Step 5 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Client choose winner</h6>
+                            </div>
+                            <div class="six no-color">
+                                <p>Step 6 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Client sign the hotel agreement</h6>
+                            </div>
+                            <div class="seven no-color">
+                                <p>Step 7 </p>
+                                <h6>Hotel manager sign the contract</h6>
+                            </div>
+                            <div class="eight no-color">
+                                <p>Step 8 </p>
+                                <h6>Client submit the rooming list</h6>
+                            </div>
+                            <div class="nine no-color">
+                                <p>Step 9 </p>
+                                <h6>Hotel Manager upload the billing receipt</h6>
+                            </div>
+                            <div class="progress-bar no-color" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+               <?php 
+               } 
+              
+               elseif( $trip_id->status==6){
+                ?>
+                         <div class="row" id="progress_bar">
+                    <div class="col-md-12">
+                        <div class="progress">
+                            <div class="one success-color">
+                                <p>Step 1 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Client Submitted RFP</h6>
+                            </div>
+                            <div class="two no-color">
+                                <p>Step 2 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Corporate Viewed RFP</h6>
+                            </div>
+                            <div class="three no-color">
+                                <p>Step 3 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Hotel Manager Send Proposals</h6>
+                            </div>
+                            <div class="four no-color">
+                                <p>Step 4 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Client review and compare proposals</h6>
+                            </div>
+                            <div class="five no-color">
+                                <p>Step 5 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Client choose winner</h6>
+                            </div>
+                            <div class="six no-color">
+                                <p>Step 6 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Client sign the hotel agreement</h6>
+                            </div>
+                            <div class="seven no-color">
+                                <p>Step 7 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Hotel manager sign the contract</h6>
+                            </div>
+                            <div class="eight no-color">
+                                <p>Step 8 </p>
+                                <h6>Client submit the rooming list</h6>
+                            </div>
+                            <div class="nine no-color">
+                                <p>Step 9 </p>
+                                <h6>Hotel Manager upload the billing receipt</h6>
+                            </div>
+                            <div class="progress-bar no-color" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+               <?php 
+                } 
+               else{
+             ?>
+                           <div class="row" id="progress_bar">
+                    <div class="col-md-12">
+                        <div class="progress">
+                            <div class="one success-color">
+                                <p>Step 1 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Client Submitted RFP</h6>
+                            </div>
+                            <div class="two no-color">
+                                <p>Step 2 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Corporate Viewed RFP</h6>
+                            </div>
+                            <div class="three no-color">
+                                <p>Step 3 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Hotel Manager Send Proposals</h6>
+                            </div>
+                            <div class="four no-color">
+                                <p>Step 4 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Client review and compare proposals</h6>
+                            </div>
+                            <div class="five no-color">
+                                <p>Step 5 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Client choose winner</h6>
+                            </div>
+                            <div class="six no-color">
+                                <p>Step 6</p>
+                                <h6>Client sign the hotel agreement</h6>
+                            </div>
+                            <div class="seven no-color">
+                                <p>Step 7</p>
+                                <h6>Hotel manager sign the contract</h6>
+                            </div>
+                            <div class="eight no-color">
+                                <p>Step 8 </p>
+                                <h6>Client submit the rooming list</h6>
+                            </div>
+                            <div class="nine no-color">
+                                <p>Step 9 </p>
+                                <h6>Hotel Manager upload the billing receipt</h6>
+                            </div>
+                            <div class="progress-bar no-color" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+            <?php   }
+
+               }
+               
+
+                elseif($trip->status == 6){
+                    ?>     
+                 <div class="row" id="progress_bar">
+                    <div class="col-md-12">
+                        <div class="progress">
+                            <div class="one success-color">
+                                <p>Step 1 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Client Submitted RFP</h6>
+                            </div>
+                            <div class="two no-color">
+                                <p>Step 2 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
                                 <h6>Corporate Viewed RFP</h6>
                             </div>
                             <div class="three no-color">
@@ -229,6 +524,54 @@
                         </div>
                     </div>
                 </div>
+
+              <?php }
+              else{
+              ?>
+                     <div class="row" id="progress_bar">
+                    <div class="col-md-12">
+                        <div class="progress">
+                            <div class="one success-color">
+                                <p>Step 1 <span><i class="fa fa-check" aria-hidden="true"></i></span></p>
+                                <h6>Client Submitted RFP</h6>
+                            </div>
+                            <div class="two no-color">
+                                <p>Step 2 </p>
+                                <h6>Corporate Viewed RFP</h6>
+                            </div>
+                            <div class="three no-color">
+                                <p>Step 3</p>
+                                <h6>Hotel Manager Send Proposals</h6>
+                            </div>
+                            <div class="four no-color">
+                                <p>Step 4</p>
+                                <h6>Client review and compare proposals</h6>
+                            </div>
+                            <div class="five no-color">
+                                <p>Step 5</p>
+                                <h6>Client choose winner</h6>
+                            </div>
+                            <div class="six no-color">
+                                <p>Step 6</p>
+                                <h6>Client sign the hotel agreement</h6>
+                            </div>
+                            <div class="seven no-color">
+                                <p>Step 7</p>
+                                <h6>Hotel manager sign the contract</h6>
+                            </div>
+                            <div class="eight no-color">
+                                <p>Step 8</p>
+                                <h6>Client submit the rooming list</h6>
+                            </div>
+                            <div class="nine no-color">
+                                <p>Step 9</p>
+                                <h6>Hotel Manager upload the billing receipt</h6>
+                            </div>
+                            <div class="progress-bar no-color" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+            <?php } ?>
             </div>
         </div>
         <?php 
@@ -288,6 +631,7 @@
                             <span>{{ $trip->check_in }} To {{ $trip->check_out }}</span><br>
                             <span>{{ count($trip->rfps) }} RFPs Reserved For this Trip</span>
                             </p> -->
+                           
                         <table class="table " >
                             <tbody>
                                 <tr>
@@ -340,11 +684,21 @@
                         <div class="text-right">
                             <button class="btn btn-light print-btn" onclick="codespeedy()"> Print</button>
                             <a href="#" class="export btn btn-light print-btn">Export</a>
-                            @if($rfp) 
+                            <?php 
+                              $grp_id = DB::table('tb_users')->where('id', '=', session('uid'))->pluck('group_id');
+                                foreach ($grp_id as $grp_id_new) {
+                                 $user_grp_id=$grp_id_new;
+                                }
+                            ?>
+                            <?php if($rfp && $user_grp_id== 5 ){ ?>
                             <button class="btn btn-success" data-toggle="modal" data-target="#myModal"> View Bid </button>
-                            @else 
+                            <?php } 
+                            elseif($user_grp_id== 5 && $trip->status== 6) {   ?>
                             <button class="btn btn-info" data-toggle="modal" data-target="#myModal"> Bid Now </button>
-                            @endif
+                            <?php } 
+                             else{ ?>
+                           
+                            <?php } ?>
                             <!--  <a href="javascript:window.print()">Print</a>  -->
                         </div>
                     </div>
@@ -597,13 +951,21 @@
     /*Get hotel id */
     $hotel_id = DB::table('tb_users')->where('id', session('uid'))->pluck('hotel_id');
          foreach($hotel_id as $item_new) {
-           $hotel_id_new = $item_new;
+          
+            if($item_new != ''){
+                 $hotel_id_new = $item_new;
+            }
+            else{
+                 $hotel_id_new= 2;
+            }
         }
     
     /*Get hotel adress */
+   
     $hotel_adress = DB::table('hotels')->where('id', $hotel_id_new)->pluck('address');
+   
          foreach($hotel_adress as $item) {
-      $hotel_adress_new = $item;
+          $hotel_adress_new = $item;
     }
     
     $trip_adress = DB::table('user_trips')->where('id', $trip->id)->pluck('from_address_1');
@@ -611,6 +973,8 @@
        $trip_adress_new = $item1;
        
     }
+  
+
     /*Get trip adress */
     
     ?>

@@ -31,6 +31,9 @@ return view('systemadmin.createHotels',compact('amenities'));
 }
 public function storeHotels(Request $request){
 $this->validate($request, [
+"hotel_code" => "required|max:191",
+"IATA_number" => "required",
+"service_type" => "required|max:191",
 "name" => "required|max:191",
 "zip" => "required",
 "address" => "required|max:191",
@@ -50,6 +53,9 @@ $filep = $request->file('property')->getClientOriginalName();
 $destinationPathp = './uploads/users/';
 $uploadSuccessp= $request->file('property')->move($destinationPathp, $filep); 
 $hotel = new Hotel();
+$hotel->hotel_code = $request->hotel_code;
+$hotel->IATA_number = $request->IATA_number;
+$hotel->service_type = $request->service_type;
 $hotel->name = $request->name;
 $hotel->zip = $request->zip;
 $hotel->address = $request->address;
@@ -83,6 +89,9 @@ return view('systemadmin.hotelProfile ',compact('hotel','amenities'));
 
 public function updateHotels(Request $request, $id){
 $this->validate($request, [
+"hotel_code" => "required|max:191",
+"IATA_number" => "required",
+"service_type" => "required|max:191",
 "name" => "required|max:191",
 "zip" => "required",
 "address" => "required|max:191",
@@ -102,6 +111,9 @@ $filep = $request->file('property')->getClientOriginalName();
 $destinationPathp = './uploads/users/';
 $uploadSuccessp= $request->file('property')->move($destinationPathp, $filep); 
 $hotel = Hotel::find($id);
+$hotel->hotel_code = $request->hotel_code;
+$hotel->IATA_number = $request->IATA_number;
+$hotel->service_type = $request->service_type;
 $hotel->name = $request->name;
 $hotel->zip = $request->zip;
 $hotel->address = $request->address;

@@ -110,38 +110,7 @@ $user_group_id_new = $item_new;
         </div>
     </div>
 </div>
-<!--     <div class="page-content row">
-        <div class="page-content-wrapper no-margin">
-         <?php  if($user_group_id_new != 5 ){ ?>
-            <div class="sbox">
-                <div class="sbox-title">
-                    <div class="row">
-                        <div class="col-sm-2">
-                            <h1> Search Hotel</h1>
-                        </div>
-                    </div>
-                </div>
-                <div class="sbox-content">
-                @include('includes.alerts')
-                    
-                    <form action="{{ route('systemadmin.viewHotels') }}" method="get">
-                        {{ csrf_field() }}
-                        <div class="row">
-                            <div class="col-xs-10">
-                                <input type="text" class="form-control" placeholder="Enter Hotel Name You Want To Search" name="searchField" value="{{ $searchField }}">
-                            </div>
-                            <div class="col-xs-2">
-                                <button class="btn btn-block btn-success">Search</button>    
-                            </div>
-                        </div>
-                    </form>
-                    
-                </div>
-            </div>
-        <?php } ?>
-        </div>
-    </div> -->
-    
+
 
     <div class="page-content row">
         <div class="page-content-wrapper no-margin">
@@ -208,19 +177,7 @@ $user_group_id_new = $item_new;
                                 <td>{{ $hotel->zip }}</td>
                                 <td>{{ $hotel->type }}</td>
                                 
-                             <!--    <td><img alt="" src="../uploads/users/{{ $hotel->property }}" width="150" height="50" class="img-responsive" /></td></td>
-                                <td>
-                                    @for ($i = 0; $i < $hotel->rating; $i++)
-                                        <span class="fa fa-star" style="color:#a9a902"></span>
-                                    @endfor
-                                </td>
-                                <td>
-                                    @if ($hotel->active)
-                                        <span class="label label-success" style="padding:4px 8px; font-size:12px">Active</span>
-                                    @else
-                                        <span class="label label-danger" style="padding:4px 8px; font-size:12px">In-Active</span>
-                                    @endif
-                                </td> -->
+                          
                                 <td>
                                     <div class="dropdown">
                                       <button class="btn btn-light btn-xs dropdown-toggle" type="button" data-toggle="dropdown"> View Hotel </button>
@@ -270,60 +227,13 @@ $user_group_id_new = $item_new;
                   $("#div_hotel_img").attr("src" , img);
                   $("#div_hotel_name").text(title);
                   $('#div_hotel_adress').text(address);
-                  //$('#div_hotel_rating').text(rating);
-                  // document.getElementsByID("test").value = id.toString();
-                 //document.getElementById('test').value=id;
-                  // window.location.href = "{{ route('systemadmin.viewHotels')}}?name=" + id; 
-                
-               /* $("#pages .page:not('.hide')").stop().fadeOut('fast', function() {
-                    $(this).addClass('hide');
-                    $('#information').fadeIn('slow').removeClass('hide');
-                   
-                });*/
-             
+               
             });
 
 
        
         </script>
 
-
-        <!-- 
-               <div class="col-md-4">
-               
-                    <div class="widget-box box-shadow" style=" margin: 0;background: #fff;padding: 20px;">
-                    <div class="sbox-title">
-                        
-
-                    <h4 style="font-size: 20px;">Hotel Details</h4>    
-                   </div>
-                   <div id="pages" >
-                    <div id="information" class="page"  >
-                        
-                         
-
-                    <div class="body">
-                        <img alt="" src="../uploads/users/{{ $hotel->property }}" id="div_hotel_img" width="100%" height="50" class="img-responsive" />
-                        <div class="hotel-info-section">
-                           <h5 style="color:#fff;" id="div_hotel_name">{{ $hotel->name }}</h5>
-                           <p id="div_hotel_adress">{{ $hotel->address }}</p>
-                          <p id="div_hotel_rating">
-                            @for ($i = 0; $i < $hotel->rating; $i++)
-                               <span class="fa fa-star" style="color:#a9a902"></span>
-                             @endfor
-                         </p>
-                        </div>
-                        <div class="contact-info" style="padding: 20px;">
-                            <p>Contact Name  :   <b>Eric Gil</b></p>
-                            <p>Contact Email : <a href="mailto:ericgildeveloper@gmail.com">ericgildeveloper@gmail.com</a></p>
-                        </div>
-                    </div>
-                   
-                 </div>
-                 </div>
-                 </div>
-
-               </div> -->
 
             </div></div></div>
      

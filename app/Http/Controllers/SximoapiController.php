@@ -33,7 +33,7 @@ class SximoapiController extends Controller {
 		  	$tables 		= $config['config']['grid'];
 
 		  	$page 			= (!is_null($request->input('page')) or $request->input('page') != 0 ) ? $request->input('page') : 1 ;		
-			$param			= array('page'=> $page , 'sort'=>'', 'order'=>'asc','limit'=>''  );
+			$param			= array('page'=> $page , 'sort'=>'', 'order'=>'desc','limit'=>''  );
 			if(!is_null($request->input('limit')) or $request->input('limit') != 0 ) $param['limit'] = $request->input('limit');
 			if(!is_null($request->input('order'))) $param['order'] = $request->input('order');
 			if(!is_null($request->input('sort'))) $param['sort'] = $request->input('sort');	

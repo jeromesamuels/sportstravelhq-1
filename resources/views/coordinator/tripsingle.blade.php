@@ -343,7 +343,7 @@
                             @if($rfp) 
                             <button class="btn btn-success" data-toggle="modal" data-target="#myModal"> View Bid </button>
                             @else 
-                            <button class="btn btn-info" data-toggle="modal" data-target="#myModal"> Bid Now </button>
+                            <button class="btn btn-info hide" data-toggle="modal" data-target="#myModal"> Bid Now </button>
                             @endif
                             <!--  <a href="javascript:window.print()">Print</a>  -->
                         </div>
