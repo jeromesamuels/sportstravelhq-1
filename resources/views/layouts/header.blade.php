@@ -104,10 +104,13 @@
             display: block;
             visibility: visible;
             }
+            .modal-header {
+             display: block;
+         }
             #myNavbar a {
             color: #88cee8;
             font-size: 17px;
-            letter-spacing: 1px;
+            letter-spacing:1px;
             text-transform: uppercase;
             }
             .navbar-collapse {

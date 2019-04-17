@@ -171,27 +171,9 @@
 					 $hotel_type_new = $item_new;
 					}
                      
-		           ?>
 		          
-		            <?php
-
-		            //echo $row->hotel_name;
-		            
-					   /* $room_rate=$row->room_rate * $row->actualized_room_count;
-                        $room_total=($room_rate * ($row->commissoin_rate/100));*/
-					    	
-					?>
-					<?php
                     if($row->hotel_name==$hotel_name_new){
 
-					/*include '../config/fpdf.php';
-
-					$image = dirname(__FILE__).DIRECTORY_SEPARATOR.$row->invoice_file;
-					$pdf = new FPDF();
-					$pdf->AddPage();
-					$pdf->Image($image,20,40,170,170);
-					echo $pdf->Output();
-					die;*/
 					?>
 		                <tr style="border-bottom-style: dashed;border-color: #eee;">
 							<td> {{ ++$i }} </td>
@@ -221,7 +203,8 @@
 			                    <ul class="dropdown-menu">
 			                    <li ><a href="{{ url('invoices/'.$row->id.'/edit?return='.$return) }}" class="btn btn-light " title="{{ __('core.btn_edit') }}"> View Details </a></li>
 			                     @if($row->invoice_file!=='')
-			                    <li ><a href="uploads/users/{{ $row->invoice_file }}" class="btn btn-light " title="{{ __('core.btn_edit') }}" target="_blank">  Invoice File </a></li>
+			                    <li ><a href="uploads/users/{{ $row->invoice_file }}" class="btn btn-light " title="{{ __('core.btn_edit') }}" target="_blank">  Invoice File </a>
+			                    </li>
 			                    @else
 			                    <li ><button href="uploads/users/{{ $row->invoice_file }}" class="btn btn-light  " title="{{ __('core.btn_edit') }}" target="_blank" style="padding: 10px 0;text-align: center;margin: 0 auto;display: block;" disabled>  Invoice File </button></li>
 			                    @endif
@@ -256,21 +239,20 @@
 						 @endforeach
 
 							<td>
-                             @if($row->invoice_file=='')
-							 	<div class="dropdown">
-									<a href="{{ url('invoices/'.$row->id.'/edit?return='.$return) }}" class="btn btn-primary btn-xs " title="{{ __('core.btn_edit') }}"> View Details </a>
+                              <div class="dropdown trips-dropdown">
+	                   
+			                    <a href="#" style="color: #5dbbe0;font-weight: bold;font-size: 14px;" class="dropdown-toggle" data-toggle="dropdown">Invoice <i class="fa fa-chevron-down" aria-hidden="true" style="color: #000;padding-top: 5px;"></i></a>
+			                    <ul class="dropdown-menu">
+			                    <li ><a href="{{ url('invoices/'.$row->id.'/edit?return='.$return) }}" class="btn btn-light " title="{{ __('core.btn_edit') }}"> View Details </a></li>
+			                     @if($row->invoice_file!=='')
+			                    <li ><a href="uploads/users/{{ $row->invoice_file }}" class="btn btn-light " title="{{ __('core.btn_edit') }}" target="_blank">  Invoice File </a>
+			                    </li>
+			                    @else
+			                    <li ><button href="uploads/users/{{ $row->invoice_file }}" class="btn btn-light  " title="{{ __('core.btn_edit') }}" target="_blank" style="padding: 10px 0;text-align: center;margin: 0 auto;display: block;" disabled>  Invoice File </button></li>
+			                    @endif
+				                </ul>
 
-								</div>
-                             @else
-                               <div class="dropdown">
-									<a href="uploads/users/{{ $row->invoice_file }}" class="btn btn-info btn-xs " title="{{ __('core.btn_edit') }}" target="_blank"> View Invoice </a>
-
-									<!-- <a download="{{$row->invoice_file}}" href="/uploads/users/" title="Invoice Download">
-									    <img alt="Invoice Download" src="/uploads/users/">
-									</a>
- -->
-								</div>
-                           @endif
+				              </div>
 
 							</td>	
 							
@@ -317,7 +299,7 @@
                     </div><br />
                      <?php 
 		              $data= DB::table('user_trips')->get();
-		                    
+		              $client=DB::table('tb_users')->where('group_id', 4)->get();   
 		            ?>
                     <div class="body">
                            <h1 style="color:#5dbbe0;font-size: 40px;">{{ count($data)}}</h1>
@@ -325,14 +307,13 @@
                     </div>
                 </div>
             </div>
-
               <div class="col-md-4 col-sm-12">
                 <div class="widget-box box-shadow" style=" margin: 0;background: #fff;padding: 20px;">
                     <div class="head">
                         <h3 >Clients</h3>
                     </div><br />
                     <div class="body">
-                           <h1 style="color:#5dbbe0;font-size: 40px;">800</h1>
+                           <h1 style="color:#5dbbe0;font-size: 40px;">{{ count($client)}}</h1>
                        <p>Total Customers</p>
                     </div>
                 </div>

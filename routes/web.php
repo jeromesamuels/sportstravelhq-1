@@ -137,6 +137,8 @@ Route::get('clientProfile/{id}','HomeController@clientProfile')->name('client.cl
 
 Route::get('trips/','UsertripsController@show_trips');
 Route::get('/trips/{id}','UsertripsController@show_trip_detail')->name('coordinator.trips.show');
+Route::post('invoices/hotel','InvoicesController@getHotels');
+Route::post('sendInvoice','InvoicesController@sendInvoice')->name('invoices.sendInvoice');
 
 Route::get('get-location-from-ip',function(){
     $ip= \Request::ip();

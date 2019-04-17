@@ -19,6 +19,7 @@
                 <table class="table table-striped table-hover ">
                     <tr>
                         <th>Sr</th>
+                        <th>Date Uploaded</th>
                         <th>Travel Cordinator</th>
                         <th>Room Listing CSV</th>
                         <th>Action</th>
@@ -26,6 +27,7 @@
                     @foreach ($roomListings as $roomListing)
                     <tr>
                         <td>{{ $loop->index + 1 }}</td>
+                         <th>{{ $roomListing->created_at}}</th>
                         <td>{{ $roomListing->travelCordinator->first_name." ".$roomListing->travelCordinator->last_name }}</td>
                         <td><a href="{{ route('hotelmanager.roomListingDownload',$roomListing->id) }}">Download</a></td>
                         <td>

@@ -12,7 +12,8 @@
     color: #fff;  
     }
 </style>
-<?php  $hotel_manager_id=Session::get('uid');
+<?php 
+    $hotel_manager_id=Session::get('uid');
     $user_group_id= DB::table('tb_users')->where('id', $hotel_manager_id)->pluck('group_id');
     foreach($user_group_id as $item_new) {
     $user_group_id_new = $item_new;
@@ -27,17 +28,16 @@
         <?php 
             $data_hotel= DB::table('hotels')->groupBy('type')->get();
             foreach($data_hotel as $value){
-               $name=$value->type;
-               
+            $name=$value->type;
               $currentMonth = date('m');
               
-            $purchases = DB::table('invoices')->where('invoices.hotel_type', '=', $name)->whereRaw('MONTH(check_out) = ?',[$currentMonth])->sum('invoices.amt_paid');    
+            $purchases = DB::table('invoices')->where('invoices.hotel_type', '=', $name)->sum('invoices.amt_paid');    
                 $array[$name] = $purchases;
                  $y = $array[$value->type];
                  $sum_new =array_sum($array);
             
             /* pending amount*/
-            $purchases_due = DB::table('invoices')->where('invoices.hotel_type', '=', $name)->whereRaw('MONTH(check_out) = ?',[$currentMonth])->sum('invoices.est_amt_due');    
+            $purchases_due = DB::table('invoices')->where('invoices.hotel_type', '=', $name)->sum('invoices.est_amt_due');    
                 $array[$name] = $purchases_due;
                  $y = $array[$value->type];
                  $sum_due =array_sum($array);
@@ -48,8 +48,6 @@
              /*Total Booking of this month*/
             $trip_booking = DB::table('user_trips')->whereRaw('MONTH(added) = ?',[$currentMonth])->get();
             
-            
-              
             ?>
         <div class="row" style="border-bottom:1px solid #eee;">
             <h2 style="padding-bottom: 20px;">Hotel Overview</h2>

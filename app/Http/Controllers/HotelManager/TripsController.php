@@ -50,14 +50,12 @@ $rfps= DB::table('rfps')->where('user_id',session('uid'))->orderBy('updated_at',
 $amenities = hotelamenities::all();
 return view('hotelmanager.viewtrips',compact('trips','amenities','rfps'));
 }
+
 public function show($id) {
 $trip = usertrips::find($id);
 $rfp = DB::table('rfps')->where('user_trip_id', '=', $id)->where('user_id', '=', session('uid'))->first();
-$corporate = DB::table('tb_users')->where('id', '=', session('uid'))->pluck('group_id');
-foreach($corporate as $corporate_new){
-$corporate_group=$corporate_new;
-}
-if($corporate_group==6){
+
+if(session('uid')==5){
 DB::table('user_trips')->where('id', $id)->update(['status' => 6]);
 }
 return view('hotelmanager.tripsingle', compact('trip', 'rfp'));
@@ -83,7 +81,7 @@ $file = $request->file('rooming_file')->getClientOriginalName();
 $destinationPath = './uploads/users/';
 $extension = $request->file('rooming_file')->getClientOriginalExtension(); 
 $uploadSuccess = $request->file('rooming_file')->move($destinationPath, $file);
-if($extension== 'csv'){
+if($extension== 'csv' || $extension== 'xls'){
 //echo $request->trip_id;
 $hotel_id=DB::table('rfps')->where('id', $request->trip_id)->get();
 foreach ($hotel_id as $hotel_id_new) {

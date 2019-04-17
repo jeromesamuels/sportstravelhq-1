@@ -50,11 +50,7 @@ class CorporateUsersController extends Controller {
         $this->grab( $request , $filter );
         if($this->access['is_view'] ==0) 
             return redirect('dashboard')->with('message', __('core.note_restric'))->with('status','error');
-        // Render into template
-       /* echo "<pre>";
-        print_r($this->data);
-        die;*/
-         
+       
         return view( 'corporate.user.index',$this->data);
     }
 

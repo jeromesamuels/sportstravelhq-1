@@ -32,17 +32,15 @@
 <div class="page-content row">
     <div class="page-content-wrapper no-margin">
 
-                 <?php 
-                 
-                     ?>
+          
  
         <div class="sbox">
         	<section class="page-header row">
-                <img src="http://13.92.240.159/demo/public/uploads/images/invoice-logo.jpg" title="Sports Travel HQ" alt="Sports Travel HQ" class="invoice-logo">
+                <a href="{{ URL::to('/hotelmanager/trips') }}"><img src="http://13.92.240.159/demo/public/uploads/images/invoice-logo.jpg" title="Sports Travel HQ" alt="Sports Travel HQ" height="70" class="invoice-logo"></a>
 				 
 			</section>
         <?php 
-        $record_exists = DB::table('invoices')->where('rfp_id', '=', $rfp->rfp_id)->first();
+            $record_exists = DB::table('invoices')->where('rfp_id', '=', $rfp->rfp_id)->first();
             $IATA_number = DB::table('hotels')->where('name', '=', $record_exists->hotel_name)->pluck('IATA_number');
                      foreach($IATA_number as $number){}
 

@@ -16,16 +16,17 @@ return redirect()->back();
 }
 public function showRoomListing(){
 if(Session::get('level') !=1){
-$roomListings = Roomlisting::where('hmanager_id',Session::get('uid'))->get();
+$roomListings = Roomlisting::where('hmanager_id',Session::get('uid'))->orderBy('created_at','desc')->get();
 }
 else{
-$roomListings = Roomlisting::get();
+$roomListings = Roomlisting::orderBy('created_at','desc')->get();
 }
 return view('hotelmanager.viewRoomListing',compact('roomListings'));
 }
 public function downloadRoomListing($id){
 $roomListing = Roomlisting::find($id);
-if(Session::get('uid') != $roomListing->hmanager_id){
+
+if(Session::get('uid') != $roomListing->hmanager_id && Session::get('level')!=1){
 return redirect()->back();
 }
 $response = -1;

@@ -201,6 +201,16 @@ $record_exists = DB::table('invoices')->where('rfp_id', '=', $request->trip_id)-
 if (is_null($record_exists)) {
 $rfp->save();
 DB::table('rfps')->where('id', $rfp->rfp_id)->update(['status' => 4]);
+$users=DB::table('tb_users')->where('id', 1)->first();
+/*send an invoice*/
+
+$to = [$email, $users->email];
+\Mail::send('user.emails.invoiceMail', compact('rfp'), function ($message) use($rfp, $to){
+//$message->from('SportTravelHQ');
+$message->to($to)->subject('Manager Uploaded Invoice');
+
+});
+
 return view('hotelmanager.tripInvoice',compact('rfp'));
 }
 else{

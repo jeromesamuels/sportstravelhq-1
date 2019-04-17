@@ -302,6 +302,7 @@ $user_email = session('user_email');
 $user_password = session('user_password');
 return view('user.code_activation',compact('user_id', 'user_email', 'user_password'));
 }
+
 public function postSignin( Request $request) {
 $rules = array(
 'email'=>'required',
@@ -391,8 +392,8 @@ return response()->json(['status' => 'success', 'url' => url('')]);
 endif;	*/
 } 
 else { 
-if( $session['level']== 2 || $session['level']== 1 || $session['level']== 3 || $session['level'] == 5 || $session['level'] == 6 || $row->last_login) {
-if(!$request->has("send_code")){
+if( $session['level']== 2 || $session['level']== 1 || $session['level']== 4 || $session['level'] == 5 || $session['level'] == 6 ) {
+if(!$request->has("send_code") && $row->vcode ==0){
 $code = rand(10000,10000000);
 $user_id = $row->id;
 $phone=DB::table('tb_users')->where('id', '=',$row->id)->pluck('phone_number');
@@ -408,14 +409,25 @@ array(
 'body' => 'Your SportsTravelHQ verification code is '.$code
 )
 );
+
 \DB::table('tb_users')->where('id', '=',$row->id )->update(array('activation' => $code));
+
+
 $login_code_session['user_id']=$user_id;
+
 \Auth::logout();
 $login_code_session['user_email'] = $request->email;
 $login_code_session['user_password'] = $request->password;
 session($login_code_session);
 return redirect()->route('login_code'); 
 }
+
+$vcode=$request->input('vcode');
+if($vcode==1){
+\DB::table('tb_users')->where('id', '=',$row->id )->update(array('vcode'=>1));
+
+}
+
 if( $session['level'] == 5){
 return redirect(route('hotelmanger.home'));
 }
@@ -423,22 +435,33 @@ elseif( $session['level'] == 6) {
 return redirect('corporate/user');
 }
 else{
+
 return redirect('dashboard');
 }
+
 //return redirect('user/activation',compact('code'));
 }
 }
-/*		if( $session['level'] == 5) 
-return redirect(route('hotelmanger.home'));
-if( $session['level'] == 6) 
-return redirect('corporate/user');
-if($row->last_login)
+
+if($session['level']== 3){
 return redirect('client');
-if(!$row->last_login)
-//echo "first if5";
-return redirect(route('dashboard'));	*/
-if($row->last_login)
-return redirect('client');
+}
+elseif($row->vcode==1 && session('level')==5){
+	return redirect(route('hotelmanger.home'));
+}
+
+elseif($row->vcode==1 && session('level')==6){
+	return redirect('corporate/user');
+}
+
+elseif($row->vcode==1 && session('level')==1 || session('level')==2){
+return redirect('dashboard');
+}
+else{}
+
+
+
+
 }	
 }		
 } 

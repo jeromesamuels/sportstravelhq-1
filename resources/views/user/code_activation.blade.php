@@ -35,7 +35,7 @@
 
 			     {!! Form::open(array('url'=>'user/signin', 'class'=>'form-vertical','id'=>'LoginAjax' , 'parsley-validate'=>'','novalidate'=>' ')) !!}
 		    	
-				<br><h5>Enter Activation Code for accessing the main page</h5><br>
+				<br><h5>Enter Activation Code for accessing the main page  </h5><br>
 
 				<ul class="parsley-error-list">
 					@foreach($errors->all() as $error)
@@ -72,9 +72,17 @@
 		        	<input type="hidden" name="send_code" id="send_code" value="1">
 		        	<input type="hidden" name="email" id="email" value="{{$user_email}}">
 		        	<input type="hidden" name="password" id="password" value="{{$user_password}}">
+		        	 <div class="form-group has-feedback hidden animated fadeInRight delayp1">
+		        	 
+		           	<input type="checkbox" name="vcode" value="1" />
+					<label> Don't send me verfication code again!! 	</label>
+					
+				   </div>
 		          <button type="submit" id="signup" style="width:100%;margin-top: 20px;" class="btn btn-default pull-right"><i class="icon-user-plus"></i> Confirm	</button>
 		       </div>
 		      </div>
+
+		  
 			  
 			{!! Form::close() !!}
 

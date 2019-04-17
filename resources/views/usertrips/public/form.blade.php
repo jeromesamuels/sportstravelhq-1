@@ -761,12 +761,7 @@
     
 </script>
 <?php 
-    $hotel = DB::table('hotels')->orderBY('updated_at', 'desc')->where('blackout_start','!=','')->get();
-    foreach ($hotel as $hotels => $value) {
-    
-     $blackout=$value->blackout_start;
-     $blackoutend=$value->blackout_end;
-      function getDatesFromRange($start, $end, $format = 'm/d/Y') { 
+    function getDatesFromRange($start, $end, $format = 'm/d/Y') { 
        
      // Declare an empty array 
      $array = array(); 
@@ -789,14 +784,30 @@
      return $array; 
     } 
     
+    $data_hotel=DB::table('hotels')->where('blackout_start','!=','')->get();
+    foreach($data_hotel as $value){
+    $name=$value->name;
+    
+    
+     $hotel = DB::table('hotels')->where('hotels.name', '=', $name)->get();  
+    
+     $array[$name] = $value->blackout_start;
+    
+    
+    foreach ($hotel as $hotels => $value) {
+     //echo $blackouthotel= $name.'->'.$value->blackout_start.'-'.$value->blackout_end.'<br>';
+     $blackout=$value->blackout_start;
+     $blackoutend=$value->blackout_end;
+    //die;
+    
     $DB_Blackout_Date = getDatesFromRange($blackout, $blackoutend); 
      //$date_new=implode(',',$Date);
     $date_new=implode('", "', $DB_Blackout_Date);
-   
-    // var_dump($Date);
+    
+    
+    }
     }
     ?>
-
 <script type="text/javascript">
     $(document).ready(function() { 
        $('#check_in').on('keyup', function() {
@@ -841,11 +852,9 @@
     <?php foreach ($DB_Blackout_Date as $bo_date) { ?>
         blackout_dates.push("<?php echo $bo_date; ?>")
     <?php } ?>
-
+    
     console.log("LLL: "+blackout_dates.length)
-
-
-
+    
     for(var i=0; i<blackout_dates.length;i++){
          //console.log("input-: "+blackout_dates[i]+ " === "+dateArr.includes(blackout_dates[i]))
         if(dateArr.includes(blackout_dates[i])){
@@ -853,13 +862,17 @@
            blackout_dates1.push(blackout_dates[i]);
          }
     }
-
-   alert('You have selected following blackout dates for your booking requests, this may impact availability'+'\n'+blackout_dates1);
-
+    if(blackout_dates1 !=''){
+     alert('You have selected following blackout dates for your booking requests, this may impact availability'+'\n'+blackout_dates1);
+    }
+    else{
+       alert('No blackout dates for your booking requests!!');  
+    }
+    
     console.log("inputarr-",dateArr);
     console.log("blackout_dates: ",blackout_dates);
     
-   
+    
         var blackin = '<?php echo $blackout; ?>';
         var blackout = '<?php echo $blackoutend; ?>';
          

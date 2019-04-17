@@ -100,6 +100,7 @@
                                                     <option value="" >Please select reason for Blackout</option>
                                                     <option value="Spring Break" >Spring Break</option>
                                                     <option value="Sporting Event">Sporting Event</option>
+                                                    <option value="Sporting Event">General</option>
                                                 </select>
                                                 <br>
                                                 <label>Enter Response</label>

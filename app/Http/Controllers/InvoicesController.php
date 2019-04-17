@@ -1,5 +1,7 @@
 <?php namespace App\Http\Controllers;
 use App\Models\Invoices;
+use App\Models\Hotel;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Validator, Input, Redirect ; 
@@ -33,7 +35,8 @@ if($this->access['is_view'] ==0){
 return redirect('dashboard')->with('message', __('core.note_restric'))->with('status','error');				
 }
 return view( $this->module.'.index',$this->data);
-}	
+}
+
 function create( Request $request , $id =0 ) 
 {
 $this->hook( $request  );
@@ -41,8 +44,15 @@ if($this->access['is_add'] ==0)
 return redirect('dashboard')->with('message', __('core.note_restric'))->with('status','error');
 $this->data['row'] = $this->model->getColumnTable( $this->info['table']); 
 $this->data['id'] = '';
+$code = rand(10000,10000000);
+$hotel= Hotel::get()->toArray(); 
+$room_qty= DB::table('room_qty')->pluck('title'); 
+$this->data['invoice_id'] = $code;
+$this->data['hotel'] = $hotel;
+$this->data['room_qty'] = $room_qty;
 return view($this->module.'.form',$this->data);
 }
+
 function edit( Request $request , $id ) 
 {
 $this->hook( $request , $id );
@@ -52,8 +62,15 @@ if($this->access['is_edit'] ==0 )
 return redirect('dashboard')->with('message',__('core.note_restric'))->with('status','error');
 $this->data['row'] = (array) $this->data['row'];
 $this->data['id'] = $id;
+$code = rand(10000,10000000);
+$hotel= Hotel::get()->toArray(); 
+$room_qty= DB::table('room_qty')->pluck('title'); 
+$this->data['invoice_id'] = $code;
+$this->data['hotel'] = $hotel;
+$this->data['room_qty'] = $room_qty;
 return view($this->module.'.form',$this->data);
-}	
+}
+
 function show( Request $request , $id ) 
 {
 /* Handle import , export and view */
@@ -85,6 +102,7 @@ return view($this->module.'.view',$this->data);
 break;
 }
 }
+
 function store( Request $request  )
 {
 $task = $request->input('action_task');
@@ -97,15 +115,16 @@ $validator = Validator::make($request->all(), $rules);
 if ($validator->passes()) 
 {
 $data = $this->validatePost( $request );
-$id = $this->model->insertRow($data , $request->input( $this->info['key']));
+//dd($data);
+$id = $this->model->insert( ['invoice_id' => $request->input('invoice_id'),'check_in'=>$request->input('check_in'),'check_out'=>$request->input('check_out'),'rfp_id'=>$request->input('rfp_id'), 'hotel_name' => $request->input('hotel_name'),'hotel_add'=>$request->input('hotel_add'),'hotel_manager'=>$request->input('hotel_manager'),'email'=>$request->input('email'),'phone'=>$request->input('phone'),'total_room'=>$request->input('total_room'),'room_rate'=>$request->input('room_rate'),'actualized_room_count'=>$request->input('actualized_room_count'),'commissoin_rate'=>$request->input('commissoin_rate'),'payment_mode'=>$request->input('payment_mode'),'est_amt_due'=>$request->input('est_amt_due'),'amt_paid'=>$request->input('amt_paid'),'notes'=>$request->input('notes')]);
 /* Insert logs */
 $this->model->logs($request , $id);
 if(!is_null($request->input('apply')))
-return redirect( $this->module .'/'.$id.'/edit?'. $this->returnUrl() )->with('message',__('core.note_success'))->with('status','success');
+return redirect( $this->module .'/'.$request->input('invoice_id').'/edit?'. $this->returnUrl() )->with('message',__('core.note_success'))->with('status','success');
 return redirect( $this->module .'?'. $this->returnUrl() )->with('message',__('core.note_success'))->with('status','success');
 } 
 else {
-return redirect($this->module.'/'. $request->input(  $this->info['key'] ).'/edit')
+return redirect($this->module.'/'. $request->input('invoice_id').'/edit')
 ->with('message',__('core.note_error'))->with('status','error')
 ->withErrors($validator)->withInput();
 }
@@ -126,6 +145,7 @@ return redirect($this->module.'?'.$this->returnUrl())->with($result);
 break;		
 }	
 }	
+
 public function destroy( $request)
 {
 // Make Sure users Logged 
@@ -202,4 +222,41 @@ return  Redirect::back()->with('message',__('core.note_error'))->with('status','
 ->withErrors($validator)->withInput();
 }
 }
+function getHotels(){
+	$hotel_id= $_REQUEST['id'];
+	$hotel=Hotel::find($hotel_id);
+	$users=DB::table('tb_users')->where('hotel_id', $hotel_id)->first();
+    $hotel_info=['address'=>$hotel->address,'phone'=>$users->phone_number,'name'=>$users->first_name.' '.$users->last_name,'email'=>$users->email];
+
+	/*foreach($users as $key=>$user){
+      //array_push($hotel_info,$user);
+      $hotel_info[$key]=$user;
+
+	}*/
+	//echo $hotel_info;
+	return json_encode($hotel_info); 	
+	
+}
+function sendInvoice(Request $request){
+$invoice_id=$request->input('invoice_id');
+$email=$request->input('email');
+
+$rfps= DB::table('invoices')->where('invoice_id', $invoice_id)->get();
+foreach($rfps as $rfp){}
+$hotel= Hotel::find($rfp->hotel_name);
+$hname= $hotel->name;
+$users=DB::table('tb_users')->where('id', 1)->first();
+/*send an invoice*/
+
+$to = [$email,$users->email ];
+\Mail::send('user.emails.invoicenewMail', compact('rfp','hname'), function ($message) use($rfp, $to){
+//$message->from('SportTravelHQ');
+$message->to($to)->subject('Uploaded Invoice');
+
+});
+
+return  Redirect::back();
+}
+
+
 }

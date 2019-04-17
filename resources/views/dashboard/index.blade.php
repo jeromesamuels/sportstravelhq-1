@@ -267,15 +267,13 @@
                 </div>
                 <?php 
                     $data_hotel= DB::table('hotels')->groupBy('type')->get();
-                    foreach($data_hotel as $value){
-                       $name=$value->type;
-                     
+                       foreach($data_hotel as $value){
+                        $name=$value->type;
                         $purchases = DB::table('invoices')->where('invoices.hotel_type', '=', $name)->sum('invoices.amt_paid');    
                         $array[$name] = $purchases;
                         
                     }
-                      
-                    ?>
+                 ?>
                 <div class="col-md-6 col-sm-12">
                     <div class="widget-box box-shadow" style=" margin: 0;background: #fff;padding:15px 20px; left: 15px;position: relative;">
                         <div class="head">
@@ -292,7 +290,6 @@
                                              $hotel_type=$value->type; 
                                               $y = $array[$value->type];
                                               $sum =array_sum($array);
-                                              //$count = count( $value->type);
                                               $purchases_all = DB::table('invoices')->where('hotel_type', $value->type)->get();
                                             
                                               ?>
@@ -357,7 +354,7 @@
         <div class="row">
             <div class="col-md-4" style="border-right: 1px solid #c3bfbf;">
                 <div class="state_report" style="border-bottom: 1px solid #c3bfbf;border-bottom-style: dashed;">
-                    <?php 
+                      <?php 
                         $data_trips= DB::table('user_trips')->get();
                               
                         ?>
@@ -379,7 +376,7 @@
                 <h3 style="padding-top:30px;">Most Recent Users</h3>
                 <p style="font-size: 14px;">Check out each column for more details</p>
                 <br />
-                <?php 
+                  <?php 
                     $data_client= DB::table('tb_users')->orderby('id', 'DESC')->limit(3)->get();
                     foreach($data_client as $data_value){
                     ?>
@@ -425,10 +422,10 @@
                             indexLabel: "{name} - #percent%",
                             dataPoints: [
                               <?php  
-                        foreach($data_hotel as $value){
-                         $hotel_type=$value->type; 
-                         $y = $array[$value->type];
-                          ?>
+                             foreach($data_hotel as $value){
+                             $hotel_type=$value->type; 
+                             $y = $array[$value->type];
+                             ?>
                                  { y: <?php echo  $y; ?>, name: '<?php echo  $hotel_type; ?>' },
                                 
                              <?php  } ?>

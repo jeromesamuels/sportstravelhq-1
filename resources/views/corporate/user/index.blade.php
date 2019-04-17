@@ -39,13 +39,13 @@
                       
                       $currentMonth = date('m');
                     
-                    $purchases = DB::table('invoices')->where('invoices.hotel_type', '=', $name)->whereRaw('MONTH(check_out) = ?',[$currentMonth])->sum('invoices.amt_paid');    
+                    $purchases = DB::table('invoices')->where('invoices.hotel_type', '=', $name)->sum('invoices.amt_paid');    
                         $array[$name] = $purchases;
                          $y = $array[$value->type];
                          $sum_new =array_sum($array);
                     
                     /* pending amount*/
-                    $purchases_due = DB::table('invoices')->where('invoices.hotel_type', '=', $name)->whereRaw('MONTH(check_out) = ?',[$currentMonth])->sum('invoices.est_amt_due');    
+                    $purchases_due = DB::table('invoices')->where('invoices.hotel_type', '=', $name)->sum('invoices.est_amt_due');    
                         $array[$name] = $purchases_due;
                          $y = $array[$value->type];
                          $sum_due =array_sum($array);
@@ -54,7 +54,7 @@
                     }
                     
                     
-                    $trip_booking = DB::table('user_trips')->whereRaw('MONTH(added) = ?',[$currentMonth])->get();
+                    $trip_booking = DB::table('user_trips')->get();
                     
                     
                       
@@ -66,7 +66,7 @@
                     <div class="col-md-3" style="border-right: 1px solid #c3bfbf;">
                         <div class="info-boxes" style="background: #fff; color: #000;">
                             <h4>Total Booking</h4>
-                            <p style="font-size: 14px;padding-top: 10px;">This Month</p>
+                            <p style="font-size: 14px;padding-top: 10px;">Total Booking</p>
                         </div>
                         <div class="info-boxes" style="background: #fff; color: #000;float:right;">
                             <h4 style="float:right;top: 50px;position: absolute;right: 10px;">{{ count($trip_booking) }}</h4>
@@ -75,7 +75,7 @@
                     <div class="col-md-3" style="border-right: 1px solid #c3bfbf;">
                         <div class="info-boxes" style="background: #fff; color: #000;">
                             <h4 >Paid Invoices</h4>
-                            <p style="font-size: 14px;padding-top: 10px;">This Month</p>
+                            <p style="font-size: 14px;padding-top: 10px;">Till Today</p>
                         </div>
                         <div class="info-boxes" style="background: #fff; color: #000;float:right;">
                             <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $revenu_due }}</h4>
@@ -84,7 +84,7 @@
                     <div class="col-md-3" style="border-right: 1px solid #c3bfbf;">
                         <div class="info-boxes" style="background: #fff; color: #000;">
                             <h4 >Open Balance</h4>
-                            <p style="font-size: 14px;padding-top: 10px;">This Month</p>
+                            <p style="font-size: 14px;padding-top: 10px;">Till Today</p>
                         </div>
                         <?php 
                             $data2= DB::table('rfps')->get()->where("status",'!=',3)->all();
@@ -97,7 +97,7 @@
                     <div class="col-md-3" style="border-right: 1px solid #c3bfbf;">
                         <div class="info-boxes" style="background: #fff; color: #000;">
                             <h4 >Estimated Revenue</h4>
-                            <p style="font-size: 14px;padding-top: 10px;">This Month</p>
+                            <p style="font-size: 14px;padding-top: 10px;">Till Today</p>
                         </div>
                         <?php 
                             $data3= DB::table('rfps')->get()->where("status",2)->all();
@@ -110,7 +110,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" style="min-height: 700px;">
             <div class="col-md-8 col-sm-12">
                 <div class="sbox">
                     <div class="sbox-title">

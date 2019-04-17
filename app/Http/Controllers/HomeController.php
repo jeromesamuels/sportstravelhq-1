@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Illuminate\Support\Facades\DB;
 use Validator, Input, Redirect ; 
+use App\User;
+use App\Models\Hotel;
 
 class HomeController extends Controller {
 
@@ -353,13 +355,30 @@ class HomeController extends Controller {
 		return response()->json(['status'=>'success']);
 	}
 	public function revenue() {
-		return view('invoices.revenue');	
+		$data_hotel= Hotel::groupBy('type')->get();
+		$client=User::where('group_id', 4)->get();
+        $corporate=User::find(session('uid'));
+  
+          $hcorporateData= Hotel::find($corporate->hotel_id);
+         
+		return view('invoices.revenue',compact('data_hotel','client','hcorporateData'));	
 	}
 	public function booking() {
-		return view('invoices.booking');	
+		$data_hotel= DB::table('hotels')->groupBy('type')->get();
+		$data_user= DB::table('tb_users')->where('group_id', 3)->get();
+		return view('invoices.booking',compact('data_hotel','data_user'));	
 	}
 	public function client() {
-		return view('client.index');	
+		$data_hotel= DB::table('hotels')->groupBy('type')->get();
+
+	   if(session('level')==4){
+		$data_client= DB::table('tb_users')->where('id', session('uid'))->get();
+	   }
+	   else{
+	   	$data_client= DB::table('tb_users')->where('group_id', 4)->get();
+	   }
+
+		return view('client.index',compact('data_hotel','data_client'));	
 	}
 	public function clientProfile($id) {
 		$clientTrips = DB::table('user_trips')->where('entry_by', $id)->paginate(10);

@@ -113,7 +113,8 @@
             $.post(url, function(response) {
                 if(response.success) {
                     alert(response.view_data);
-                    location.reload();
+                    window.location.href=response.redirect;
+                    //location.reload();
                 }
             }, 'json');
 

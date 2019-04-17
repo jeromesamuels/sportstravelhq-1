@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller;
 //use App\Models\usertrips;
 use App\Models\hotelamenities;
+use App\Models\AgreementForm;
 class UsertripsController extends Controller {
 protected $layout = "layouts.main";
 protected $data = array();
@@ -51,15 +52,38 @@ return redirect('dashboard')->with('message', __('core.note_restric'))->with('st
 // Render into template
 return view( $this->module.'.public'.'.compare',$this->data);
 }
+
+function getDatesFromRange($start, $end, $format = 'm/d/Y') { 
+       
+     // Declare an empty array 
+     $array = array(); 
+       
+     $interval = new DateInterval('P1D'); 
+    
+     $realEnd = new DateTime($end); 
+     $realEnd->add($interval); 
+    
+     $period = new DatePeriod(new DateTime($start), $interval, $realEnd); 
+    
+     foreach($period as $date) {                  
+         $array[] = $date->format($format);  
+     } 
+   
+     return $array; 
+} 
+
 function create( Request $request , $id =0 ) 
 {
 $this->hook( $request );
+$this->checkAgreementFormAvailability();
 if($this->access['is_add'] ==0) 
 return redirect('dashboard')->with('message', __('core.note_restric'))->with('status','error');
 $this->data['row'] = $this->model->getColumnTable( $this->info['table']);
 $this->data['id'] = '';
+
 return view($this->module.'.form',$this->data);
 }
+
 function edit( Request $request , $id ) 
 {
 $this->hook( $request , $id );
@@ -69,6 +93,7 @@ if($this->access['is_edit'] ==0 )
 return redirect('dashboard')->with('message',__('core.note_restric'))->with('status','error');
 $this->data['row'] = (array) $this->data['row'];
 $this->data['id'] = $id;
+
 return view($this->module.'.form',$this->data);
 }
 function show( Request $request , $id ) 
@@ -164,6 +189,7 @@ return ['message'=>__('No Item Deleted'),'status'=>'error'];
 }
 public static function display()
 {
+
 $mode  = isset($_GET['view']) ? 'view' : 'default';
 $model  = new Usertrips();
 $info = $model::makeInfo('usertrips');
@@ -205,8 +231,7 @@ $pagination = new Paginator($result['rows'], $result['total'], $params['limit'])
 $pagination->setPath('');
 $data['i']			= ($page * $params['limit'])- $params['limit']; 
 $data['pagination'] = $pagination;
-//print_r($data);
-//exit;
+
 return view('usertrips.public.index',$data);
 }
 }
@@ -260,6 +285,7 @@ return response()->json([
 'view_data' => (string)view('usertrips.public.comparerfp', $output)
 ]);
 }
+
 public function acceptRFP($rfp_id) {
 DB::table('rfps')->where('id', $rfp_id)->update(['status' => 2]);
 $user_trip_id = DB::table('rfps')->where('id', $rfp_id)->pluck('user_trip_id');
@@ -293,6 +319,7 @@ return response()->json([
 ]);
 }
 $r = \Helper::addTripStatusLog(4, $trip_id, $rfp_id);
+
 }
 else{
 $user_email = DB::table('rfps')->where('id', $rfp_id)->pluck('sales_manager');
@@ -334,10 +361,17 @@ $data_guest = array("trip_id" => $user_trip_single->user_trip_id, "subject_guest
 $message_guest->to($to_guest)->subject($data_guest['subject_guest']);
 });
 }
+$agreement = AgreementForm::orderBy('created_at', 'DESC')->get(); 
+//return redirect('hotelmanager/agreements')->with('message', __('core.note_restric'))->with('status','success');
+
 return response()->json([
 'success' => true, 
-'view_data' => 'Accepted successfully !'
+'redirect'=>route('hotelmanager.viewAgreements'),
+'view_data' => 'Accepted successfully !',
+//'view_data' => (string)view('hotelmanager.viewAgreements',$agreements)
 ]);
+
+
 }
 public function acceptAgree($rfp_id) {
 if(session('level')==4){

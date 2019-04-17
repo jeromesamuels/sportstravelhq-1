@@ -173,32 +173,25 @@
 <div class="page-content-wrapper no-margin">
 <div class="sbox" style="border-top: none">
     <div class="sbox-content dashboard-container">
+        @foreach($data_hotel as $value)
         <?php 
-            $data_hotel= DB::table('hotels')->groupBy('type')->get();
-            foreach($data_hotel as $value){
-               $name=$value->type;
-                  
-                //$current_date= date('F');
-              $currentMonth = date('m');
-               // $year=date("Y",$time);  
+            $name=$value->type;
+            $currentMonth = date('m');
             /*Amount Paid*/
-            $purchases = DB::table('invoices')->whereRaw('MONTH(check_out) = ?',[$currentMonth])->sum('invoices.amt_paid');    
-                /*$array[$name] = $purchases;
-                 $y = $array[$value->type];*/
-                 $sum_new =$purchases;
+            $purchases = DB::table('invoices')->sum('invoices.amt_paid');    
+            
+              $sum_new =$purchases;
             
             /* pending amount*/
-            $purchases_due = DB::table('invoices')->where('invoices.hotel_type', '=', $name)->whereRaw('MONTH(check_out) = ?',[$currentMonth])->sum('invoices.est_amt_due');    
-                $array[$name] = $purchases_due;
-                 $y = $array[$value->type];
-                 $sum_due =array_sum($array);
-                 $revenu_due=$sum_new-$sum_due;
-            
-            }
+            $purchases_due = DB::table('invoices')->where('invoices.hotel_type', '=', $name)->sum('invoices.est_amt_due');    
+             $array[$name] = $purchases_due;
+              $y = $array[$value->type];
+              $sum_due =array_sum($array);
+              $revenu_due=$sum_new-$sum_due;
             
             
-              
             ?>
+        @endforeach
         <div class="row" style="border-bottom:1px solid #eee;">
             <h2 style="padding-bottom: 20px;">Booking Overview</h2>
         </div>
@@ -206,10 +199,10 @@
             <div class="col-md-3" style="border-right: 1px solid #c3bfbf;">
                 <div class="info-boxes" style="background: #fff; color: #000;">
                     <h4>Estimated Revenue</h4>
-                    <p style="font-size: 14px;">Total Revenue this month</p>
+                    <p style="font-size: 14px;">Total Revenue </p>
                 </div>
                 <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                    <h4 style="float:right;top: 50px;position: absolute;right: 10px;color: #5dbbe0;">${{ $sum_new }}</h4>
+                    <h4 style="float:right;top: 50px;position: absolute;right: 10px;color: #5dbbe0;">${{ $sum_due }}</h4>
                 </div>
                 <div class="progress" style="margin-bottom: 10px;height: 6px; ">
                     <div class="progress-bar" role="progressbar" aria-valuenow="70"
@@ -222,7 +215,7 @@
             <div class="col-md-3" style="border-right: 1px solid #c3bfbf;">
                 <div class="info-boxes" style="background: #fff; color: #000;">
                     <h4 >State Revenue</h4>
-                    <p style="font-size: 14px;">Total Revenue this month</p>
+                    <p style="font-size: 14px;">Total Revenue </p>
                 </div>
                 <div class="info-boxes" style="background: #fff; color: #000;float:right;">
                     <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $revenu_due }}</h4>
@@ -238,7 +231,7 @@
             <div class="col-md-3" style="border-right: 1px solid #c3bfbf;">
                 <div class="info-boxes" style="background: #fff; color: #000;">
                     <h4 >Paid Invoice</h4>
-                    <p style="font-size: 14px;">Total Revenue this month</p>
+                    <p style="font-size: 14px;">Total Revenue </p>
                 </div>
                 <?php 
                     $data2= DB::table('rfps')->get()->where("status",'!=',3)->all();
@@ -258,7 +251,7 @@
             <div class="col-md-3" style="border-right: 1px solid #c3bfbf;">
                 <div class="info-boxes" style="background: #fff; color: #000;">
                     <h4 >Open Invoice</h4>
-                    <p style="font-size: 14px;">Total Revenue this month</p>
+                    <p style="font-size: 14px;">Total Revenue</p>
                 </div>
                 <div class="info-boxes" style="background: #fff; color: #000;float:right;">
                     <h4 style="float:right;top: 50px;position: absolute;right:10px;">${{ $sum_new }}</h4>
@@ -274,16 +267,15 @@
         </div>
     </div>
 </div>
+@foreach($data_hotel as $value)
 <?php 
-    $data_hotel= DB::table('hotels')->groupBy('type')->get();
-    foreach($data_hotel as $value){
-       $name=$value->type;
+    $name=$value->type;
     
-        $purchases = DB::table('invoices')->where('invoices.hotel_type', '=', $name)->sum('invoices.amt_paid');    
-        $array[$name] = $purchases;
-    }
-      
+     $purchases = DB::table('invoices')->where('invoices.hotel_type', '=', $name)->sum('invoices.amt_paid');    
+     $array[$name] = $purchases;
+    
     ?>
+@endforeach
 <div class="sbox" style="border-top: none;padding: 0;background: transparent; box-shadow: none;">
     <div class="sbox-content dashboard-container" style=" padding: 0;">
         <div class="row">
@@ -294,19 +286,18 @@
                     </div>
                     <div class="body">
                         <table class="table">
+                            @foreach($data_hotel as $value)
                             <?php  
-                                foreach($data_hotel as $value){
+                                $sum=0;
+                                $hotel_type=$value->type; 
+                                 $y = $array[$value->type];
+                                 $sum =array_sum($array);
                                 
-                                 $sum=0;
-                                 $hotel_type=$value->type; 
-                                  $y = $array[$value->type];
-                                  $sum =array_sum($array);
-                                 
-                                  //$count = count( $value->type);
+                                 //$count = count( $value->type);
                                 $purchases_all = DB::table('invoices')->where('hotel_type', $value->type)->get();
                                 
                                 
-                                  ?>
+                                 ?>
                             <tr>
                                 <td style="width: 20%;">  <img alt="" src="../uploads/users/<?php echo $value->logo;?>" id="div_corporate_img" border="0" width="60" style="margin-top: 30px;" class="img-responsive"></td>
                                 <td>
@@ -330,8 +321,7 @@
                                     <br /><br />
                                 </td>
                             </tr>
-                            <?php } 
-                                ?>
+                            @endforeach
                         </table>
                     </div>
                 </div>
@@ -739,10 +729,7 @@
             </div>
             <div class="col-md-4 col-sm-12">
                 <div class="widget-box box-shadow" style=" margin: 0;background: #fff;padding: 20px;">
-                    <?php 
-                        $data_user= DB::table('tb_users')->get();
-                              
-                        ?>
+                   
                     <div class="head">
                         <h3 >Users</h3>
                     </div>

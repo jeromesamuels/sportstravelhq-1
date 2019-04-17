@@ -942,17 +942,17 @@
 
                     <div class="form-group">
                         <label>Actualized Room </label>
-                        <input type="number" class="form-control" name="actualized_room_count" min="0" required="">
+                        <input type="number" class="form-control" name="actualized_room_count" id="actualized_room_count" min="0" required="">
                     </div>
 
                     <div class="form-group">
                         <label>Room Rate</label>
-                        <input type="text" class="form-control" name="room_rate" required=">
+                        <input type="text" class="form-control" name="room_rate" id="room_rate" required=">
                     </div>
 
                     <div class="form-group">
                         <label>Amount (In Dollars)</label>
-                        <input type="text" class="form-control" name="amt_paid" required="">
+                        <input type="text" class="form-control" name="amt_paid" id="amt_paid" required="" value="" readonly>
                     </div>
 
                       <a href="http://13.92.240.159/demo/uploads/users/Goal Reports W-9 .pdf" class="btn btn-info" target="_blank">Download W9</a>
@@ -967,6 +967,17 @@
         </div>
     </div>
 </div>
+<script>
+     $(document).ready(function() { 
+       $('#room_rate').on('keyup', function() {
+        var actualized_room_count = $('#actualized_room_count').val();
+        //var mydate = new Date(check_in.value);
+        var room_rate = $('#room_rate').val();
+        var amt=actualized_room_count * room_rate;
+        document.getElementById('amt_paid').value= amt;
+    });
+    });
+</script>
 <!--begin::DeclineModal-->
 <div class="modal fade" id="confirm_decline" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
