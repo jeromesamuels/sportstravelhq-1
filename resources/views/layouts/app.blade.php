@@ -43,19 +43,32 @@
     .amenityFilter + * .select2-selection__rendered{
       border: 1px solid #dddddd !important;
     }
+    #m_header{
+    backface-visibility: hidden;
+    z-index: 99;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    }
+  
+    section.content {
+    margin: 0;
+  }
 </style>
 </head>
 
-<body class="theme-deep-purple theme-pink open-sidebar pace-done close-sidemenu">
+<body class="m-page--wide m-header--fixed m-header--fixed-mobile m-footer--push m-aside--offcanvas-default index-page sidebar-collapse">
 <div id="wrapper">
 
-      <aside id="leftsidebar" class="sidebar">
+     <!--  <aside id="leftsidebar" class="sidebar">
          @include('layouts.sidebar')             
       </aside>
 
       <aside id="rightsidebar" class="right-sidebar hide">
          @include('layouts.rightbar')            
-        </aside>
+        </aside> -->
 
         <section class="content">
            @include('layouts.header') 
@@ -124,7 +137,11 @@
       <!-- end::Footer -->
 
 {{ SiteHelpers::showNotification() }} 
-
+     <script type="text/javascript">
+            $(window).load(function() {
+              $("body").removeClass("pace-progress");
+           });
+        </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <script type="text/javascript">
 jQuery(document).ready(function ($) {

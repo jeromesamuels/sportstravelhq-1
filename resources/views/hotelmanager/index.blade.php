@@ -12,6 +12,9 @@
     background: #5dbbe0;
     color: #fff;  
 }
+.table-responsive{
+  min-height: 200px;
+}
 </style>
 <?php  $hotel_manager_id=Session::get('uid');
 $user_group_id= DB::table('tb_users')->where('id', $hotel_manager_id)->pluck('group_id');
@@ -241,18 +244,16 @@ $user_group_id_new = $item_new;
              <div class="sbox" style="border-top: none;padding: 0;background: transparent; box-shadow: none;">
                 <div class="sbox-content dashboard-container" style=" padding: 0;">
                     <div class="row">
+                    @foreach ($hotels as $hotel)
                      <?php 
-                        $data_hotel= DB::table('hotels')->groupBy('type')->get();
-                        foreach($data_hotel as $value){
-                           $name=$value->type;
-
-                            $purchases = DB::table('invoices')->where('invoices.hotel_type', '=', $name)->sum('invoices.amt_paid');    
+                            
+                            $purchases = DB::table('invoices')->where('invoices.hotel_name', '=', $hotel->name)->sum('invoices.amt_paid');    
                             $array[$name] = $purchases;
                             $y = $array[$value->type];
                             $sum =array_sum($array);
-                        }
-              
-            ?>
+                      
+                      ?>
+                      @endforeach
                         <div class="col-md-4">
                             <div class="widget-box box-shadow" style=" margin: 0;background: #5dbbe0;padding: 20px;">
                                 <div class="head">
@@ -265,9 +266,9 @@ $user_group_id_new = $item_new;
                             </div>
                         </div>
                          <?php 
-                          $data= DB::table('user_trips')->get();
-                           
-                            $rfps_new= DB::table('rfps')->where('status', 2)->get();     
+                        
+                            $data= DB::table('user_trips')->get();
+                            $rfps_new= DB::table('rfps')->where(['user_id'=>session('uid')])->get();     
                         ?>
                         <div class="col-md-4 col-sm-12">
                             <div class="widget-box box-shadow" style=" margin: 0;background: #fff;padding: 20px;">

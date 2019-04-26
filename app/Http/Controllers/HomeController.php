@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Validator, Input, Redirect ; 
 use App\User;
 use App\Models\Hotel;
+use DateTime;
 
 class HomeController extends Controller {
 
@@ -354,19 +355,85 @@ class HomeController extends Controller {
 		session(['set_theme'=> $id ]);
 		return response()->json(['status'=>'success']);
 	}
+
 	public function revenue() {
-		$data_hotel= Hotel::groupBy('type')->get();
+	     /*for corportae*/
 		$client=User::where('group_id', 4)->get();
         $corporate=User::find(session('uid'));
-  
-          $hcorporateData= Hotel::find($corporate->hotel_id);
-         
-		return view('invoices.revenue',compact('data_hotel','client','hcorporateData'));	
+        $hcorporateData= Hotel::find($corporate->hotel_id);
+        $data_hotel= Hotel::groupBy('type')->where('id',$corporate->hotel_id)->get();
+        $data_all= Hotel::groupBy('type')->get();
+        foreach($data_all as $data_all_new){}
+        foreach($data_hotel as $value){
+         $name=$value->type;
+        }
+
+        if($corporate->group_id== 6 ){
+        
+        $purchases_new = DB::table('invoices')->where('invoices.hotel_type', '=', $hcorporateData->type)->sum('invoices.amt_paid'); 
+        $purchases_due = DB::table('invoices')->where('invoices.hotel_type', '=', $hcorporateData->type)->sum('invoices.est_amt_due'); 
+        $purchases_date = DB::table('invoices')->where('invoices.hotel_type', '=', $hcorporateData->type)->pluck('created_at');
+       }
+       elseif(session('level')== 5 ){
+      
+       	  $purchases_new = DB::table('invoices')->where('invoices.hotel_name', '=', $corporate->hotel_id)->sum('invoices.amt_paid'); 
+          $purchases_due = DB::table('invoices')->where('invoices.hotel_name', '=', $corporate->hotel_id)->sum('invoices.est_amt_due'); 
+          $purchases_date = DB::table('invoices')->where('invoices.hotel_name', '=', $corporate->hotel_id)->pluck('created_at');
+       }
+       else{
+     
+         $purchases_new = DB::table('invoices')->where('invoices.hotel_type', '=', $data_all_new->type)->sum('invoices.amt_paid'); 
+        $purchases_due = DB::table('invoices')->where('invoices.hotel_type', '=', $data_all_new->type)->sum('invoices.est_amt_due'); 
+        $purchases_date = DB::table('invoices')->where('invoices.hotel_type', '=', $data_all_new->type)->pluck('created_at');
+       }
+        //echo $purchases_date;
+        foreach($purchases_date as $purchases_date_new){
+          $date = DateTime::createFromFormat("Y-m-d H:i:s", $purchases_date_new);
+          $date_new=$date->format("Y");
+          $date_month=$date->format("m");
+       }
+           $monthly_purchase=DB::table('invoices')->where('invoices.hotel_type', '=', $hcorporateData->type)->whereRaw('MONTH(created_at) = ?',$date_month)->whereRaw('YEAR(created_at) = ?',$date_new)->sum('invoices.amt_paid');
+            $monthly_purchase_due=DB::table('invoices')->where('invoices.hotel_type', '=', $hcorporateData->type)->whereRaw('MONTH(created_at) = ?',$date_month)->whereRaw('YEAR(created_at) = ?',$date_new)->sum('invoices.est_amt_due');
+           $date_start = date("Y", strtotime('-5 year'));
+           $date_future = date("Y", strtotime('+5 year'));
+           $date_year = date("Y");
+           for($i=$date_start;$i<=$date_future;$i++){ 
+           	//echo $i;
+           $purchases = DB::table('invoices')->where(['invoices.hotel_type'=> $name])->whereRaw('YEAR(created_at) = ?',$i)->sum('invoices.amt_paid'); 
+          
+           }
+
+             /*superadmin*/
+        
+          foreach($data_all as $data_all_new){
+          $monthly_purchase_all=DB::table('invoices')->where('invoices.hotel_type', '=', $data_all_new->type)->whereRaw('MONTH(created_at) = ?',$date_month)->whereRaw('YEAR(created_at) = ?',$date_new)->sum('invoices.amt_paid');
+          $monthly_purchase_due_all=DB::table('invoices')->where('invoices.hotel_type', '=', $data_all_new->type)->whereRaw('MONTH(created_at) = ?',$date_month)->whereRaw('YEAR(created_at) = ?',$date_new)->sum('invoices.est_amt_due');
+          }
+		   return view('invoices.revenue',compact('data_hotel','client','hcorporateData','corporate','purchases','purchases_due','purchases_new','monthly_purchase','monthly_purchase_due','data_all','monthly_purchase_all','monthly_purchase_due_all'));	
 	}
 	public function booking() {
-		$data_hotel= DB::table('hotels')->groupBy('type')->get();
+		$corporate=User::find(session('uid'));
+		$hotel_type=Hotel::where('id',$corporate->hotel_id)->pluck('type');	
+		if($corporate->group_id==6){
+		$data_hotel=Hotel::groupBy('type')->where('type',$hotel_type)->get();
+		foreach($data_hotel as $value){
+			$name=$value->type;
+		}
+		
+		$purchases = DB::table('invoices')->where('invoices.hotel_type', '=', $name)->sum('invoices.amt_paid');  
+		 $purchases_due = DB::table('invoices')->where('invoices.hotel_type', '=', $name)->sum('invoices.est_amt_due');  
+	    }
+	    else{
+	    $data_hotel= Hotel::groupBy('type')->get();	
+	    foreach($data_hotel as $value){
+			$name=$value->type;
+		}
+		
+	    $purchases = DB::table('invoices')->sum('invoices.amt_paid'); 
+	    $purchases_due = DB::table('invoices')->sum('invoices.est_amt_due');   
+	    }
 		$data_user= DB::table('tb_users')->where('group_id', 3)->get();
-		return view('invoices.booking',compact('data_hotel','data_user'));	
+		return view('invoices.booking',compact('data_hotel','data_user','purchases','purchases_due'));	
 	}
 	public function client() {
 		$data_hotel= DB::table('hotels')->groupBy('type')->get();
@@ -384,5 +451,13 @@ class HomeController extends Controller {
 		$clientTrips = DB::table('user_trips')->where('entry_by', $id)->paginate(10);
 		//$clientTrips= usertrips::where('entry_by', $id)->paginate(15);
         return view('client.clientProfile',compact('clientTrips'));		
+	}
+	public function Reports() {
+		$user=User::find(session('uid'));
+		$user_data=Hotel::find($user->hotel_id);
+		$hotel= Hotel::where('type',$user_data->type)->get();
+		$purchases_date = DB::table('invoices')->where('invoices.hotel_name', '=', $user->hotel_id)->pluck('created_at');
+        //echo $purchases_date;
+		return view('invoices.report',compact('hotel','user_data','purchases_date'));	
 	}
 }

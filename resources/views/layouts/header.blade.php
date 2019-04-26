@@ -144,6 +144,7 @@
             }
             #myNavbar ul li ul li a{
             color: #fff;
+            font-size: 15px;
             }
             #myNavbar ul li ul li a:hover,#myNavbar ul li a:hover {
             color: #fff !important;
@@ -211,6 +212,7 @@
             }
            
         </style>
+   
     </head>
     <!-- end::Head -->
     <!-- begin::Body -->
@@ -218,7 +220,7 @@
         <!-- begin:: Page -->
         <div class="m-grid m-grid--hor m-grid--root m-page">
         <!-- begin::Header -->
-        <header id="m_header" class="m-grid__item m-header " m-minimize-mobile-offset="200">
+        <header id="m_header" class="m-grid__item m-header " m-minimize-mobile-offset="0">
             <div class="m-header__top">
                 <div class="m-container m-container--responsive m-container--xxl m-container--full-height m-page__container">
                     <div class="m-stack m-stack--ver m-stack--desktop">
@@ -958,13 +960,7 @@
         <!--end::Page Vendors -->
         <!--begin::Page Scripts -->
         <script src="{{ asset('frontend/sportstravel/assets/app/js/dashboard.js') }}" type="text/javascript"></script>
-        <?php /*
-            <!-- odr -->
-            <link rel="stylesheet" href="{{ asset('../odr/style.css') }}" type="text/css" />
-            <script type="text/javascript" src="{{ asset('../odr/odr.js.php') }}"></script>
-            <!-- /odr -->
-            
-            */ ?>
+       <script data-pace-options='{ "elements": { "selectors": [".selector"] }, "startOnPageLoad": false }' src="js/pace/pace.min.js"></script>
     </body>
     <!-- end::Body -->
 </html>

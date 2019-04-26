@@ -93,6 +93,8 @@
 							 <li><a href="javascript://ajax"  onclick="SximoDelete();" class="tips" title="{{ __('core.btn_remove') }}"><i class="fa fa-trash-o"></i>
 							Remove Selected </a></li>
 						@endif 
+						 <li><a href="#myModal" class="tips multiple_invoices" id="custId_new" data-toggle="modal" data-id="" title="" ><i class="fa fa-paper-plane" aria-hidden="true"></i> Send Email </a> </li>
+
 				          
 				        </ul>
 				    </div>    
@@ -118,7 +120,8 @@
 		        <thead>
 					<tr style="border-bottom-style: dashed;border-color: #eee;">
 						<th style="width: 3% !important;" class="number"> No </th>
-						<th  style="width: 3% !important;"> <input type="checkbox" class="checkall minimal-green" /></th>
+						<th  style="width: 3% !important;"> 
+							<input type="checkbox" class="checkall minimal-green" /></th>
 						<th style="width: 7% !important;" class="number">Date Created </th>
 						<th style="width: 7% !important;" class="number"> Date Modified  </th>
 						<th style="width: 7% !important;" class="number">Hotel Type </th>
@@ -150,34 +153,29 @@
 					  </tr>
 		        </thead>
                 <?php 
-                 $users = DB::table('tb_users')->where('id', '=', session('uid'))->pluck('hotel_id');
+                    $users = DB::table('tb_users')->where('id', '=', session('uid'))->pluck('hotel_id');
 			        foreach ($users as $user) {
 			          $user_email_new=$user;
 			        }
-                  
-                  $hotel_name = DB::table('hotels')->where('id', $user_email_new)->pluck('name');
-					foreach($hotel_name as $item_new1) {
-					 $hotel_name_new = $item_new1;
-					}
 
-               
-			      
                 ?>
 		        <tbody>        						
 		            @foreach ($rowData as $row)
 		           <?php 
-                     $hotel_type = DB::table('hotels')->where('name', $row->hotel_name)->pluck('type');
+		         
+                     $hotel_type = DB::table('hotels')->where('id', $user_email_new)->pluck('type');
+                   
 					foreach($hotel_type as $item_new) {
 					 $hotel_type_new = $item_new;
 					}
                      
-		          
-                    if($row->hotel_name==$hotel_name_new){
+		            
+                    if($row->hotel_name==$user_email_new){
 
 					?>
 		                <tr style="border-bottom-style: dashed;border-color: #eee;">
 							<td> {{ ++$i }} </td>
-							<td ><input type="checkbox" class="ids minimal-green" name="ids[]" value="{{ $row->id }}" />  </td>
+							<td ><input type="checkbox" class="ids minimal-green send_invoices" name="ids[]" value="{{ $row->id }}" />  </td>
 							<td > {{ $row->created_at }} </td>
 							<td > {{ $row->updated_at }} </td>	
 							<td > {{ $hotel_type_new }} </td>	
@@ -220,10 +218,10 @@
 						elseif(session('level')==1){ ?>
 						    <tr style="border-bottom-style: dashed;border-color: #eee;">
 							<td> {{ ++$i }} </td>
-							<td ><input type="checkbox" class="ids minimal-green" name="ids[]" value="{{ $row->id }}" />  </td>
+							<td ><input type="checkbox" class="ids minimal-green send_invoices" name="ids[]" value="{{ $row->id }}" />  </td>
 							<td > {{ $row->created_at }} </td>
 							<td > {{ $row->updated_at }} </td>	
-							<td > {{ $hotel_type_new }} </td>	
+							<td > {{ $row->hotel_type }} </td>	
 							<td > {{ $row->commissoin_rate }} </td>			
 						 @foreach ($tableGrid as $field)
 							 @if($field['view'] =='1')
@@ -257,7 +255,53 @@
 							</td>	
 							
 		                </tr>
-		               <?php } else{}?>
+		               <?php } else{ 
+                         if($row->hotel_type==$hotel_type_new){
+		               	?>
+                               <tr style="border-bottom-style: dashed;border-color: #eee;">
+							<td> {{ ++$i }} </td>
+							<td ><input type="checkbox" class="ids minimal-green send_invoices" name="ids[]" value="{{ $row->id }}" />  </td>
+							<td > {{ $row->created_at }} </td>
+							<td > {{ $row->updated_at }} </td>	
+							<td > {{ $hotel_type_new }} </td>	
+							<td > {{ $row->commissoin_rate }} </td>			
+						 @foreach ($tableGrid as $field)
+							 @if($field['view'] =='1')
+
+							 	<?php $limited = isset($field['limited']) ? $field['limited'] :''; ?>
+							 	@if(SiteHelpers::filterColumn($limited ))
+							 	 <?php $addClass= ($insort ==$field['field'] ? 'class="tbl-sorting-active" ' : ''); ?>
+								 <td align="{{ $field['align'] }}" width=" {{ $field['width'] }}"  {!! $addClass !!} >					 
+								 	{!! SiteHelpers::formatRows($row->{$field['field']},$field ,$row ) !!}						 
+								 </td>
+								@endif	
+							 @endif					 
+						 @endforeach
+
+							<td>
+                       
+	                           <div class="dropdown trips-dropdown">
+	                   
+			                    <a href="#" style="color: #5dbbe0;font-weight: bold;font-size: 14px;" class="dropdown-toggle" data-toggle="dropdown">Invoice <i class="fa fa-chevron-down" aria-hidden="true" style="color: #000;padding-top: 5px;"></i></a>
+			                    <ul class="dropdown-menu">
+			                    <li ><a href="{{ url('invoices/'.$row->id.'/edit?return='.$return) }}" class="btn btn-light " title="{{ __('core.btn_edit') }}"> View Details </a></li>
+			                     @if($row->invoice_file!=='')
+			                    <li ><a href="uploads/users/{{ $row->invoice_file }}" class="btn btn-light " title="{{ __('core.btn_edit') }}" target="_blank">  Invoice File </a>
+			                    </li>
+			                    @else
+			                    <li ><button href="uploads/users/{{ $row->invoice_file }}" class="btn btn-light  " title="{{ __('core.btn_edit') }}" target="_blank" style="padding: 10px 0;text-align: center;margin: 0 auto;display: block;" disabled>  Invoice File </button></li>
+			                    @endif
+				                </ul>
+
+				              </div>
+
+							</td>	
+							
+		                </tr>
+
+		               <?php }
+                             }
+		               ?>
 						
 		            @endforeach
 		              
@@ -274,7 +318,37 @@
 
 			</div>
 		</div>
+<script>
 
+     $(document).ready(function() {
+        $(".multiple_invoices").click(function(){
+            var invoices = [];
+            $.each($("input[name='ids[]']:checked"), function(){            
+                invoices.push($(this).val());
+            });
+            console.log("invoice_ids " + invoices);
+            console.log(invoices.length);
+           document.getElementById('invoice_id').value = invoices;
+            if(invoices.length>=1) {
+            	//alert(invoices);
+               /* var url = '{{ url("/multipleInvoices/") }}';
+                $.post(url + '/' + invoices, function(response) {
+                    if(response.success) 
+                     // $('div.compare-result').html(response.view_data);
+                      $('html, body').animate({
+                            //'scrollTop' : $("#dynamictabstrp").position().top
+                      });
+                     
+                }, 'json');*/
+                
+            } else {
+                alert("Please select the Invoices!!");
+                  window.location.reload();
+            }
+
+        });
+    });
+    </script>
  <div class="sbox" style="border-top: none;padding: 0;background: transparent; box-shadow: none;">
     <div class="sbox-content dashboard-container" style=" padding: 0;">
         <div class="row">
@@ -323,14 +397,49 @@
     </div>
 </div>
 
-	</div>
+</div>
 </div>
 
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Send a Invoice</h4>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('invoices.multipleInvoice') }}" method="post" enctype="multipart/form-data">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="invoice_id"  id="invoice_id" value="">
+                 
+                   <!--  <div class="form-group">
+                      
+                      <label>Upload Invoice</label>
+                        <input type="file" class="form-control" name="invoice_file" id="invoice_file" required="">
+                    </div>
+ -->
+                    <div class="form-group">
+                        <label>Enter Email Address </label>
+                        <input type="text" class="form-control" name="email" id="email" required="">
+                    </div>
+
+
+                    <div class="form-group text-right">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success" id="upload_invoice" title="">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
 $(document).ready(function(){
 	$('.copy').click(function() {
-		var total = $('input[class="ids"]:checkbox:checked').length;
+		var total = $('input[class="ids[]"]:checkbox:checked').length;
+
 		if(confirm('are u sure Copy selected rows ?'))
 		{
 			$('input[name="action_task"]').val('copy');

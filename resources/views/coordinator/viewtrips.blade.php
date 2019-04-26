@@ -47,7 +47,8 @@
             }else{
                 arr[0] = rfp_id;
             }
-
+            
+ 
             
             if($( this ).prop( "checked" )) {
                 //if(rfp_id.includes(',')){

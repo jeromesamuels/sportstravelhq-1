@@ -55,6 +55,7 @@ $rules = array(
 'email'=>'required|email|unique:tb_users',
 'password'=>'required|confirmed',
 'password_confirmation'=>'required'
+
 );	
 if(config('sximo.cnf_recaptcha') =='true') 
 {
@@ -75,9 +76,15 @@ $authen->username = $request->input('username');
 $authen->first_name = $request->input('firstname');
 $authen->last_name = $request->input('lastname');
 $authen->email = trim($request->input('email'));
+if($request->input('address') !='' && $request->input('state') !='' && $request->input('city') !='' && $request->input('zip')!=''){
+$authen->address = $request->input('address');
+$authen->state = $request->input('state');
+$authen->city = $request->input('city');
+$authen->zip = $request->input('zip');
+}
 /*new fields */
 $user_type = $request->input('user_type');
-if($request->input('hotel_type') != '' && $request->input('hotel_code')!='' && $request->input('hotel_address')!='' && $request->input('service_type') !=''){
+if($request->input('hotel_type') != '' && $request->input('hotel_code')!='' && $request->input('service_type') !=''){
 $authen->hotel_type = $request->input('hotel_type');
 $authen->hotel_code = $request->input('hotel_code');
 $authen->hotel_address = $request->input('hotel_address');
@@ -88,7 +95,7 @@ $authen->o_name = $request->input('o_name');
 }
 if($user_type==1){
 \DB::table('hotels')->insert(
-['hotel_code' => $request->input('hotel_code'), 'address' => $request->input('hotel_address'), 'type' => $request->input('hotel_type'),'service_type' =>$request->input('service_type')]
+['hotel_code' => $request->input('hotel_code'), 'type' => $request->input('hotel_type'),'service_type' =>$request->input('service_type')]
 );
 }
 if($user_type== 1){
@@ -127,7 +134,7 @@ $client->messages->create(
 $request->input('phone'),
 array(
 'from' => $twilio_number,
-'body' => 'Thank You for registering with SportsTravel HQ! Please check your inbox and click on the activation link below' .$new_code
+'body' => 'Thank You for registering with SportsTravel HQ! Please check your inbox and click on the activation link below ' .$new_code
 )
 );
 $authen->save();
@@ -155,7 +162,7 @@ $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 $headers .= 'From: '.$this->config['cnf_appname'].' <'.$this->config['cnf_email'].'>' . "\r\n";
 mail($to, $subject, $message, $headers);
 }
-$message = "Thank You for registering with SportsTravel HQ! Please check your inbox and click on the activation link below";
+$message = "Thank You for registering with SportsTravel HQ! Please check your inbox and click on the activation link below ";
 } elseif($this->config['cnf_activation']=='manual') {
 $message = "Thank You for registering with SportsTravel HQ!. We will validate you account before your account active";
 } else {

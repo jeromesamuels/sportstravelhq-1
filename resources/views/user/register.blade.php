@@ -93,8 +93,8 @@
 					
 					  {!! Form::text('hotel_code', null, array('class'=>'form-control' ,'placeholder'=> __('Hotel Code') )) !!}
 				  	</div>
-
-					<div class="form-group has-feedback">
+ 
+					<div class="form-group has-feedback" style="display:none">
 						
 					 {!! Form::text('hotel_address', null, array('class'=>'form-control' ,'placeholder'=> __('Hotel Address') )) !!}
 				 	</div>
@@ -116,6 +116,7 @@
 					</div>
 				</div>
 
+
 			<div class="form-group has-feedback">
 				
 			  {!! Form::text('username', null, array('class'=>'form-control','required'=>'true'  ,'placeholder'=> __('core.username') )) !!}
@@ -131,7 +132,22 @@
 				
 			 {!! Form::text('lastname', null, array('class'=>'form-control', 'required'=>'' ,'placeholder'=> __('core.lastname') )) !!}
 		 	</div>
-			
+		 	<div class="form-group has-feedback">
+				
+			 {!! Form::text('address', null, array('class'=>'form-control', 'required'=>'' , 'id'=>'autocomplete','placeholder'=>' Address' )) !!}
+		 	</div>
+		 	<div class="form-group has-feedback">
+				
+			 {!! Form::text('state', null, array('class'=>'form-control', 'required'=>'' ,'id'=>'state','placeholder'=> 'State' )) !!}
+		 	</div>
+		 	<div class="form-group has-feedback">
+				
+			 {!! Form::text('city', null, array('class'=>'form-control', 'required'=>'' ,'id'=>'city','placeholder'=> 'City' )) !!}
+		 	</div>
+		 	<div class="form-group has-feedback">
+				
+			 {!! Form::text('zip', null, array('class'=>'form-control', 'required'=>'' ,'id'=>'zip','placeholder'=> 'Zip Code')) !!}
+		 	</div>
 			
 			<div class="form-group has-feedback">
 			 {!! Form::text('email', null, array('class'=>'form-control', 'id'=>'email' ,'required'=>'true', 'placeholder'=> __('core.email'))) !!}
@@ -148,7 +164,7 @@
 			<div class="form-group has-feedback">
 			{!! Form::password('password_confirmation', array('class'=>'form-control','required'=>'true' ,'placeholder'=> __('core.repassword'))) !!}
 			</div>
-
+             <div id="map" class="trip-map" ></div>
 
 				@if(config('sximo.cnf_recaptcha') =='true') 
 				<div class="form-group has-feedback  animated fadeInLeft delayp1">
@@ -198,6 +214,177 @@ $agreement_text = '<div id="Translation"><h3>The standard Lorem Ipsum passage, u
 
 ?>
 
+             <script>
+            function initMap() {
+              var map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: 25.790654, lng: -80.1300455},
+                zoom: 13
+              });
+              var card = document.getElementById('pac-card');
+              var input = document.getElementById('autocomplete');
+              var input2 = document.getElementById('to_address_1');
+              var types = document.getElementById('type-selector');
+              var strictBounds = document.getElementById('strict-bounds-selector');
+            
+              map.controls[google.maps.ControlPosition.TOP_RIGHT].push(card);
+            
+              var autocomplete = new google.maps.places.Autocomplete(input);
+              var autocomplete2 = new google.maps.places.Autocomplete(input2);
+            
+            
+            
+              autocomplete.bindTo('bounds', map);
+              autocomplete2.bindTo('bounds', map);
+              // Set the data fields to return when the user selects a place.
+              autocomplete.setFields(
+                  ['address_components', 'geometry', 'icon', 'name']);
+              autocomplete2.setFields(
+                  ['address_components', 'geometry', 'icon', 'name']);
+            
+              var infowindow = new google.maps.InfoWindow();
+              var infowindowContent = document.getElementById('infowindow-content');
+              infowindow.setContent(infowindowContent);
+              var marker = new google.maps.Marker({
+                map: map,
+                anchorPoint: new google.maps.Point(0, -29)
+              });
+            
+              
+                google.maps.event.addListener(autocomplete, 'place_changed', function() {
+            
+                infowindow.close();
+                marker.setVisible(false);
+                var place = autocomplete.getPlace();
+                if (!place.geometry) {
+                  window.alert("No details available for input: '" + place.name + "'");
+                  return;
+                }
+                
+               
+               
+                // If the place has a geometry, then present it on a map.
+                if (place.geometry.viewport) {
+                  map.fitBounds(place.geometry.viewport);
+                 
+                } else {
+                  map.setCenter(place.geometry.location);
+                 
+                  map.setZoom(17);  // Why 17? Because it looks good.
+                }
+                marker.setPosition(place.geometry.location);
+               
+                marker.setVisible(true);
+            
+                var address = '';
+                if (place.address_components ) {
+                  address = [
+                    (place.address_components[0] && place.address_components[0].short_name || ''),
+                    (place.address_components[1] && place.address_components[1].short_name ||''),
+                    (place.address_components[2] && place.address_components[2].short_name || '')
+                   
+                  ].join(' ');
+            
+                  this.addressArray = place.address_components;
+                 if(this.addressArray.length === 9) {
+                    this.street_number = this.addressArray[5].long_name;
+                    //this.country = this.addressArray[6].short_name;
+                    this.zipcode = this.addressArray[7].short_name;
+                    this.city=this.addressArray[3].short_name;
+                    document.getElementById('city').value=this.addressArray[3].short_name;
+                    document.getElementById('zip').value=this.addressArray[7].short_name;
+                   document.getElementById('state').value=this.addressArray[5].long_name;
+                 } 
+                
+                 else{
+                     this.street_number = this.addressArray[4].long_name;
+                    //this.country = this.addressArray[5].short_name;
+                     this.zipcode = this.addressArray[6].short_name;
+                     this.city=this.addressArray[2].short_name;
+                   document.getElementById('city').value=this.addressArray[2].short_name;
+                   document.getElementById('zip').value=this.addressArray[6].short_name;
+                   document.getElementById('state').value=this.addressArray[4].long_name;
+                 }
+                }
+            
+                infowindowContent.children['place-icon'].src = place.icon;
+                infowindowContent.children['place-name'].textContent = place.name;
+                infowindowContent.children['place-address'].textContent = address;
+            
+            
+                infowindow.open(map, marker);
+              });
+            
+            
+                google.maps.event.addListener(autocomplete2, 'place_changed', function() {
+            
+                infowindow.close();
+                marker.setVisible(false);
+                var place = autocomplete2.getPlace();
+                if (!place.geometry) {
+                  window.alert("No details available for input: '" + place.name + "'");
+                  return;
+                }
+                
+               
+                // If the place has a geometry, then present it on a map.
+                if (place.geometry.viewport) {
+                  map.fitBounds(place.geometry.viewport);
+                 
+                } else {
+                  map.setCenter(place.geometry.location);
+                 
+                  map.setZoom(17);  // Why 17? Because it looks good.
+                }
+                marker.setPosition(place.geometry.location);
+               
+                marker.setVisible(true);
+            
+                infowindowContent.children['place-icon'].src = place.icon;
+                infowindowContent.children['place-name'].textContent = place.name;
+              
+                infowindowContent.children['place-address'].textContent = address;
+            
+                  
+            
+                infowindow.open(map, marker);
+              });
+            
+            
+              // Sets a listener on a radio button to change the filter type on Places
+              // Autocomplete.
+              function setupClickListener(id, types) {
+                var radioButton = document.getElementById(id);
+                radioButton.addEventListener('click', function() {
+                  autocomplete.setTypes(types);
+                });
+              }
+            
+              setupClickListener('changetype-all', []);
+              setupClickListener('changetype-address', ['address']);
+              setupClickListener('changetype-establishment', ['establishment']);
+              setupClickListener('changetype-geocode', ['geocode']);
+            
+              document.getElementById('use-strict-bounds')
+                  .addEventListener('click', function() {
+                    console.log('Checkbox clicked! New state=' + this.checked);
+                    autocomplete.setOptions({strictBounds: this.checked});
+                  });
+            }
+            
+            
+            $(document).ready(function() {
+            $("input[id^=from_zip]").keypress(function(event) {
+                if (event.which && (event.which < 46 || event.which > 57 || event.which == 47) && event.keyCode != 8) {
+                    event.preventDefault();
+                }
+                if (event.which == 46 && $(this).val().indexOf('.') != -1) {
+                    event.preventDefault();
+                }
+            });
+            });
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCM3IVfk3icA92tlWTGZRMg__v7dKnDaWc&libraries=places&callback=initMap"
+            async defer></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 

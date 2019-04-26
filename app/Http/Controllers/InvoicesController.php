@@ -1,4 +1,5 @@
 <?php namespace App\Http\Controllers;
+
 use App\Models\Invoices;
 use App\Models\Hotel;
 use App\User;
@@ -7,13 +8,19 @@ use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Validator, Input, Redirect ; 
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
+use Mail;
+use Vsmoraes\Pdf\Pdf;
+
 class InvoicesController extends Controller {
+ private $pdf;	
 protected $layout = "layouts.main";
 protected $data = array();	
 public $module = 'invoices';
 static $per_page	= '10';
-public function __construct()
-{		
+public function __construct(Pdf $pdf)
+{	
+
+$this->pdf = $pdf;
 parent::__construct();
 $this->model = new Invoices();	
 $this->info = $this->model->makeInfo( $this->module);	
@@ -25,6 +32,7 @@ $this->data = array(
 'return'	=> self::returnUrl()
 );
 }
+
 public function index( Request $request )
 {
 // Make Sure users Logged 
@@ -34,6 +42,8 @@ $this->grab( $request) ;
 if($this->access['is_view'] ==0){
 return redirect('dashboard')->with('message', __('core.note_restric'))->with('status','error');				
 }
+                   
+
 return view( $this->module.'.index',$this->data);
 }
 
@@ -215,7 +225,7 @@ $validator = Validator::make($request->all(), $rules);
 if ($validator->passes()) {
 $data = $this->validatePost(  $request );
 $this->model->insertRow($data , $request->input('id'));
-dd($data);
+
 return  Redirect::back()->with('message',__('core.note_success'))->with('status','success');
 } else {
 return  Redirect::back()->with('message',__('core.note_error'))->with('status','error')
@@ -228,12 +238,6 @@ function getHotels(){
 	$users=DB::table('tb_users')->where('hotel_id', $hotel_id)->first();
     $hotel_info=['address'=>$hotel->address,'phone'=>$users->phone_number,'name'=>$users->first_name.' '.$users->last_name,'email'=>$users->email];
 
-	/*foreach($users as $key=>$user){
-      //array_push($hotel_info,$user);
-      $hotel_info[$key]=$user;
-
-	}*/
-	//echo $hotel_info;
 	return json_encode($hotel_info); 	
 	
 }
@@ -241,10 +245,12 @@ function sendInvoice(Request $request){
 $invoice_id=$request->input('invoice_id');
 $email=$request->input('email');
 
-$rfps= DB::table('invoices')->where('invoice_id', $invoice_id)->get();
-foreach($rfps as $rfp){}
+$rfps=Invoices::where('invoice_id',$invoice_id)->get();
+foreach($rfps as $rfp){
 $hotel= Hotel::find($rfp->hotel_name);
+
 $hname= $hotel->name;
+}
 $users=DB::table('tb_users')->where('id', 1)->first();
 /*send an invoice*/
 
@@ -258,5 +264,49 @@ $message->to($to)->subject('Uploaded Invoice');
 return  Redirect::back();
 }
 
+function multipleInvoice(Request $request){
+$invoice_id=$request->input('invoice_id');
+
+$email=$request->input('email');
+ $myaar=explode(',' , $invoice_id);
+
+
+$datae=array();
+$hotel=array();
+foreach ($myaar as $key => $value) {
+$rfps= DB::table('invoices')->where('id', $value)->get();
+foreach($rfps as $values){
+$hotel_id=$values->hotel_name;
+$hotels= Hotel::find($hotel_id);
+
+}
+$datae[] = $rfps;
+$hotel[]=$hotels;
+}
+
+$users=DB::table('tb_users')->where('id', 1)->first();
+/*send an invoice*/
+
+$html = view('user.emails.loadPdf',compact('datae','hotel'))->render();
+$pdf=$this->pdf->load($html)->output();
+
+$usernm=$users->first_name.' '.$users->last_name;
+$data = array(
+    'name' => $usernm, 
+    'email'=>$email, 
+   
+);
+$to = [$email,$users->email];
+
+\Mail::send('user.emails.invoicepdfMail',compact('data'), function($message) use($data,$pdf,$to)
+{
+   
+    $message->to($to)->subject('[SporttravelHQ] Invoices');
+
+    $message->attachData($pdf, "invoice.pdf");
+});
+
+return  Redirect::back();
+}
 
 }

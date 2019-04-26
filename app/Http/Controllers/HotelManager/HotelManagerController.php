@@ -81,9 +81,8 @@ return redirect()->back()->with('Success','Bid Declined Successfully !');;
 }
 public function viewAgreements(){
 $this->checkAgreementFormAvailability();
-$agreement = DB::table('agreement_forms')->get();
-foreach ($agreement as $agreement_new) {
-}
+$agreement =AgreementForm::orderBy('created_at', 'DESC')->get();
+
 $hotel_id=DB::table('tb_users')->where('id', session('uid'))->pluck('hotel_id');
 foreach ($hotel_id as $hotel_id_new) {
 }
@@ -91,7 +90,7 @@ $hotel_data = Hotel::find($hotel_id_new);
 if( Session::get('level') !=1 && Session::get('level') !=6){
 $agreements = AgreementForm::where('reciever_id', '=', Session::get('uid'))->orWhere('coordinator_id', '=', Session::get('uid'))->orderBy('created_at', 'DESC')->get();
 }
-elseif($hotel_data->name==$agreement_new->hotel_name && Session::get('level') ==6){
+elseif($hotel_data->name!='' && Session::get('level') ==6){
 $agreements = AgreementForm::orderBy('created_at', 'DESC')->where('hotel_name',$hotel_data->name)->get(); 
 }
 else{
@@ -184,7 +183,7 @@ $rfp->trip_address =$trip->from_address_1;
 $rfp->check_in = $trip->check_in;
 $rfp->check_out = $trip->check_out;
 $rfp->rfp_id = $request->rfp_id;
-$rfp->hotel_name =$hotel_name;
+$rfp->hotel_name =$hotel_id;
 $rfp->hotel_add =$hotel_address;
 $rfp->hotel_type =$hotel_type;
 $rfp->hotel_manager =Session::get('fid');
@@ -211,12 +210,18 @@ $message->to($to)->subject('Manager Uploaded Invoice');
 
 });
 
-return view('hotelmanager.tripInvoice',compact('rfp'));
+  $record_exists = DB::table('invoices')->where('rfp_id', '=', $rfp->rfp_id)->first();
+
+  $IATA_number = DB::table('hotels')->where('id', '=', $hotel_id)->pluck('IATA_number');
+  
+
+return view('hotelmanager.tripInvoice',compact('rfp','record_exists','IATA_number'));
 }
 else{
 return redirect()->back()->with('message',__('Record Already Exists!!'))->with('status','Error');
 }
 }
+
 public function blackoutDates(){
 $user = DB::table('tb_users')->where('id', session('uid'))->pluck('hotel_id')->first();
 $hotel = DB::table('hotels')->where('id', $user)->get();
@@ -237,7 +242,13 @@ Session::flash('success','Blackout date added successfully');
 return redirect()->back();
 }
 public function blackoutReport(){
+$user=User::find(session('uid'));
+if(session('level')==1){
 $hotel = DB::table('hotels')->orderBY('updated_at', 'desc')->where('blackout_start','!=','')->get();
+}
+else{
+$hotel = DB::table('hotels')->orderBY('updated_at', 'desc')->where([['blackout_start','!=',''],['id',$user->hotel_id]])->get();	
+}
 return view('hotelmanager.blackoutReport',compact('hotel'));
 }
 }

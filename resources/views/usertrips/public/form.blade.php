@@ -457,6 +457,7 @@
                 }
                 
                
+               
                 // If the place has a geometry, then present it on a map.
                 if (place.geometry.viewport) {
                   map.fitBounds(place.geometry.viewport);
@@ -489,21 +490,14 @@
                     document.getElementById('from_zip').value=this.addressArray[7].short_name;
                    document.getElementById('from_state_id').value=this.addressArray[5].long_name;
                  } 
-                 else if(this.addressArray[7]== '')
-               {
-                  document.getElementById('from_zip').value=this.addressArray[6].short_name;
-               }
-               else if(this.addressArray[6]== '')
-               {
-                  document.getElementById('from_zip').value=this.addressArray[5].short_name;
-               }
+                
                  else{
                      this.street_number = this.addressArray[4].long_name;
                     //this.country = this.addressArray[5].short_name;
                      this.zipcode = this.addressArray[6].short_name;
                      this.city=this.addressArray[2].short_name;
                    document.getElementById('from_city').value=this.addressArray[2].short_name;
-                   document.getElementById('from_zip').value='';
+                   document.getElementById('from_zip').value=this.addressArray[6].short_name;
                    document.getElementById('from_state_id').value=this.addressArray[4].long_name;
                  }
                 }
@@ -562,17 +556,14 @@
                     document.getElementById('to_zip').value=this.addressArray[7].short_name;
                    document.getElementById('to_state_id').value=this.addressArray[5].long_name;
                  } 
-                 else if(this.addressArray[7]== '')
-               {
-                  document.getElementById('to_zip').value=this.addressArray[6].short_name;
-               }
+                
                  else{
                      this.street_number = this.addressArray[4].long_name;
                     //this.country = this.addressArray[5].short_name;
                      this.zipcode = this.addressArray[6].short_name;
                      this.city=this.addressArray[2].short_name;
                      document.getElementById('to_city').value=this.addressArray[2].short_name;
-                     document.getElementById('to_zip').value='';
+                     document.getElementById('to_zip').value=this.addressArray[6].short_name;
                      document.getElementById('to_state_id').value=this.addressArray[4].long_name;
                  }
                 }

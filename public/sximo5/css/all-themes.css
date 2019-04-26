@@ -134,7 +134,8 @@
     color: #9C27B0 !important; }
 
 .theme-deep-purple .navbar, .navbar-header {
-  background-color: #240849!important; }
+  background-color: none !important; 
+display: none !important;}
 
 .theme-deep-purple .navbar-brand {
   color: #fff; }

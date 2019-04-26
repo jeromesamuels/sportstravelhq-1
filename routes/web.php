@@ -139,10 +139,13 @@ Route::get('trips/','UsertripsController@show_trips');
 Route::get('/trips/{id}','UsertripsController@show_trip_detail')->name('coordinator.trips.show');
 Route::post('invoices/hotel','InvoicesController@getHotels');
 Route::post('sendInvoice','InvoicesController@sendInvoice')->name('invoices.sendInvoice');
-
+Route::post('multipleInvoice','InvoicesController@multipleInvoice')->name('invoices.multipleInvoice');
 Route::get('get-location-from-ip',function(){
     $ip= \Request::ip();
     $data = \Location::get($ip);
     
 });
-
+Route::get('/pdf', function(){
+    $pdf = PDF::loadHTML('<h1>Test</h1>');
+    return $pdf->stream();
+});
