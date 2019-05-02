@@ -10,7 +10,9 @@ use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Validator, Input, Redirect ; 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-
+use App\Models\Rfp;
+use App\Models\Invoices;
+use App\User;
 
 class CorporateUsersController extends Controller {
 
@@ -46,7 +48,18 @@ class CorporateUsersController extends Controller {
         $filter = [
             'params' => " AND tb_groups.level >= '".CorporateUsers::level( $corporate_user_id )."'" 
         ];
-
+        
+        $this->data['data_hotel']= DB::table('hotels')->groupBy('type')->get();
+         foreach($this->data['data_hotel'] as $value){
+             $name=$value->type;
+             $currentMonth = date('m');
+          $this->data['purchases']=Invoices::where('invoices.hotel_type', '=', $name)->sum('invoices.amt_paid');    
+          $this->data['purchases_due']=Invoices::where('invoices.hotel_type', '=', $name)->sum('invoices.est_amt_due');  
+         }
+    
+        $this->data['rfps_new']= Rfp::where('status', 2)->get();     
+        $this->data['trip_booking']= DB::table('user_trips')->get();
+          
         $this->grab( $request , $filter );
         if($this->access['is_view'] ==0) 
             return redirect('dashboard')->with('message', __('core.note_restric'))->with('status','error');

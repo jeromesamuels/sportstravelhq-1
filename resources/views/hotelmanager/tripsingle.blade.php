@@ -165,7 +165,7 @@
                     <div class="col-md-3" style="border-right: 1px solid #c3bfbf;">
                         <div class="info-boxes" style="background: #fff; color: #000;">
                             <h4 >Status</h4>
-                            <p style="font-size: 14px;">Client has accepted proposal from Hilton</p>
+                            <p style="font-size: 14px;">Client has added Bid Response</p>
                         </div>
                         <?php 
                             //$data2= DB::table('rfps')->get()->where("status",'!=',3)->all();
@@ -177,10 +177,7 @@
                             <h4 >Total RFP Recieved</h4>
                             <p style="font-size: 14px;">On this Trip</p>
                         </div>
-                        <?php 
-                            $data3= DB::table('rfps')->get()->where("status",2)->all();
-                            
-                            ?>
+                       
                         <div class="info-boxes" style="background: #fff; color: #000;float:right;">
                             <h3 style="float:right;top: 30px;position: absolute;right: 25px;">{{ count($trip->rfps) }}</h3>
                         </div>

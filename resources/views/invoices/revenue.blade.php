@@ -123,7 +123,7 @@
                     <p style="font-size: 14px;">Total Revenue of this Month</p>
                 </div>
                 <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                     @if(session('level')==1)
+                     @if(session('level')==1 || session('level')==2)
                     <h4 style="float:right;top: 50px;position: absolute;right: 10px;color: #5dbbe0;">${{ $monthly_purchase_due_all }}</h4>
                     @else
                       <h4 style="float:right;top: 50px;position: absolute;right: 10px;color: #5dbbe0;">${{ $monthly_purchase_due }}</h4>
@@ -143,7 +143,7 @@
                     <p style="font-size: 14px;">This Month</p>
                 </div>
                 <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                      @if(session('level')==1)
+                      @if(session('level')==1 || session('level')==2)
                     <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $monthly_purchase_all }}</h4>
                     @else
                     <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $monthly_purchase }}</h4>
@@ -164,7 +164,7 @@
                 </div>
              
                 <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                      @if(session('level')==1)
+                      @if(session('level')==1 || session('level')==2)
                     <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $monthly_purchase_all }}</h4>
                     @else
                     <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $monthly_purchase }}</h4>
@@ -184,7 +184,7 @@
                     <p style="font-size: 14px;">Total Revenue this month</p>
                 </div>
                 <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                    @if(session('level')==1)
+                    @if(session('level')==1 || session('level')==2)
                     <h4 style="float:right;top: 50px;position: absolute;right: 10px;color: #5dbbe0;">${{ $monthly_purchase_due_all }}</h4>
                     @else
                       <h4 style="float:right;top: 50px;position: absolute;right: 10px;color: #5dbbe0;">${{ $monthly_purchase_due }}</h4>
@@ -216,7 +216,7 @@
                     <div class="head">
                         <span>Revenue By Corporate</span>                        
                     </div>
-                     @if(session('level')==1)
+                     @if(session('level')==1 || session('level')==2)
                        <div class="body">
                        @foreach($data_all as $all_data)
                         <?php  
@@ -311,7 +311,7 @@
                     <div class="head">
                         <span>Revenue by Hotels</span>
                     </div>
-                    @if(session('level')==1)
+                    @if(session('level')==1 || session('level')==2)
                     <div class="body">
                         <script>
                             window.onload = function () {

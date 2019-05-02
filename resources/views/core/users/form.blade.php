@@ -54,7 +54,7 @@
 				<label for="hotel_id" class="control-label col-md-4  text-left"> Hotel <span class="asterix"> * </span> </label>
 				<div class="col-md-6">
 
-	             <?php $hotel_id = DB::table('hotels')->where('id', '=',$row['hotel_id'])->get();
+	             <?php $hotel_id = App\Models\Hotel::where('id', '=',$row['hotel_id'])->get();
                    foreach($hotel_id as $hotel_id_new){
                     $hotel_select[$hotel_id_new->id] = $hotel_id_new->name." (".$hotel_id_new->hotel_code.")";
                    }
@@ -70,12 +70,6 @@
 				 <div class="col-md-2">
 				 </div>
 			  </div>
-
-
-
-              
-
-
 
 			  <div class="form-group  " >
 				<label for="Username" class=" control-label col-md-4 text-left"> Username <span class="asterix"> * </span></label>

@@ -180,20 +180,20 @@
         <div class="sbox" style="border-top: none">
             <div class="sbox-content dashboard-container">
                 <?php 
-                    $data_hotel= DB::table('hotels')->groupBy('type')->get();
+                   
                     foreach($data_hotel as $value){
                        $name=$value->type;
                     
                     $currentMonth = date('m');
                        // $year=date("Y",$time);  
                     /*Amount Paid*/
-                    $purchases = DB::table('invoices')->where('invoices.hotel_type', '=', $name)->whereRaw('MONTH(check_out) = ?',[$currentMonth])->sum('invoices.amt_paid');    
+                  
                         $array[$name] = $purchases;
                          $y = $array[$value->type];
                          $sum_new =array_sum($array);
                     
                     /* pending amount*/
-                    $purchases_due = DB::table('invoices')->where('invoices.hotel_type', '=', $name)->whereRaw('MONTH(check_out) = ?',[$currentMonth])->sum('invoices.est_amt_due');    
+              
                         $array[$name] = $purchases_due;
                          $y = $array[$value->type];
                          $sum_due =array_sum($array);
@@ -202,9 +202,7 @@
                     }
                     
                      /*Total Booking of this month*/
-                    $trip_booking = DB::table('user_trips')->whereRaw('MONTH(added) = ?',[$currentMonth])->get();
-                    
-                    
+                  
                       
                     ?>
                 <div class="row" style="border-bottom:1px solid #eee;">
@@ -234,10 +232,7 @@
                             <h4 >Open Balance</h4>
                             <p style="font-size: 14px;padding-top: 10px;">This Month</p>
                         </div>
-                        <?php 
-                            $data2= DB::table('rfps')->get()->where("status",'!=',3)->all();
-                            
-                            ?>
+                       
                         <div class="info-boxes" style="background: #fff; color: #000;float:right;">
                             <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $revenu_due }}</h4>
                         </div>
@@ -247,10 +242,7 @@
                             <h4 >Estimated Revenue</h4>
                             <p style="font-size: 14px;padding-top: 10px;">This Month</p>
                         </div>
-                        <?php 
-                            $data3= DB::table('rfps')->get()->where("status",2)->all();
-                            
-                            ?>
+                      
                         <div class="info-boxes" style="background: #fff; color: #000;float:right;">
                             <h4 style="float:right;top: 50px;position: absolute;right:10px;color: #5dbbe0;">${{ $sum_new }}</h4>
                         </div>
@@ -261,11 +253,8 @@
     </div>
 </div>
 <?php 
-    $data_hotel= DB::table('hotels')->groupBy('type')->get();
     foreach($data_hotel as $value){
        $name=$value->type;
-    
-        $purchases = DB::table('invoices')->where('invoices.hotel_type', '=', $name)->sum('invoices.amt_paid');    
         $array[$name] = $purchases;
     }
       
@@ -304,33 +293,28 @@
                                         <th> Action </th>
                                     </tr>
                                 </thead>
-                                <?php 
-                                if($clientTrips != ''){
-                                    foreach($clientTrips as $client_value){
-                                    
-                                    ?>
+                               
+                                @foreach($clientTrips as $client_value)
+                                 
                                 <tbody>
                                     <tr style="border-bottom-style: dashed;border-color: #eee;">
                                         <td>{{ $client_value->added }}</td>
                                         <td> {{$client_value->added }} </td>
                                         <td>{{ $client_value->id }} </td>
                                      <td>
-                                        <?php  
-
-                                      $rfpUserIds = [];
-                                      $rfpUserIds[count($rfpUserIds)] = $client_value->entry_by;
-                                      $data_rfps= DB::table('rfps')->where('user_trip_id', $client_value->id)->get();
-                                      foreach($data_rfps as $data_new) {
-                                      $rfp_status=$data_new->status;
+                                      
+                                      @foreach($data_rfps as $data_new)
                                         
-                                        if(in_array(1, $rfpUserIds)){
-                                            ?>
+                                       <?php 
+                                       $rfp_status=$data_new->status;
+                                        if($rfp_status== 1){ ?>
+                                      
                                         <div class="body">
                                             <div class="hotel_revenue" style=" padding: 20px 0px;">
-                                                <p style="float: left;top: -20px;position: relative;color: #44c8f5">Step 1</p>
-                                                <p style="float: right;top: -20px;position: relative;font-size: 12px;color: #8a8888">Client Submitted RFP</p>
+                                                <p style="float: left;top: -20px;position: relative;color: #44c8f5">Step 3</p>
+                                                <p style="float: right;top: -20px;position: relative;font-size: 12px;color: #8a8888">Hotel Manager Send a Proposal</p>
                                                 <div class="final_range">
-                                                    <div class="skills hotel_range" style="width:12.5%;background-color: #44c8f5;">
+                                                    <div class="skills hotel_range" style="width:25%;background-color: #44c8f5;">
                                                     </div>
                                                 </div>
                                             </div>
@@ -339,7 +323,7 @@
                                                 elseif($rfp_status== 2){ ?>
                                             <div class="body">
                                                 <div class="hotel_revenue" style=" padding: 20px 0px;">
-                                                    <p style="float: left;top: -20px;position: relative;color: #000">Step 6</p>
+                                                    <p style="float: left;top: -20px;position: relative;color: #000">Step 5</p>
                                                     <p style="float: right;top: -20px;position: relative;font-size: 12px;color: #8a8888">Client Sign the hotel agreement</p>
                                                     <div class="final_range">
                                                         <div class="skills hotel_range" style="width:62.5%;">
@@ -361,39 +345,53 @@
                                                 </div>
                                             </div>
                                             <?php } 
-                                                elseif(count($data2) > 0){ ?>
-                                            <div class="body">
-                                                <div class="hotel_revenue" style=" padding: 20px 0px;">
-                                                    <p style="float: left;top: -20px;position: relative;color: #000">Step 7</p>
-                                                    <p style="float: right;top: -20px;position: relative;font-size: 12px;color: #8a8888">Hotel manager sign the contract</p>
-                                                    <div class="final_range">
-                                                        <div class="skills hotel_range" style="width:75%;">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <?php } 
-                                                elseif($data_new->amt_paid !=0 || $data_new->invoice_file != ''){ 
-                                                ?>
+                                                elseif($rfp_status== 4){ ?>
                                             <div class="body">
                                                 <div class="hotel_revenue" style=" padding: 20px 0px;">
                                                     <p style="float: left;top: -20px;position: relative;color: #000">Step 9</p>
-                                                    <p style="float: right;top: -20px;position: relative;font-size: 12px;color: #8a8888">Hotel manager upload the billing receipt</p>
+                                                    <p style="float: right;top: -20px;position: relative;font-size: 12px;color: #8a8888">Hotel manager upload the billing receipt
+</p>
                                                     <div class="final_range">
                                                         <div class="skills hotel_range" style="width:99%;">
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <?php }   
-                                                elseif(count($trip->rfps) >= 2){ 
+                                            <?php } 
+                                                elseif($rfp_status== 5){ 
                                                 ?>
                                             <div class="body">
                                                 <div class="hotel_revenue" style=" padding: 20px 0px;">
-                                                    <p style="float: left;top: -20px;position: relative;color: #000">Step 4</p>
-                                                    <p style="float: right;top: -20px;position: relative;font-size: 12px;color: #8a8888">Client review and compare proposals</p>
+                                                    <p style="float: left;top: -20px;position: relative;color: #000">Step 6</p>
+                                                    <p style="float: right;top: -20px;position: relative;font-size: 12px;color: #8a8888">Client Sign the Hotel Aggreement</p>
                                                     <div class="final_range">
-                                                        <div class="skills hotel_range" style="width:37.5%;">
+                                                        <div class="skills hotel_range" style="width:62.5%;">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <?php }   
+                                                elseif($rfp_status== 6){ 
+                                                ?>
+                                            <div class="body">
+                                                <div class="hotel_revenue" style=" padding: 20px 0px;">
+                                                    <p style="float: left;top: -20px;position: relative;color: #000">Step 7</p>
+                                                    <p style="float: right;top: -20px;position: relative;font-size: 12px;color: #8a8888">Hotel Manager sign the Hotel Aggreement</p>
+                                                    <div class="final_range">
+                                                        <div class="skills hotel_range" style="width:75%;">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                              <?php } 
+                                                elseif($rfp_status== 8){ 
+                                                ?>
+                                            <div class="body">
+                                                <div class="hotel_revenue" style=" padding: 20px 0px;">
+                                                    <p style="float: left;top: -20px;position: relative;color: #000">Step 8</p>
+                                                    <p style="float: right;top: -20px;position: relative;font-size: 12px;color: #8a8888">Client Upload the Rooming list</p>
+                                                    <div class="final_range">
+                                                        <div class="skills hotel_range" style="width:82.5%;">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -403,15 +401,16 @@
                                                 ?>
                                             <div class="body">
                                                 <div class="hotel_revenue" style=" padding: 20px 0px;">
-                                                    <p style="float: left;top: -20px;position: relative;color: #000">Step 3</p>
-                                                    <p style="float: right;top: -20px;position: relative;font-size: 12px;color: #8a8888">Hotel Manager send the proposal</p>
+                                                    <p style="float: left;top: -20px;position: relative;color: #000">Step 1</p>
+                                                    <p style="float: right;top: -20px;position: relative;font-size: 12px;color: #8a8888">Client Submitted RFP</p>
                                                     <div class="final_range">
-                                                        <div class="skills hotel_range" style="width:25%;">
+                                                        <div class="skills hotel_range" style="width:12.5%;">
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <?php } } ?>
+                                            <?php }  ?>
+                                            @endforeach
                                     </td>
                                         <td>
                                             <div class="dropdown">
@@ -423,8 +422,7 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                                <?php }
-                                }  ?>   
+                               @endforeach 
                             </table>
                             {{ $clientTrips->links() }}
                         </div>
@@ -442,9 +440,6 @@
                             <?php 
                             $id=app('request')->segment(2);
 
-                           
-                                $data_client= DB::table('tb_users')->where("id", $id)->get();
-                                
                                  foreach($data_client as $item) {
                                     $data_client_new = $item;
                                  

@@ -215,7 +215,7 @@
 		                </tr>
 						<?php 
                         }
-						elseif(session('level')==1){ ?>
+						elseif(session('level')==1 || session('level')==2){ ?>
 						    <tr style="border-bottom-style: dashed;border-color: #eee;">
 							<td> {{ ++$i }} </td>
 							<td ><input type="checkbox" class="ids minimal-green send_invoices" name="ids[]" value="{{ $row->id }}" />  </td>

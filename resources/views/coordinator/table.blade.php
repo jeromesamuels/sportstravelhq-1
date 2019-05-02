@@ -143,7 +143,8 @@
     display: inline-block !important;
     }
 </style>
-<table class="table table-hover usertrips_new" >
+<div class="table-responsive-sm">
+<table class="table  table-hover usertrips_new display" id="usertrips" width="100%">
     <thead>
         <tr>
             <div class="m-portlet__header" style="padding: 20px;">
@@ -158,24 +159,18 @@
             <th><b>Client </b></th>
             <th><b>Event Date</b></th>
             <th><b>Trip #</b></th>
-            <th><b>Progress</b></th>
+            <th width="35%"><b>Progress</b></th>
             <th><b>Status </b></th>
             <th><b>Action</b></th>
         </tr>
     </thead>
     <tbody>
         @foreach ($trips as $trip)
-        <?php 
-            $data2= DB::table('invoices')->where("rfp_id", $trip->id)->get();
-            $data_client= DB::table('tb_users')->where('id', $trip->entry_by)->get();
-            
-               $rfp_id = DB::table('rfps')->where('user_trip_id', $trip->id)->pluck('user_trip_id');
-              
-               
-            ?>
+     
         <tr style="border-bottom-style: dashed;border-color: #eee;">
             <td>
-                <?php   ?>
+                <?php  
+                 $rfp_id =App\Models\Rfp::where('user_trip_id', $trip->id)->pluck('user_trip_id'); ?>
                 <span style="width: 40px;">
                 <?php $rfp_value='';
                     if($rfp_id->count() > 0){
@@ -791,69 +786,7 @@
                 <?php }
                     } 
                     }
-                      elseif(count($data2)>=1){ 
-                       ?>
-                <div class="body">
-                    <div class="hotel_revenue" style=" padding: 20px 0px;">
-                        <p style="float: left;top: -20px;position: relative;color: #000">Step 9</p>
-                        <p style="float: right;top: -20px;position: relative;color: #8a8888">Hotel manager upload the billing receipt</p>
-                        <div class="final_range">
-                            <div class="skills hotel_range" style="width:99%;">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="dropdown trips-dropdown-new">
-                    <a href="#"  class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-down" aria-hidden="true"></i></a>
-                    <ul class="dropdown-menu dropdown-menu-new">
-                        <li>
-                            <div class="row" id="show_div" >
-                                <div class="col-md-12">
-                                    <div class="progress"  >
-                                        <div class="one success-color">
-                                            <p>Step 1</p>
-                                            <h6>Client Submitted RFP</h6>
-                                        </div>
-                                        <div class="two no-color">
-                                            <p>Step 2</p>
-                                            <h6>Corporate Viewed RFP</h6>
-                                        </div>
-                                        <div class="three no-color">
-                                            <p>Step 3</p>
-                                            <h6>Hotel Manager Send Proposals</h6>
-                                        </div>
-                                        <div class="four no-color">
-                                            <p>Step 4</p>
-                                            <h6>Client review and compare proposals</h6>
-                                        </div>
-                                        <div class="five no-color">
-                                            <p>Step 5</p>
-                                            <h6>Client choose winner</h6>
-                                        </div>
-                                        <div class="six no-color">
-                                            <p>Step 6</p>
-                                            <h6>Client sign the hotel agreement</h6>
-                                        </div>
-                                        <div class="seven no-color">
-                                            <p>Step 7</p>
-                                            <h6>Hotel manager sign the contract</h6>
-                                        </div>
-                                        <div class="eight no-color">
-                                            <p>Step 8</p>
-                                            <h6>Client submit the rooming list</h6>
-                                        </div>
-                                        <div class="nine no-color">
-                                            <p>Step 9</p>
-                                            <h6>Hotel Manager upload the billing receipt</h6>
-                                        </div>
-                                        <div class="progress-bar no-color" style="width: 100%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <?php }
+                   
                     elseif($trip->status ==6 && count($rpf_count) == 0){
                              
                        ?>
@@ -1050,7 +983,7 @@
                             <?php  foreach ($trip->rfps as $rfp){ 
                                 $invoice_id=$trip->id;
                                 $invoice_user_id=$rfp->user_id; 
-                                $user_trip_status = DB::table('rfps')->where('user_trip_id', $trip->id)->pluck('status');
+                                $user_trip_status = App\Models\Rfp::where('user_trip_id', $trip->id)->pluck('status');
                                 
                                 ?>
                             @if ($rfp->status != 2)
@@ -1077,6 +1010,7 @@
         @endforeach
     </tbody>
 </table>
+</div>
 <script>
     $(document).ready(function(){
     $('#upload_roomingList').on('show.bs.modal', function (e) {
@@ -1096,6 +1030,7 @@
      $('#confirm_forword').on('show.bs.modal', function (e) {
     
         var rowid = $(e.relatedTarget).data('id');
+        console.log("IDDD-"+rowid);
         document.getElementById('rfp-accept-f').title = rowid;
      
     

@@ -203,8 +203,7 @@
     .m-header--fixed .m-body {
     padding-top: 20px !important;
     }
-</style>
-<style type="text/css">
+
     .form-group .form-control {
     width: 100%;
     border: none;
@@ -260,6 +259,7 @@
     form .form-group {
     margin-bottom: 1.5rem;
     }
+  
 </style>
 <div class="row book-hotel-block">
 <legend> Book a hotel now! </legend>
@@ -844,8 +844,6 @@
         blackout_dates.push("<?php echo $bo_date; ?>")
     <?php } ?>
     
-    console.log("LLL: "+blackout_dates.length)
-    
     for(var i=0; i<blackout_dates.length;i++){
          //console.log("input-: "+blackout_dates[i]+ " === "+dateArr.includes(blackout_dates[i]))
         if(dateArr.includes(blackout_dates[i])){
@@ -859,11 +857,6 @@
     else{
        alert('No blackout dates for your booking requests!!');  
     }
-    
-    console.log("inputarr-",dateArr);
-    console.log("blackout_dates: ",blackout_dates);
-    
-    
         var blackin = '<?php echo $blackout; ?>';
         var blackout = '<?php echo $blackoutend; ?>';
          

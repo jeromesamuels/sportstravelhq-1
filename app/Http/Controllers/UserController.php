@@ -15,6 +15,7 @@ use App\Models\usertrips;
 use App\Models\hotelamenities;
 use App\Models\Rfp;
 use Carbon\Carbon;
+
 class UserController extends Controller {
 protected $layout = "layouts.main";
 public function __construct() {
@@ -438,6 +439,10 @@ if($vcode==1){
 if( $session['level'] == 5){
 return redirect(route('hotelmanger.home'));
 }
+
+elseif($session['level']== 4){
+return redirect('client');
+}
 elseif( $session['level'] == 6) {
 return redirect('corporate/user');
 }
@@ -450,7 +455,8 @@ return redirect('dashboard');
 }
 }
 
-if($session['level']== 3){
+
+if($session['level']==4){
 return redirect('client');
 }
 elseif($row->vcode==1 && session('level')==5){
@@ -472,7 +478,9 @@ else{}
 }	
 }		
 } 
+
 else {
+
 if($request->ajax() == true )
 {
 return response()->json(['status' => 'error', 'message' => 'Your username/password combination was incorrect']);

@@ -16,46 +16,14 @@
   min-height: 200px;
 }
 </style>
-<?php  $hotel_manager_id=Session::get('uid');
-$user_group_id= DB::table('tb_users')->where('id', $hotel_manager_id)->pluck('group_id');
-foreach($user_group_id as $item_new) {
-$user_group_id_new = $item_new;
-}
- ?>
+
  <section class="page-header row" style="margin-top: 30px;">
    <h1>Dashboard </h1><span style="padding: 10px 15px;font-size: 16px;"><i class="fa fa-home" aria-hidden="true"></i> - Hotel </span>
 </section>
 <div class="sbox" style="border-top: none">
     <div class="sbox-content dashboard-container">
-        <?php 
-            $data_hotel= DB::table('hotels')->groupBy('type')->get();
-            foreach($data_hotel as $value){
-               $name=$value->type;
-                  
-                //$current_date= date('F');
-              $currentMonth = date('m');
-               // $year=date("Y",$time);  
-        /*Amount Paid*/
-           $purchases = DB::table('invoices')->where('invoices.hotel_type', '=', $name)->whereRaw('MONTH(check_out) = ?',[$currentMonth])->sum('invoices.amt_paid');    
-                $array[$name] = $purchases;
-                 $y = $array[$value->type];
-                 $sum_new =array_sum($array);
-           
-           /* pending amount*/
-            $purchases_due = DB::table('invoices')->where('invoices.hotel_type', '=', $name)->whereRaw('MONTH(check_out) = ?',[$currentMonth])->sum('invoices.est_amt_due');    
-                $array[$name] = $purchases_due;
-                 $y = $array[$value->type];
-                 $sum_due =array_sum($array);
-                 $revenu_due=$sum_new-$sum_due;
-
-            }
-
-             /*Total Booking of this month*/
-           $trip_booking = DB::table('user_trips')->whereRaw('MONTH(added) = ?',[$currentMonth])->get();
-
-            
-              
-            ?>
+       
+       
         <div class="row" style="border-bottom:1px solid #eee;">
             <h2 style="padding-bottom: 20px;">Hotel Overview</h2>
         </div>
@@ -78,7 +46,7 @@ $user_group_id_new = $item_new;
                 </div>
                 
                 <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                    <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $revenu_due }}</h4>
+                    <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $purchases }}</h4>
                 </div>
             
             </div>
@@ -87,12 +55,9 @@ $user_group_id_new = $item_new;
                     <h4 >Open Balance</h4>
                     <p style="font-size: 14px;padding-top: 10px;">This Month</p>
                 </div>
-                <?php 
-                    $data2= DB::table('rfps')->get()->where("status",'!=',3)->all();
-                    
-                    ?>
+              
                 <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                    <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $revenu_due }}</h4>
+                    <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $purchases }}</h4>
                 </div>
               
             </div>
@@ -101,20 +66,15 @@ $user_group_id_new = $item_new;
                     <h4 >Estimated Revenue</h4>
                     <p style="font-size: 14px;padding-top: 10px;">This Month</p>
                 </div>
-                <?php 
-                    $data3= DB::table('rfps')->get()->where("status",2)->all();
-                    
-                    ?>
+               
                 <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                    <h4 style="float:right;top: 50px;position: absolute;right:10px;color: #5dbbe0;">${{ $sum_new }}</h4>
+                    <h4 style="float:right;top: 50px;position: absolute;right:10px;color: #5dbbe0;">${{ $purchases_due }}</h4>
                 </div>
                
             </div>
         </div>
     </div>
 </div>
-
-
     <div class="page-content row">
         <div class="page-content-wrapper no-margin">
           <div class="row">
@@ -233,50 +193,33 @@ $user_group_id_new = $item_new;
                
             });
 
-
        
         </script>
-
-
             </div></div></div>
-     
 
              <div class="sbox" style="border-top: none;padding: 0;background: transparent; box-shadow: none;">
                 <div class="sbox-content dashboard-container" style=" padding: 0;">
                     <div class="row">
-                    @foreach ($hotels as $hotel)
-                     <?php 
-                            
-                            $purchases = DB::table('invoices')->where('invoices.hotel_name', '=', $hotel->name)->sum('invoices.amt_paid');    
-                            $array[$name] = $purchases;
-                            $y = $array[$value->type];
-                            $sum =array_sum($array);
-                      
-                      ?>
-                      @endforeach
+                   
                         <div class="col-md-4">
                             <div class="widget-box box-shadow" style=" margin: 0;background: #5dbbe0;padding: 20px;">
                                 <div class="head">
                                     <h3 style="color:#fff;">Revenue</h3>                        
                                 </div><br />
                                 <div class="body">
-                                   <h1 style="color:#fff;font-size: 40px;">${{ $sum }}</h1>
+                                   <h1 style="color:#fff;font-size: 40px;">${{ $purchases }}</h1>
                                    <p style="color:#fff;">Total Revenue till today</p>
                                 </div>
                             </div>
                         </div>
-                         <?php 
                         
-                            $data= DB::table('user_trips')->get();
-                            $rfps_new= DB::table('rfps')->where(['user_id'=>session('uid')])->get();     
-                        ?>
                         <div class="col-md-4 col-sm-12">
                             <div class="widget-box box-shadow" style=" margin: 0;background: #fff;padding: 20px;">
                                 <div class="head">
                                     <h3>Booking</h3>
                                 </div><br />
                                 <div class="body">
-                                       <h1 style="color:#5dbbe0;font-size: 40px;">{{ count($data)}}</h1>
+                                       <h1 style="color:#5dbbe0;font-size: 40px;">{{ count($trip_booking)}}</h1>
                                    <p>Total Booking </p>
                                 </div>
                             </div>

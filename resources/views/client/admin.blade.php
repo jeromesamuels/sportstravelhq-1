@@ -9,24 +9,32 @@
     <div class="page-content-wrapper no-margin">
                 <div class="sbox" style="border-top: none">
             <div class="sbox-content dashboard-container">
-             @foreach($data_hotel as $value)
                 <?php 
-                        $name=$value->type;
+                 
+                    foreach($data_hotel as $value){
+                       $name=$value->type;
+                    
+                    $currentMonth = date('m');
                     /*Amount Paid*/
-                         $array[$name] = $purchases;
+                    
+                        $array[$name] = $purchases;
                          $y = $array[$value->type];
                          $sum_new =array_sum($array);
-                      
-
+                    
                     /* pending amount*/
+                    
                         $array[$name] = $purchases_due;
                          $y = $array[$value->type];
                          $sum_due =array_sum($array);
                          $revenu_due=$sum_new-$sum_due;
-                          $sum =array_sum($array);
                     
+                    }
+                    
+                     /*Total Booking of this month*/
+                   
+                    
+                      
                     ?>
-                @endforeach
                 <div class="row" style="border-bottom:1px solid #eee;">
                     <h2 style="padding-bottom: 20px;">User Overview</h2>
                 </div>
@@ -46,7 +54,7 @@
                             <p style="font-size: 14px;padding-top: 10px;">Till Today</p>
                         </div>
                         <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                            <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $purchases }}</h4>
+                            <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $revenu_due }}</h4>
                         </div>
                     </div>
                     <div class="col-md-3" style="border-right: 1px solid #c3bfbf;">
@@ -54,9 +62,9 @@
                             <h4 >Open Balance</h4>
                             <p style="font-size: 14px;padding-top: 10px;">Till Today</p>
                         </div>
-                      
+                        
                         <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                            <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $purchases }}</h4>
+                            <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $revenu_due }}</h4>
                         </div>
                     </div>
                     <div class="col-md-3" style="border-right: 1px solid #c3bfbf;">
@@ -64,9 +72,9 @@
                             <h4 >Estimated Revenue</h4>
                             <p style="font-size: 14px;padding-top: 10px;">Till Today</p>
                         </div>
-                      
+                       
                         <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                            <h4 style="float:right;top: 50px;position: absolute;right:10px;color: #5dbbe0;">${{ $purchases_due }}</h4>
+                            <h4 style="float:right;top: 50px;position: absolute;right:10px;color: #5dbbe0;">${{ $sum_new }}</h4>
                         </div>
                     </div>
                 </div>
@@ -74,120 +82,59 @@
         </div>
         <div class="sbox">
             <div class="sbox-title">
-                <h1> All Records </h1>
+                <h1> Account Details </h1>
             </div>
             <div class="sbox-content">
                 <!-- Toolbar Top -->
-                <div class="row">
-                    <div class="col-md-6">
-                        @if($access['is_add'] ==1)
-                        <a href="{{ url('core/users/create?return='.$return) }}" class="btn btn-default btn-sm"  
-                            title="{{ __('core.btn_create') }}"><i class=" fa fa-plus "></i> Create New </a>
-                        @endif
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icon-menu5"></i> Bulk Action </button>
-                            <ul class="dropdown-menu">
-                                @if($access['is_excel'] ==1)
-                                <li><a href="{{ url( $pageModule .'/export?do=excel&return='.$return) }}"><i class="fa fa-download"></i> Export CSV </a></li>
-                                @endif
-                                @if($access['is_add'] ==1)
-                                <li><a href="{{ url($pageModule .'/import?return='.$return) }}" onclick="SximoModal(this.href, 'Import CSV'); return false;"><i class="fa fa-cloud-upload"></i> Import CSV</a></li>
-                                <li><a href="javascript://ajax" class=" copy " title="Copy" ><i class="fa fa-copy"></i> Copy selected</a></li>
-                                @endif	
-                                <li><a href="{{ url($pageModule) }}"  ><i class="fa fa-times"></i> Clear Search </a></li>
-                                <li role="separator" class="divider"></li>
-                                @if($access['is_remove'] ==1)
-                                <li><a href="javascript://ajax"  onclick="SximoDelete();" class="tips" title="{{ __('core.btn_remove') }}"><i class="fa fa-trash-o"></i>
-                                    Remove Selected </a>
-                                </li>
-                                @endif 
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-6 pull-right">
-                        <div class="input-group">
-                            <div class="input-group-btn">
-                                <button type="button" class="btn btn-default btn-sm " 
-                                onclick="SximoModal('{{ url($pageModule."/search") }}','Advance Search'); " ><i class="fa fa-filter"></i> Filter </button>
-                            </div>
-                            <!-- /btn-group -->
-                            <input type="text" class="form-control input-sm onsearch" data-target="{{ url($pageModule) }}" aria-label="..." placeholder=" Type And Hit Enter ">
-                        </div>
-                    </div>
-                </div>
+              
                 <!-- End Toolbar Top -->
                 <!-- Table Grid -->
                 <div class="table-responsive" style="padding-bottom: 70px;">
-                    {!! Form::open(array('url'=>'core/users?'.$return, 'class'=>'form-horizontal m-t' ,'id' =>'SximoTable' )) !!}
-                    <table class="table table-striped table-hover " id="{{ $pageModule }}Table">
+                    {!! Form::open(array('url'=>'core/users?', 'class'=>'form-horizontal m-t' ,'id' =>'SximoTable' )) !!}
+                    <table class="table table-striped table-hover " id="">
                         <thead>
                             <tr style="border-bottom-style: dashed;border-color: #eee;">
                                 <th style="width: 3% !important;" class="number"> No </th>
-                                <th  style="width: 3% !important;"> <input type="checkbox" class="checkall minimal-green" /></th>
-                               
-                                @foreach ($tableGrid as $t)
-                                @if($t['view'] =='1')				
-                                <?php $limited = isset($t['limited']) ? $t['limited'] :''; 
-                                    if(SiteHelpers::filterColumn($limited ))
-                                    {
-                                    	$addClass='class="tbl-sorting" ';
-                                    	if($insort ==$t['field'])
-                                    	{
-                                    		$dir_order = ($inorder =='desc' ? 'sort-desc' : 'sort-asc'); 
-                                    		$addClass='class="tbl-sorting '.$dir_order.'" ';
-                                    	}
-                                    	echo '<th align="'.$t['align'].'" '.$addClass.' width="'.$t['width'].'">'.\SiteHelpers::activeLang($t['label'],(isset($t['language'])? $t['language'] : array())).'</th>';				
-                                    } 
-                                    ?>
-                                @endif
-                                @endforeach
-                                 <th  style="width: 10% !important;">{{ __('core.btn_action') }}</th>
+                                <th>Username</th>
+                                <th>Avatar</th>
+                                <th>Full Name</th>
+                                <th>Email</th>
+                                <th>Phone Number</th>
+                                <th  style="width: 10% !important;">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($rowData as $row)
+
+
                             <tr style="border-bottom-style: dashed;border-color: #eee;">
-                                <td > {{ ++$i }} </td>
-                                <td ><input type="checkbox" class="ids minimal-green" name="ids[]" value="{{ $row->id }}" />  </td>
-                           
-                                @foreach ($tableGrid as $field)
-                                @if($field['view'] =='1')
-                                <?php $limited = isset($field['limited']) ? $field['limited'] :''; ?>
-                                @if(SiteHelpers::filterColumn($limited ))
-                                <?php $addClass= ($insort ==$field['field'] ? 'class="tbl-sorting-active" ' : ''); ?>
-                                <td align="{{ $field['align'] }}" width=" {{ $field['width'] }}"  {!! $addClass !!} >					 
-                                {!! SiteHelpers::formatRows($row->{$field['field']},$field ,$row ) !!}						 
-                                </td>
-                                @endif	
-                                @endif					 
-                                @endforeach	
+                                <td > 1 </td>
+                                <td>{{$user->username}}</td>
+                                <td><img alt="" src="../public/uploads/users/<?php echo $user->avatar; ?>" width="70" height="70" class="img-circle"></td>
+                                <td>{{ $user->first_name.' '.$user->last_name}}</td>
+                                <td>{{$user->email}}</td>
+                                <td>{{$user->phone_number}}</td>
                                      <td>
                                     <div class="dropdown">
                                      
                                         <a href="#" style="color: #5dbbe0;font-weight: bold;" class="dropdown-toggle" data-toggle="dropdown">View User <i class="fa fa-chevron-down" aria-hidden="true" style="color: #000;padding-top: 5px;padding-left: 5px;"></i></a>
                                         <ul class="dropdown-menu">
-                                            @if($access['is_detail'] ==1)
-                                            <li><a href="{{ url('core/users/'.$row->id.'?return='.$return)}}" class="tips" title="{{ __('core.btn_view') }}"> {{ __('core.btn_view') }} </a></li>
-                                            @endif
-                                            @if($access['is_edit'] ==1)
-                                            <li><a  href="{{ url('core/users/'.$row->id.'/edit?return='.$return) }}" class="tips" title="{{ __('core.btn_edit') }}"> {{ __('core.btn_edit') }} </a></li>
-                                            @endif
+                                           
+                                            <li><a href="{{ url('core/users/'.$user->id.'?return=')}}" class="tips" title="{{ __('core.btn_view') }}">View Details</a></li>
+                                            
+                                            <li><a  href="{{ url('core/users/'.$user->id.'/edit?return=') }}" class="tips" title="{{ __('core.btn_edit') }}">Edit Details</a></li>
+
                                             <li class="divider" role="separator"></li>
-                                            @if($access['is_remove'] ==1)
-                                            <li><a href="javascript://ajax"  onclick="SximoDelete();" class="tips" title="{{ __('core.btn_remove') }}">
-                                                Remove Selected </a>
-                                            </li>
-                                            @endif 
+                                           
                                         </ul>
                                     </div>
                                 </td>		 
                             </tr>
-                            @endforeach
+                           
                         </tbody>
                     </table>
                     <input type="hidden" name="action_task" value="" />
                     {!! Form::close() !!}
-                    @include('footer')
+                 
                 </div>
                 <!-- End Table Grid -->
             </div>
@@ -204,7 +151,7 @@
                             </div>
                             <br />
                             <div class="body">
-                                <h1 style="color:#fff;font-size: 40px;">${{ $purchases }}</h1>
+                                <h1 style="color:#fff;font-size: 40px;">${{ $sum_new }}</h1>
                                 <p style="color:#fff;">Total Revenue till today</p>
                             </div>
                         </div>

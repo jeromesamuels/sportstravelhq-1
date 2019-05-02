@@ -26,12 +26,19 @@ class DashboardController extends Controller {
 
         $this->data['hotels'] = DB::table('hotel_amenities')->get()->count();
         $this->data['rfps'] = DB::table('rfps')->get()->count();
-
+        $this->data['data_decline']= DB::table('rfps')->get()->where("status",'!=',3)->all();
+        $this->data['data_accept']= DB::table('rfps')->get()->where("status",2)->all();
+        $this->data['purchases_month']= DB::table('invoices')->sum('invoices.amt_paid');
+        $this->data['data_hotel']= DB::table('hotels')->groupBy('type')->get();                              
         $this->data['trips'] = DB::table('user_trips')->get()->count();
         $this->data['a_req'] = "101";
-        
+        $this->data['data_client']= DB::table('tb_users')->orderby('id', 'DESC')->limit(3)->get();
+
         if(\Session::get('level') == 5) {
         	return redirect(route('hotelmanger.home'));
+        }
+        if(\Session::get('level') ==4) {
+            return redirect('/client');
         }
 
         if(\Session::get('level') == 6) {
