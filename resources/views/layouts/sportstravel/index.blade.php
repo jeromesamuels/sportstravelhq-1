@@ -164,6 +164,7 @@
             }
             #myNavbar ul li ul li a{
             color: #fff;
+            font-size: 15px;
             }
             #myNavbar ul li ul li a:hover,#myNavbar ul li a:hover {
             color: #fff !important;
@@ -212,7 +213,7 @@
     <div class="m-grid m-grid--hor m-grid--root m-page">
 
       <!-- begin::Header -->
-      <header id="m_header" class="m-grid__item m-header " m-minimize-mobile-offset="200">
+      <header id="m_header" class="m-grid__item m-header " m-minimize-mobile-offset="0">
         <div class="m-header__top">
           <div class="m-container m-container--responsive m-container--xxl m-container--full-height m-page__container">
             <div class="m-stack m-stack--ver m-stack--desktop">

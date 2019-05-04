@@ -145,14 +145,15 @@
 }
    
 </style>
-<table class="table table-hover usertrips_new" >
+<div class="table-responsive-sm">
+<table class="table  table-hover usertrips_new display" id="usertrips" width="100%">
     <thead>
         <tr style="border-bottom-style: dashed;border-color: #eee;">
             <th><b>Date Created</b></th>
             <th><b>Client </b></th>
             <th><b>Event Date</b></th>
             <th><b>Trip #</b></th>
-            <th><b>Progress</b></th>
+            <th  width="35%"><b>Progress</b></th>
             <th><b>Status</b></th>
             <th><b>Action</b></th>
         </tr>
@@ -185,7 +186,7 @@
          </td>
             <td>
                 <!-- {{ count($trip->rfps) }} response--> 
-                {{ date('d-M-Y',strtotime($trip->check_in)) }}
+                {{ date('d-M-Y',strtotime($trip->added)) }}
             </td>
               <td> {{ $trip->id }}</td>
               <td>
@@ -901,7 +902,7 @@
      
     </tbody>
 </table>
-
+</div>
 <script>
     $(document).ready(function(){
     $('#myModal').on('show.bs.modal', function (e) {

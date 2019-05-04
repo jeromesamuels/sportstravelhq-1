@@ -40,9 +40,7 @@
 				 
 			</section>
         <?php 
-            $record_exists = DB::table('invoices')->where('rfp_id', '=', $rfp->rfp_id)->first();
-            $IATA_number = DB::table('hotels')->where('name', '=', $record_exists->hotel_name)->pluck('IATA_number');
-                     foreach($IATA_number as $number){}
+          
 
         if (is_null($record_exists)) {
         ?>
@@ -58,7 +56,7 @@
                             <div class="sbox-title">
                                
 				                <h1> Invoice #{{$rfp->invoice_id}} </h1>
-                                 <h1> IATA # {{$number}} </h1>
+                                 <h1> IATA # {{$IATA_number}} </h1>
 				            </div>
                             <h5 style="margin: 20px 0px 10px;">{{ $rfp->hotel_manager }}</h5>
 
@@ -178,7 +176,7 @@
                             <div class="sbox-title">
 
 				                <h1> Invoice # {{$record_exists->invoice_id}} </h1>
-                                 <h1> IATA # {{$number}} </h1>
+                                 <h1> IATA # {{$IATA_number}} </h1>
 				            </div>
                             <h5 style="margin: 20px 0px 10px;">{{ $record_exists->hotel_manager }}</h5>
 

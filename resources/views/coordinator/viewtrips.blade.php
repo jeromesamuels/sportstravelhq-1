@@ -5,6 +5,16 @@
 <section class="page-header row" style="margin-top: 30px;">
     <h1>Dashboard </h1><span style="padding: 10px 15px;font-size: 16px;"><i class="fa fa-home" aria-hidden="true"></i> - Trip Status </span>
 </section>
+<style>
+    .usertrips .pagination li.active a{
+     background-color: #5dbbe0;
+    border-color: #5dbbe0;
+    }
+    #usertrips_wrapper .row{
+        width:100%;
+    }
+</style>
+
 <script type="text/javascript">
     
     $(document).ready(function() {
@@ -47,7 +57,8 @@
             }else{
                 arr[0] = rfp_id;
             }
-
+            
+ 
             
             if($( this ).prop( "checked" )) {
                 //if(rfp_id.includes(',')){
@@ -162,10 +173,7 @@
                     <h3>Total RFP</h3>
                     <p style="font-size: 14px;">Customers</p>
                 </div>
-                 <?php 
-                    $data_all= DB::table('rfps')->get();
-                    
-                    ?>
+               
                 <div class="info-boxes" style="background: #fff; color: #000;float:right;">
                     <h3 style="float:right;top: 30px;position: absolute;right: 25px;">{{ count($data_all) }}</h3>
                 </div>
@@ -182,12 +190,9 @@
                     <h4 >Processed RFP</h4>
                     <p style="font-size: 14px;">Corporate</p>
                 </div>
-                <?php 
-                    $data= DB::table('rfps')->get()->where("status", 1)->all();
-                    
-                    ?>
+               
                 <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                    <h3 style="float:right;top: 30px;position: absolute;right: 25px;">{{ count($data) }}</h3>
+                    <h3 style="float:right;top: 30px;position: absolute;right: 25px;">{{ count($data_submit) }}</h3>
                 </div>
                 <div class="progress" style="margin-bottom: 10px;height: 6px; ">
                     <div class="progress-bar" role="progressbar" aria-valuenow="70"
@@ -202,12 +207,9 @@
                     <h4 >Active Proposals</h4>
                     <p style="font-size: 14px;">Hotel Managers</p>
                 </div>
-                <?php 
-                    $data2= DB::table('rfps')->get()->where("status",'!=',3)->all();
-                    
-                    ?>
+                
                 <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                    <h3 style="float:right;top: 30px;position: absolute;right: 25px;">{{ count($data2) }}</h3>
+                    <h3 style="float:right;top: 30px;position: absolute;right: 25px;">{{ count($get_invoice) }}</h3>
                 </div>
                 <div class="progress" style="margin-bottom: 10px;height: 6px; ">
                     <div class="progress-bar" role="progressbar" aria-valuenow="70"
@@ -222,12 +224,9 @@
                     <h4 >Accepted Proposals</h4>
                     <p style="font-size: 14px;">Customers</p>
                 </div>
-                <?php 
-                    $data3= DB::table('rfps')->get()->where("status",2)->all();
-                    
-                    ?>
+             
                 <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                    <h3 style="float:right;top: 30px;position: absolute;right: 25px;">{{ count($data3) }}</h3>
+                    <h3 style="float:right;top: 30px;position: absolute;right: 25px;">{{ count($data_accept) }}</h3>
                 </div>
                 <div class="progress" style="margin-bottom: 10px;height: 6px; ">
                     <div class="progress-bar" role="progressbar" aria-valuenow="70"
@@ -247,28 +246,17 @@
             <div class="sbox">
                 <div class="sbox-title">
                     <div class="row">
-                        <div class="col-sm-2">
+                        <div class="col-sm-12 col-xs-12">
                             <h1 style="font-size: 20px;"> Trips Status </h1>
                         </div>
-                        <div class="col-sm-1 col-xs-2 col-sm-offset-5">
-                            <p class="text-right">
-                                Filter
-                            </p>
-                        </div>
-                        <div class="col-sm-4 col-xs-10">
-                            <select class="amenityFilter" multiple="multiple" style="width:100%;" class="form-control">
-                            @foreach ($amenities as $amenity)
-                                <option value="{{ $amenity->id }}">{{ $amenity->title }}</option>
-                            @endforeach
-                        </select>
-                        </div>
+                      
                     </div>
                   
                     
                 </div>
                 <div class="sbox-content">
                 
-                <div class="table-responsive usertrips" style="padding-bottom: 70px;">
+                <div class="table-responsive usertrips"  style="padding-bottom: 70px;">
                 @include('coordinator.table')
                 
                 <!-- End Table Grid -->
@@ -286,9 +274,7 @@
                     <div class="head">
                         <h3 style="color:#fff;">Revenue</h3>                        
                     </div><br />
-                     <?php 
-                    $purchases = DB::table('invoices')->sum('invoices.amt_paid');    
-                    ?>
+                   
                     <div class="body">
                        <h1 style="color:#fff;font-size: 40px;">${{ $purchases }}</h1>
                        <p style="color:#fff;">Total Revenue this month</p>
@@ -300,10 +286,7 @@
                     <div class="head">
                         <h3>Booking</h3>
                     </div><br />
-                     <?php 
-                      $data= DB::table('user_trips')->get();
-                            
-                    ?>
+                   
                     <div class="body">
                            <h1 style="color:#5dbbe0;font-size: 40px;">{{ count($data) }}</h1>
                        <p>Total Booking this month</p>
@@ -330,12 +313,25 @@
     </div>
     </div>
     </div>
+
 <div class="page-content row compare-result " id="dynamictabstrp"></div>
 
 @stop
 
 
 @section('pageLevelScripts')
+
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+    $('#usertrips').DataTable( {
+        "order": [[ 2, "desc" ]]
+    } );
+} );
+</script>
+
     <script>
         $(document).ready(function($) {
             $('.amenityFilter').select2();

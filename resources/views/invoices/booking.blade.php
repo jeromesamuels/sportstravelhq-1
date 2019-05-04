@@ -178,12 +178,11 @@
             $name=$value->type;
             $currentMonth = date('m');
             /*Amount Paid*/
-            $purchases = DB::table('invoices')->sum('invoices.amt_paid');    
-            
+           
               $sum_new =$purchases;
             
             /* pending amount*/
-            $purchases_due = DB::table('invoices')->where('invoices.hotel_type', '=', $name)->sum('invoices.est_amt_due');    
+              
              $array[$name] = $purchases_due;
               $y = $array[$value->type];
               $sum_due =array_sum($array);
@@ -202,7 +201,7 @@
                     <p style="font-size: 14px;">Total Revenue </p>
                 </div>
                 <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                    <h4 style="float:right;top: 50px;position: absolute;right: 10px;color: #5dbbe0;">${{ $sum_due }}</h4>
+                    <h4 style="float:right;top: 50px;position: absolute;right: 10px;color: #5dbbe0;">${{ $purchases_due }}</h4>
                 </div>
                 <div class="progress" style="margin-bottom: 10px;height: 6px; ">
                     <div class="progress-bar" role="progressbar" aria-valuenow="70"
@@ -299,7 +298,7 @@
                                 
                                  ?>
                             <tr>
-                                <td style="width: 20%;">  <img alt="" src="../uploads/users/<?php echo $value->logo;?>" id="div_corporate_img" border="0" width="60" style="margin-top: 30px;" class="img-responsive"></td>
+                               <td> <img alt="" src="../public/uploads/users/<?php echo $value->logo;?>" id="div_corporate_img" border="0" width="100" style="margin-top: 30px;" class="img-responsive"></td>
                                 <td>
                                     <div class="hotel_revenue" style=" padding: 15px;">
                                         <h4 >{{ count($purchases_all) }} <span style="font-size: 15px;color: #7b7777;padding-left: 5px;">Bookings</span></h4>

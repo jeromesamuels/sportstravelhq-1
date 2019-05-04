@@ -154,12 +154,9 @@
                             <h4 >Active Proposals</h4>
                             <p style="font-size: 14px;">Hotel Managers</p>
                         </div>
-                        <?php 
-                            $data2= DB::table('rfps')->get()->where("status",'!=',3)->all();
-                            
-                            ?>
+                      
                         <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                            <h3 style="float:right;top: 30px;position: absolute;right: 25px;">{{ count($data2) }}</h3>
+                            <h3 style="float:right;top: 30px;position: absolute;right: 25px;">{{ count($data_decline) }}</h3>
                         </div>
                         <div class="progress" style="margin-bottom: 10px;height: 6px; ">
                             <div class="progress-bar" role="progressbar" aria-valuenow="70"
@@ -174,12 +171,9 @@
                             <h4 >Accepted Proposals</h4>
                             <p style="font-size: 14px;">Customers</p>
                         </div>
-                        <?php 
-                            $data3= DB::table('rfps')->get()->where("status",2)->all();
-                            
-                            ?>
+                      
                         <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                            <h3 style="float:right;top: 30px;position: absolute;right: 25px;">{{ count($data3) }}</h3>
+                            <h3 style="float:right;top: 30px;position: absolute;right: 25px;">{{ count($data_accept) }}</h3>
                         </div>
                         <div class="progress" style="margin-bottom: 10px;height: 6px; ">
                             <div class="progress-bar" role="progressbar" aria-valuenow="70"
@@ -192,12 +186,7 @@
                 </div>
             </div>
         </div>
-        <?php 
-            $currentMonth = date('m');
-                 
-                     $purchases_month = DB::table('invoices')->sum('invoices.amt_paid');    
-                       
-            ?>
+      
         <div class="sbox" style="border-top: none;padding: 0;background: transparent; box-shadow: none;">
             <div class="sbox-content dashboard-container" style=" padding: 0;">
                 <div class="col-md-6 col-sm-12">
@@ -215,11 +204,11 @@
                                 </div>
                             </div>
                             <?php 
-                                $data_hotel= DB::table('hotels')->groupBy('type')->get();
+                               
                                 foreach($data_hotel as $value){
                                    $name=$value->type;
                                 
-                                    $purchases = DB::table('invoices')->where('invoices.hotel_type', '=', $name)->sum('invoices.amt_paid');    
+                                    $purchases = App\Models\Invoices::where('invoices.hotel_type', '=', $name)->sum('invoices.amt_paid');    
                                     $array[$name] = $purchases;
                                 }
                                   
@@ -228,9 +217,9 @@
                                 <div class="">
                                     <h4 style="padding-bottom: 30px;">Revenue By Corporate</h4>
                                 </div>
+                               @foreach($data_hotel as $value)
                                 <?php  
-                                    foreach($data_hotel as $value){
-                                     $sum=0;
+                                    $sum=0;
                                      $hotel_type=$value->type; 
                                       $y = $array[$value->type];
                                       $sum =array_sum($array);
@@ -260,20 +249,12 @@
                                         <p style="float: right;padding-top: 15px;font-size: 16px;"><?php echo  $type_percent; ?>%</p>
                                     </div>
                                 </div>
-                                <?php } ?>
+                             @endforeach
                             </div>
                         </div>
                     </div>
                 </div>
-                <?php 
-                    $data_hotel= DB::table('hotels')->groupBy('type')->get();
-                       foreach($data_hotel as $value){
-                        $name=$value->type;
-                        $purchases = DB::table('invoices')->where('invoices.hotel_type', '=', $name)->sum('invoices.amt_paid');    
-                        $array[$name] = $purchases;
-                        
-                    }
-                 ?>
+               
                 <div class="col-md-6 col-sm-12">
                     <div class="widget-box box-shadow" style=" margin: 0;background: #fff;padding:15px 20px; left: 15px;position: relative;">
                         <div class="head">
@@ -290,7 +271,7 @@
                                              $hotel_type=$value->type; 
                                               $y = $array[$value->type];
                                               $sum =array_sum($array);
-                                              $purchases_all = DB::table('invoices')->where('hotel_type', $value->type)->get();
+                                              $purchases_all =App\Models\Invoices::where('hotel_type', $value->type)->get();
                                             
                                               ?>
                                         <tr>
@@ -354,11 +335,8 @@
         <div class="row">
             <div class="col-md-4" style="border-right: 1px solid #c3bfbf;">
                 <div class="state_report" style="border-bottom: 1px solid #c3bfbf;border-bottom-style: dashed;">
-                      <?php 
-                        $data_trips= DB::table('user_trips')->get();
-                              
-                        ?>
-                    <h3 style="padding-top:30px;color: #5dbbe0;">{{ count($data_trips) }}</h3>
+                     
+                    <h3 style="padding-top:30px;color: #5dbbe0;">{{ $trips }}</h3>
                     <p style="font-size: 14px;">All Customers</p>
                     <br /><br />
                     <strong class="pull-right" style="color: #5dbbe0;font-size: 18px;">{{ $sum }}$</strong>
@@ -376,10 +354,8 @@
                 <h3 style="padding-top:30px;">Most Recent Users</h3>
                 <p style="font-size: 14px;">Check out each column for more details</p>
                 <br />
-                  <?php 
-                    $data_client= DB::table('tb_users')->orderby('id', 'DESC')->limit(3)->get();
-                    foreach($data_client as $data_value){
-                    ?>
+                    @foreach($data_client as $data_value)
+                   
                 <div class="state_report" style="border-bottom: 1px solid #c3bfbf;border-bottom-style: dashed;padding-bottom: 30px;">
                     <strong class="pull-right" style="color: #5dbbe0;font-size: 18px;">
                     <a href="../public/core/users/<?php echo $data_value->id; ?>?return="><button type="submit" class="btn btn-default details_button" value="Details">Details</button></a>
@@ -393,7 +369,8 @@
                     <b style="display:block;"><?php echo $data_value->first_name.''.$data_value->last_name; ?></b>
                     <p><?php echo $data_value->email ?></p>
                 </div>
-                <br /><?php } ?>
+                <br />
+                @endforeach
             </div>
             <div class="col-md-4" style="border-right: 1px solid #c3bfbf;">
                 <h3 style="padding-top:30px;">Corporate Hotels</h3>

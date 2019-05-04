@@ -133,16 +133,22 @@ Route::put('hotels/update/{id}','HotelsController@updateHotels')->name('systemad
 });
 Route::resource('corporate/user','CorporateUsersController');
 Route::get('clientProfile/{id}','HomeController@clientProfile')->name('client.clientProfile');
+Route::get('admin','HomeController@adminAccount')->name('client.admin');
 
 
 Route::get('trips/','UsertripsController@show_trips');
 Route::get('/trips/{id}','UsertripsController@show_trip_detail')->name('coordinator.trips.show');
 Route::post('invoices/hotel','InvoicesController@getHotels');
 Route::post('sendInvoice','InvoicesController@sendInvoice')->name('invoices.sendInvoice');
+Route::post('multipleInvoice','InvoicesController@multipleInvoice')->name('invoices.multipleInvoice');
+Route::post('/trips/recordFilter','UsertripsController@recordFilter');
 
-//Route::get('get-location-from-ip',function(){
-//    $ip= \Request::ip();
-//    $data = \Location::get($ip);
-//
-//});
-
+Route::get('get-location-from-ip',function(){
+    $ip= \Request::ip();
+    $data = \Location::get($ip);
+    
+});
+Route::get('/pdf', function(){
+    $pdf = PDF::loadHTML('<h1>Test</h1>');
+    return $pdf->stream();
+});

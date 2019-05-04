@@ -203,8 +203,7 @@
     .m-header--fixed .m-body {
     padding-top: 20px !important;
     }
-</style>
-<style type="text/css">
+
     .form-group .form-control {
     width: 100%;
     border: none;
@@ -260,6 +259,7 @@
     form .form-group {
     margin-bottom: 1.5rem;
     }
+  
 </style>
 <div class="row book-hotel-block">
 <legend> Book a hotel now! </legend>
@@ -457,6 +457,7 @@
                 }
                 
                
+               
                 // If the place has a geometry, then present it on a map.
                 if (place.geometry.viewport) {
                   map.fitBounds(place.geometry.viewport);
@@ -489,21 +490,14 @@
                     document.getElementById('from_zip').value=this.addressArray[7].short_name;
                    document.getElementById('from_state_id').value=this.addressArray[5].long_name;
                  } 
-                 else if(this.addressArray[7]== '')
-               {
-                  document.getElementById('from_zip').value=this.addressArray[6].short_name;
-               }
-               else if(this.addressArray[6]== '')
-               {
-                  document.getElementById('from_zip').value=this.addressArray[5].short_name;
-               }
+                
                  else{
                      this.street_number = this.addressArray[4].long_name;
                     //this.country = this.addressArray[5].short_name;
                      this.zipcode = this.addressArray[6].short_name;
                      this.city=this.addressArray[2].short_name;
                    document.getElementById('from_city').value=this.addressArray[2].short_name;
-                   document.getElementById('from_zip').value='';
+                   document.getElementById('from_zip').value=this.addressArray[6].short_name;
                    document.getElementById('from_state_id').value=this.addressArray[4].long_name;
                  }
                 }
@@ -562,17 +556,14 @@
                     document.getElementById('to_zip').value=this.addressArray[7].short_name;
                    document.getElementById('to_state_id').value=this.addressArray[5].long_name;
                  } 
-                 else if(this.addressArray[7]== '')
-               {
-                  document.getElementById('to_zip').value=this.addressArray[6].short_name;
-               }
+                
                  else{
                      this.street_number = this.addressArray[4].long_name;
                     //this.country = this.addressArray[5].short_name;
                      this.zipcode = this.addressArray[6].short_name;
                      this.city=this.addressArray[2].short_name;
                      document.getElementById('to_city').value=this.addressArray[2].short_name;
-                     document.getElementById('to_zip').value='';
+                     document.getElementById('to_zip').value=this.addressArray[6].short_name;
                      document.getElementById('to_state_id').value=this.addressArray[4].long_name;
                  }
                 }
@@ -853,8 +844,6 @@
         blackout_dates.push("<?php echo $bo_date; ?>")
     <?php } ?>
     
-    console.log("LLL: "+blackout_dates.length)
-    
     for(var i=0; i<blackout_dates.length;i++){
          //console.log("input-: "+blackout_dates[i]+ " === "+dateArr.includes(blackout_dates[i]))
         if(dateArr.includes(blackout_dates[i])){
@@ -868,11 +857,6 @@
     else{
        alert('No blackout dates for your booking requests!!');  
     }
-    
-    console.log("inputarr-",dateArr);
-    console.log("blackout_dates: ",blackout_dates);
-    
-    
         var blackin = '<?php echo $blackout; ?>';
         var blackout = '<?php echo $blackoutend; ?>';
          

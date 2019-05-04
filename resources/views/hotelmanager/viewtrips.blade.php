@@ -2,6 +2,16 @@
 
 @section('content')
 {{--*/ usort($tableGrid, "SiteHelpers::_sort") /*--}}
+<style>
+    .usertrips .pagination li.active a{
+     background-color: #5dbbe0;
+    border-color: #5dbbe0;
+    }
+     #usertrips_wrapper .row{
+        width:100%;
+    }
+</style>
+
 <section class="page-header row" style="margin-top: 30px;">
     <h1>Dashboard </h1><span style="padding: 10px 15px;font-size: 16px;"><i class="fa fa-home" aria-hidden="true"></i> - Trip Status </span>
 </section>
@@ -111,7 +121,7 @@
                         <div class="col-sm-2">
                             <h1 style="font-size: 20px;"> Trips Status </h1>
                         </div>
-                        <div class="col-sm-1 col-xs-2 col-sm-offset-5">
+                       <!--  <div class="col-sm-1 col-xs-2 col-sm-offset-5">
                             <p class="text-right">
                                 Filter
                             </p>
@@ -122,7 +132,7 @@
                                 <option value="{{ $amenity->id }}">{{ $amenity->title }}</option>
                             @endforeach
                         </select>
-                        </div>
+                        </div> -->
                     </div>
                   
                     
@@ -191,11 +201,20 @@
         </div>
     </div>
 </div>
-    </div>
-    </div>
-    </div>
+</div>
+</div>
+</div>
 
+<script type="text/javascript">
+    $(document).ready(function() {
+    $('#usertrips').DataTable( {
+        "order": [[ 1, "desc" ]]
+    } );
+} );
+</script>
 
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
 @stop
 
 

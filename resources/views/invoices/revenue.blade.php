@@ -102,12 +102,10 @@
             $name=$value->type;
             $currentMonth = date('m');    
              /*Amount Paid*/
-              $purchases = DB::table('invoices')->sum('invoices.amt_paid');  
             
-              $sum_new =$purchases;
+              $sum_new =$purchases_new;
              
              /* pending amount*/
-              $purchases_due = DB::table('invoices')->where('invoices.hotel_type', '=', $name)->sum('invoices.est_amt_due');    
                    $array[$name] = $purchases_due;
                    $y = $array[$value->type];
                    $sum_due =array_sum($array);
@@ -122,10 +120,14 @@
             <div class="col-md-3" style="border-right: 1px solid #c3bfbf;">
                 <div class="info-boxes" style="background: #fff; color: #000;">
                     <h4>Estimated Revenue</h4>
-                    <p style="font-size: 14px;">Total Revenue</p>
+                    <p style="font-size: 14px;">Total Revenue of this Month</p>
                 </div>
                 <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                    <h4 style="float:right;top: 50px;position: absolute;right: 10px;color: #5dbbe0;">${{ $sum_due }}</h4>
+                     @if(session('level')==1 || session('level')==2)
+                    <h4 style="float:right;top: 50px;position: absolute;right: 10px;color: #5dbbe0;">${{ $monthly_purchase_due_all }}</h4>
+                    @else
+                      <h4 style="float:right;top: 50px;position: absolute;right: 10px;color: #5dbbe0;">${{ $monthly_purchase_due }}</h4>
+                      @endif
                 </div>
                 <div class="progress" style="margin-bottom: 10px;height: 6px; ">
                     <div class="progress-bar" role="progressbar" aria-valuenow="70"
@@ -138,10 +140,14 @@
             <div class="col-md-3" style="border-right: 1px solid #c3bfbf;">
                 <div class="info-boxes" style="background: #fff; color: #000;">
                     <h4 >State Revenue</h4>
-                    <p style="font-size: 14px;">Total Revenue</p>
+                    <p style="font-size: 14px;">This Month</p>
                 </div>
                 <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                    <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $revenu_due }}</h4>
+                      @if(session('level')==1 || session('level')==2)
+                    <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $monthly_purchase_all }}</h4>
+                    @else
+                    <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $monthly_purchase }}</h4>
+                    @endif
                 </div>
                 <div class="progress" style="margin-bottom: 10px;height: 6px; ">
                     <div class="progress-bar" role="progressbar" aria-valuenow="70"
@@ -154,14 +160,15 @@
             <div class="col-md-3" style="border-right: 1px solid #c3bfbf;">
                 <div class="info-boxes" style="background: #fff; color: #000;">
                     <h4 >Paid Invoice</h4>
-                    <p style="font-size: 14px;">Total Revenue </p>
+                    <p style="font-size: 14px;">This Month </p>
                 </div>
-                <?php 
-                    $data2= DB::table('rfps')->get()->where("status",'!=',3)->all();
-                    
-                    ?>
+             
                 <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                    <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $revenu_due }}</h4>
+                      @if(session('level')==1 || session('level')==2)
+                    <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $monthly_purchase_all }}</h4>
+                    @else
+                    <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $monthly_purchase }}</h4>
+                    @endif
                 </div>
                 <div class="progress" style="margin-bottom: 10px;height: 6px; ">
                     <div class="progress-bar" role="progressbar" aria-valuenow="70"
@@ -177,7 +184,11 @@
                     <p style="font-size: 14px;">Total Revenue this month</p>
                 </div>
                 <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                    <h4 style="float:right;top: 50px;position: absolute;right:10px;">${{ $sum_new }}</h4>
+                    @if(session('level')==1 || session('level')==2)
+                    <h4 style="float:right;top: 50px;position: absolute;right: 10px;color: #5dbbe0;">${{ $monthly_purchase_due_all }}</h4>
+                    @else
+                      <h4 style="float:right;top: 50px;position: absolute;right: 10px;color: #5dbbe0;">${{ $monthly_purchase_due }}</h4>
+                     @endif
                 </div>
                 <div class="progress" style="margin-bottom: 10px;height: 6px; ">
                     <div class="progress-bar" role="progressbar" aria-valuenow="70"
@@ -193,8 +204,7 @@
 @foreach($data_hotel as $value)
 <?php 
     $name=$value->type;
-      $purchases = DB::table('invoices')->where('invoices.hotel_type', '=', $name)->sum('invoices.amt_paid');    
-      $array[$name] = $purchases;
+    $array[$name] = $purchases_new;
     
     ?>
 @endforeach            
@@ -206,22 +216,33 @@
                     <div class="head">
                         <span>Revenue By Corporate</span>                        
                     </div>
-                    <div class="body">
-                        @foreach($data_hotel as $value)
+                     @if(session('level')==1 || session('level')==2)
+                       <div class="body">
+                       @foreach($data_all as $all_data)
                         <?php  
+
+                          $type_all=$all_data->type;
+                         
+                             $purchases_invoices = DB::table('invoices')->where('invoices.hotel_type', '=', $type_all)->sum('invoices.amt_paid');
+                         
+                            $array[$type_all] = $purchases_invoices;
                             $sum=0;
-                            $hotel_type=$value->type; 
-                             $y = $array[$value->type];
-                             $sum =array_sum($array);
-                            
+
+                              # code...
+                          
+                             $y = $array[$type_all];
+                     
+                            $sum =array_sum($array);
+                              
+                          
                              ?>
                         <div class="hotel_revenue" style="    padding: 20px;">
-                            <h4><?php echo  $hotel_type; ?></h4>
+                            <h4><?php echo  $type_all; ?></h4>
                             <?php 
                                 $playerson = $y;
                                  $maxplayers = $sum;
                                 
-                                 $percentage =($playerson / $maxplayers) * 100; // floor (round down) optional
+                                 $percentage =(1/ 1) * 100; // floor (round down) optional
                                  $type_percent=round($percentage);
                                 ?>
                             <div class="final_range">
@@ -234,6 +255,55 @@
                         <br /><br />
                         @endforeach
                     </div>
+                   @else
+                    <div class="body">
+                        @foreach($data_hotel as $value)
+                        <?php  
+                            $date_start = date("Y", strtotime('-2 year'));
+                                   $date_future = date("Y", strtotime('+2 year'));
+                                   $date_year = date("Y");
+                                   for($i=$date_start;$i<=$date_future;$i++){ 
+                                   //echo $i;
+                            
+                                $name=$value->type;
+                                   
+                               $array[$name] = $purchases_new;
+                               if($corporate->group_id==6){
+                               
+                               $purchases = DB::table('invoices')->where(['invoices.hotel_type'=> $name])->whereRaw('YEAR(created_at) = ?',$i)->sum('invoices.amt_paid');
+                               }
+                               else{
+                                 
+                                 $purchases = DB::table('invoices')->where(['invoices.hotel_name'=> $value->id])->whereRaw('YEAR(created_at) = ?',$i)->sum('invoices.amt_paid');
+                               }
+                               $sum=0;
+                               $hotel_type=$value->type; 
+                                $y = $array[$value->type];
+                                $sum =array_sum($array);
+                               
+                                ?>
+                        <div class="hotel_revenue" style=" padding: 20px;">
+                            <h4>{{$i}}</h4>
+                            <?php 
+                                $playerson = $y;
+                                $maxplayers = $sum;
+                                 
+                                   $percentage =($purchases / $maxplayers) * 100; // floor (round down) optional
+                                   $type_percent=round($percentage);
+                                  ?>
+                            <div class="final_range">
+                                <div class="skills hotel_range" style="width:<?php echo  $type_percent; ?>%">
+                                </div>
+                                <p style="float: left;">Estimated Revenue</p>
+                                <p style="float: right;"><?php echo  $purchases; ?>$</p>
+                            </div>
+                        </div>
+                        <?php } ?>
+                        <br /><br />
+                        @endforeach
+                    </div>
+                    @endif
+
                 </div>
             </div>
             <div class="col-md-8 col-sm-12">
@@ -241,7 +311,7 @@
                     <div class="head">
                         <span>Revenue by Hotels</span>
                     </div>
-                    @if(session('level')==1)
+                    @if(session('level')==1 || session('level')==2)
                     <div class="body">
                         <script>
                             window.onload = function () {
@@ -257,11 +327,16 @@
                                type: "column",
                                dataPoints: [
                                 <?php  
-                                foreach($data_hotel as $value){
-                                 $hotel_type=$value->type; 
-                                 $y = $array[$value->type];
+                                foreach($data_all as $all_data){
+                                $type_all=$all_data->type;
+                                
+                                $purchases_all = DB::table('invoices')->where('invoices.hotel_type', '=', $type_all)->sum('invoices.amt_paid');
+          
+                                 $hotel_type=$all_data->type; 
+                                 $array[$type_all] = $purchases_all;
+                                 $y = $array[$type_all];
                                   ?>
-                                    { y: <?php echo  $y; ?>, label: '<?php echo  $hotel_type; ?>' },
+                                    { y: <?php echo  $purchases_all; ?>, label: '<?php echo  $hotel_type; ?>' },
                                    
                                 <?php  } ?>
                               
@@ -277,8 +352,7 @@
                         <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
                     </div>
                     @else
-
-                        <div class="body">
+                    <div class="body">
                         <script>
                             window.onload = function () {
                               
@@ -293,14 +367,28 @@
                                type: "column",
                                dataPoints: [
                                 <?php 
-
+                                foreach($data_hotel as $value){
+                                $date_start = date("Y", strtotime('-5 year'));
+                                $date_future = date("Y", strtotime('+5 year'));
+                                $date_year = date("Y");
+                                for($i=$date_start;$i<=$date_future;$i++){ 
+                                //echo $i;
                                 
+                                 $name=$value->type;
+                                 $array[$name] = $purchases_new;
+                                 if($corporate->group_id==6){
+                                   $purchases = DB::table('invoices')->where(['invoices.hotel_type'=> $name])->whereRaw('YEAR(created_at) = ?',$i)->sum('invoices.amt_paid');
+                                 }
+                                 else{
+                                     $purchases = DB::table('invoices')->where(['invoices.hotel_name'=> $value->id])->whereRaw('YEAR(created_at) = ?',$i)->sum('invoices.amt_paid');
+                                 }
                                  $chotel_type=$hcorporateData->type; 
                                  $cy = $array[$hcorporateData->type];
+                                    
                                   ?>
-                                    { y: <?php echo  $cy; ?>, label: '<?php echo  $chotel_type; ?>' },
+                                    { y: <?php echo  $purchases; ?>, label: '<?php echo  $i; ?>' },
                                    
-                              
+                                <?php  } } ?>
                               
                                ]
                              }
