@@ -140,9 +140,9 @@ Route::get('/trips/{id}','UsertripsController@show_trip_detail')->name('coordina
 Route::post('invoices/hotel','InvoicesController@getHotels');
 Route::post('sendInvoice','InvoicesController@sendInvoice')->name('invoices.sendInvoice');
 
-Route::get('get-location-from-ip',function(){
-    $ip= \Request::ip();
-    $data = \Location::get($ip);
-    
-});
+//Route::get('get-location-from-ip',function(){
+//    $ip= \Request::ip();
+//    $data = \Location::get($ip);
+//
+//});
 
