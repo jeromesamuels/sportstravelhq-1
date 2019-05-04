@@ -169,19 +169,17 @@
      
         <tr style="border-bottom-style: dashed;border-color: #eee;">
             <td>
-                <?php  
-                 $rfp_id =App\Models\Rfp::where('user_trip_id', $trip->id)->pluck('user_trip_id'); ?>
+                
                 <span style="width: 40px;">
                 <?php $rfp_value='';
-                    if($rfp_id->count() > 0){
-                    foreach($rfp_id as $rfp) { 
-                        $rfp_value.= $rfp.",";  
+                    if($trip->rfps->count() > 0){
+                    foreach($trip->rfps as $rfp) { 
+                        $rfp_value.= $rfp->user_trip_id.",";  
                     } 
                     $rfp_value = rtrim($rfp_value,',');
-                    
                     ?>
                 <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand">
-                <input type="checkbox" class="compare_cb" name="compare_cb" value="{{ $rfp_value }}" />&nbsp;
+                <input type="checkbox" class="compare_cb" name="compare_cb" count="{{$trip->rfps->count()}}" value="{{ $rfp_value }}" />&nbsp;
                 <span></span>
                 </label>
                 <?php } ?>

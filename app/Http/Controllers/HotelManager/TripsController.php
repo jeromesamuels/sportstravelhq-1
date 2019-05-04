@@ -26,6 +26,7 @@ public function __construct() {
 public function index(){
 	$trips = usertrips::orderBy('added', 'desc')->get();
 	$hotel_id=User::where('id',session('uid'))->pluck('hotel_id');
+	
 	foreach($hotel_id as $hotel_id_new){
 	$user_hotel=$hotel_id_new;
 	}

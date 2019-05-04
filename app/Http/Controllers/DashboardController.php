@@ -1,5 +1,5 @@
-<?php namespace App\Http\Controllers;
-
+<?php 
+namespace App\Http\Controllers;
 use App\Http\Controllers;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -43,6 +43,9 @@ class DashboardController extends Controller {
 
         if(\Session::get('level') == 6) {
         	return redirect(route('corporate.home'));
+        }
+        if(\Session::get('level') == 2) {
+            return redirect('/admin');
         }
 
 		return view('dashboard.index', $this->data);

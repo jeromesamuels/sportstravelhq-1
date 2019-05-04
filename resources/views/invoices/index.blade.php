@@ -6,16 +6,7 @@
     <h1>Dashboard </h1><span style="padding: 10px 15px;font-size: 16px;"><i class="fa fa-home" aria-hidden="true"></i> - Invoices </span>
 </section>
 
-       <?php 
-           $currentMonth = date('m');
-          /*Amount Paid*/
-            $purchases = DB::table('invoices')->whereRaw('MONTH(created_at) = ?',[$currentMonth])->sum('invoices.amt_paid');    
-           /* pending amount*/
-            $purchases_due = DB::table('invoices')->sum('invoices.est_amt_due');    
-            
-                 //$revenu_due=$sum_new-$sum_due;
-
-            ?>
+       
 <div class="page-content row">
 	<div class="page-content-wrapper no-margin">
 <div class="sbox" style="border-top: none">
@@ -152,25 +143,14 @@
 						
 					  </tr>
 		        </thead>
-                <?php 
-                    $users = DB::table('tb_users')->where('id', '=', session('uid'))->pluck('hotel_id');
-			        foreach ($users as $user) {
-			          $user_email_new=$user;
-			        }
-
-                ?>
+             
 		        <tbody>        						
 		            @foreach ($rowData as $row)
 		           <?php 
-		         
-                     $hotel_type = DB::table('hotels')->where('id', $user_email_new)->pluck('type');
-                   
-					foreach($hotel_type as $item_new) {
-					 $hotel_type_new = $item_new;
-					}
-                     
-		            
-                    if($row->hotel_name==$user_email_new){
+		           
+		            	$hotel_id=$user->hotel_id;
+		          
+                    if($row->hotel_name==$hotel_id){
 
 					?>
 		                <tr style="border-bottom-style: dashed;border-color: #eee;">
@@ -256,14 +236,14 @@
 							
 		                </tr>
 		               <?php } else{ 
-                         if($row->hotel_type==$hotel_type_new){
+                         if($row->hotel_type==$user->type){
 		               	?>
                                <tr style="border-bottom-style: dashed;border-color: #eee;">
 							<td> {{ ++$i }} </td>
 							<td ><input type="checkbox" class="ids minimal-green send_invoices" name="ids[]" value="{{ $row->id }}" />  </td>
 							<td > {{ $row->created_at }} </td>
 							<td > {{ $row->updated_at }} </td>	
-							<td > {{ $hotel_type_new }} </td>	
+							<td > {{ $user->type }} </td>	
 							<td > {{ $row->commissoin_rate }} </td>			
 						 @foreach ($tableGrid as $field)
 							 @if($field['view'] =='1')
@@ -330,17 +310,7 @@
             console.log(invoices.length);
            document.getElementById('invoice_id').value = invoices;
             if(invoices.length>=1) {
-            	//alert(invoices);
-               /* var url = '{{ url("/multipleInvoices/") }}';
-                $.post(url + '/' + invoices, function(response) {
-                    if(response.success) 
-                     // $('div.compare-result').html(response.view_data);
-                      $('html, body').animate({
-                            //'scrollTop' : $("#dynamictabstrp").position().top
-                      });
-                     
-                }, 'json');*/
-                
+          
             } else {
                 alert("Please select the Invoices!!");
                   window.location.reload();
@@ -357,11 +327,9 @@
                     <div class="head">
                         <h3 style="color:#fff;">Revenue</h3>                        
                     </div><br />
-                    <?php 
-                    $purchases = DB::table('invoices')->sum('invoices.amt_paid');    
-                    ?>
+                    
                     <div class="body">
-                       <h1 style="color:#fff;font-size: 40px;">${{ $purchases }}</h1>
+                       <h1 style="color:#fff;font-size: 40px;">${{ $purchases_all }}</h1>
                        <p style="color:#fff;">Total Revenue this month</p>
                     </div>
                 </div>
@@ -371,12 +339,9 @@
                     <div class="head">
                         <h3>Booking</h3>
                     </div><br />
-                     <?php 
-		              $data= DB::table('user_trips')->get();
-		              $client=DB::table('tb_users')->where('group_id', 4)->get();   
-		            ?>
+                    
                     <div class="body">
-                           <h1 style="color:#5dbbe0;font-size: 40px;">{{ count($data)}}</h1>
+                           <h1 style="color:#5dbbe0;font-size: 40px;">{{ count($data_trips)}}</h1>
                        <p>Total Booking this month</p>
                     </div>
                 </div>
@@ -413,12 +378,6 @@
                     {{ csrf_field() }}
                     <input type="hidden" name="invoice_id"  id="invoice_id" value="">
                  
-                   <!--  <div class="form-group">
-                      
-                      <label>Upload Invoice</label>
-                        <input type="file" class="form-control" name="invoice_file" id="invoice_file" required="">
-                    </div>
- -->
                     <div class="form-group">
                         <label>Enter Email Address </label>
                         <input type="text" class="form-control" name="email" id="email" required="">

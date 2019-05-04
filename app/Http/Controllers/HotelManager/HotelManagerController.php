@@ -131,8 +131,10 @@ public function downloadAgreement($id){
 
 public function agreementDetails($id){
 	$agreement = AgreementForm::find($id);
+    $IATA_number = DB::table('hotels')->where('name', $agreement->hotel_name)->pluck('IATA_number');
+
 	if($agreement){
-	return view('hotelmanager.agreementDetails',compact('agreement'));
+	return view('hotelmanager.agreementDetails',compact('agreement','IATA_number'));
 	}
 }
 

@@ -269,10 +269,13 @@ class HomeController extends Controller {
             $purchases_new = DB::table('invoices')->where('invoices.hotel_name', '=', $corporate->hotel_id)->sum('invoices.amt_paid');
             $purchases_due = DB::table('invoices')->where('invoices.hotel_name', '=', $corporate->hotel_id)->sum('invoices.est_amt_due');
             $purchases_date = DB::table('invoices')->where('invoices.hotel_name', '=', $corporate->hotel_id)->pluck('created_at');
+            if(count($purchases_date)>=1){
             foreach ($purchases_date as $purchases_date_new) {
                 $date = DateTime::createFromFormat("Y-m-d H:i:s", $purchases_date_new);
                 $date_new = $date->format("Y");
+
                 $date_month = $date->format("m");
+              
             }
             $monthly_purchase = Invoices::where('invoices.hotel_name', '=', $corporate->hotel_id)->whereRaw('MONTH(created_at) = ?', $date_month)->whereRaw('YEAR(created_at) = ?', $date_new)->sum('invoices.amt_paid');
             $monthly_purchase_due = Invoices::where('invoices.hotel_name', '=', $corporate->hotel_id)->whereRaw('MONTH(created_at) = ?', $date_month)->whereRaw('YEAR(created_at) = ?', $date_new)->sum('invoices.est_amt_due');
@@ -283,6 +286,10 @@ class HomeController extends Controller {
                 //echo $i;
                 $purchases =  Invoices::where(['invoices.hotel_type' => $name])->whereRaw('YEAR(created_at) = ?', $i)->sum('invoices.amt_paid');
             }
+        }
+        else{
+           return Redirect::back();
+        }
         } else {
             $purchases_new = Invoices::where('invoices.hotel_type', '=', $data_all_new->type)->sum('invoices.amt_paid');
             $purchases_due =  Invoices::where('invoices.hotel_type', '=', $data_all_new->type)->sum('invoices.est_amt_due');
@@ -294,12 +301,14 @@ class HomeController extends Controller {
             }
             $monthly_purchase =  Invoices::where('invoices.hotel_type', '=', $data_all_new->type)->whereRaw('MONTH(created_at) = ?', $date_month)->whereRaw('YEAR(created_at) = ?', $date_new)->sum('invoices.amt_paid');
             $monthly_purchase_due =  Invoices::where('invoices.hotel_type', '=', $data_all_new->type)->whereRaw('MONTH(created_at) = ?', $date_month)->whereRaw('YEAR(created_at) = ?', $date_new)->sum('invoices.est_amt_due');
+            /*superadmin*/
+           
         }
-        /*superadmin*/
-        foreach ($data_all as $data_all_new) {
-            $monthly_purchase_all = Invoices::where('invoices.hotel_type', '=', $data_all_new->type)->whereRaw('MONTH(created_at) = ?', $date_month)->whereRaw('YEAR(created_at) = ?', $date_new)->sum('invoices.amt_paid');
-            $monthly_purchase_due_all = Invoices::where('invoices.hotel_type', '=', $data_all_new->type)->whereRaw('MONTH(created_at) = ?', $date_month)->whereRaw('YEAR(created_at) = ?', $date_new)->sum('invoices.est_amt_due');
-        }
+         foreach ($data_all as $data_all_new) {
+                $monthly_purchase_all = Invoices::where('invoices.hotel_type', '=', $data_all_new->type)->whereRaw('MONTH(created_at) = ?', $date_month)->whereRaw('YEAR(created_at) = ?', $date_new)->sum('invoices.amt_paid');
+                $monthly_purchase_due_all = Invoices::where('invoices.hotel_type', '=', $data_all_new->type)->whereRaw('MONTH(created_at) = ?', $date_month)->whereRaw('YEAR(created_at) = ?', $date_new)->sum('invoices.est_amt_due');
+            }
+        
         return view('invoices.revenue', compact('data_hotel', 'client', 'hcorporateData', 'corporate', 'purchases_due', 'purchases_new', 'monthly_purchase', 'monthly_purchase_due', 'data_all', 'monthly_purchase_all', 'monthly_purchase_due_all'));
     }
     public function booking() {

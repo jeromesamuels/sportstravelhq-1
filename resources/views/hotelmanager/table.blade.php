@@ -370,8 +370,6 @@
 
                 <?php  
                
-                
-                    
                 $rfpUserIds[count($rfpUserIds)] = $rfp->user_id;
               
                 $rfp_status=$rfp->status;

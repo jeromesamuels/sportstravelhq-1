@@ -42,8 +42,32 @@ $this->grab( $request) ;
 if($this->access['is_view'] ==0){
 return redirect('dashboard')->with('message', __('core.note_restric'))->with('status','error');				
 }
-                   
-
+$corporate = User::find(session('uid'));
+$hcorporateData = Hotel::find($corporate->hotel_id);
+$data_hotel = Hotel::groupBy('type')->where('id', $corporate->hotel_id)->get();
+$currentMonth = date('m');
+           /*Amount Paid*/
+$this->data['user']=Hotel::find($corporate->hotel_id);
+if($corporate->group_id == 6) {
+   $this->data['purchases']= DB::table('invoices')->where('invoices.hotel_type', '=', $hcorporateData->type)->whereRaw('MONTH(created_at) = ?',[$currentMonth])->sum('invoices.amt_paid');    
+    /* pending amount*/
+   $this->data['purchases_due'] = DB::table('invoices')->where('invoices.hotel_type', '=', $hcorporateData->type)->sum('invoices.est_amt_due');   
+   $this->data['purchases_all'] = DB::table('invoices')->where('invoices.hotel_type', '=', $hcorporateData->type)->sum('invoices.amt_paid');                     
+}
+elseif($corporate->group_id == 5) {
+   $this->data['purchases']= DB::table('invoices')->where('invoices.hotel_name', '=', $corporate->hotel_id)->whereRaw('MONTH(created_at) = ?',[$currentMonth])->sum('invoices.amt_paid');    
+    /* pending amount*/
+   $this->data['purchases_due'] = DB::table('invoices')->where('invoices.hotel_name', '=', $corporate->hotel_id)->sum('invoices.est_amt_due');  
+   $this->data['purchases_all'] = DB::table('invoices')->where('invoices.hotel_name', '=', $corporate->hotel_id)->sum('invoices.amt_paid');                   
+}
+else{
+ $this->data['purchases']= DB::table('invoices')->whereRaw('MONTH(created_at) = ?',[$currentMonth])->sum('invoices.amt_paid');    
+    /* pending amount*/
+ $this->data['purchases_due'] = DB::table('invoices')->sum('invoices.est_amt_due'); 	
+ $this->data['purchases_all'] = DB::table('invoices')->sum('invoices.amt_paid'); 
+}
+$this->data['data_trips']= DB::table('user_trips')->get();
+$this->data['client']=DB::table('tb_users')->where('group_id', 4)->get();   
 return view( $this->module.'.index',$this->data);
 }
 

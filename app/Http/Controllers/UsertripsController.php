@@ -503,7 +503,7 @@ public function show_trips()
      {
      if(Session::get('level') != 4)
      return redirect(URL("/"));
-     $trips = usertrips::where('entry_by', session('uid'))->orderBy('added', 'desc')->get();
+     $trips = usertrips::with("rfps")->where('entry_by', session('uid'))->orderBy('added', 'desc')->get();
      $data_client= User::where('id', session('uid'))->get();
      $purchases =DB::table('invoices')->sum('invoices.amt_paid');    
      $amenities = hotelamenities::all();

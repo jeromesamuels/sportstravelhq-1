@@ -923,7 +923,7 @@
                     </div> -->
                     <div class="form-group">
                         <label>Distance From Event (Unit Miles)</label>
-                        <input type="text" class="form-control" name="eventDistance" id="eventDistance" value="" min="0" readonly="">
+                        <input type="text" class="form-control" name="eventDistance" id="eventDistance" value="" min="0" >
                     </div>
                     <div class="form-group">
                         <label>Your offer will be valid till ?</label>
@@ -1040,10 +1040,6 @@
             for (var j = 0; j < results.length; j++) {
               geocoder.geocode({'address': destinationList[j]},
                   showGeocodedAddressOnMap(true));
-           /*outputDiv.innerHTML += originList[i] + ' to ' + destinationList[j] +
-                  ': ' + results[j].distance.text + ' in ' +
-                  results[j].duration.text + '<br>';*/
-            //KM x 0.621371 = Miles
           
             var string = results[j].distance.text;
               string = string.split(" ");
