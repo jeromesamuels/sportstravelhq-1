@@ -51,6 +51,43 @@ Next restart Apache:
     systemctl restart httpd.service
 
 
+## Supervisor
+
+Supervisor is used to keep services running even if they fail
+
+### Gearman Server
+
+    [program:gearman_server]
+    process_name=gearman_server
+    command=/usr/local/sbin/gearmand -l /var/log/gearmand.log
+    autostart=true
+    autorestart=true
+    user=root
+    redirect_stderr=true
+    stdout_logfile=/var/log/gearmand.log
+
+### WebkitHtmlToPDF
+
+    [program:sth_wkhtmltopdf_worker]
+    process_name=%(program_name)s_%(process_num)02d
+    command=php artisan gearman:wkhtmltopdf
+    directory=/home/hawk5/www/sportstravelhq
+    autostart=true
+    autorestart=true
+    cwd=
+    user=hawk5
+    numprocs=5
+    redirect_stderr=true
+    stdout_logfile=/home/hawk5/www/sportstravelhq/storage/logs/wkhtmltopdf.log
+    
+
+When ever updates are done to supervisor, you can reload the configuration and add the changes only:
+
+    supervisorctl reread
+    supervisorctl update
+    supervisorctl status
+    
+
 ## Seeder
 
 If you want to seed some details:
