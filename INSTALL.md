@@ -93,3 +93,17 @@ When ever updates are done to supervisor, you can reload the configuration and a
 If you want to seed some details:
 
     php artisan db:seed --class=TripSeeder
+
+## NPM
+
+Node / NPM is needed once installed go to this directory and run:
+
+    npm i
+
+This will install the dependencies needed.
+
+## Webpack
+
+Webpack is used in conjunction with Babel to provide ES8 support, package management, and optimization. This also compiles SASS and Vue components. When a new release is uploaded, you will need to compile the production version:
+
+    npm run agreement-build
