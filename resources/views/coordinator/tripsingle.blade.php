@@ -885,10 +885,7 @@
                         <label>Enter Your Offer Rate (In Dollars)</label>
                         <input type="number" class="form-control" name="offer_rate" min="0">
                     </div>
-                   <!--  <div class="form-group">
-                        <label>Hotel Details</label>
-                        <input type="text" class="form-control" name="hotelDetails">
-                    </div> -->
+                  
                     <div class="form-group">
                         <label>Distance From Event (Unit Miles)</label>
                         <input type="text" class="form-control" name="eventDistance" id="eventDistance" value="" min="0" readonly="">
@@ -913,105 +910,9 @@
 @endif
 <!--for calculate distance-->
 
-<div id="output"></div>
 </div>
 <div id="map"></div>
-<script>
-    function initMap() {
-      var bounds = new google.maps.LatLngBounds;
-      var markersArray = [];
-    
-      //var origin1 = {lat: 55.93, lng: -3.118};
-      var origin2 ='<?php echo $hotel_adress; ?>'; //hotel adress
-    
-      var destinationA ='<?php echo $trip_adress; ?>';
-      //var destinationB = {lat: 50.087, lng: 14.421};
-    
-      var destinationIcon = 'https://chart.googleapis.com/chart?' +
-          'chst=d_map_pin_letter&chld=D|FF0000|000000';
-      var originIcon = 'https://chart.googleapis.com/chart?' +
-          'chst=d_map_pin_letter&chld=O|FFFF00|000000';
-      var map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 55.53, lng: 9.4},
-        zoom: 10
-      });
-      var geocoder = new google.maps.Geocoder;
-    
-      var service = new google.maps.DistanceMatrixService;
-      service.getDistanceMatrix({
-        origins: [origin2],
-        destinations: [destinationA],
-        travelMode: 'DRIVING',
-        unitSystem: google.maps.UnitSystem.METRIC,
-        avoidHighways: false,
-        avoidTolls: false
-      }, function(response, status) {
-        if (status !== 'OK') {
-          alert('Error was: ' + status);
-        } else {
-          var originList = response.originAddresses;
-          var destinationList = response.destinationAddresses;
-          var outputDiv = document.getElementById('output');
-          outputDiv.innerHTML = '';
-          deleteMarkers(markersArray);
-    
-          var showGeocodedAddressOnMap = function(asDestination) {
-            var icon = asDestination ? destinationIcon : originIcon;
-            return function(results, status) {
-              if (status === 'OK') {
-                map.fitBounds(bounds.extend(results[0].geometry.location));
-                markersArray.push(new google.maps.Marker({
-                  map: map,
-                  position: results[0].geometry.location,
-                  icon: icon
-                }));
-              } else {
-               //alert('Calculate distance was not successful due to: ' + status);
-              }
-            };
-          };
-    
-          for (var i = 0; i < originList.length; i++) {
-            var results = response.rows[i].elements;
-            geocoder.geocode({'address': originList[i]},
-                showGeocodedAddressOnMap(false));
-            for (var j = 0; j < results.length; j++) {
-              geocoder.geocode({'address': destinationList[j]},
-                  showGeocodedAddressOnMap(true));
-           /*outputDiv.innerHTML += originList[i] + ' to ' + destinationList[j] +
-                  ': ' + results[j].distance.text + ' in ' +
-                  results[j].duration.text + '<br>';*/
-            //KM x 0.621371 = Miles
-          
-            var string = results[j].distance.text;
-              string = string.split(" ");
-              var stringArray = new Array();
-              for(var i =0; i < string.length; i++){
-                  stringArray.push(string[i]);
-                  if(i != string.length-1){
-                      stringArray.push(" ");
-                  }
-              }
-               var distance=string[0] * 0.621371;
-               var decimals=2;
-               var dist=Number(Math.round(distance+'e'+decimals)+'e-'+decimals);
-               document.getElementById('eventDistance').value= dist;
-              
-            }
-    
-          }
-        }
-      });
-    }
-    
-    function deleteMarkers(markersArray) {
-      for (var i = 0; i < markersArray.length; i++) {
-        markersArray[i].setMap(null);
-      }
-      markersArray = [];
-    }
-</script>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCM3IVfk3icA92tlWTGZRMg__v7dKnDaWc&callback=initMap"></script>
+
 @stop

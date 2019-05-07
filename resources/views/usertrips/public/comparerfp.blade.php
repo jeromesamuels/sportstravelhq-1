@@ -122,63 +122,27 @@
                     </table>
                 </td>
 
-                @foreach ($rfps as $rfpt)
-                @foreach ($rfpt as $rfp)
+                @foreach ($rfps as $rfp)
+               
                 <td>
-                    <?php
-                        /*Get user id of sales manger*/
-
-                          $user_lid = DB::table('rfps')->where('user_id', $rfp->user_id)->get();    
-                                             
-                          foreach($user_lid as $item) {
-                            $user_id = $item;
-                          } 
-                        
-                          /*Get hotel id of sales manger*/
-                          $hotel_lid = DB::table('tb_users')->where('id', $user_id->user_id)->get();    
-                                             
-                          foreach($hotel_lid as $item1) {
-                            $hotel_id = $item1;
-                          }
-                          
-                        
-                          /*Get hotel details of sales manger*/
-                         
-                           $hotel_details = DB::table('hotels')->select('name', 'address', 'property', 'rating')->where('id',$hotel_id->hotel_id)->first();    
-                              
-                             if ($hotel_details) {
-                            $name = $hotel_details->name;
-                            $address = $hotel_details->address;
-                            $property = $hotel_details->property;
-                            $rating = $hotel_details->rating;
-                            
-                            } else {
-                            
-                            }  
-                        
-                        /*Get hotel Aminities of sales manger*/         
-                         
-                        
-                        ?>
+                    
                     <table class="rfp-inner-table">
                         <tr>
-                            <td ><img alt="" src="../public/uploads/users/<?php echo $property; ?>"  class="img-responsive" />
+                            <td ><img alt="" src="../public/uploads/users/{{ $rfp->userInfo->hotel->property }}"  class="img-responsive" />
                             </td>
                         </tr>
                         <tr>
                             <td style="padding-bottom:0px;">
-                                <h5><?php echo $name; ?></h5>
+                                <h5>{{ $rfp->userInfo->hotel->name }}</h5>
                             </td>
                         </tr>
                         <tr>
-                            <td><?php echo $address; ?></td>
+                            <td>{{ $rfp->userInfo->hotel->address }}</td>
                         </tr>
                         <tr>
                             <td>{{ $rfp->destination }}</td>
                         </tr>
-                        <tr>
-                            <td>{{ $rfp->hotel_information }}</td>
-                        </tr>
+                       
                         <tr>
                             <td>{{ $rfp->distance_event }}</td>
                         </tr>
@@ -192,7 +156,7 @@
                             <td>{{ \Carbon\Carbon::parse($rfp->offer_validity)->format('m/d/Y') }}</td>
                         </tr>
                         <tr>
-                            <td>{{ $rfp->sales_manager }} (Contact: <b>{{$hotel_id->phone_number}}</b> )</td>
+                            <td>{{ $rfp->sales_manager }} (Contact: <b>{{$rfp->userInfo->phone_number}}</b> )</td>
                         </tr>
                         <tr>
                             <td>{{ $rfp->king_beedrooms }}</td>
@@ -214,13 +178,8 @@
                                     $string = $value;
                                     $res = preg_replace("/[^0-9]/", "", $value );
                                     
-                                    $data = DB::table('hotel_amenities')->where("id", $res)->pluck('title'); 
-                                       
-                                    foreach($data as $item1) {
-                                    $hotel_aminities = $item1;
-                                    
-                                    //echo $hotel_aminities;
-                                    } 
+                                    $hotel_aminities = DB::table('hotel_amenities')->where("id", $res)->pluck('title'); 
+                                     
                                     ?>
                                 {{ $hotel_aminities}},
                                 <?php } ?>
@@ -228,7 +187,7 @@
                         </tr>
                         <tr>
                             <td>
-                                @for ($i = 0; $i < $rating; $i++)
+                                @for ($i = 0; $i < $rfp->userInfo->hotel->rating; $i++)
                                 <span class="fa fa-star" style="color:#a9a902"></span>
                                 @endfor
                             </td>
@@ -247,30 +206,11 @@
                         </tr>
                     </table>
                 </td>
-                @endforeach
+                
                 @endforeach
             </tr>
         </table>
-        <!--begin::DeclineModal-->
-    <!--     <div class="modal fade" id="confirm_decline" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Are you sure want to decline this proposal ?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary btn-rfp-decline" title="{{ $rfp->id }}" >Yes Decline</button>
-                    </div>
-                </div>
-            </div>
-        </div> -->
+
         <script>
     $(document).ready(function(){
     $('#myModal').on('show.bs.modal', function (e) {

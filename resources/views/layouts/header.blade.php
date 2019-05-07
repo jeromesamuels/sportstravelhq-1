@@ -287,18 +287,12 @@
                                                 </div>
                                             </div>
                                         </li>
-                                        <?php 
-                                            $user_photo = DB::table('tb_users')->where('username', Session::get('username'))->pluck('avatar');
-                                            foreach($user_photo as $user_photo_new){
-                                              $userphoto=$user_photo_new;
-                                            }
-                                             
-                                            ?>
+                                         
                                         <li class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img  m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light"
                                             m-dropdown-toggle="click">
                                             <a href="#" class="m-nav__link m-dropdown__toggle">
                                             <span class="m-topbar__userpic m--hide">
-                                            <img src="http://13.92.240.159/demo/public/uploads/users/<?php echo $userphoto;?>" class="m--img-rounded m--marginless m--img-centered" width="50" height="50" alt="" />
+                                            <img src="http://13.92.240.159/demo/public/uploads/users/{{  Auth::user()->avatar }}" class="m--img-rounded m--marginless m--img-centered" width="50" height="50" alt="" />
                                             </span>
                                             <span class="m-topbar__username" style="color:#fff;">{{ Session::get('username') }}</span>
                                             <span class="m-topbar__welcome"><i class="fa fa-chevron-down" aria-hidden="true" style="color: #fff;padding-top: 5px;padding-left: 10px;"></i></span>
@@ -309,7 +303,7 @@
                                                     <div class="m-dropdown__header m--align-center" style="background: url({{ asset('frontend/sportstravel/assets/app/media/img/misc/user_profile_bg.jpg') }}; background-size: cover;">
                                                         <div class="m-card-user m-card-user--skin-dark">
                                                             <div class="m-card-user__pic">
-                                                                <img src="http://13.92.240.159/demo/public/uploads/users/<?php echo $userphoto;?>" class="m--img-rounded m--marginless"  width="50" height="50" alt="User" style="margin-top: 30px;" class="img-responsive">
+                                                                <img src="http://13.92.240.159/demo/public/uploads/users/{{ Auth::user()->avatar }}" class="m--img-rounded m--marginless"  width="50" height="50" alt="User" style="margin-top: 30px;" class="img-responsive">
                                                             </div>
                                                             <div class="m-card-user__details">
                                                                 <span class="m-card-user__name m--font-weight-500">{{ Session::get('fid') }}</span>
@@ -355,7 +349,7 @@
                                             </div>
                                         </li>
                                         <li class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img  m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light">
-                                            <img src="http://13.92.240.159/demo/public/uploads/users/<?php echo $userphoto;?>" class="m--img-rounded m--marginless" width="50" height="50" alt="User" style="margin-top:20px !important;" class="img-responsive"> 
+                                            <img src="http://13.92.240.159/demo/public/uploads/users/{{ Auth::user()->avatar }}" class="m--img-rounded m--marginless" width="50" height="50" alt="User" style="margin-top:20px !important;" class="img-responsive"> 
                                         </li>
                                     </ul>
                                     @else                      
@@ -398,13 +392,7 @@
         <div class="cus-blackhead-part">
             <div class="m-container m-container--responsive m-container--xxl m-container--full-height m-page__container">
                 <div class="row">
-                    <!--  <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                          <span class="icon-bar"></span>
-                          <span class="icon-bar"></span>
-                          <span class="icon-bar"></span> 
-                        </button>
-                        </div> -->
+                 
                     <div class="collapse navbar-collapse" id="myNavbar">
                         @include('layouts.sportstravel.header_new')
                     </div>

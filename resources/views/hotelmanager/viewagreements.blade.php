@@ -47,22 +47,16 @@
                                        <a href="{{ route('hotelmanager.agreementDownload',$agreement->id) }}">Download</a>
                                    </td>
                                    <td>
-                                    <?php 
-                                      $users_status= DB::table('rfps')->where('id', '=', $agreement->for_rfp)->pluck('status');
-                                        foreach ($users_status as $user) {
-                                                $user_status_new=$user;
-                                        }
-                                      
-
-                                    ?>
+                                   
+                                    
                                        <div class="dropdown">
                                              <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown"> Action </button>
                                              <ul class="dropdown-menu">
                                                <li><a href="{{ route('hotelmanager.agreementDetails',$agreement->id) }}" class="tips" title="View Trips">View Details</a></li>
-                                               <?php if(session('level')==4 && $user_status_new !=5 && $user_status_new !=6){?>
+                                               <?php if(session('level')==4 && $rfp_status->status !=5 && $rfp_status->status !=6){?>
                                                 <li > <button data-toggle="modal" data-target="#confirm_agree"  data-id="{{ $agreement->for_rfp }}" title="{{ $agreement->for_rfp }}" class="btn btn-light ">Accept Aggreement(For client)</button> </li>
                                                <?php }
-                                                 elseif(session('level')==5 && $user_status_new ==5 && $user_status_new !=6){  ?>
+                                                 elseif(session('level')==5 && $rfp_status->status ==5 && $rfp_status->status !=6){  ?>
                                                 <li > <button data-toggle="modal" data-target="#confirm_agree"  data-id="{{ $agreement->for_rfp }}" title="{{ $agreement->for_rfp }}" class="btn btn-light ">Accept Aggreement(For Manager)</button> </li>
                                                <?php } 
                                                 else{
@@ -71,6 +65,7 @@
                                                <?php }?>
                                              </ul>
                                        </div>
+                                    
                                    </td>
                                </tr>
                             @endforeach

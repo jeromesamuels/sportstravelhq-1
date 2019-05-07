@@ -134,12 +134,9 @@
                             <h4 >Processed RFP</h4>
                             <p style="font-size: 14px;">Corporate</p>
                         </div>
-                        <?php 
-                            $data= DB::table('rfps')->get()->where("status", 1)->all();
-                            
-                            ?>
+                      
                         <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                            <h3 style="float:right;top: 30px;position: absolute;right: 25px;">{{ count($data) }}</h3>
+                            <h3 style="float:right;top: 30px;position: absolute;right: 25px;">{{ $trips }}</h3>
                         </div>
                         <div class="progress" style="margin-bottom: 10px;height: 6px; ">
                             <div class="progress-bar" role="progressbar" aria-valuenow="70"
@@ -310,12 +307,9 @@
                             </div>
                             <div class=" col-sm-4">
                                 <div class="info-boxes" style="background: #fff; color: #000;">
-                                    <?php 
-                                        $data= DB::table('user_trips')->get();
-                                              
-                                        ?>
+                                  
                                     <div class="booking_h3">
-                                        <h3 >{{ count($data) }}</h3>
+                                        <h3 >{{ $trips }}</h3>
                                         <p>Total Bookings</p>
                                     </div>
                                 </div>
