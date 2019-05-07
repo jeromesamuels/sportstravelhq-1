@@ -1,0 +1,225 @@
+$icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
+//$bootstrap-sass-asset-helper: true;
+$brand-warning: #f37021;
+
+$border-radius-base: 0;
+$border-radius-large: 0;
+$border-radius-small: 0;
+
+@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+@import "~bootstrap-material-design/sass/bootstrap-material-design.scss";
+@import "~bootstrap-material-design/sass/ripples.scss";
+
+body, html {
+  background: #fff;
+}
+
+#app {
+  margin: 0 auto;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+#app, .pure-g [class*=pure-u] {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+}
+
+.detail-table-1 th {
+  width: 150px;
+}
+
+.detail-table-1 td {
+  word-break: break-all;
+}
+
+.hotel-logo {
+  width: 100%;
+  max-width: 320px;
+}
+
+p.heading {
+  font-family: 'Mukta', sans-serif;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 28px;
+}
+
+p.text {
+  font-size: 16px;
+}
+
+.block {
+  display: block;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-justify {
+  text-align: justify;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.align-center {
+  margin: 0 auto;
+}
+
+table.table > thead > tr > th {
+  padding: 0.500rem;
+  text-align: left;
+  vertical-align: bottom;
+}
+
+table.table > tbody > tr > td, table.table > tbody > tr > th {
+  padding: 0.500rem;
+  vertical-align: middle;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+
+table.table > tbody > tr > th {
+  font-weight: bold;
+}
+
+.form-group {
+  .form-control:not([type="checkbox"]) {
+    border: 1px solid rgba(0, 0, 0, .15);
+    padding: .5rem .75rem;
+  }
+}
+
+.form-group.label-static label.control-label,
+.form-group.label-floating.is-focused label.control-label,
+.form-group.label-floating:not(.is-empty) label.control-label {
+  top: -35px;
+  font-size: 14px;
+}
+
+.form-group.is-focused .radio label,
+.form-group.is-focused label.radio-inline {
+  color: rgba(0, 0, 0, 0.60);
+}
+
+.form-group .checkbox label,
+.form-group .radio label,
+.form-group label {
+  line-height: 1.2;
+}
+
+.radio .circle,
+.checkbox .checkbox-material .check,
+label.checkbox-inline .checkbox-material .check,
+label.radio-inline .circle {
+  border: 2px solid rgba(0, 0, 0, .15);
+}
+
+.form-group .checkbox label,
+.form-group .radio label,
+.form-group label,
+.checkbox label,
+.radio label,
+label {
+  color: #777777;
+}
+
+.btn-start {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.signature-image {
+  width: 220px;
+  height: 48px;
+
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+#signature-popup, #signature-popup2 {
+  position: absolute;
+  left: 35%;
+
+  .signature-inner {
+    background-color: white;
+    padding: 8px;
+    box-shadow: 0px 6px 10px #000;
+  }
+
+  .arrow-up {
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+
+    border-bottom: 15px solid white;
+    margin-left: 50%;
+  }
+
+  .radio span, label.radio-inline span {
+    top: 13px;
+  }
+}
+
+.detail-table-1 .row {
+  border-top: 1px solid #ddd;
+  padding-top: 0.500rem;
+  padding-bottom: 0.500rem;
+  //border-bottom: 1px solid #ddd;
+}
+
+
+@media (min-width: $screen-sm-min) {
+  #btn-next, #btn-prev {
+    padding: 5px 20px;
+    font-size: 12px;
+  }
+}
+
+@media (min-width: $screen-sm-min) and (max-width: 1024px) {
+}
+
+@media (min-width: $screen-sm-min) {
+  .text-right-sm { text-align: right; }
+}
+
+@media (max-width: $screen-xs-max) {
+  .detail-table-1 .row .col-sm-6 {
+    padding: 0;
+  }
+
+  #signature-popup2 {
+    left: 50%;
+  }
+}
+
+
+//@media (max-width: $screen-xs-max) {
+//  .modal-dialog {
+//    margin: 0px;
+//
+//    .modal-content .modal-header {
+//      padding-top: 8px;
+//      padding-right: 8px;
+//      padding-bottom: 0;
+//      padding-left: 8px;
+//    }
+//
+//    .modal-content .modal-body {
+//      padding-top: 8px;
+//      padding-right: 8px;
+//      padding-bottom: 4px;
+//      padding-left: 8px;
+//    }
+//
+//    .modal-footer {
+//      padding: 0;
+//    }
+//  }
+//}

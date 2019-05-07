@@ -8,6 +8,9 @@ class usertrips extends Sximo  {
 	protected $table = 'user_trips';
 	protected $primaryKey = 'id';
 
+	//-- This table does not have created_at and updated_at
+    public $timestamps = false;
+
 	public function __construct() {
 		parent::__construct();
 		
