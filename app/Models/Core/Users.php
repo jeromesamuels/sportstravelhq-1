@@ -94,5 +94,9 @@ class Users extends Sximo  {
 		return $group_id;
 			
 	}
+	 public function hotel()
+    {
+        return $this->belongsTo('App\Models\Hotel','hotel_id');
+    }
 
 }

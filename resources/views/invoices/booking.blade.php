@@ -175,20 +175,7 @@
     <div class="sbox-content dashboard-container">
         @foreach($data_hotel as $value)
         <?php 
-            $name=$value->type;
-            $currentMonth = date('m');
-            /*Amount Paid*/
-           
-              $sum_new =$purchases;
-            
-            /* pending amount*/
-              
-             $array[$name] = $purchases_due;
-              $y = $array[$value->type];
-              $sum_due =array_sum($array);
-              $revenu_due=$sum_new-$sum_due;
-            
-            
+              $revenu_due=$purchases-$purchases_due;
             ?>
         @endforeach
         <div class="row" style="border-bottom:1px solid #eee;">
@@ -217,7 +204,7 @@
                     <p style="font-size: 14px;">Total Revenue </p>
                 </div>
                 <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                    <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $revenu_due }}</h4>
+                    <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $purchases }}</h4>
                 </div>
                 <div class="progress" style="margin-bottom: 10px;height: 6px; ">
                     <div class="progress-bar" role="progressbar" aria-valuenow="70"
@@ -232,10 +219,7 @@
                     <h4 >Paid Invoice</h4>
                     <p style="font-size: 14px;">Total Revenue </p>
                 </div>
-                <?php 
-                    $data2= DB::table('rfps')->get()->where("status",'!=',3)->all();
-                    
-                    ?>
+               
                 <div class="info-boxes" style="background: #fff; color: #000;float:right;">
                     <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $revenu_due }}</h4>
                 </div>
@@ -253,7 +237,7 @@
                     <p style="font-size: 14px;">Total Revenue</p>
                 </div>
                 <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                    <h4 style="float:right;top: 50px;position: absolute;right:10px;">${{ $sum_new }}</h4>
+                    <h4 style="float:right;top: 50px;position: absolute;right:10px;">${{ $purchases }}</h4>
                 </div>
                 <div class="progress" style="margin-bottom: 10px;height: 6px; ">
                     <div class="progress-bar" role="progressbar" aria-valuenow="70"
@@ -266,15 +250,7 @@
         </div>
     </div>
 </div>
-@foreach($data_hotel as $value)
-<?php 
-    $name=$value->type;
-    
-     $purchases = DB::table('invoices')->where('invoices.hotel_type', '=', $name)->sum('invoices.amt_paid');    
-     $array[$name] = $purchases;
-    
-    ?>
-@endforeach
+
 <div class="sbox" style="border-top: none;padding: 0;background: transparent; box-shadow: none;">
     <div class="sbox-content dashboard-container" style=" padding: 0;">
         <div class="row">
@@ -289,20 +265,19 @@
                             <?php  
                                 $sum=0;
                                 $hotel_type=$value->type; 
+                                $array[$hotel_type]=$purchases;
+                                 $purchases_invoices = DB::table('invoices')->where('invoices.hotel_type', '=', $hotel_type)->sum('invoices.amt_paid');
+                                 $array[$hotel_type] = $purchases_invoices;
                                  $y = $array[$value->type];
                                  $sum =array_sum($array);
                                 
-                                 //$count = count( $value->type);
-                                $purchases_all = DB::table('invoices')->where('hotel_type', $value->type)->get();
-                                
-                                
                                  ?>
                             <tr>
-                               <td> <img alt="" src="../public/uploads/users/<?php echo $value->logo;?>" id="div_corporate_img" border="0" width="100" style="margin-top: 30px;" class="img-responsive"></td>
+                               <td> <img alt="" src="http://13.92.240.159/demo/public/uploads/users/<?php echo $value->logo;?>" id="div_corporate_img" border="0" width="100" style="margin-top: 30px;" class="img-responsive"></td>
                                 <td>
                                     <div class="hotel_revenue" style=" padding: 15px;">
-                                        <h4 >{{ count($purchases_all) }} <span style="font-size: 15px;color: #7b7777;padding-left: 5px;">Bookings</span></h4>
-                                        <p style="float: right;float: right;top: -25px;position: relative;color: #5dbbe0;    font-weight: bold;font-size: 16px;"><?php echo  $y; ?>$</p>
+                                        <h4 ><span style="font-size: 15px;color: #7b7777;">Revenue</span></h4>
+                                        <p style="float: right;float: right;top: -25px;position: relative;color: #5dbbe0;    font-weight: bold;font-size: 16px;"><?php echo  $purchases_invoices; ?>$</p>
                                         <?php 
                                             $playerson = $y;
                                              $maxplayers = $sum;
@@ -381,10 +356,7 @@
                                             <td class="iw_attribute_name">Rating:</td>
                                             <td id="iw-rating"></td>
                                         </tr>
-                                        <!--  <tr id="iw-website-row" class="iw_table_row">
-                                            <td class="iw_attribute_name">Website:</td>
-                                            <td id="iw-website"></td>
-                                            </tr>  -->
+                                      
                                         <tr id="btn_acess" class="iw_table_row">
                                             <td></td>
                                             <td class="btn_acess"><a href="http://13.92.240.159/demo/public/systemadmin/hotels"><button class="btn btn-small btn-info" style="border-radius: 25px;">Details</button></a></td>
@@ -469,8 +441,6 @@
                                     content: document.getElementById('info-content')
                                   });
                                 
-                                  // Create the autocomplete object and associate it with the UI input control.
-                                  // Restrict the search to the default country, and to place type "cities".
                                   autocomplete = new google.maps.places.Autocomplete(
                                       /** @type {!HTMLInputElement} */ (
                                           document.getElementById('autocomplete')), {
@@ -486,8 +456,7 @@
                                       'change', setAutocompleteCountry);
                                 }
                                 
-                                // When the user selects a city, get the place details for the city and
-                                // zoom the map in on the city.
+                               
                                 function onPlaceChanged() {
                                   var place = autocomplete.getPlace();
                                   if (place.geometry) {
@@ -498,8 +467,7 @@
                                     document.getElementById('autocomplete').placeholder = 'Search By Address';
                                   }
                                 }
-                                
-                                // Search for hotels in the selected city, within the viewport of the map.
+                               
                                 function search() {
                                   var search = {
                                     bounds: map.getBounds(),
@@ -520,8 +488,7 @@
                                           animation: google.maps.Animation.DROP,
                                           icon: markerIcon
                                         });
-                                        // If the user clicks a hotel marker, show the details of that hotel
-                                        // in an info window.
+                                        
                                         markers[i].placeResult = results[i];
                                         google.maps.event.addListener(markers[i], 'click', showInfoWindow);
                                         setTimeout(dropMarker(i), i * 100);
@@ -540,9 +507,7 @@
                                   }
                                   markers = [];
                                 }
-                                
-                                // Set the country restriction based on user input.
-                                // Also center and zoom the map on the given country.
+                               
                                 function setAutocompleteCountry() {
                                   var country = document.getElementById('country').value;
                                   if (country == 'all') {
@@ -598,8 +563,6 @@
                                   }
                                 }
                                 
-                                // Get the place details for a hotel. Show the information in an info window,
-                                // anchored on the marker for the hotel that the user selected.
                                 function showInfoWindow() {
                                   var marker = this;
                                   places.getDetails({placeId: marker.placeResult.place_id},
@@ -636,9 +599,7 @@
                                   
                                   if (photos) {
                                       
-                                        /*  var hotelPhoto = '<img src="' + photos  + '" />';
-                                          $("#hotel").html(hotelPhoto); */
-                                          document.getElementById('iw-photo-row').style.display = '';
+                                         document.getElementById('iw-photo-row').style.display = '';
                                          document.getElementById('iw-photo').innerHTML = '<img class="" ' +
                                       'src="' + photos+ '"/>';
                                    }
@@ -710,10 +671,7 @@
                     </div>
                 </div>
             </div>
-            <?php 
-                $data= DB::table('user_trips')->get();
-                      
-                ?>
+           
             <div class="col-md-4 col-sm-12">
                 <div class="widget-box box-shadow" style=" margin: 0;background: #fff;padding: 20px;">
                     <div class="head">
@@ -721,7 +679,7 @@
                     </div>
                     <br />
                     <div class="body">
-                        <h1 style="color:#5dbbe0;font-size: 40px;">{{ count($data)}}</h1>
+                        <h1 style="color:#5dbbe0;font-size: 40px;">{{ count($trip_booking)}}</h1>
                         <p>Total Booking till today</p>
                     </div>
                 </div>

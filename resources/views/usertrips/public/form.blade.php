@@ -12,9 +12,9 @@
     </ul>
 </div>
 @endif
-<?php 
-    ini_set('max_execution_time', 3000);
-    ?>
+@php 
+ini_set('max_execution_time', 3000);
+@endphp
 <style type="text/css">
     .error {
     border: 2px solid red;
@@ -75,8 +75,7 @@
     transform: rotate(45deg);
     }
     .rs-container *{box-sizing:border-box;-webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.rs-container{font-family:Arial,Helvetica,sans-serif;height:45px;position:relative}.rs-container .rs-bg,.rs-container .rs-selected{background-color:#eee;border:1px solid #ededed;height:10px;left:0;position:absolute;top:5px;width:100%;border-radius:3px}.rs-container .rs-selected{background-color:#00b3bc;border:1px solid #00969b;transition:all .2s linear;width:0}.rs-container.disabled .rs-selected{background-color:#ccc;border-color:#bbb}.rs-container .rs-pointer{background-color:#fff;border:1px solid #bbb;border-radius:4px;cursor:pointer;height:20px;left:-10px;position:absolute;top:0;transition:all .2s linear;width:30px;box-shadow:inset 0 0 1px #FFF,inset 0 1px 6px #ebebeb,1px 1px 4px rgba(0,0,0,.1)}.rs-container.disabled .rs-pointer{border-color:#ccc;cursor:default}.rs-container .rs-pointer::after,.rs-container .rs-pointer::before{content:'';position:absolute;width:1px;height:9px;background-color:#ddd;left:12px;top:5px}.rs-container .rs-pointer::after{left:auto;right:12px}.rs-container.sliding .rs-pointer,.rs-container.sliding .rs-selected{transition:none}.rs-container .rs-scale{left:0;position:absolute;top:5px;white-space:nowrap}.rs-container .rs-scale span{float:left;position:relative}.rs-container .rs-scale span::before{background-color:#ededed;content:"";height:8px;left:0;position:absolute;top:10px;width:1px}.rs-container.rs-noscale span::before{display:none}.rs-container.rs-noscale span:first-child::before,.rs-container.rs-noscale span:last-child::before{display:block}.rs-container .rs-scale span:last-child{margin-left:-1px;width:0}.rs-container .rs-scale span ins{color:#333;display:inline-block;font-size:12px;margin-top:20px;text-decoration:none}.rs-container.disabled .rs-scale span ins{color:#999}.rs-tooltip{color:#333;width:auto;min-width:60px;height:30px;background:#fff;border:1px solid #00969b;border-radius:3px;position:absolute;transform:translate(-50%,-35px);left:13px;text-align:center;font-size:13px;padding:6px 10px 0}.rs-container.disabled .rs-tooltip{border-color:#ccc;color:#999}
-    /* Always set the map height explicitly to define the size of the div
-    * element that contains the map. */
+    
     #map {
     height: 100%;
     }
@@ -290,10 +289,7 @@
         <label for="Zip" class=" control-label col-md-3 text-left"> Zip 
         <input  type='text' autocomplete='off' name='from_zip' maxlength="5" id='from_zip' value='{{ $row['from_zip'] }}' required class='form-control input-sm ' /> 
         </label>
-        <!-- <label for="State" class=" control-label col-md-5 text-left"> State 
-            <select name='from_state_id' rows='5' id='from_state_id' class='select2 '  ></select> 
-            </label>
-            -->
+       
     </div>
     <div class="form-group" >
         <div class="col-md-11">
@@ -315,9 +311,7 @@
             <label for="City" class=" control-label col-md-3 text-left"> City 
             <input type='text' autocomplete='off' name='to_city' id='to_city' value='{{ $row['to_city'] }}' class='form-control input-sm' /> 
             </label>
-            <!--   <label for="State" class=" control-label col-md-5 text-left"> State 
-                <select name='to_state_id' rows='5' id='to_state_id' class='select2' ></select>
-                </label> -->
+            
             <label for="Zip" class=" control-label col-md-3 text-left"> Zip 
             <input  type='text' autocomplete='off' name='to_zip' id='to_zip' value='{{ $row['to_zip'] }}' class='form-control input-sm' /> 
             </label>
@@ -427,8 +421,6 @@
               var autocomplete = new google.maps.places.Autocomplete(input);
               var autocomplete2 = new google.maps.places.Autocomplete(input2);
             
-            
-            
               autocomplete.bindTo('bounds', map);
               autocomplete2.bindTo('bounds', map);
               // Set the data fields to return when the user selects a place.
@@ -456,9 +448,6 @@
                   return;
                 }
                 
-               
-               
-                // If the place has a geometry, then present it on a map.
                 if (place.geometry.viewport) {
                   map.fitBounds(place.geometry.viewport);
                  
@@ -523,8 +512,6 @@
                   return;
                 }
                 
-               
-                // If the place has a geometry, then present it on a map.
                 if (place.geometry.viewport) {
                   map.fitBounds(place.geometry.viewport);
                  
@@ -579,8 +566,6 @@
               });
             
             
-              // Sets a listener on a radio button to change the filter type on Places
-              // Autocomplete.
               function setupClickListener(id, types) {
                 var radioButton = document.getElementById(id);
                 radioButton.addEventListener('click', function() {
@@ -657,7 +642,6 @@
         }); 
     
     
-        // In your Javascript (external .js resource or <script> tag)
         $('.select2').select2();
     
     
@@ -670,8 +654,7 @@
             format: dateFormat,
             separator: separator,
         },
-        //minDate: moment().add(1, 'days'),
-        //maxDate: moment().add(359, 'days'),
+        
         opens: "right"
     };
     
@@ -756,9 +739,7 @@
        
      // Declare an empty array 
      $array = array(); 
-       
-     // Variable that store the date interval 
-     // of period 1 day 
+    
      $interval = new DateInterval('P1D'); 
     
      $realEnd = new DateTime($end); 
@@ -766,27 +747,21 @@
     
      $period = new DatePeriod(new DateTime($start), $interval, $realEnd); 
     
-     // Use loop to store date into array 
      foreach($period as $date) {                  
          $array[] = $date->format($format);  
      } 
-    
-     // Return the array elements 
+   
      return $array; 
     } 
     
     $data_hotel=DB::table('hotels')->where('blackout_start','!=','')->get();
     foreach($data_hotel as $value){
     $name=$value->name;
+    $hotel = DB::table('hotels')->where('hotels.name', '=', $name)->get();  
     
-    
-     $hotel = DB::table('hotels')->where('hotels.name', '=', $name)->get();  
-    
-     $array[$name] = $value->blackout_start;
-    
-    
+    $array[$name] = $value->blackout_start;
+
     foreach ($hotel as $hotels => $value) {
-     //echo $blackouthotel= $name.'->'.$value->blackout_start.'-'.$value->blackout_end.'<br>';
      $blackout=$value->blackout_start;
      $blackoutend=$value->blackout_end;
     //die;
@@ -794,8 +769,6 @@
     $DB_Blackout_Date = getDatesFromRange($blackout, $blackoutend); 
      //$date_new=implode(',',$Date);
     $date_new=implode('", "', $DB_Blackout_Date);
-    
-    
     }
     }
     ?>
@@ -845,9 +818,7 @@
     <?php } ?>
     
     for(var i=0; i<blackout_dates.length;i++){
-         //console.log("input-: "+blackout_dates[i]+ " === "+dateArr.includes(blackout_dates[i]))
         if(dateArr.includes(blackout_dates[i])){
-          // console.log("BO Date: "+blackout_dates[i]);
            blackout_dates1.push(blackout_dates[i]);
          }
     }

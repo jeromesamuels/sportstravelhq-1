@@ -10,12 +10,6 @@
     <title>{{ $title }} | {{ config('sximo.cnf_appname') }}</title>
     <link rel="shortcut icon" href="{{ asset('favicon.ico')}}" type="image/x-icon">
 
-
-
-
-
-
-    <!--begin::Web font -->
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
     <script>
       WebFont.load({
@@ -26,14 +20,8 @@
           });
         </script>
 
-    <!--end::Web font -->
-
-    <!--begin:: Global Mandatory Vendors -->
     <link href="{{ asset('frontend/sportstravel/vendors/perfect-scrollbar/css/perfect-scrollbar.css') }}" rel="stylesheet" type="text/css" />
 
-    <!--end:: Global Mandatory Vendors -->
-
-    <!--begin:: Global Optional Vendors -->
     <link href="{{ asset('frontend/sportstravel/vendors/tether/dist/css/tether.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('frontend/sportstravel/vendors/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('frontend/sportstravel/vendors/bootstrap-datetime-picker/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" type="text/css" />
@@ -63,23 +51,9 @@
     <link href="{{ asset('frontend/sportstravel/vendors/vendors/metronic/css/styles.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('frontend/sportstravel/vendors/vendors/fontawesome5/css/all.min.css') }}" rel="stylesheet" type="text/css" />
 
-    <!--end:: Global Optional Vendors -->
-
-
-
-    <!--begin::Global Theme Styles -->
     <link href="{{ asset('frontend/sportstravel/assets/demo/base/style.bundle.css') }}" rel="stylesheet" type="text/css" />
 
-    <!--RTL version:<link href="{{ asset('frontend/sportstravel/assets/demo/base/style.bundle.rtl.css') }}" rel="stylesheet" type="text/css" />-->
-
-    <!--end::Global Theme Styles -->
-
-    <!--begin::Page Vendors Styles -->
     <link href="{{ asset('frontend/sportstravel/assets/vendors/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
-
-    <!--RTL version:<link href="{{ asset('frontend/sportstravel/assets/vendors/custom/fullcalendar/fullcalendar.bundle.rtl.css') }}" rel="stylesheet" type="text/css" />-->
-
-
 
     <script src="{{ asset('frontend/sportstravel/vendors/jquery/dist/jquery.js') }}" type="text/javascript"></script>
 <style>
@@ -200,11 +174,6 @@
 </style>
       
   </head>
-  <!-- end::Head -->
-
-
-
-
 
   <!-- begin::Body -->
   <body class="m-page--wide m-header--fixed m-header--fixed-mobile m-footer--push m-aside--offcanvas-default index-page sidebar-collapse">
@@ -292,22 +261,16 @@
                         </div>
                       </li>
 
-                       <?php 
-                                            $user_photo = DB::table('tb_users')->where('username', Session::get('username'))->pluck('avatar');
-                                            foreach($user_photo as $user_photo_new){
-                                              $userphoto=$user_photo_new;
-                                            }
-                                             
-                                            ?>
+                   
                       <li class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img  m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light"
                        m-dropdown-toggle="click">
                          <a href="#" class="m-nav__link m-dropdown__toggle">
-                                            <span class="m-topbar__userpic m--hide">
-                                            <img src="http://13.92.240.159/demo/public/uploads/users/<?php echo $userphoto;?>" class="m--img-rounded m--marginless m--img-centered" width="50" height="50" alt="" />
-                                            </span>
-                                            <span class="m-topbar__username" style="color:#fff;">{{ Session::get('username') }}</span>
-                                            <span class="m-topbar__welcome"><i class="fa fa-chevron-down" aria-hidden="true" style="color: #fff;padding-top: 5px;padding-left: 10px;"></i></span>
-                                            </a>
+                              <span class="m-topbar__userpic m--hide">
+                              <img src="http://13.92.240.159/demo/public/uploads/users/{{ Auth::user()->avatar }}" class="m--img-rounded m--marginless m--img-centered" width="50" height="50" alt="" />
+                             </span>
+                             <span class="m-topbar__username" style="color:#fff;">{{ Session::get('username') }}</span>
+                             <span class="m-topbar__welcome"><i class="fa fa-chevron-down" aria-hidden="true" style="color: #fff;padding-top: 5px;padding-left: 10px;"></i></span>
+                          </a>
                         <div class="m-dropdown__wrapper">
                           <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
                           <div class="m-dropdown__inner">
@@ -341,7 +304,6 @@
                                     </a>
                                   </li>
 
-
                                   <li class="m-nav__item">
                                     <a href="{{ url('user/profile?view=frontend') }}" class="m-nav__link">
                                       <i class="m-nav__link-icon flaticon-profile-1"></i>
@@ -352,7 +314,6 @@
                                       </span>
                                     </a>
                                   </li>
-
 
                                   <li class="m-nav__separator m-nav__separator--fit">
                                   </li>
@@ -380,8 +341,6 @@
           </div>
         </div>
 
-
-
         <div class="m-header__bottom" >
           <div class="m-container m-container--responsive m-container--xxl m-container--full-height m-page__container">
             <div class="m-stack m-stack--ver m-stack--desktop">
@@ -401,13 +360,7 @@
           <div class="cus-blackhead-part">
             <div class="m-container m-container--responsive m-container--xxl m-container--full-height m-page__container">
                 <div class="row">
-                    <!--  <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                          <span class="icon-bar"></span>
-                          <span class="icon-bar"></span>
-                          <span class="icon-bar"></span> 
-                        </button>
-                        </div> -->
+              
                     <div class="collapse navbar-collapse" id="myNavbar">
                         @include('layouts.sportstravel.header_new')
                     </div>
@@ -441,33 +394,7 @@
                 </span>
               </div>
               <div class="m-stack__item m-stack__item--right m-stack__item--middle m-stack__item--first">
-               <!--  <ul class="m-footer__nav m-nav m-nav--inline m--pull-right">
-                  <li class="m-nav__item">
-                    <a href="#" class="m-nav__link">
-                      <span class="m-nav__link-text">About</span>
-                    </a>
-                  </li>
-                  <li class="m-nav__item">
-                    <a href="#" class="m-nav__link">
-                      <span class="m-nav__link-text">Privacy</span>
-                    </a>
-                  </li>
-                  <li class="m-nav__item">
-                    <a href="#" class="m-nav__link">
-                      <span class="m-nav__link-text">T&C</span>
-                    </a>
-                  </li>
-                  <li class="m-nav__item">
-                    <a href="#" class="m-nav__link">
-                      <span class="m-nav__link-text">Purchase</span>
-                    </a>
-                  </li>
-                  <li class="m-nav__item m-nav__item--last">
-                    <a href="#" class="m-nav__link" data-toggle="m-tooltip" title="Support Center" data-placement="left">
-                      <i class="m-nav__link-icon flaticon-info m--icon-font-size-lg3"></i>
-                    </a>
-                  </li>
-                </ul> -->
+    
               </div>
             </div>
           </div>
@@ -933,7 +860,6 @@
       </div>
     </div>
 
-    <!-- end::Quick Sidebar -->
 
     <!-- begin::Scroll Top -->
     <div id="m_scroll_top" class="m-scroll-top">
@@ -1028,32 +954,11 @@
     <script src="{{ asset('frontend/sportstravel/vendors/sweetalert2/dist/sweetalert2.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('frontend/sportstravel/vendors/js/framework/components/plugins/base/sweetalert2.init.js') }}" type="text/javascript"></script>
 
-    <!--end:: Global Optional Vendors -->
-
-    <!--begin::Global Theme Bundle -->
     <script src="{{ asset('frontend/sportstravel/assets/demo/base/scripts.bundle.js') }}" type="text/javascript"></script>
 
-    <!--end::Global Theme Bundle -->
-
-    <!--begin::Page Vendors -->
     <script src="{{ asset('frontend/sportstravel/assets/vendors/custom/fullcalendar/fullcalendar.bundle.js') }}" type="text/javascript"></script>
 
-    <!--end::Page Vendors -->
-
-    <!--begin::Page Scripts -->
     <script src="{{ asset('frontend/sportstravel/assets/app/js/dashboard.js') }}" type="text/javascript"></script>
-
-
-
-    <?php /*
-
-    <!-- odr -->
-    <link rel="stylesheet" href="{{ asset('../odr/style.css') }}" type="text/css" />
-    <script type="text/javascript" src="{{ asset('../odr/odr.js.php') }}"></script>
-    <!-- /odr -->
-
-    */ ?>
-
 
   </body>
 

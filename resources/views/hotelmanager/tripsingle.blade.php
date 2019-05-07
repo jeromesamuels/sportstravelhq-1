@@ -151,9 +151,7 @@
                         <div class="info-boxes" style="background: #fff; color: #000;">
                             <h4 >Progress</h4>
                         </div>
-                        <?php 
-                            // $data= DB::table('rfps')->get()->where("status", 1)->all();
-                            ?>
+                     
                         <div class="progress" style="margin-bottom: 10px;height: 6px; ">
                             <div class="progress-bar" role="progressbar" aria-valuenow="70"
                                 aria-valuemin="0" aria-valuemax="100" style="width:34%;height: 6px;background-color: #44c8f5;">
@@ -167,10 +165,7 @@
                             <h4 >Status</h4>
                             <p style="font-size: 14px;">Client has added Bid Response</p>
                         </div>
-                        <?php 
-                            //$data2= DB::table('rfps')->get()->where("status",'!=',3)->all();
-                            
-                            ?>
+                       
                     </div>
                     <div class="col-md-3" style="border-right: 1px solid #c3bfbf;">
                         <div class="info-boxes" style="background: #fff; color: #000;">
@@ -183,14 +178,13 @@
                         </div>
                     </div>
                 </div>
+                
                  <?php 
-                       
-                $trip_id_new= DB::table('rfps')->where("user_trip_id",$trip->id)->get(); 
-                foreach($trip_id_new as $trip_id) {}
-                if(count($trip_id_new) >= 1){  
-
-                    if($trip_id->status==1){
-                   ?>
+              
+                if(count($trip_id_detail) >= 1){  
+                foreach($trip_id_detail as $trip_id){
+                if($trip_id->status==1){
+                ?>
                 <div class="row" id="progress_bar">
                     <div class="col-md-12">
                         <div class="progress">
@@ -281,7 +275,7 @@
                     </div>
                 </div>
 
-                         <?php 
+          <?php 
             }
             elseif( $trip_id->status==8){ ?>
                         <div class="row" id="progress_bar">
@@ -472,9 +466,8 @@
                     </div>
                 </div>
             <?php   }
-
-               }
-               
+             }
+         }
 
                 elseif($trip->status == 6){
                     ?>     
@@ -570,12 +563,9 @@
                 </div>
             <?php } ?>
             </div>
+           
         </div>
-        <?php 
-            $data2= DB::table('invoices')->where("id", $trip->id)->get();
-            
-               
-            ?>
+       
         <div class="sbox" >
             <div class="sbox-title">
                 <h1 style="font-size: 20px;"> Trip #{{ $trip->id }}</h1>
@@ -584,10 +574,7 @@
                 @include('includes.alerts')
                 <div class="row" style="border-bottom: 2px solid #eee;margin-bottom: 30px;">
                     <div class="col-sm-3" style="border-right: 2px solid #eee;">
-                        <!--   <p>
-                            <span>Hi Hotel Manager</span><br>
-                            {{ $trip->comment }}
-                            </p> -->
+                      
                         <div class="status_detail">
                             <h5>Status Detail</h5>
                             <p style="font-size: 14px;color: #b1afaf;">{{$trip->comment}}</p>
@@ -596,16 +583,16 @@
                             <h5>Date Created</h5>
                             <p style="font-size: 14px;color: #b1afaf;">{{ $trip->added }}</p>
                         </div>
-                         <?php  foreach($data2 as $data_new) { ?>
+                         <?php  foreach($invoice as $data_new) { ?>
                         <div class="status_detail">
                             <h5>Invoice #</h5>
-                            @if($data2->count() > 0)
+                            @if($invoice->count() > 0)
                             <p style="font-size: 14px;color: #b1afaf;"><?php echo $data_new->invoice_id;?></p>
                             @else
                             <p style="font-size: 14px;color: #b1afaf;">Not generated invoice yet</p>
                             @endif
                             <h5>Invoice Status</h5>
-                            @if($data2->count() > 0)
+                            @if($invoice->count() > 0)
                             <p style="font-size: 14px;color: #b1afaf;">Paid</p>
                             @else
                             <p style="font-size: 14px;color: #b1afaf;">Unpaid</p>
@@ -624,11 +611,7 @@
                     </div>
                     <?php  ?>
                     <div class="col-sm-9" id="print_div">
-                        <!--    <p class="text-right">
-                            <span>{{ $trip->check_in }} To {{ $trip->check_out }}</span><br>
-                            <span>{{ count($trip->rfps) }} RFPs Reserved For this Trip</span>
-                            </p> -->
-                           
+                     
                         <table class="table " >
                             <tbody>
                                 <tr>
@@ -681,16 +664,12 @@
                         <div class="text-right">
                             <button class="btn btn-light print-btn" onclick="codespeedy()"> Print</button>
                             <a href="#" class="export btn btn-light print-btn">Export</a>
-                            <?php 
-                              $grp_id = DB::table('tb_users')->where('id', '=', session('uid'))->pluck('group_id');
-                                foreach ($grp_id as $grp_id_new) {
-                                 $user_grp_id=$grp_id_new;
-                                }
-                            ?>
-                            <?php if($rfp && $user_grp_id== 5 ){ ?>
+                            
+                            <?php
+                             if($rfp && session('gid')== 5 ){ ?>
                             <button class="btn btn-success" data-toggle="modal" data-target="#myModal"> View Bid </button>
                             <?php } 
-                            elseif($user_grp_id== 5 && $trip->status== 6) {   ?>
+                            elseif(session('gid')== 5 && $trip->status== 6) {   ?>
                             <button class="btn btn-info" data-toggle="modal" data-target="#myModal"> Bid Now </button>
                             <?php } 
                              else{ ?>
@@ -705,18 +684,7 @@
         <div class="sbox" style="border-top: none;padding: 0;background: transparent; box-shadow: none;">
             <div class="sbox-content dashboard-container" style=" padding: 0;">
                 <div class="row">
-                    <?php 
-                        $data_hotel= DB::table('hotels')->groupBy('type')->get();
-                        foreach($data_hotel as $value){
-                           $name=$value->type;
-                        
-                            $purchases = DB::table('invoices')->where('invoices.hotel_type', '=', $name)->sum('invoices.amt_paid');    
-                            $array[$name] = $purchases;
-                            $y = $array[$value->type];
-                            $sum =array_sum($array);
-                        }
-                        
-                        ?>
+                   
                     <div class="col-md-4">
                         <div class="widget-box box-shadow" style=" margin: 0;background: #5dbbe0;padding: 20px;">
                             <div class="head">
@@ -724,16 +692,12 @@
                             </div>
                             <br />
                             <div class="body">
-                                <h1 style="color:#fff;font-size: 40px;">${{ $sum }}</h1>
+                                <h1 style="color:#fff;font-size: 40px;">${{ $purchases }}</h1>
                                 <p style="color:#fff;">Total Revenue till today</p>
                             </div>
                         </div>
                     </div>
-                    <?php 
-                        $data= DB::table('user_trips')->get();
-                         
-                          $rfps_new= DB::table('rfps')->where('status', 2)->get();     
-                        ?>
+                    
                     <div class="col-md-4 col-sm-12">
                         <div class="widget-box box-shadow" style=" margin: 0;background: #fff;padding: 20px;">
                             <div class="head">
@@ -741,7 +705,7 @@
                             </div>
                             <br />
                             <div class="body">
-                                <h1 style="color:#5dbbe0;font-size: 40px;">{{ count($data)}}</h1>
+                                <h1 style="color:#5dbbe0;font-size: 40px;">{{ count($trip_booking)}}</h1>
                                 <p>Total Booking </p>
                             </div>
                         </div>
@@ -782,8 +746,6 @@
     
        var $rows = $table.find('tr:has(td)'),
     
-         // Temporary delimiter characters unlikely to be typed by keyboard
-         // This is to avoid accidentally splitting the actual contents
          tmpColDelim = String.fromCharCode(11), // vertical tab character
          tmpRowDelim = String.fromCharCode(0), // null character
     
@@ -815,11 +777,7 @@
            type: 'text/csv;charset=utf8'
          });
     
-         // Crashes in IE 10, IE 11 and Microsoft Edge
-         // See MS Edge Issue #10396033
-         // Hence, the deliberate 'false'
-         // This is here just for completeness
-         // Remove the 'false' at your own risk
+        
          window.navigator.msSaveBlob(blob, filename);
     
        } else if (window.Blob && window.URL) {
@@ -854,8 +812,6 @@
     
        exportTableToCSV.apply(this, args);
     
-       // If CSV, don't do event.preventDefault() or return false
-       // We actually need this to be a typical hyperlink
      });
     });
     
@@ -879,10 +835,7 @@
                         <label>Enter Your Offer Rate (In Dollars)</label>
                         <strong> {{ $rfp->offer_rate }} </strong>
                     </div>
-                   <!--  <div class="form-group">
-                        <label>Hotel Details</label>
-                        <strong> {{ $rfp->hotel_information }} </strong>
-                    </div> -->
+                 
                     <div class="form-group">
                         <label>Distance From Event (Unit Miles)</label>
                         <strong> {{ $rfp->distance_event }} </strong>
@@ -917,10 +870,7 @@
                         <label>Enter Your Offer Rate (In Dollars)</label>
                         <input type="number" class="form-control" name="offer_rate" min="0">
                     </div>
-                   <!--  <div class="form-group">
-                        <label>Hotel Details</label>
-                        <input type="text" class="form-control" name="hotelDetails">
-                    </div> -->
+                 
                     <div class="form-group">
                         <label>Distance From Event (Unit Miles)</label>
                         <input type="text" class="form-control" name="eventDistance" id="eventDistance" value="" min="0" readonly="">
@@ -944,37 +894,7 @@
 </div>
 @endif
 <!--for calculate distance-->
-<?php 
-    /*Get hotel id */
-    $hotel_id = DB::table('tb_users')->where('id', session('uid'))->pluck('hotel_id');
-         foreach($hotel_id as $item_new) {
-          
-            if($item_new != ''){
-                 $hotel_id_new = $item_new;
-            }
-            else{
-                 $hotel_id_new= 2;
-            }
-        }
-    
-    /*Get hotel adress */
-   
-    $hotel_adress = DB::table('hotels')->where('id', $hotel_id_new)->pluck('address');
-   
-         foreach($hotel_adress as $item) {
-          $hotel_adress_new = $item;
-    }
-    
-    $trip_adress = DB::table('user_trips')->where('id', $trip->id)->pluck('from_address_1');
-         foreach($trip_adress as $item1) {
-       $trip_adress_new = $item1;
-       
-    }
-  
 
-    /*Get trip adress */
-    
-    ?>
 <div id="output"></div>
 </div>
 <div id="map"></div>
@@ -984,9 +904,9 @@
       var markersArray = [];
     
       //var origin1 = {lat: 55.93, lng: -3.118};
-      var origin2 ='<?php echo $hotel_adress_new; ?>'; //hotel adress
+      var origin2 ='<?php echo $hotel->address; ?>'; //hotel adress
     
-      var destinationA ='<?php echo $trip_adress_new; ?>';
+      var destinationA ='<?php echo $trip->from_address_1; ?>';
       //var destinationB = {lat: 50.087, lng: 14.421};
     
       var destinationIcon = 'https://chart.googleapis.com/chart?' +

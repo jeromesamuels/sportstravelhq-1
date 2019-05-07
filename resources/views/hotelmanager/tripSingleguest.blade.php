@@ -151,9 +151,7 @@
                         <div class="info-boxes" style="background: #fff; color: #000;">
                             <h4 >Progress</h4>
                         </div>
-                        <?php 
-                            // $data= DB::table('rfps')->get()->where("status", 1)->all();
-                            ?>
+                       
                         <div class="progress" style="margin-bottom: 10px;height: 6px; ">
                             <div class="progress-bar" role="progressbar" aria-valuenow="70"
                                 aria-valuemin="0" aria-valuemax="100" style="width:34%;height: 6px;background-color: #44c8f5;">
@@ -167,31 +165,23 @@
                             <h4 >Status</h4>
                             <p style="font-size: 14px;">Client has Submitted new proposal</p>
                         </div>
-                        <?php 
-                            //$data2= DB::table('rfps')->get()->where("status",'!=',3)->all();
-                            
-                            ?>
+                       
                     </div>
                     <div class="col-md-3" style="border-right: 1px solid #c3bfbf;">
                         <div class="info-boxes" style="background: #fff; color: #000;">
                             <h4 >Total RFP Recieved</h4>
                             <p style="font-size: 14px;">On this Trip</p>
                         </div>
-                        <?php 
-                            $data3= DB::table('rfps')->get()->where("status",2)->all();
-                            
-                            ?>
+                       
                         <div class="info-boxes" style="background: #fff; color: #000;float:right;">
                             <h3 style="float:right;top: 30px;position: absolute;right: 25px;">{{ count($trip->rfps) }}</h3>
                         </div>
                     </div>
                 </div>
                  <?php 
-                       
-                $trip_id_new= DB::table('rfps')->where("user_trip_id",$trip->id)->get(); 
-                foreach($trip_id_new as $trip_id) {}
-                if(count($trip_id_new) >= 1){  
-
+               
+                if(count($trip_id_detail) >= 1){  
+                foreach($trip_id_detail as $trip_id){
                     if($trip_id->status==1){
                    ?>
                 <div class="row" id="progress_bar">
@@ -474,10 +464,10 @@
                         </div>
                     </div>
                 </div>
-            <?php   }
+             <?php   }
+             }
+         }
 
-               }
-               
 
                 elseif($trip->status == 6){
                     ?>     
@@ -574,11 +564,7 @@
             <?php } ?>
             </div>
         </div>
-        <?php 
-            $data2= DB::table('invoices')->where("id", $trip->id)->get();
-            
-               
-            ?>
+        
         <div class="sbox" >
             <div class="sbox-title">
                 <h1 style="font-size: 20px;"> Trip #{{ $trip->id }}</h1>
@@ -599,16 +585,16 @@
                             <h5>Date Created</h5>
                             <p style="font-size: 14px;color: #b1afaf;">{{ $trip->added }}</p>
                         </div>
-                         <?php  foreach($data2 as $data_new) { ?>
+                         <?php  foreach($invoice as $data_new) { ?>
                         <div class="status_detail">
                             <h5>Invoice #</h5>
-                            @if($data2->count() > 0)
+                            @if($invoice->count() > 0)
                             <p style="font-size: 14px;color: #b1afaf;"><?php echo $data_new->invoice_id;?></p>
                             @else
                             <p style="font-size: 14px;color: #b1afaf;">Not generated invoice yet</p>
                             @endif
                             <h5>Invoice Status</h5>
-                            @if($data2->count() > 0)
+                            @if($invoice->count() > 0)
                             <p style="font-size: 14px;color: #b1afaf;">Paid</p>
                             @else
                             <p style="font-size: 14px;color: #b1afaf;">Unpaid</p>
@@ -627,11 +613,7 @@
                     </div>
                     <?php  ?>
                     <div class="col-sm-9" id="print_div">
-                        <!--    <p class="text-right">
-                            <span>{{ $trip->check_in }} To {{ $trip->check_out }}</span><br>
-                            <span>{{ count($trip->rfps) }} RFPs Reserved For this Trip</span>
-                            </p> -->
-                           
+                      
                         <table class="table " >
                             <tbody>
                                 <tr>
@@ -704,18 +686,7 @@
         <div class="sbox" style="border-top: none;padding: 0;background: transparent; box-shadow: none;">
             <div class="sbox-content dashboard-container" style=" padding: 0;">
                 <div class="row">
-                    <?php 
-                        $data_hotel= DB::table('hotels')->groupBy('type')->get();
-                        foreach($data_hotel as $value){
-                           $name=$value->type;
-                        
-                            $purchases = DB::table('invoices')->where('invoices.hotel_type', '=', $name)->sum('invoices.amt_paid');    
-                            $array[$name] = $purchases;
-                            $y = $array[$value->type];
-                            $sum =array_sum($array);
-                        }
-                        
-                        ?>
+                  
                     <div class="col-md-4">
                         <div class="widget-box box-shadow" style=" margin: 0;background: #5dbbe0;padding: 20px;">
                             <div class="head">
@@ -723,16 +694,12 @@
                             </div>
                             <br />
                             <div class="body">
-                                <h1 style="color:#fff;font-size: 40px;">${{ $sum }}</h1>
+                                <h1 style="color:#fff;font-size: 40px;">${{ $purchases }}</h1>
                                 <p style="color:#fff;">Total Revenue till today</p>
                             </div>
                         </div>
                     </div>
-                    <?php 
-                        $data= DB::table('user_trips')->get();
-                         
-                          $rfps_new= DB::table('rfps')->where('status', 2)->get();     
-                        ?>
+                   
                     <div class="col-md-4 col-sm-12">
                         <div class="widget-box box-shadow" style=" margin: 0;background: #fff;padding: 20px;">
                             <div class="head">
@@ -740,7 +707,7 @@
                             </div>
                             <br />
                             <div class="body">
-                                <h1 style="color:#5dbbe0;font-size: 40px;">{{ count($data)}}</h1>
+                                <h1 style="color:#5dbbe0;font-size: 40px;">{{ count($trip_booking)}}</h1>
                                 <p>Total Booking </p>
                             </div>
                         </div>
@@ -781,8 +748,6 @@
     
        var $rows = $table.find('tr:has(td)'),
     
-         // Temporary delimiter characters unlikely to be typed by keyboard
-         // This is to avoid accidentally splitting the actual contents
          tmpColDelim = String.fromCharCode(11), // vertical tab character
          tmpRowDelim = String.fromCharCode(0), // null character
     
@@ -814,11 +779,6 @@
            type: 'text/csv;charset=utf8'
          });
     
-         // Crashes in IE 10, IE 11 and Microsoft Edge
-         // See MS Edge Issue #10396033
-         // Hence, the deliberate 'false'
-         // This is here just for completeness
-         // Remove the 'false' at your own risk
          window.navigator.msSaveBlob(blob, filename);
     
        } else if (window.Blob && window.URL) {
@@ -853,8 +813,6 @@
     
        exportTableToCSV.apply(this, args);
     
-       // If CSV, don't do event.preventDefault() or return false
-       // We actually need this to be a typical hyperlink
      });
     });
     
@@ -879,10 +837,7 @@
                         <label>Enter Your Offer Rate (In Dollars)</label>
                         <input type="number" class="form-control" name="offer_rate" min="0">
                     </div>
-                   <!--  <div class="form-group">
-                        <label>Hotel Details</label>
-                        <input type="text" class="form-control" name="hotelDetails">
-                    </div> -->
+                 
                     <div class="form-group">
                         <label>Distance From Event (Unit Miles)</label>
                         <input type="text" class="form-control" name="eventDistance" id="eventDistance"  min="0">
