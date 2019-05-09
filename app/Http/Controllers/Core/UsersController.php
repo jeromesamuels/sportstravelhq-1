@@ -1,7 +1,7 @@
 <?php namespace App\Http\Controllers\core;
 use App\Http\Controllers\Controller;
 use App\Models\Core\Users;
-use App\Models\Usertrips;
+use App\Models\UserTrip;
 use App\Models\Rfp;
 use App\Models\Invoices;
 use App\Models\Core\Groups;

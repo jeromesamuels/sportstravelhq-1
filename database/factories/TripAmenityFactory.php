@@ -3,7 +3,7 @@
 use App\Models\hotelamenities;
 use Faker\Generator as Faker;
 
-$factory->define(App\Models\TripAmenity::class, function (Faker $faker, $attributes) {
+$factory->define(\App\Models\TripAmenity::class, function (Faker $faker, $attributes) {
     $amenity = Hotelamenities::inRandomOrder()->first();
     return [
         'trip_id' => $attributes['trip_id'],

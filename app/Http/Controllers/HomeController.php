@@ -7,7 +7,7 @@ use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Illuminate\Support\Facades\DB;
 use Validator, Input, Redirect;
 use App\Models\Hotel;
-use App\Models\usertrips;
+use App\Models\UserTrip;
 use App\Models\Rfp;
 use App\Models\Invoices;
 use App\User;
@@ -336,12 +336,12 @@ class HomeController extends Controller {
          $purchases =Invoices::where('invoices.hotel_type', '=', $name)->sum('invoices.amt_paid');    
          $purchases_due = Invoices::where('invoices.hotel_type', '=', $name)->whereRaw('MONTH(check_out) = ?',[$currentMonth])->sum('invoices.est_amt_due');   
         }
-         $trip_booking =  usertrips::all();
+         $trip_booking =  UserTrip::all();
          $rfps_new=Rfp::where('status', 2)->get();         
         return view('client.index', compact('data_hotel', 'data_client','trip_booking','purchases','purchases_due','rfps_new'));
     }
     public function clientProfile($id) {
-        $clientTrips = usertrips::where('entry_by', $id)->paginate(10);
+        $clientTrips = UserTrip::where('entry_by', $id)->paginate(10);
         $data_client=User::where("id", $id)->get();
         $data_rfps = Rfp::where('user_trip_id', $id);
         $data_hotel=Hotel::groupBy('type')->get();
@@ -367,7 +367,7 @@ class HomeController extends Controller {
     public function adminAccount() {
         $data_hotel = Hotel::groupBy('type')->get();
         $user = User::find(session('uid'));
-        $trip_booking= usertrips::all();
+        $trip_booking= UserTrip::all();
         $rfps_new= Rfp::where('status', 2)->get();    
          foreach($data_hotel as $value){
          $name=$value->type;

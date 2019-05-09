@@ -1,16 +1,18 @@
 <?php
 
+use App\Models\UserTrip;
+use Carbon\Carbon;
 use Faker\Generator as Faker;
 
-$factory->define(App\Models\Usertrips::class, function (Faker $faker, $attributes) {
+$factory->define(UserTrip::class, function (Faker $faker, $attrs) {
     $city = $faker->city;
 
     $check_in = $faker->dateTimeBetween('+2 months', '+4 months');
     $check_out = clone $check_in;
     $check_out->add(new DateInterval('P1D'));
 
-    return [
-        'entry_by'         => $attributes['entry_by'] ?? 3,
+    $data = [
+        'entry_by'         => $attrs['entry_by'] ?? 3,
         'trip_name'        => $faker->company . ' ' . $city,
         "from_address_1"   => "{$faker->streetAddress}, {$city}, FL, USA",
         "from_city"        => $city,
@@ -28,8 +30,10 @@ $factory->define(App\Models\Usertrips::class, function (Faker $faker, $attribute
         "double_king_qty"  => 5,
         "amenity_ids"      => "",
         "comment"          => $faker->paragraph,
-        "added"            => new Carbon\Carbon(),
+        "added"            => (new Carbon())->format('Y-m-d H:i:s'),
         "status"           => 0,
         "invoice_status"   => 0,
     ];
+
+    return $data;
 });

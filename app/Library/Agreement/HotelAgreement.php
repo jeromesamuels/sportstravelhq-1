@@ -7,7 +7,7 @@ namespace App\Library\Agreement;
  *
  * @category Library
  * @package  App\Library
- * @author   Joseph Montane <jm@comentum.com>
+ * @author   Joseph Montanez <jm@comentum.com>
  * @license  https://opensource.org/licenses/BSD-3-Clause BSD
  * @link     https://sportstravelhq.com
  */

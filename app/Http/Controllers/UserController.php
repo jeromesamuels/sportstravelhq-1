@@ -3,7 +3,7 @@
 use App\Libary\SiteHelpers;
 use App\Models\hotelamenities;
 use App\Models\Rfp;
-use App\Models\usertrips;
+use App\Models\UserTrip;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -201,7 +201,7 @@ class UserController extends Controller
 
     public function userTrips()
     {
-        $trips     = usertrips::orderBy('added', 'desc')->where('status', 6)->get();
+        $trips     = UserTrip::orderBy('added', 'desc')->where('status', 6)->get();
         $rfps      = DB::table('rfps')->where('user_id', null)->get();
         $amenities = hotelamenities::all();
 
@@ -234,7 +234,7 @@ class UserController extends Controller
 
     public function TripDetails($id, $email)
     {
-        $trip = usertrips::find($id);
+        $trip = UserTrip::find($id);
         //$trips = usertrips::orderBy('added', 'desc')->where('status', 6)->get();
         $rfp        = DB::table('rfps')->where('sales_manager', $email)->get();
         $amenities  = hotelamenities::all();
@@ -255,7 +255,7 @@ class UserController extends Controller
             'offerValidityDate' => 'required|date|after:today',
         ]);
         // echo $request->eventDistance;
-        $trip = usertrips::find($request->trip_id);
+        $trip = UserTrip::find($request->trip_id);
         //geting Trip Amenities
         $amenitie_ids = [];
         foreach ($trip->amenities as $amenity) {
