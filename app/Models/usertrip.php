@@ -1,9 +1,8 @@
 <?php namespace App\Models;
 
 use App\Models\Core\Users;
-use Illuminate\Database\Eloquent\Model;
 
-class UserTrip extends Sximo
+class usertrip extends Sximo
 {
     //-- This table does not have created_at and updated_at
     public $timestamps = false;

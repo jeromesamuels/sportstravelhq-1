@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AgreementForm;
 use App\Models\Core\Users;
 use App\Models\Rfp;
-use App\Models\UserTrip;
+use App\Models\usertrip;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -38,7 +38,7 @@ class CorporateController extends Controller
     		'offerValidityDate' => 'required|date|after:today',
     	]);
 
-    	$trip = UserTrip::find($request->trip_id);
+    	$trip = usertrip::find($request->trip_id);
     	//geting Trip Amenities
     	$amenitie_ids = [];
     	foreach ($trip->amenities as $amenity) {

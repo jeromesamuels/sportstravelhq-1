@@ -79,7 +79,6 @@
 					<select class="selectpicker form-control" name="hotel_type" id="hotel_type" >
 						<option value="" >Please select Hotel type</option>
 						<?php 
-                          $hotel_type=DB::table('hotels')->groupBy('type')->get();
                           foreach ($hotel_type as $value_type) {
                            $hotel_type_new=ucfirst($value_type->type);
 						?>
@@ -476,8 +475,5 @@ $agreement_text = '<div id="Translation"><h3>The standard Lorem Ipsum passage, u
 	  </div>
 	</div>  
 </div>
-
-
-
 
 @stop

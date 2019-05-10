@@ -1,20 +1,23 @@
 <?php namespace App\Http\Controllers;
 
 use App\Libary\SiteHelpers;
-use App\Models\hotelamenities;
-use App\Models\Rfp;
-use App\Models\UserTrip;
-use App\User;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\URL;
+
 use Redirect;
 use Socialize;
-use Twilio\Rest\Client;
+use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Validator;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
+use App\Models\usertrips;
+use App\Models\hotelamenities;
+use App\Models\Rfp;
+use App\User;
+use Carbon\Carbon;
+use Twilio\Rest\Client;
+use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
@@ -34,18 +37,16 @@ class UserController extends Controller
             else:
                 return redirect('user/login');
             endif;
-        else :
+        else:
             $this->data['socialize'] = config('services');
-
+            $this->data['hotel_type'] = DB::table('hotels')->groupBy('type')->get();
             return view('user.register', $this->data);
         endif;
     }
-
-    public function getRegisterTC()
-    {
+    public function getRegisterTC() {
         $this->data['tc_email'] = Input::get('tc_email');
         $this->data['group_id'] = Input::get('group_id');
-        if (config('sximo.cnf_regist') == 'false') :
+        if (config('sximo.cnf_regist') == 'false'):
             if (\Auth::check()) :
                 return redirect('')->with(['message' => 'Youre already login', 'status' => 'error']);
             else:
@@ -53,8 +54,7 @@ class UserController extends Controller
             endif;
         else :
             $this->data['socialize'] = config('services');
-
-            return view('user.register_tc', $this->data);
+            return view('user.register', $this->data);
         endif;
     }
 
@@ -79,12 +79,12 @@ class UserController extends Controller
         }
         $validator = Validator::make($request->all(), $rules);
         if ($validator->passes()) {
-            $code               = rand(10000, 10000000);
-            $authen             = new User;
-            $authen->username   = $request->input('username');
+            $code = rand(10000, 10000000);
+            $authen = new User;
+            $authen->username = $request->input('username');
             $authen->first_name = $request->input('firstname');
-            $authen->last_name  = $request->input('lastname');
-            $authen->email      = trim($request->input('email'));
+            $authen->last_name = $request->input('lastname');
+            $authen->email = trim($request->input('email'));
             if ($request->input('address') != '' && $request->input('state') != '' && $request->input('city') != '' && $request->input('zip') != '') {
                 $authen->address = $request->input('address');
                 $authen->state   = $request->input('state');
@@ -94,18 +94,16 @@ class UserController extends Controller
             /*new fields */
             $user_type = $request->input('user_type');
             if ($request->input('hotel_type') != '' && $request->input('hotel_code') != '' && $request->input('service_type') != '') {
-                $authen->hotel_type    = $request->input('hotel_type');
-                $authen->hotel_code    = $request->input('hotel_code');
+                $authen->hotel_type = $request->input('hotel_type');
+                $authen->hotel_code = $request->input('hotel_code');
                 $authen->hotel_address = $request->input('hotel_address');
-                $authen->service_type  = $request->input('service_type');
+                $authen->service_type = $request->input('service_type');
             }
             if ($request->input('o_name') != '') {
                 $authen->o_name = $request->input('o_name');
             }
             if ($user_type == 1) {
-                \DB::table('hotels')->insert(
-                    ['hotel_code' => $request->input('hotel_code'), 'type' => $request->input('hotel_type'), 'service_type' => $request->input('service_type')]
-                );
+                \DB::table('hotels')->insert(['hotel_code' => $request->input('hotel_code'), 'type' => $request->input('hotel_type'), 'service_type' => $request->input('service_type') ]);
             }
             if ($user_type == 1) {
                 $authen->group_id = 5;
@@ -122,10 +120,10 @@ class UserController extends Controller
                 $authen->group_id = $request->input('group_id');
             }
             $authen->phone_number = ($request->input('phone') != '') ? $request->input('phone') : '';
-            $authen->activation   = $code;
-            $email                = $authen->email;
-            $domain_name          = substr(strrchr($email, "@"), 1);
-            $authen->password     = \Hash::make($request->input('password'));
+            $authen->activation = $code;
+            $email = $authen->email;
+            $domain_name = substr(strrchr($email, "@"), 1);
+            $authen->password = \Hash::make($request->input('password'));
             if ($this->config['cnf_activation'] == 'auto') {
                 $authen->active = '1';
             } else {
@@ -177,22 +175,16 @@ class UserController extends Controller
             } else {
                 $message = "Thank You for registering with SportsTravel HQ!. Your account is active now ";
             }
-
             return redirect('user/login')->with(['message' => $message, 'status' => 'success']);
         } else {
-            return redirect('user/register')->with(['message' => 'The following errors occurred', 'status' => 'success'])
-                                            ->withErrors($validator)->withInput();
+            return redirect('user/register')->with(['message' => 'The following errors occurred', 'status' => 'success'])->withErrors($validator)->withInput();
         }
     }
-
-    public function getCode(Request $request)
-    {
+    public function getCode(Request $request) {
         $num = $request->input('code_send');
         if ($num != '') {
             \DB::table('tb_users')->where('id', session('uid'))->update('activation', $num);
-
             return redirect('dashboard')->with(['message' => 'Verified you code!', 'status' => 'success']);
-
             return view('user.code_activation', compact('num'));
         } else {
             return redirect('user/login')->with(['message' => 'Please verify code again!', 'status' => 'error']);
@@ -201,7 +193,7 @@ class UserController extends Controller
 
     public function userTrips()
     {
-        $trips     = UserTrip::orderBy('added', 'desc')->where('status', 6)->get();
+        $trips     = usertrips::orderBy('added', 'desc')->where('status', 6)->get();
         $rfps      = DB::table('rfps')->where('user_id', null)->get();
         $amenities = hotelamenities::all();
 
@@ -226,7 +218,6 @@ class UserController extends Controller
         }
         $authen->save();
         $email = $request->input('email');
-
         return redirect('user/trips')->with(['email' => $email]);
         //return redirect('user/trips')->with(['message'=>'Please see the all trips!','status'=>'sucess']);
         //return view('user.guest_login');
@@ -234,13 +225,14 @@ class UserController extends Controller
 
     public function TripDetails($id, $email)
     {
-        $trip = UserTrip::find($id);
+        $trip = usertrips::find($id);
         //$trips = usertrips::orderBy('added', 'desc')->where('status', 6)->get();
         $rfp        = DB::table('rfps')->where('sales_manager', $email)->get();
         $amenities  = hotelamenities::all();
         $guest_user = DB::table('invitations')->where('email', '=', $email)->get();
+        $rfps_new = DB::table('rfps')->where('status', 2)->get();
         if (count($guest_user) == 1) {
-            return view('hotelmanager.tripSingleguest', compact('trip', 'rfp', 'email'));
+            return view('hotelmanager.tripSingleguest', compact('trip', 'rfp', 'email', 'rfps_new'));
         } else {
             return redirect('user/login');
         }
@@ -255,7 +247,7 @@ class UserController extends Controller
             'offerValidityDate' => 'required|date|after:today',
         ]);
         // echo $request->eventDistance;
-        $trip = UserTrip::find($request->trip_id);
+        $trip = usertrips::find($request->trip_id);
         //geting Trip Amenities
         $amenitie_ids = [];
         foreach ($trip->amenities as $amenity) {
@@ -296,7 +288,6 @@ class UserController extends Controller
         $user = User::where('activation', '=', $num)->get();
         if (count($user) >= 1) {
             \DB::table('tb_users')->where('activation', $num)->update(array('active' => 1, 'activation' => ''));
-
             return redirect('user/login')->with(['message' => 'Your account is active now!', 'status' => 'success']);
         } else {
             return redirect('user/login')->with(['message' => 'Invalid Code Activation!', 'status' => 'error']);
@@ -320,7 +311,6 @@ class UserController extends Controller
             $api_url  = 'https://www.google.com/recaptcha/api/siteverify?secret=' . config('sximo.cnf_recaptchaprivatekey') . '&response=' . $request['g-recaptcha-response'];
             $response = @file_get_contents($api_url);
             $data     = json_decode($response, true);
-
             return $data;
         } else {
             return false;
@@ -415,7 +405,7 @@ class UserController extends Controller
                             return response()->json(['status' => 'success', 'url' => url('dashboard')]);
                             else :
                             return response()->json(['status' => 'success', 'url' => url('')]);
-                            endif;	*/
+                            endif;  */
                         } else {
                             if ($session['level'] == 2 || $session['level'] == 1 || $session['level'] == 4 || $session['level'] == 5 || $session['level'] == 6) {
                                 if (!$request->has("send_code") && $row->vcode == 0) {
@@ -632,7 +622,6 @@ class UserController extends Controller
                 }
                 $affectedRows = User::where('email', '=', $user->email)
                                     ->update(array('reminder' => $request->input('_token')));
-
                 return redirect('user/login')->with(['message' => 'Please check your email', 'status' => 'success']);
             } else {
                 return redirect('user/login?reset')->with(['message' => 'Cant find email address', 'status' => 'error']);
@@ -650,7 +639,6 @@ class UserController extends Controller
         $user = User::where('reminder', '=', $token);;
         if ($user->count() >= 1) {
             $this->data['verCode'] = $token;
-
             return view('user.remind', $this->data);
         } else {
             return redirect('user/login')->with(['message' => 'Cant find your reset code', 'status' => 'error']);
@@ -673,7 +661,6 @@ class UserController extends Controller
                 $user->password = \Hash::make($request->input('password'));
                 $user->save();
             }
-
             return redirect('user/login')->with(['message' => 'Password has been saved!', 'status' => 'success']);
         } else {
             return redirect('user/reset/' . $token)->with(['message' => 'The following errors occurred', 'status' => 'error'])->withErrors($validator)->withInput();

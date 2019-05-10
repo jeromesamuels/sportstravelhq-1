@@ -5,7 +5,7 @@ use App\Models\Core\Users;
 use App\Models\Rfp;
 use App\Models\TripAmenity;
 use App\Models\tripstatussettings;
-use App\Models\UserTrip;
+use App\Models\usertrip;
 use Carbon\Carbon;
 use Faker\Generator as Faker;
 use Illuminate\Database\Seeder;
@@ -24,12 +24,12 @@ class TripSeeder extends Seeder
         $coordinator_id = 3;
 
         //-- First Create
-        $trips = factory(UserTrip::class, 25)
+        $trips = factory(usertrip::class, 25)
             ->create(['entry_by' => $coordinator_id]);
 
         //-- THEN integrate over each!
         $trips->each(
-                function (UserTrip $trip) use ($coordinator_id, $faker) {
+                function (usertrip $trip) use ($coordinator_id, $faker) {
                     //-- Add some amenities to the trip requirements
                     $trip_amenities = factory(TripAmenity::class, $faker->numberBetween(1, 3))->create(
                         [

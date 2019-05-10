@@ -162,12 +162,8 @@
         @foreach ($trips as $trip)
        
         <?php 
-            $data2= DB::table('invoices')->where("rfp_id", $trip->id)->get();
-            $data_client= DB::table('tb_users')->where('id', $trip->entry_by)->get();
-             
-            $rpf_count=$trip->rfps;
-                
-               
+              
+           $rpf_count=$trip->rfps;
           if(count($rpf_count) == 0){
             ?>
             <tr style="border-bottom-style: dashed;border-color: #eee;">
@@ -345,22 +341,18 @@
           @endforeach
       <?php
         $rfpUserIds = [];
-         
-          
-             foreach ($rfps as $rfp){
+        foreach ($rfps as $rfp){
                 
         ?>
         <tr style="border-bottom-style: dashed;border-color: #eee;">
-            <td> {{ date('d-M-Y',strtotime($trip->added)) }}</td>
+            <td> {{ date('d-M-Y',strtotime($rfp->updated_at)) }}</td>
             <td>
 
-            <?php foreach($data_client as $client_value){
-                ?>
-           
+             @foreach($data_client as $client_value)
              <img src="{{ URL('/uploads/users') }}/<?php echo $client_value->avatar;?>" border="0" width="40" height="40" class="img-circle" style="margin-right:5px;"> {{ $client_value->first_name }} {{ $client_value->last_name }} 
-         <?php  } ?>
+             @endforeach
 
-         </td>
+           </td>
             <td>
               
                 {{ date('d-M-Y',strtotime($trip->check_in)) }}
@@ -369,9 +361,7 @@
             <td>
 
                 <?php  
-               
                 
-                    
                 $rfpUserIds[count($rfpUserIds)] = $rfp->user_id;
               
                 $rfp_status=$rfp->status;

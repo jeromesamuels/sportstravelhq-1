@@ -1,10 +1,10 @@
 <?php
 
-use App\Models\UserTrip;
+use App\Models\usertrip;
 use Carbon\Carbon;
 use Faker\Generator as Faker;
 
-$factory->define(UserTrip::class, function (Faker $faker, $attrs) {
+$factory->define(usertrip::class, function (Faker $faker, $attrs) {
     $city = $faker->city;
 
     $check_in = $faker->dateTimeBetween('+2 months', '+4 months');

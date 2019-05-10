@@ -15,7 +15,7 @@ class hotelamenities extends Sximo  {
 
 	// Many To Many Relation With Trips
 	public function trips(){
-		return $this->belongsToMany(UserTrip::class,'trip_amenities','amenity_id','trip_id');
+		return $this->belongsToMany(usertrip::class,'trip_amenities','amenity_id','trip_id');
 	}
 
 	// Many To Many Relation With Hotels

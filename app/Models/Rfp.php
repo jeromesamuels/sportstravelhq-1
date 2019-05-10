@@ -40,11 +40,13 @@ class Rfp extends Model
     {
         return $this->belongsTo(Users::class);
     }
-
+      public function userInfo(){
+    	return $this->belongsTo('App\Models\Core\Users','user_id');
+    }
     // One To Many Relation with Trips
     public function trip()
     {
-        return $this->belongsTo(UserTrip::class, 'user_trip_id');
+        return $this->belongsTo(usertrip::class, 'user_trip_id');
     }
 
 }

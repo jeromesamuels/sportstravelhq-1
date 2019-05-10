@@ -35,7 +35,7 @@
                 </div>
                 
                 <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                    <h4 style="float:right;top: 50px;position: absolute;right: 10px;">{{ count($trip_booking) }}</h4>
+                    <h4 style="float:right;top: 50px;position: absolute;right: 10px;">{{ count($rfps_new) }}</h4>
                 </div>
                
             </div>
@@ -116,9 +116,6 @@
                             <th>Address</th>
                             <th>Zip</th>
                             <th>Type</th>
-                           <!--  <th>Property</th>
-                            <th>Rating</th>
-                            <th>Status</th> -->
                             <th>Action</th>
                         </tr>
                         @foreach ($hotels as $hotel)
@@ -176,17 +173,14 @@
            $(document).on("click", ".Information_click", function(e) {
             e.preventDefault();
                   var title = $(this).attr("title");
-                   
-                  //alert(title);
+                 
                   var id = $(this).data("id");
                   var row_id = "#"+id+"_img";
                   var img = $(row_id).val();
                   var row_idnew = "#"+id+"address";
                   var address=$(row_idnew).val();
                   var row_rating = "#"+id+"rating";
-                  //var rating=$(row_rating).val();
-                  //alert(rating);
-                  
+                 
                   $("#div_hotel_img").attr("src" , img);
                   $("#div_hotel_name").text(title);
                   $('#div_hotel_adress').text(address);
@@ -219,7 +213,7 @@
                                     <h3>Booking</h3>
                                 </div><br />
                                 <div class="body">
-                                       <h1 style="color:#5dbbe0;font-size: 40px;">{{ count($trip_booking)}}</h1>
+                                       <h1 style="color:#5dbbe0;font-size: 40px;">{{ count($rfps_new)}}</h1>
                                    <p>Total Booking </p>
                                 </div>
                             </div>

@@ -101,15 +101,11 @@
         <?php 
             $name=$value->type;
             $currentMonth = date('m');    
-             /*Amount Paid*/
-            
-              $sum_new =$purchases_new;
-             
-             /* pending amount*/
-                   $array[$name] = $purchases_due;
-                   $y = $array[$value->type];
-                   $sum_due =array_sum($array);
-                   $revenu_due=$sum_new-$sum_due;
+            $sum_new =$purchases_new;
+            $array[$name] = $purchases_due;
+            $y = $array[$value->type];
+            $sum_due =array_sum($array);
+            $revenu_due=$sum_new-$sum_due;
             
             ?>
         @endforeach
@@ -225,11 +221,9 @@
                          
                              $purchases_invoices = DB::table('invoices')->where('invoices.hotel_type', '=', $type_all)->sum('invoices.amt_paid');
                          
-                            $array[$type_all] = $purchases_invoices;
-                            $sum=0;
+                             $array[$type_all] = $purchases_invoices;
+                             $sum=0;
 
-                              # code...
-                          
                              $y = $array[$type_all];
                      
                             $sum =array_sum($array);
@@ -260,12 +254,11 @@
                         @foreach($data_hotel as $value)
                         <?php  
                             $date_start = date("Y", strtotime('-2 year'));
-                                   $date_future = date("Y", strtotime('+2 year'));
-                                   $date_year = date("Y");
-                                   for($i=$date_start;$i<=$date_future;$i++){ 
-                                   //echo $i;
-                            
-                                $name=$value->type;
+                               $date_future = date("Y", strtotime('+2 year'));
+                               $date_year = date("Y");
+                               for($i=$date_start;$i<=$date_future;$i++){ 
+                                  
+                               $name=$value->type;
                                    
                                $array[$name] = $purchases_new;
                                if($corporate->group_id==6){
@@ -287,10 +280,9 @@
                             <?php 
                                 $playerson = $y;
                                 $maxplayers = $sum;
-                                 
-                                   $percentage =($purchases / $maxplayers) * 100; // floor (round down) optional
-                                   $type_percent=round($percentage);
-                                  ?>
+                                $percentage =($purchases / $maxplayers) * 100; // floor (round down) optional
+                                $type_percent=round($percentage);
+                            ?>
                             <div class="final_range">
                                 <div class="skills hotel_range" style="width:<?php echo  $type_percent; ?>%">
                                 </div>
@@ -329,9 +321,7 @@
                                 <?php  
                                 foreach($data_all as $all_data){
                                 $type_all=$all_data->type;
-                                
                                 $purchases_all = DB::table('invoices')->where('invoices.hotel_type', '=', $type_all)->sum('invoices.amt_paid');
-          
                                  $hotel_type=$all_data->type; 
                                  $array[$type_all] = $purchases_all;
                                  $y = $array[$type_all];
@@ -372,8 +362,6 @@
                                 $date_future = date("Y", strtotime('+5 year'));
                                 $date_year = date("Y");
                                 for($i=$date_start;$i<=$date_future;$i++){ 
-                                //echo $i;
-                                
                                  $name=$value->type;
                                  $array[$name] = $purchases_new;
                                  if($corporate->group_id==6){

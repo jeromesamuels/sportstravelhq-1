@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\AgreementForm;
@@ -7,12 +6,13 @@ use App\Models\Hotel;
 use App\Models\hotelamenities;
 use App\Models\Rfp;
 use App\Models\Team;
-use App\Models\UserTrip;
+use App\Models\usertrip;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\Controller;
 use Input;
 use Redirect;
 use Validator;
@@ -29,7 +29,7 @@ class UsertripsController extends Controller
     public function __construct()
     {
         parent::__construct();
-        $this->model = new UserTrip();
+        $this->model = new usertrip();
         $this->info  = $this->model->makeInfo($this->module);
         $this->data  = array(
             'pageTitle'  => $this->info['title'],
@@ -220,7 +220,7 @@ class UsertripsController extends Controller
     {
 
         $mode  = isset($_GET['view']) ? 'view' : 'default';
-        $model = new UserTrip();
+        $model = new usertrip();
         $info  = $model::makeInfo('usertrips');
         $data  = array(
             'pageTitle' => $info['title'],
@@ -562,11 +562,11 @@ class UsertripsController extends Controller
         if (Session::get('level') != 4) {
             return redirect(URL("/"));
         }
-        $trips       = UserTrip::where('entry_by', session('uid'))->orderBy('added', 'desc')->get();
+        $trips       = usertrip::where('entry_by', session('uid'))->orderBy('added', 'desc')->get();
         $data_client = User::where('id', session('uid'))->get();
         $purchases   = DB::table('invoices')->sum('invoices.amt_paid');
         $amenities   = hotelamenities::all();
-        $data        = UserTrip::all();
+        $data        = usertrip::all();
         $data_all    = Rfp::all();
         $get_invoice = Rfp::where("status", '!=', 3)->get();
         $data_accept = Rfp::where("status", 2)->get();
@@ -581,11 +581,11 @@ class UsertripsController extends Controller
         if (Session::get('level') != 4) {
             return redirect(URL("/"));
         }
-        $trip        = UserTrip::find($id);
+        $trip        = usertrip::find($id);
         $trip_id_new = Rfp::where("user_trip_id", $trip->id)->get();
         $data2       = DB::table('invoices')->where("id", $trip->id)->get();
         $data_hotel  = Hotel::groupBy('type')->get();
-        $data        = UserTrip::all();
+        $data        = usertrip::all();
         $rfps_new    = Rfp::where('status', 2)->get();
         $hotel_id    = DB::table('tb_users')->where('id', 1)->pluck('hotel_id');
         foreach ($hotel_id as $item_new) {

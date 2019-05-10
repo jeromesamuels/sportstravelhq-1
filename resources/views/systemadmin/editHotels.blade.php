@@ -85,17 +85,11 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Hotel Type</label>
-                                   <!--  <select name="type" class="form-control">
-                                        <option disabled>Select Hotel Type</option>
-                                        <option value="Hilton" {{ $hotel->type == "Hilton" ? "selected" : "" }}>Hilton</option>
-                                        <option value="Marriott" {{ $hotel->type == "Marriott" ? "selected" : "" }}>Marriott</option>
-                                        <option value="IHG" {{ $hotel->type == "IHG" ? "selected" : "" }}>IHG</option>
-                                       
-                                    </select> -->
+                                  
                                     <select class=" form-control" name="type" id="type" >
                                           <option value="{{ $hotel->type }}" selected=""><?php echo ucfirst($hotel->type) ?></option>
                                         <?php 
-                                          $hotel_type=DB::table('hotels')->where('type', '!=' ,$hotel->type )->groupBy('type')->pluck('type');
+                                         
                                           foreach ($hotel_type as $value_type) {
                                            $hotel_type_new=ucfirst($value_type);
                                         ?>
