@@ -46,7 +46,7 @@ class UsertripsController extends Controller
     {
         // Make Sure users Logged
         if (!\Auth::check()) {
-            return redirect('user/login')->with('status', 'error')->with('message', 'You are not login');
+            return redirect('user/login')->with('status', 'error')->with('message', 'You are no Logged in');
         }
         $this->grab($request);
         if ($this->access['is_view'] == 0) {
@@ -61,7 +61,7 @@ class UsertripsController extends Controller
     {
         // Make Sure users Logged
         if (!\Auth::check()) {
-            return redirect('user/login')->with('status', 'error')->with('message', 'You are not login');
+            return redirect('user/login')->with('status', 'error')->with('message', 'You are no Logged in');
         }
         $this->grab($request);
         if ($this->access['is_view'] == 0) {
@@ -200,7 +200,7 @@ class UsertripsController extends Controller
     {
         // Make Sure users Logged
         if (!\Auth::check()) {
-            return redirect('user/login')->with('status', 'error')->with('message', 'You are not login');
+            return redirect('user/login')->with('status', 'error')->with('message', 'You are no Logged in');
         }
         $this->access = $this->model->validAccess($this->info['id'], session('gid'));
         if ($this->access['is_remove'] == 0) {
@@ -506,7 +506,7 @@ class UsertripsController extends Controller
     function getTeam(Request $request, $id = 0)
     {
         if (!\Auth::check()) {
-            return redirect('user/login')->with('status', 'error')->with('message', 'You are not login');
+            return redirect('user/login')->with('status', 'error')->with('message', 'You are no Logged in');
         }
         $this->grab($request);
         if ($this->access['is_view'] == 0) {

@@ -37,12 +37,7 @@
                                     <input type="text" class="form-control" placeholder="Enter IATA number" name="IATA_number" value="{{ $hotel->IATA_number }}">
                                 </div>
                             </div>
-                             <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Hotel Code</label>
-                                    <input type="text" class="form-control" placeholder="Enter IATA number for Hotel" name="IATA_number" value="{{ $hotel->IATA_number }}">
-                                </div>
-                            </div>
+                          
                             <div class="col-sm-6">
                             <div class="form-group">
                                     <label>Service Type</label>
@@ -67,7 +62,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label>Hotel Adress</label>
+                                    <label>Hotel Address</label>
                                     <input type="text" class="form-control" placeholder="Enter Hotel Address" name="address" value="{{ $hotel->address }}">
                                 </div>
                             </div>

@@ -199,7 +199,7 @@ class PagesController extends Controller {
 	{
 		// Make Sure users Logged 
 		if(!\Auth::check()) 
-			return redirect('user/login')->with('status', 'error')->with('message','You are not login');
+			return redirect('user/login')->with('status', 'error')->with('message','You are no Logged in');
 
 		$this->access = $this->model->validAccess($this->info['id'] , session('gid'));
 		if($this->access['is_remove'] ==0) 

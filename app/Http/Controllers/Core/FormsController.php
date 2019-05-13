@@ -39,7 +39,7 @@ class FormsController extends Controller {
 	{
 		// Make Sure users Logged 
 		if(!\Auth::check()) 
-			return redirect('user/login')->with('status', 'error')->with('message','You are not login');
+			return redirect('user/login')->with('status', 'error')->with('message','You are no Logged in');
 		$this->grab( $request) ;
 		if($this->access['is_view'] ==0) 
 			return redirect('dashboard')->with('message', __('core.note_restric'))->with('status','error');				
@@ -262,7 +262,7 @@ class FormsController extends Controller {
 	public function postDelete( Request $request)
 	{
 		if(!\Auth::check()) 
-			return redirect('user/login')->with('msgstatus', 'error')->with('messagetext','You are not login');
+			return redirect('user/login')->with('msgstatus', 'error')->with('messagetext','You are no Logged in');
 
 		$this->access = $this->model->validAccess($this->info['id'] , session('gid'));		
 		if($this->access['is_remove'] ==0) 

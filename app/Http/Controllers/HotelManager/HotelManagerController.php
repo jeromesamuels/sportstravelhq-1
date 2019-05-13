@@ -87,10 +87,11 @@ class HotelManagerController extends Controller {
         } else {
             $agreements = AgreementForm::orderBy('created_at', 'DESC')->get();
         }
-        if ($agreements != null) {
+        $rfp_status='';
+        if ($agreements != '') {
         foreach ($agreements as $agreement) {
                 $rfp_status = Rfp::find($agreement->for_rfp);
-             } 
+         } 
              return view('hotelmanager.viewagreements', compact('agreements', 'rfp_status'));
          }
         else {

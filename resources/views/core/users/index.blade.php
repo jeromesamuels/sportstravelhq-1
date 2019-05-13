@@ -81,6 +81,9 @@
                         <a href="{{ url('core/users/create?return='.$return) }}" class="btn btn-default btn-sm"  
                             title="{{ __('core.btn_create') }}"><i class=" fa fa-plus "></i> Create New </a>
                         @endif
+                        <div class="sbox-tools">
+                       
+                    </div>
                         <div class="btn-group">
                             <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icon-menu5"></i> Bulk Action </button>
                             <ul class="dropdown-menu">
@@ -240,11 +243,18 @@
     $(document).ready(function(){
     	$('.copy').click(function() {
     		var total = $('input[class="ids"]:checkbox:checked').length;
+          if(total != ''){
     		if(confirm('are u sure Copy selected rows ?'))
     		{
+               
     			$('input[name="action_task"]').val('copy');
     			$('#SximoTable').submit();// do the rest here	
+               
     		}
+           }
+            else{
+             alert('Please select the Row')
+            }
     	})	
     	
     });	

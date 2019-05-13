@@ -15,7 +15,7 @@ class tripstatuslogs extends Sximo  {
 
 	public static function querySelect(  ){
 		
-		return "  SELECT trip_status_logs.* FROM trip_status_logs  ";
+		return "  SELECT trip_status_logs.* FROM trip_status_logs ORDER BY added DESC";
 	}	
 
 	public static function queryWhere(  ){

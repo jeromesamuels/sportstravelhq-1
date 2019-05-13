@@ -13,11 +13,11 @@ class TripstatuslogsController extends Controller {
         $this->model = new Tripstatuslogs();
         $this->info = $this->model->makeInfo($this->module);
         $this->access = array();
-        $this->data = array_merge(array('pageTitle' => $this->info['title'], 'pageNote' => $this->info['note'], 'pageModule' => 'tripstatuslogs', 'order' => 'desc', 'return' => self::returnUrl()), $this->data);
+        $this->data = array_merge(array('pageTitle' => $this->info['title'], 'pageNote' => $this->info['note'], 'pageModule' => 'tripstatuslogs', 'return' => self::returnUrl()), $this->data);
     }
     public function index(Request $request) {
         // Make Sure users Logged
-        if (!\Auth::check()) return redirect('user/login')->with('status', 'error')->with('message', 'You are not login');
+        if (!\Auth::check()) return redirect('user/login')->with('status', 'error')->with('message', 'You are no Logged in');
         $this->grab($request);
         if ($this->access['is_view'] == 0) return redirect('dashboard')->with('message', __('core.note_restric'))->with('status', 'error');
         // Render into template
@@ -33,3 +33,4 @@ class TripstatuslogsController extends Controller {
         }
     }
 }
+

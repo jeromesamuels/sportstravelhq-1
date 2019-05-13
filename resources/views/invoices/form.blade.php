@@ -62,7 +62,7 @@
                                 
                             </div>
                             <div class="col-md-4">
-                                <label for="Check Out" class="control-label text-left">Trip Request #: </label>
+                                <label for="Check Out" class="control-label text-left">Trip Request of Proposal #: </label>
                                  <input  type='text' name='rfp_id' id='rfp_id' value='{{ $row['rfp_id'] }}' class='form-control input-sm ' />
                                
                             </div>
@@ -209,8 +209,7 @@
                 <form action="{{ route('invoices.sendInvoice') }}" method="post" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     <input type="hidden" name="invoice_id"  id="invoice_id" value="{{ $row['invoice_id'] }}">
-                 
- -->
+ 
                     <div class="form-group">
                         <label>Enter Email Address </label>
                         <input type="text" class="form-control" name="email" id="email" required="">

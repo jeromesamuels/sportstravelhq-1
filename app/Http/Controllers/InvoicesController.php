@@ -23,7 +23,7 @@ class InvoicesController extends Controller {
         parent::__construct();
         $this->model = new Invoices();
         $this->info = $this->model->makeInfo($this->module);
-        $this->data = array('pageTitle' => $this->info['title'], 'pageNote' => $this->info['note'], 'pageModule' => 'invoices', 'order' => 'desc', 'return' => self::returnUrl());
+        $this->data = array('pageTitle' => $this->info['title'], 'pageNote' => $this->info['note'], 'pageModule' => 'invoices', 'order' => 'ASC', 'return' => self::returnUrl());
     }
     public function index(Request $request) {
         // Make Sure users Logged
@@ -164,7 +164,7 @@ class InvoicesController extends Controller {
         }
         public function destroy($request) {
             // Make Sure users Logged
-            if (!\Auth::check()) return redirect('user/login')->with('status', 'error')->with('message', 'You are not login');
+            if (!\Auth::check()) return redirect('user/login')->with('status', 'error')->with('message', 'You are no Logged in');
             $this->access = $this->model->validAccess($this->info['id'], session('gid'));
             if ($this->access['is_remove'] == 0) return redirect('dashboard')->with('message', __('core.note_restric'))->with('status', 'error');
             // delete multipe rows
