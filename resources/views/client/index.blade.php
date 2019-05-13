@@ -183,16 +183,13 @@
             <?php 
                 $name=$value->type;
                 $currentMonth = date('m');
-                // $year=date("Y",$time);  
-                /*Amount Paid*/
-                 
+                
                  $array[$name] = $purchases;
                   $y = $array[$value->type];
                   $sum_new =array_sum($array);
                 
-                /* pending amount*/
-               
-                 $array[$name] = $purchases_due;
+                
+                  $array[$name] = $purchases_due;
                   $y = $array[$value->type];
                   $sum_due =array_sum($array);
                   $revenu_due=$sum_new-$sum_due;
@@ -227,7 +224,6 @@
                         <h4 >Open Balance</h4>
                         <p style="font-size: 14px;padding-top: 10px;">Total Month</p>
                     </div>
-                   
                     <div class="info-boxes" style="background: #fff; color: #000;float:right;">
                         <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $revenu_due }}</h4>
                     </div>
@@ -237,7 +233,6 @@
                         <h4 >Estimated Revenue</h4>
                         <p style="font-size: 14px;padding-top: 10px;">Total Month</p>
                     </div>
-                   
                     <div class="info-boxes" style="background: #fff; color: #000;float:right;">
                         <h4 style="float:right;top: 50px;position: absolute;right:10px;color: #5dbbe0;">${{ $sum_new }}</h4>
                     </div>
@@ -245,7 +240,6 @@
             </div>
         </div>
     </div>
- 
     <div class="sbox" style=" margin: 0;background: #fff;padding: 20px;margin-bottom: 25px;">
         <div class="row">
             <div class="col-md-6">
@@ -286,7 +280,6 @@
                                 <td> {{ $client_value->email }} </td>
                                 <td>{{ $client_value->phone_number }} </td>
                                 <td>
-                                   
                                     <div class="body">
                                         <div class="hotel_revenue" style=" padding: 20px 0px;">
                                             <p style="float: left;top: -20px;position: relative;color: #44c8f5">Step 1</p>
@@ -296,7 +289,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                              
                                 </td>
                                 <td> 
                                 <a href="#" style="color: #5dbbe0;font-weight: bold;" class="dropdown-toggle" data-toggle="dropdown">View Details <i class="fa fa-chevron-down" aria-hidden="true" style="color: #000;padding-top: 5px;padding-left: 5px;"></i></a>
@@ -315,7 +307,6 @@
         <div class="sbox" style="border-top: none;padding: 0;background: transparent; box-shadow: none;">
             <div class="sbox-content dashboard-container" style=" padding: 0;">
                 <div class="row">
-                  
                     <div class="col-md-4">
                         <div class="widget-box box-shadow" style=" margin: 0;background: #5dbbe0;padding: 20px;">
                             <div class="head">
@@ -323,13 +314,12 @@
                             </div>
                             <br />
                             <div class="body">
-                             <h1 style="color:#fff;font-size: 40px;">${{ $sum_new }}</h1>
+                                <h1 style="color:#fff;font-size: 40px;">${{ $purchases }}</h1>
                                 <h1 style="color:#fff;font-size: 40px;"></h1>
                                 <p style="color:#fff;">Total Revenue till today</p>
                             </div>
                         </div>
                     </div>
-                
                     <div class="col-md-4 col-sm-12">
                         <div class="widget-box box-shadow" style=" margin: 0;background: #fff;padding: 20px;">
                             <div class="head">
@@ -349,7 +339,7 @@
                             </div>
                             <br />
                             <div class="body">
-                                <h1 style="color:#5dbbe0;font-size: 40px;">{{ count($rfps_new) }}</h1>
+                                <h1 style="color:#5dbbe0;font-size: 40px;">{{ count($trip_booking) }}</h1>
                                 <p>Accepted Proposals</p>
                             </div>
                         </div>

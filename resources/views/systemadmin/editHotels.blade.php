@@ -31,6 +31,12 @@
                                     <input type="text" class="form-control" placeholder="Enter Hotel Name" name="hotel_code" value="{{ $hotel->hotel_code }}">
                                 </div>
                             </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>IATA number</label>
+                                    <input type="text" class="form-control" placeholder="Enter IATA number" name="IATA_number" value="{{ $hotel->IATA_number }}">
+                                </div>
+                            </div>
                              <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Hotel Code</label>

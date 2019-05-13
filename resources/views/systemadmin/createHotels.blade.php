@@ -6,7 +6,6 @@
     <h2>Create Hotels</h2>
 </section>
 
-
     <div class="page-content row">
         <div class="page-content-wrapper no-margin">
 

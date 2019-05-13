@@ -56,7 +56,7 @@
                             <div class="sbox-title">
                                
 				                <h1> Invoice #{{$rfp->invoice_id}} </h1>
-                                 <h1> IATA # {{$IATA_number}} </h1>
+                                 <h1> IATA # {{$IATA_number->IATA_number}} </h1>
 				            </div>
                             <h5 style="margin: 20px 0px 10px;">{{ $rfp->hotel_manager }}</h5>
 
@@ -81,7 +81,7 @@
                         </tr>
                         <tr>
                             <td width='30%' class='label-view text-left'><b>Hotel Name :</b></td>
-                            <td>{{ $rfp->hotel_name }}</td>
+                            <td>{{ $hotel_info->name }}</td>
                         </tr>
                         <tr>
                             <td width='30%' class='label-view text-left'><b>Destination :</b></td>
@@ -176,7 +176,7 @@
                             <div class="sbox-title">
 
 				                <h1> Invoice # {{$record_exists->invoice_id}} </h1>
-                                 <h1> IATA # {{$IATA_number}} </h1>
+                                 <h1> IATA # {{$IATA_number->IATA_number}} </h1>
 				            </div>
                             <h5 style="margin: 20px 0px 10px;">{{ $record_exists->hotel_manager }}</h5>
 
@@ -201,7 +201,7 @@
                         </tr>
                         <tr>
                             <td width='30%' class='label-view text-left'><b>Hotel Name :</b></td>
-                            <td>{{ $record_exists->hotel_name }}</td>
+                            <td>{{ $hotel_info->name }}</td>
                         </tr>
                         <tr>
                             <td width='30%' class='label-view text-left'><b>Destination :</b></td>

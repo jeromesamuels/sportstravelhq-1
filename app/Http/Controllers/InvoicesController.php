@@ -2,6 +2,7 @@
 use App\Models\Invoices;
 use App\Models\Hotel;
 use App\Models\usertrips;
+use App\Models\AgreementForm;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use Mail;
 use Vsmoraes\Pdf\Pdf;
+
 class InvoicesController extends Controller {
     private $pdf;
     protected $layout = "layouts.main";
@@ -31,13 +33,27 @@ class InvoicesController extends Controller {
             return redirect('dashboard')->with('message', __('core.note_restric'))->with('status', 'error');
         }
         $currentMonth = date('m');
-        $this->data['purchases'] = Invoices::whereRaw('MONTH(created_at) = ?', [$currentMonth])->sum('invoices.amt_paid');
-        $this->data['purchases_due'] = Invoices::sum('invoices.est_amt_due');
         $this->data['users'] = User::find(session('uid'));
         $this->data['hotel'] = User::find($this->data['users']->hotel_id);
-        $this->data['purchases_all'] = Invoices::sum('invoices.amt_paid');
-        $this->data['trips'] = usertrips::all();
+        $this->data['hotel_type'] = Hotel::find($this->data['users']->hotel_id);
+        $this->data['trips'] = usertrips::whereRaw('MONTH(added) = ?', [$currentMonth])->get();
         $this->data['client'] = User::where('group_id', 4)->get();
+      if ($this->data['users']->group_id == 6) {
+            $this->data['purchases']= Invoices::whereRaw('MONTH(created_at) = ?', [$currentMonth])->where('invoices.hotel_type', '=', $this->data['hotel_type']->type)->sum('invoices.amt_paid');
+            $this->data['purchases_due'] = Invoices::where('invoices.hotel_type', '=', $this->data['hotel']->type)->sum('invoices.est_amt_due');
+            $this->data['purchases_all'] = Invoices::where('invoices.hotel_type', '=', $this->data['hotel']->type)->sum('invoices.amt_paid');
+        }
+        elseif ($this->data['users']->group_id == 5) {
+          
+            $this->data['purchases'] = Invoices::whereRaw('MONTH(created_at) = ?', [$currentMonth])->where('invoices.hotel_name', '=', $this->data['users']->hotel_id)->sum('invoices.amt_paid');
+            $this->data['purchases_due'] = Invoices::where('invoices.hotel_name', '=', $this->data['users']->hotel_id)->sum('invoices.est_amt_due');
+            $this->data['purchases_all'] = Invoices::where('invoices.hotel_name', '=', $this->data['users']->hotel_id)->sum('invoices.amt_paid');
+        }
+        else{
+            $this->data['purchases'] = Invoices::whereRaw('MONTH(created_at) = ?', [$currentMonth])->sum('invoices.amt_paid');
+            $this->data['purchases_due'] = Invoices::sum('invoices.est_amt_due');
+            $this->data['purchases_all'] = Invoices::sum('invoices.amt_paid');
+        }
         return view($this->module . '.index', $this->data);
     }
     function create(Request $request, $id = 0) {
@@ -103,8 +119,25 @@ class InvoicesController extends Controller {
                     $validator = Validator::make($request->all(), $rules);
                     if ($validator->passes()) {
                         $data = $this->validatePost($request);
-                        //dd($data);
-                        $id = $this->model->insert(['invoice_id' => $request->input('invoice_id'), 'check_in' => $request->input('check_in'), 'check_out' => $request->input('check_out'), 'rfp_id' => $request->input('rfp_id'), 'hotel_name' => $request->input('hotel_name'), 'hotel_add' => $request->input('hotel_add'), 'hotel_manager' => $request->input('hotel_manager'), 'email' => $request->input('email'), 'phone' => $request->input('phone'), 'total_room' => $request->input('total_room'), 'room_rate' => $request->input('room_rate'), 'actualized_room_count' => $request->input('actualized_room_count'), 'commissoin_rate' => $request->input('commissoin_rate'), 'payment_mode' => $request->input('payment_mode'), 'est_amt_due' => $request->input('est_amt_due'), 'amt_paid' => $request->input('amt_paid'), 'notes' => $request->input('notes') ]);
+                         $id  = new Invoices();
+                         $id->invoice_id= $request->input('invoice_id');
+                         $id->check_in  = $request->input('check_in');
+                         $id->check_out  = $request->input('check_out');
+                         $id->rfp_id=$request->input('rfp_id');
+                         $id->hotel_name=$request->input('hotel_name');
+                         $id->hotel_add=$request->input('hotel_add');
+                         $id->hotel_manager=$request->input('hotel_manager');
+                         $id->email=$request->input('email');
+                         $id->phone=$request->input('phone');
+                         $id->total_room=$request->input('total_room');
+                         $id->room_rate=$request->input('room_rate');
+                         $id->actualized_room_count=$request->input('actualized_room_count');
+                         $id->commissoin_rate=$request->input('commissoin_rate');
+                         $id->payment_mode=$request->input('payment_mode');
+                         $id->est_amt_due=$request->input('est_amt_due');
+                         $id->amt_paid=$request->input('amt_paid');
+                         $id->notes=$request->input('notes');
+                         $id->save();
                         /* Insert logs */
                         $this->model->logs($request, $id);
                         if (!is_null($request->input('apply'))) return redirect($this->module . '/' . $request->input('invoice_id') . '/edit?' . $this->returnUrl())->with('message', __('core.note_success'))->with('status', 'success');
@@ -183,13 +216,20 @@ class InvoicesController extends Controller {
                 return Redirect::back()->with('message', __('core.note_error'))->with('status', 'error')->withErrors($validator)->withInput();
             }
         }
+
         function getHotels() {
             $hotel_id = $_REQUEST['id'];
             $hotel = Hotel::find($hotel_id);
-            $users = DB::table('tb_users')->where('hotel_id', $hotel_id)->first();
+            $users = User::where('hotel_id', $hotel_id)->first();
             $hotel_info = ['address' => $hotel->address, 'phone' => $users->phone_number, 'name' => $users->first_name . ' ' . $users->last_name, 'email' => $users->email];
             return json_encode($hotel_info);
         }
+         function zipHotel() {
+            $zipcode = $_REQUEST['from_zip'];
+            $hotel = Hotel::where('zip',$zipcode)->get();
+            return json_encode($hotel);
+        }
+
         function sendInvoice(Request $request) {
             $invoice_id = $request->input('invoice_id');
             $email = $request->input('email');
@@ -198,11 +238,10 @@ class InvoicesController extends Controller {
                 $hotel = Hotel::find($rfp->hotel_name);
                 $hname = $hotel->name;
             }
-            $users = DB::table('tb_users')->where('id', 1)->first();
+            $users = User::where('id', 1)->first();
             /*send an invoice*/
             $to = [$email, $users->email];
             \Mail::send('user.emails.invoicenewMail', compact('rfp', 'hname'), function ($message) use ($rfp, $to) {
-                //$message->from('SportTravelHQ');
                 $message->to($to)->subject('Uploaded Invoice');
             });
             return Redirect::back();
@@ -214,7 +253,7 @@ class InvoicesController extends Controller {
             $datae = array();
             $hotel = array();
             foreach ($myaar as $key => $value) {
-                $rfps = DB::table('invoices')->where('id', $value)->get();
+                $rfps = Invoices::where('id', $value)->get();
                 foreach ($rfps as $values) {
                     $hotel_id = $values->hotel_name;
                     $hotels = Hotel::find($hotel_id);
@@ -222,7 +261,7 @@ class InvoicesController extends Controller {
                 $datae[] = $rfps;
                 $hotel[] = $hotels;
             }
-            $users = DB::table('tb_users')->where('id', 1)->first();
+            $users = User::where('id', 1)->first();
             /*send an invoice*/
             $html = view('user.emails.loadPdf', compact('datae', 'hotel'))->render();
             $pdf = $this->pdf->load($html)->output();

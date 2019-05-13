@@ -12,21 +12,18 @@
              @foreach($data_hotel as $value)
                 <?php 
                         $name=$value->type;
-                    /*Amount Paid*/
-                         $array[$name] = $purchases;
-                         $y = $array[$value->type];
-                         $sum_new =array_sum($array);
-                      
-
+                        $array[$name] = $purchases;
+                        $y = $array[$value->type];
+                        $sum_new =array_sum($array);
                     /* pending amount*/
                         $array[$name] = $purchases_due;
-                         $y = $array[$value->type];
-                         $sum_due =array_sum($array);
-                         $revenu_due=$sum_new-$sum_due;
-                          $sum =array_sum($array);
+                        $y = $array[$value->type];
+                        $sum_due =array_sum($array);
+                        $revenu_due=$sum_new-$sum_due;
+                        $sum =array_sum($array);
                     
-                    ?>
-                @endforeach
+                ?>
+            @endforeach
                 <div class="row" style="border-bottom:1px solid #eee;">
                     <h2 style="padding-bottom: 20px;">User Overview</h2>
                 </div>

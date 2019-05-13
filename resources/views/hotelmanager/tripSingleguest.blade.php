@@ -675,58 +675,13 @@
                               <button class="btn btn-primary" data-toggle="modal" data-target="#myModal" >  Bid Now </button>
                            @endif
                             
-                           
-                            
-                            <!--  <a href="javascript:window.print()">Print</a>  -->
+                          
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="sbox" style="border-top: none;padding: 0;background: transparent; box-shadow: none;">
-            <div class="sbox-content dashboard-container" style=" padding: 0;">
-                <div class="row">
-                  
-                    <div class="col-md-4">
-                        <div class="widget-box box-shadow" style=" margin: 0;background: #5dbbe0;padding: 20px;">
-                            <div class="head">
-                                <h3 style="color:#fff;">Revenue</h3>
-                            </div>
-                            <br />
-                            <div class="body">
-                                <h1 style="color:#fff;font-size: 40px;">${{ $purchases }}</h1>
-                                <p style="color:#fff;">Total Revenue till today</p>
-                            </div>
-                        </div>
-                    </div>
-                   
-                    <div class="col-md-4 col-sm-12">
-                        <div class="widget-box box-shadow" style=" margin: 0;background: #fff;padding: 20px;">
-                            <div class="head">
-                                <h3>Booking</h3>
-                            </div>
-                            <br />
-                            <div class="body">
-                                <h1 style="color:#5dbbe0;font-size: 40px;">{{ count($trip_booking)}}</h1>
-                                <p>Total Booking </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-12">
-                        <div class="widget-box box-shadow" style=" margin: 0;background: #fff;padding: 20px;">
-                            <div class="head">
-                                <h3 >Trips</h3>
-                            </div>
-                            <br />
-                            <div class="body">
-                                <h1 style="color:#5dbbe0;font-size: 40px;">{{ count($rfps_new) }}</h1>
-                                <p>Accepted Proposals</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     </div>
 </div>
 <script type="text/javascript">

@@ -179,32 +179,6 @@
     <div class="page-content-wrapper no-margin">
         <div class="sbox" style="border-top: none">
             <div class="sbox-content dashboard-container">
-                <?php 
-                   
-                    foreach($data_hotel as $value){
-                       $name=$value->type;
-                    
-                    $currentMonth = date('m');
-                       // $year=date("Y",$time);  
-                    /*Amount Paid*/
-                  
-                        $array[$name] = $purchases;
-                         $y = $array[$value->type];
-                         $sum_new =array_sum($array);
-                    
-                    /* pending amount*/
-              
-                        $array[$name] = $purchases_due;
-                         $y = $array[$value->type];
-                         $sum_due =array_sum($array);
-                         $revenu_due=$sum_new-$sum_due;
-                    
-                    }
-                    
-                     /*Total Booking of this month*/
-                  
-                      
-                    ?>
                 <div class="row" style="border-bottom:1px solid #eee;">
                     <h2 style="padding-bottom: 20px;">Client Overview</h2>
                 </div>
@@ -224,7 +198,7 @@
                             <p style="font-size: 14px;padding-top: 10px;">This Month</p>
                         </div>
                         <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                            <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $revenu_due }}</h4>
+                            <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $purchases }}</h4>
                         </div>
                     </div>
                     <div class="col-md-3" style="border-right: 1px solid #c3bfbf;">
@@ -232,9 +206,8 @@
                             <h4 >Open Balance</h4>
                             <p style="font-size: 14px;padding-top: 10px;">This Month</p>
                         </div>
-                       
                         <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                            <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $revenu_due }}</h4>
+                            <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $purchases }}</h4>
                         </div>
                     </div>
                     <div class="col-md-3" style="border-right: 1px solid #c3bfbf;">
@@ -242,9 +215,8 @@
                             <h4 >Estimated Revenue</h4>
                             <p style="font-size: 14px;padding-top: 10px;">This Month</p>
                         </div>
-                      
                         <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                            <h4 style="float:right;top: 50px;position: absolute;right:10px;color: #5dbbe0;">${{ $sum_new }}</h4>
+                            <h4 style="float:right;top: 50px;position: absolute;right:10px;color: #5dbbe0;">${{ $purchases_due }}</h4>
                         </div>
                     </div>
                 </div>
@@ -252,13 +224,6 @@
         </div>
     </div>
 </div>
-<?php 
-    foreach($data_hotel as $value){
-       $name=$value->type;
-        $array[$name] = $purchases;
-    }
-      
-    ?>
 <div class="page-content row">
     <div class="page-content-wrapper no-margin">
         <div class="row">
@@ -293,31 +258,26 @@
                                         <th> Action </th>
                                     </tr>
                                 </thead>
-                               
                                 @foreach($clientTrips as $client_value)
-                                 
                                 <tbody>
                                     <tr style="border-bottom-style: dashed;border-color: #eee;">
                                         <td>{{ $client_value->added }}</td>
                                         <td> {{$client_value->added }} </td>
                                         <td>{{ $client_value->id }} </td>
-                                     <td>
-                                      
-                                      @foreach($data_rfps as $data_new)
-                                        
-                                       <?php 
-                                       $rfp_status=$data_new->status;
-                                        if($rfp_status== 1){ ?>
-                                      
-                                        <div class="body">
-                                            <div class="hotel_revenue" style=" padding: 20px 0px;">
-                                                <p style="float: left;top: -20px;position: relative;color: #44c8f5">Step 3</p>
-                                                <p style="float: right;top: -20px;position: relative;font-size: 12px;color: #8a8888">Hotel Manager Send a Proposal</p>
-                                                <div class="final_range">
-                                                    <div class="skills hotel_range" style="width:25%;background-color: #44c8f5;">
+                                        <td>
+                                            @foreach($data_rfps as $data_new)
+                                            <?php 
+                                                $rfp_status=$data_new->status;
+                                                 if($rfp_status== 1){ ?>
+                                            <div class="body">
+                                                <div class="hotel_revenue" style=" padding: 20px 0px;">
+                                                    <p style="float: left;top: -20px;position: relative;color: #44c8f5">Step 3</p>
+                                                    <p style="float: right;top: -20px;position: relative;font-size: 12px;color: #8a8888">Hotel Manager Send a Proposal</p>
+                                                    <div class="final_range">
+                                                        <div class="skills hotel_range" style="width:25%;background-color: #44c8f5;">
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
                                             </div>
                                             <?php } 
                                                 elseif($rfp_status== 2){ ?>
@@ -349,8 +309,7 @@
                                             <div class="body">
                                                 <div class="hotel_revenue" style=" padding: 20px 0px;">
                                                     <p style="float: left;top: -20px;position: relative;color: #000">Step 9</p>
-                                                    <p style="float: right;top: -20px;position: relative;font-size: 12px;color: #8a8888">Hotel manager upload the billing receipt
-</p>
+                                                    <p style="float: right;top: -20px;position: relative;font-size: 12px;color: #8a8888">Hotel manager upload the billing receipt</p>
                                                     <div class="final_range">
                                                         <div class="skills hotel_range" style="width:99%;">
                                                         </div>
@@ -383,7 +342,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                              <?php } 
+                                            <?php } 
                                                 elseif($rfp_status== 8){ 
                                                 ?>
                                             <div class="body">
@@ -411,7 +370,7 @@
                                             </div>
                                             <?php }  ?>
                                             @endforeach
-                                    </td>
+                                        </td>
                                         <td>
                                             <div class="dropdown">
                                                 <button class="btn btn-light btn-xs dropdown-toggle" type="button" data-toggle="dropdown"> View Trip </button>
@@ -422,7 +381,7 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                               @endforeach 
+                                @endforeach 
                             </table>
                             {{ $clientTrips->links() }}
                         </div>
@@ -436,35 +395,34 @@
                     </div>
                     <div id="pages" >
                         <div id="information" class="page"  >
-
                             <?php 
-                            $id=app('request')->segment(2);
-
-                                 foreach($data_client as $item) {
-                                    $data_client_new = $item;
-                                 
-                                      $date1 = $data_client_new->created_at;
-                                                      $date2 = date("Y/m/d");
-                                                     
-                                                      $diff = abs(strtotime($date2) - strtotime($date1));
-                                                     
-                                                      $years = floor($diff / (365*60*60*24));
-                                                      $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
-                                                      $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
-                                                      
-                                                      if( $years != 0 && $months != 0 && $days != 0){
-                                                       $membership=$years.' Year'.' '.$months.' Months'.' '.$days.' Days'.'.';
-                                                     }
-                                                      elseif( $years != 0 && $months != 0 ){
-                                                      $membership=$years.' Year'.' '.$months.' Months'.'.';
-                                                     }
-                                                     elseif( $years != 0 && $days != 0 ){
-                                                       $membership=$years.' Year'.' '.$days.' Days'.'.';
-                                                     }
-                                                      else{
-                                                      $membership= $days.' Days'.'.';
-                                                     }
-                                  ?>
+                                $id=app('request')->segment(2);
+                                
+                                     foreach($data_client as $item) {
+                                        $data_client_new = $item;
+                                     
+                                          $date1 = $data_client_new->created_at;
+                                                          $date2 = date("Y/m/d");
+                                                         
+                                                          $diff = abs(strtotime($date2) - strtotime($date1));
+                                                         
+                                                          $years = floor($diff / (365*60*60*24));
+                                                          $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+                                                          $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+                                                          
+                                                          if( $years != 0 && $months != 0 && $days != 0){
+                                                           $membership=$years.' Year'.' '.$months.' Months'.' '.$days.' Days'.'.';
+                                                         }
+                                                          elseif( $years != 0 && $months != 0 ){
+                                                          $membership=$years.' Year'.' '.$months.' Months'.'.';
+                                                         }
+                                                         elseif( $years != 0 && $days != 0 ){
+                                                           $membership=$years.' Year'.' '.$days.' Days'.'.';
+                                                         }
+                                                          else{
+                                                          $membership= $days.' Days'.'.';
+                                                         }
+                                      ?>
                             <div class="body">
                                 <img alt="" src="../uploads/users/{{ $data_client_new->avatar }}" style=" margin: 20px 0px;" id="div_corporate_img_main" border="0" width="100" height="100" class="img-circle" />
                                 <div class="hotel-info-section" >

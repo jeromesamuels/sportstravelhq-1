@@ -17,4 +17,7 @@ class Rfp extends Model
     	return $this->belongsTo(Models\Rfp::class);
     }
 
+    public function usertripInfo(){
+        return $this->belongsTo('App\Models\usertrips','user_trip_id');
+    }
 }

@@ -12,58 +12,82 @@ use App\User;
 use App\Models\Hotel;
 use App\Models\Rfp;
 use Mail;
+
 class TripsController extends Controller {
     public function __construct() {
         if (Session::has('level')) {
             if (Session::get('level') != 5) return redirect()->back();
         } else return redirect()->back();
     }
+
     public function index() {
-        $trips = usertrips::orderBy('added', 'desc')->get();
+        $trips = usertrips::with('tripuser')->orderBy('added', 'desc')->get();
         $date_month = date('m');
         $trip_month = usertrips::whereRaw('MONTH(added) = ?', $date_month)->get();
         $user = User::find(session('uid'));
-        foreach ($trips as $trip) {
-            $data_client = DB::table('tb_users')->where('id', $trip->entry_by)->get();
-        }
+       
         if (session('level') == 1) {
             $rfps = Rfp::all();
-            $data_all = DB::table('rfps')->get();
-            $purchases = DB::table('invoices')->sum('invoices.amt_paid');
+            $data_all =Rfp::all();
+            $purchases = invoices::sum('invoices.amt_paid');
+            $active_rfp = Rfp::where("status", '!=', 3)->get();
+            $accepted_rfp =  Rfp::where("status", 2)->get();
         } else {
-            $rfps = Rfp::where('user_id', session('uid'))->orderBy('updated_at', 'desc')->get();
-            $data_all = DB::table('rfps')->where('user_id', session('uid'))->get();
+            $rfps = Rfp::with('usertripInfo','usertripInfo.tripuser')->where('user_id', session('uid'))->orderBy('updated_at', 'desc')->get();
+            $data_all = Rfp::where('user_id', session('uid'))->get();
             $purchases = Invoices::where('invoices.hotel_name', $user->hotel_id)->sum('invoices.amt_paid');
+            $active_rfp = Rfp::where("status", '!=', 3)->where('user_id', session('uid'))->get();
+            $accepted_rfp = Rfp::where("status", 2)->where('user_id', session('uid'))->get();
         }
-        $active_rfp = DB::table('rfps')->get()->where("status", '!=', 3)->where('user_id', session('uid'))->all();
-        $trip_booking = DB::table('user_trips')->get()->where("status", 6)->where('user_id', session('uid'))->all();
-        $accepted_rfp = DB::table('rfps')->get()->where("status", 2)->where('user_id', session('uid'))->all();
+        $trip_booking = usertrips::where("status", 6)->get();
         $data_grp = User::where('group_id', 4)->get();
         $amenities = hotelamenities::all();
-        return view('hotelmanager.viewtrips', compact('trips', 'amenities', 'rfps', 'trip_booking', 'active_rfp', 'accepted_rfp', 'data_all', 'purchases', 'data_grp', 'data_client', 'trip_month'));
+        return view('hotelmanager.viewtrips', compact('trips', 'amenities', 'rfps', 'trip_booking', 'active_rfp', 'accepted_rfp', 'data_all', 'purchases', 'data_grp', 'trip_month'));
     }
+
     public function show($id) {
-        $trip = usertrips::find($id);
+        $trip = usertrips::with('tripuser')->find($id);
         $rfp = Rfp::where('user_trip_id', '=', $id)->where('user_id', '=', session('uid'))->first();
-        $trip_id_detail = DB::table('rfps')->where("user_trip_id", $trip->id)->get();
-        $invoice = DB::table('invoices')->where("id", $trip->id)->get();
-        $data_hotel = DB::table('hotels')->groupBy('type')->get();
-        foreach ($data_hotel as $value) {
-            $name = $value->type;
-            $purchases = DB::table('invoices')->where('invoices.hotel_type', '=', $name)->sum('invoices.amt_paid');
+        $trip_id =Rfp::where("user_trip_id", $trip->id)->first();
+        if($trip_id != null){
+           $invoice    = Invoices::where('rfp_id',$trip_id->id)->first();
         }
-        $trip_booking = DB::table('user_trips')->get();
-        $rfps_new = DB::table('rfps')->where('status', 2)->get();
+        else{
+          $invoice='';  
+        }
+        $data_hotel = Hotel::groupBy('type')->get();
         $user = User::find(session('uid'));
         $hotel = Hotel::find($user->hotel_id);
-        if (session('uid') == 5) {
-            DB::table('user_trips')->where('id', $id)->update(['status' => 6]);
+      
+        $trip_booking = usertrips::all();
+        if (session('level') == 1) {
+          $rfps_new = Rfp::with('usertripInfo','usertripInfo.tripuser')->orderBy('updated_at', 'desc')->get();
+          $purchases = Invoices::sum('invoices.amt_paid');
         }
-        return view('hotelmanager.tripsingle', compact('trip', 'rfp', 'trip_id_detail', 'invoice', 'trip_booking', 'rfps_new', 'hotel', 'purchases'));
+        elseif($user->group_id==6){
+           $rfps_new = Rfp::with('usertripInfo','usertripInfo.tripuser')->orderBy('updated_at', 'desc')->get(); 
+            foreach ($data_hotel as $value) {
+            $name = $value->type;
+            $purchases = Invoices::where('invoices.hotel_type', '=', $name)->sum('invoices.amt_paid');
+           }  
+        }
+        else{
+           $rfps_new = Rfp::with('usertripInfo','usertripInfo.tripuser')->where('user_id', session('uid'))->orderBy('updated_at', 'desc')->get(); 
+            $purchases = Invoices::where('invoices.hotel_name', '=', $user->hotel_id)->sum('invoices.amt_paid');
+
+        }
+       
+        if (session('uid') == 5) {
+            usertrips::where('id', $id)->update(['status' => 6]);
+        }
+        
+        return view('hotelmanager.tripsingle', compact('trip', 'rfp', 'trip_id', 'invoice', 'trip_booking', 'rfps_new', 'hotel', 'purchases'));
     }
+
     public function invoice($invoice_id) {
         return view('hotelmanager.tripInvoice');
     }
+
     public function filterByAmenities(Request $request) {
         if ($request->data) {
             $trips = usertrips::join('trip_amenities', 'trip_amenities.trip_id', '=', 'user_trips.id')->whereIn('trip_amenities.amenity_id', explode(',', $request->data))->all();
@@ -72,6 +96,7 @@ class TripsController extends Controller {
         }
         return view('hotelmanager.table')->withTrips($trips);
     }
+
     public function uploadRoomingList(Request $request) {
         $this->validate($request, ['trip_id' => 'numeric|min:0']);
         $file = $request->file('rooming_file')->getClientOriginalName();
@@ -79,12 +104,8 @@ class TripsController extends Controller {
         $extension = $request->file('rooming_file')->getClientOriginalExtension();
         $uploadSuccess = $request->file('rooming_file')->move($destinationPath, $file);
         if ($extension == 'csv' || $extension == 'xls') {
-            $hotel_id = Rfp::where('id', $request->trip_id)->get();
-            foreach ($hotel_id as $hotel_id_new) {
-            }
-            $user_email = User::where('id', $hotel_id_new->user_id)->pluck('email');
-            foreach ($user_email as $user_email_new) {
-            }
+            $hotel_id_new = Rfp::find($request->trip_id);
+            $user_email_new = User::find($hotel_id_new->user_id);
             $roomListing = new Roomlisting();
             $roomListing->cordinator_id = Session::get('uid');
             $roomListing->hmanager_id = $hotel_id_new->user_id;

@@ -192,7 +192,7 @@
                 </div>
                
                 <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                    <h3 style="float:right;top: 30px;position: absolute;right: 25px;">{{ count($data_submit) }}</h3>
+                    <h3 style="float:right;top: 30px;position: absolute;right: 25px;">{{ count($trips) }}</h3>
                 </div>
                 <div class="progress" style="margin-bottom: 10px;height: 6px; ">
                     <div class="progress-bar" role="progressbar" aria-valuenow="70"
@@ -277,7 +277,7 @@
                    
                     <div class="body">
                        <h1 style="color:#fff;font-size: 40px;">${{ $purchases }}</h1>
-                       <p style="color:#fff;">Total Revenue this month</p>
+                       <p style="color:#fff;">Total Revenue </p>
                     </div>
                 </div>
             </div>

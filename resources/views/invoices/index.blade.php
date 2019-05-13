@@ -83,8 +83,9 @@
 							 <li><a href="javascript://ajax"  onclick="SximoDelete();" class="tips" title="{{ __('core.btn_remove') }}"><i class="fa fa-trash-o"></i>
 							Remove Selected </a></li>
 						@endif 
+						@if(session('level')==1)
 						 <li><a href="#myModal" class="tips multiple_invoices" id="custId_new" data-toggle="modal" data-id="" title="" ><i class="fa fa-paper-plane" aria-hidden="true"></i> Send Email </a> </li>
-
+                       @endif
 				          
 				        </ul>
 				    </div>    
@@ -144,7 +145,7 @@
 		        <tbody>        						
 		            @foreach ($rowData as $row)
 		            <?php 
-		            
+		            if($users->group_id==5){
                     if($row->hotel_name==$users->hotel_id){
 
 					?>
@@ -153,7 +154,7 @@
 							<td ><input type="checkbox" class="ids minimal-green send_invoices" name="ids[]" value="{{ $row->id }}" />  </td>
 							<td > {{ $row->created_at }} </td>
 							<td > {{ $row->updated_at }} </td>	
-							<td > {{ $hotel->type}} </td>	
+							<td > {{ $hotel_type->type}} </td>	
 							<td > {{ $row->commissoin_rate }} </td>			
 						 @foreach ($tableGrid as $field)
 							 @if($field['view'] =='1')
@@ -189,7 +190,8 @@
 							
 		                </tr>
 						<?php 
-                        }
+                        }else{}
+                    }
 						elseif(session('level')==1 || session('level')==2){ ?>
 						    <tr style="border-bottom-style: dashed;border-color: #eee;">
 							<td> {{ ++$i }} </td>
@@ -231,14 +233,14 @@
 							
 		                </tr>
 		               <?php } else{ 
-                         if($row->hotel_type==$hotel_type_new){
+                         if($row->hotel_type==$hotel_type->type){
 		               	?>
                                <tr style="border-bottom-style: dashed;border-color: #eee;">
 							<td> {{ ++$i }} </td>
 							<td ><input type="checkbox" class="ids minimal-green send_invoices" name="ids[]" value="{{ $row->id }}" />  </td>
 							<td > {{ $row->created_at }} </td>
 							<td > {{ $row->updated_at }} </td>	
-							<td > {{ $hotel_type_new }} </td>	
+							<td > {{ $hotel_type->type }} </td>	
 							<td > {{ $row->commissoin_rate }} </td>			
 						 @foreach ($tableGrid as $field)
 							 @if($field['view'] =='1')

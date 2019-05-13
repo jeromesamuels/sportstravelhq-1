@@ -4,12 +4,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Roomlisting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+
 class BillingController extends Controller {
     public function __construct() {
         if (Session::has('level')) {
             if (Session::get('level') != 5) return redirect()->back();
         } else return redirect()->back();
     }
+
     public function showRoomListing() {
         if (Session::get('level') != 1) {
             $roomListings = Roomlisting::where('hmanager_id', Session::get('uid'))->orderBy('created_at', 'desc')->get();
@@ -18,6 +20,7 @@ class BillingController extends Controller {
         }
         return view('hotelmanager.viewRoomListing', compact('roomListings'));
     }
+
     public function downloadRoomListing($id) {
         $roomListing = Roomlisting::find($id);
         if (Session::get('uid') != $roomListing->hmanager_id && Session::get('level') != 1) {
@@ -30,6 +33,7 @@ class BillingController extends Controller {
             return $response;
         }
     }
+
     public function destroyRoomListing($id) {
         Roomlisting::find($id)->delete();
         Session::flash('success', 'Record Deleted Successfully');

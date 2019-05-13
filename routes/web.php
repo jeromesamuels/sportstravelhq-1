@@ -144,6 +144,7 @@ Route::post('invoices/hotel', 'InvoicesController@getHotels');
 Route::post('sendInvoice', 'InvoicesController@sendInvoice')->name('invoices.sendInvoice');
 Route::post('multipleInvoice', 'InvoicesController@multipleInvoice')->name('invoices.multipleInvoice');
 Route::post('/trips/recordFilter', 'UsertripsController@recordFilter');
+Route::post('zipHotel', 'InvoicesController@zipHotel');
 
 Route::get('get-location-from-ip', function () {
     $ip   = \Request::ip();

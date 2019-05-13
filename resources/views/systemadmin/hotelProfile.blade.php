@@ -143,14 +143,11 @@
                                     <th>Event Date</th>
                                     <th>Trip #</th>
                                     <th>Progress</th>
-                                    <!--  <th>Property</th>
-                                        <th>Rating</th>
-                                        <th>Status</th> -->
                                     <th>Action</th>
                                 </tr>
                                
                                 @foreach ($hotel_trips as $hotel_trips_new)
-                                <?php 
+                                   <?php 
                                     $rfpUserIds = [];
                                     $rfpUserIds[count($rfpUserIds)] = session('uid');
                                     $rfp_status=$hotel_trips_new->status;

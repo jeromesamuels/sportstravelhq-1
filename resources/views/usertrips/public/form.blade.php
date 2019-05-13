@@ -12,9 +12,7 @@
     </ul>
 </div>
 @endif
-@php 
-ini_set('max_execution_time', 3000);
-@endphp
+
 <style type="text/css">
     .error {
     border: 2px solid red;
@@ -75,7 +73,6 @@ ini_set('max_execution_time', 3000);
     transform: rotate(45deg);
     }
     .rs-container *{box-sizing:border-box;-webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.rs-container{font-family:Arial,Helvetica,sans-serif;height:45px;position:relative}.rs-container .rs-bg,.rs-container .rs-selected{background-color:#eee;border:1px solid #ededed;height:10px;left:0;position:absolute;top:5px;width:100%;border-radius:3px}.rs-container .rs-selected{background-color:#00b3bc;border:1px solid #00969b;transition:all .2s linear;width:0}.rs-container.disabled .rs-selected{background-color:#ccc;border-color:#bbb}.rs-container .rs-pointer{background-color:#fff;border:1px solid #bbb;border-radius:4px;cursor:pointer;height:20px;left:-10px;position:absolute;top:0;transition:all .2s linear;width:30px;box-shadow:inset 0 0 1px #FFF,inset 0 1px 6px #ebebeb,1px 1px 4px rgba(0,0,0,.1)}.rs-container.disabled .rs-pointer{border-color:#ccc;cursor:default}.rs-container .rs-pointer::after,.rs-container .rs-pointer::before{content:'';position:absolute;width:1px;height:9px;background-color:#ddd;left:12px;top:5px}.rs-container .rs-pointer::after{left:auto;right:12px}.rs-container.sliding .rs-pointer,.rs-container.sliding .rs-selected{transition:none}.rs-container .rs-scale{left:0;position:absolute;top:5px;white-space:nowrap}.rs-container .rs-scale span{float:left;position:relative}.rs-container .rs-scale span::before{background-color:#ededed;content:"";height:8px;left:0;position:absolute;top:10px;width:1px}.rs-container.rs-noscale span::before{display:none}.rs-container.rs-noscale span:first-child::before,.rs-container.rs-noscale span:last-child::before{display:block}.rs-container .rs-scale span:last-child{margin-left:-1px;width:0}.rs-container .rs-scale span ins{color:#333;display:inline-block;font-size:12px;margin-top:20px;text-decoration:none}.rs-container.disabled .rs-scale span ins{color:#999}.rs-tooltip{color:#333;width:auto;min-width:60px;height:30px;background:#fff;border:1px solid #00969b;border-radius:3px;position:absolute;transform:translate(-50%,-35px);left:13px;text-align:center;font-size:13px;padding:6px 10px 0}.rs-container.disabled .rs-tooltip{border-color:#ccc;color:#999}
-    
     #map {
     height: 100%;
     }
@@ -90,15 +87,7 @@ ini_set('max_execution_time', 3000);
     font-size: 15px;
     font-weight: 300;
     }
-    #infowindow-content .title {
-    font-weight: bold;
-    }
-    #infowindow-content {
-    display: none;
-    }
-    #map #infowindow-content {
-    display: inline;
-    }
+  
     .pac-card {
     margin: 10px 10px 0 0px;
     border-radius: 2px 0 0 2px;
@@ -202,7 +191,6 @@ ini_set('max_execution_time', 3000);
     .m-header--fixed .m-body {
     padding-top: 20px !important;
     }
-
     .form-group .form-control {
     width: 100%;
     border: none;
@@ -258,7 +246,22 @@ ini_set('max_execution_time', 3000);
     form .form-group {
     margin-bottom: 1.5rem;
     }
-  
+    .searchcontainer{
+    background: #5dbbe0;
+    margin: 0px 30px;
+    width: 100%;
+    padding: 20px;
+    color: #fff;
+    }
+    .searchcontainer h4{
+    color: #fff; 
+    padding-bottom: 15px;
+    font-size: 16px;
+    cursor: pointer;
+    }
+    .gm-style .gm-style-iw-t::after {
+    background: #5dbbe0;
+    }
 </style>
 <div class="row book-hotel-block">
 <legend> Book a hotel now! </legend>
@@ -289,7 +292,6 @@ ini_set('max_execution_time', 3000);
         <label for="Zip" class=" control-label col-md-3 text-left"> Zip 
         <input  type='text' autocomplete='off' name='from_zip' maxlength="5" id='from_zip' value='{{ $row['from_zip'] }}' required class='form-control input-sm ' /> 
         </label>
-       
     </div>
     <div class="form-group" >
         <div class="col-md-11">
@@ -311,7 +313,6 @@ ini_set('max_execution_time', 3000);
             <label for="City" class=" control-label col-md-3 text-left"> City 
             <input type='text' autocomplete='off' name='to_city' id='to_city' value='{{ $row['to_city'] }}' class='form-control input-sm' /> 
             </label>
-            
             <label for="Zip" class=" control-label col-md-3 text-left"> Zip 
             <input  type='text' autocomplete='off' name='to_zip' id='to_zip' value='{{ $row['to_zip'] }}' class='form-control input-sm' /> 
             </label>
@@ -397,18 +398,26 @@ ini_set('max_execution_time', 3000);
             <div id="title">
                 Autocomplete search Address
             </div>
+            <div class="searchcontainer"></div>
         </div>
         <div id="map" class="trip-map" style="height:400px;"></div>
-        <div id="infowindow-content">
+        <!--  <div id="infowindow-content">
             <img src="" width="16" height="16" id="place-icon">
             <span id="place-name"  class="title"></span><br>
             <span id="place-address"></span>
-        </div>
+            </div> -->
         <script>
+            var autocomplete = '';
+            var map = '';
+            var infowindow;
+            var temp_infowindow = "";
+            var markers = [];
+            var locations=[];
             function initMap() {
-              var map = new google.maps.Map(document.getElementById('map'), {
+            var map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: 25.790654, lng: -80.1300455},
-                zoom: 13
+                zoom: 4,
+            
               });
               var card = document.getElementById('pac-card');
               var input = document.getElementById('from_address_1');
@@ -429,36 +438,20 @@ ini_set('max_execution_time', 3000);
               autocomplete2.setFields(
                   ['address_components', 'geometry', 'icon', 'name']);
             
-              var infowindow = new google.maps.InfoWindow();
+               infowindow = new google.maps.InfoWindow();
               var infowindowContent = document.getElementById('infowindow-content');
-              infowindow.setContent(infowindowContent);
-              var marker = new google.maps.Marker({
-                map: map,
-                anchorPoint: new google.maps.Point(0, -29)
-              });
-            
-              
+          
                 google.maps.event.addListener(autocomplete, 'place_changed', function() {
             
                 infowindow.close();
-                marker.setVisible(false);
+               // marker.setVisible(false);
                 var place = autocomplete.getPlace();
                 if (!place.geometry) {
                   window.alert("No details available for input: '" + place.name + "'");
                   return;
                 }
                 
-                if (place.geometry.viewport) {
-                  map.fitBounds(place.geometry.viewport);
-                 
-                } else {
-                  map.setCenter(place.geometry.location);
-                 
-                  map.setZoom(17);  // Why 17? Because it looks good.
-                }
-                marker.setPosition(place.geometry.location);
-               
-                marker.setVisible(true);
+            
             
                 var address = '';
                 if (place.address_components ) {
@@ -469,7 +462,7 @@ ini_set('max_execution_time', 3000);
                    
                   ].join(' ');
             
-                  this.addressArray = place.address_components;
+                this.addressArray = place.address_components;
                  if(this.addressArray.length === 9) {
                     this.street_number = this.addressArray[5].long_name;
                     //this.country = this.addressArray[6].short_name;
@@ -477,7 +470,7 @@ ini_set('max_execution_time', 3000);
                     this.city=this.addressArray[3].short_name;
                     document.getElementById('from_city').value=this.addressArray[3].short_name;
                     document.getElementById('from_zip').value=this.addressArray[7].short_name;
-                   document.getElementById('from_state_id').value=this.addressArray[5].long_name;
+                    document.getElementById('from_state_id').value=this.addressArray[5].long_name;
                  } 
                 
                  else{
@@ -490,15 +483,98 @@ ini_set('max_execution_time', 3000);
                    document.getElementById('from_state_id').value=this.addressArray[4].long_name;
                  }
                 }
+                 var from_zipcode = $('#from_zip').val();
+                    $.ajax({
+                  type : "POST",
+                  //url: ajaxurl,
+                  url:"zipHotel",
+                    data: { "from_zip": from_zipcode},
+                
+                  success: function(result){
+                      var obj = JSON.parse(result); //parse data with array
+                      var i=0;
+                       var global_customfn_ctn = 0;
+                       $.each(obj, function(key1, value1) {
+                         //var temp=[];
+                           console.log(value1.address);
+                           //temp[4]=value1.address;
+                            geocoder = new google.maps.Geocoder();
+                            geocoder.geocode( { 'address': value1.address}, function(results, status) {
+                              if (status == google.maps.GeocoderStatus.OK) {
             
+                              console.log("Latitude: "+results[0].geometry.location.lat());
+                              console.log("Longitude: "+results[0].geometry.location.lng());
+                                   var logo="uploads/users/"+ value1.logo;
+                                 var img="uploads/users/"+ value1.property; 
+                                 if(value1.service_type==1){
+                                    var service='Full Service';
+                                 }
+                                 else{
+                                     var service='Limited Service';
+                                 }
+                        var info_html = '<div class="info_pop_text">'+'<img alt="" src="'+logo+'" width="120" height="70" class="img-responsive" />'+ '<span style="padding:20px;">'+value1.name+'</span>'+'</img>'+ '<h5>Address: '+value1.address+'</h5>'+'<h5>Photo: '+'<img alt="" src="'+ img+'" width="70%" height="150" class="img-responsive" />'+'</h5>'+  '<h5>Service: '+service+'</h5>'+'</div>';
+            
+                  var temp=[];
+                       temp[0]=value1.address;
+                       temp[1]=results[0].geometry.location.lat();
+                       temp[2]=results[0].geometry.location.lng();
+                       temp[3]=value1.name;
+                       temp[4]=logo;
+                       temp[5]=img;
+                       temp[6]=service;
+                             
+                       locations[key1]=temp; 
+                                marker = new google.maps.Marker({
+                                    position: new google.maps.LatLng(results[0].geometry.location.lat(),results[0].geometry.location.lng()),
+                                    map: map
+                                    
+                                });
+                                
+                
+            
+                var searchresult = '<div class="location-text" onclick="return customfn(' + global_customfn_ctn + ');"><h4>' + value1.address + '</h4></div>';
+                global_customfn_ctn++;
+                jQuery(".searchcontainer").append(searchresult);
+                marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(value1.lat,value1.long),
+                    map: map,
+                   
+                });
+                                markers.push(marker);
+                                    google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                
+                    infowindow.close();
+                    return function() {
+                  
+                        infowindow.setContent(info_html);
+                        infowindow.open(map, marker);
+                        //temp_infowindow = infowindow;
+                    }
+                })(marker, i));
+                               
+                          }
+            
+                        });
+                    
+                     i++;  
+                   });
+                   
+                   
+                  },
+                     complete: function(){   
+                    console.log(markers); 
+            
+                 },
+            
+                  error: function(response){
+                        //alert(response);
+                 }
+                });
+                    
                 infowindowContent.children['place-icon'].src = place.icon;
                 infowindowContent.children['place-name'].textContent = place.name;
-              
                 infowindowContent.children['place-address'].textContent = address;
             
-                  
-            
-                infowindow.open(map, marker);
               });
             
             
@@ -554,13 +630,11 @@ ini_set('max_execution_time', 3000);
                      document.getElementById('to_state_id').value=this.addressArray[4].long_name;
                  }
                 }
-            
+               
                 infowindowContent.children['place-icon'].src = place.icon;
                 infowindowContent.children['place-name'].textContent = place.name;
               
                 infowindowContent.children['place-address'].textContent = address;
-            
-                  
             
                 infowindow.open(map, marker);
               });
@@ -644,56 +718,54 @@ ini_set('max_execution_time', 3000);
     
         $('.select2').select2();
     
-    
-    
-    var separator = ' - ', dateFormat = 'MM/DD/YYYY';
-    var options = {
-        autoUpdateInput: false,
-        autoApply: true,
-        locale: {
-            format: dateFormat,
-            separator: separator,
-        },
+        var separator = ' - ', dateFormat = 'MM/DD/YYYY';
+        var options = {
+            autoUpdateInput: false,
+            autoApply: true,
+            locale: {
+                format: dateFormat,
+                separator: separator,
+            },
+            
+            opens: "right"
+        };
         
-        opens: "right"
-    };
     
-    
-    $('[data-datepicker=separateRange]')
-    .daterangepicker(options)
-    .on('apply.daterangepicker' ,function(ev, picker) {
-        var boolStart = this.name.match(/check_in/g) == null ? false : true;
-        var boolEnd = this.name.match(/check_out/g) == null ? false : true;
-    
-        var mainName = this.name.replace('check_in', '');
-        if(boolEnd) {
-            mainName = this.name.replace('check_out', '');
-            $(this).closest('form').find('[name=check_out'+ mainName +']').blur();
-        }
-    
-        $(this).closest('form').find('[name=check_in'+ mainName +']').val(picker.startDate.format(dateFormat));
-        $(this).closest('form').find('[name=check_out'+ mainName +']').val(picker.endDate.format(dateFormat));
-    
-        $(this).trigger('change').trigger('keyup');
-    })
-    .on('show.daterangepicker', function(ev, picker) {
-        var boolStart = this.name.match(/check_in/g) == null ? false : true;
-        var boolEnd = this.name.match(/check_out/g) == null ? false : true;
-        var mainName = this.name.replace('check_in', '');
-        if(boolEnd) {
-            mainName = this.name.replace('check_out', '');
-        }
-    
-        var startDate = $(this).closest('form').find('[name=check_in'+ mainName +']').val();
-        var endDate = $(this).closest('form').find('[name=check_out'+ mainName +']').val();
-    
-        $('[name=daterangepicker_start]').val(startDate).trigger('change').trigger('keyup');
-        $('[name=daterangepicker_end]').val(endDate).trigger('change').trigger('keyup');
+        $('[data-datepicker=separateRange]')
+        .daterangepicker(options)
+        .on('apply.daterangepicker' ,function(ev, picker) {
+            var boolStart = this.name.match(/check_in/g) == null ? false : true;
+            var boolEnd = this.name.match(/check_out/g) == null ? false : true;
         
-        if(boolEnd) {
-            $('[name=daterangepicker_end]').focus();
-        }
-    });
+            var mainName = this.name.replace('check_in', '');
+            if(boolEnd) {
+                mainName = this.name.replace('check_out', '');
+                $(this).closest('form').find('[name=check_out'+ mainName +']').blur();
+            }
+        
+            $(this).closest('form').find('[name=check_in'+ mainName +']').val(picker.startDate.format(dateFormat));
+            $(this).closest('form').find('[name=check_out'+ mainName +']').val(picker.endDate.format(dateFormat));
+        
+            $(this).trigger('change').trigger('keyup');
+        })
+        .on('show.daterangepicker', function(ev, picker) {
+            var boolStart = this.name.match(/check_in/g) == null ? false : true;
+            var boolEnd = this.name.match(/check_out/g) == null ? false : true;
+            var mainName = this.name.replace('check_in', '');
+            if(boolEnd) {
+                mainName = this.name.replace('check_out', '');
+            }
+        
+            var startDate = $(this).closest('form').find('[name=check_in'+ mainName +']').val();
+            var endDate = $(this).closest('form').find('[name=check_out'+ mainName +']').val();
+        
+            $('[name=daterangepicker_start]').val(startDate).trigger('change').trigger('keyup');
+            $('[name=daterangepicker_end]').val(endDate).trigger('change').trigger('keyup');
+            
+            if(boolEnd) {
+                $('[name=daterangepicker_end]').focus();
+            }
+        });
     
     
     });
@@ -736,48 +808,39 @@ ini_set('max_execution_time', 3000);
 </script>
 <?php 
     function getDatesFromRange($start, $end, $format = 'm/d/Y') { 
-       
      // Declare an empty array 
-     $array = array(); 
+         $array = array(); 
+        
+         $interval = new DateInterval('P1D'); 
+         $realEnd = new DateTime($end); 
+         $realEnd->add($interval); 
+         $period = new DatePeriod(new DateTime($start), $interval, $realEnd); 
+         foreach($period as $date) {                  
+             $array[] = $date->format($format);  
+         } 
+       
+         return $array; 
+        } 
     
-     $interval = new DateInterval('P1D'); 
-    
-     $realEnd = new DateTime($end); 
-     $realEnd->add($interval); 
-    
-     $period = new DatePeriod(new DateTime($start), $interval, $realEnd); 
-    
-     foreach($period as $date) {                  
-         $array[] = $date->format($format);  
-     } 
-   
-     return $array; 
-    } 
-    
-    $data_hotel=DB::table('hotels')->where('blackout_start','!=','')->get();
-    foreach($data_hotel as $value){
-    $name=$value->name;
-    $hotel = DB::table('hotels')->where('hotels.name', '=', $name)->get();  
-    
-    $array[$name] = $value->blackout_start;
-
-    foreach ($hotel as $hotels => $value) {
-     $blackout=$value->blackout_start;
-     $blackoutend=$value->blackout_end;
-    //die;
-    
-    $DB_Blackout_Date = getDatesFromRange($blackout, $blackoutend); 
-     //$date_new=implode(',',$Date);
-    $date_new=implode('", "', $DB_Blackout_Date);
-    }
+        $data_hotel=DB::table('hotels')->where('blackout_start','!=','')->get();
+        foreach($data_hotel as $value){
+        $name=$value->name;
+        $hotel = DB::table('hotels')->where('hotels.name', '=', $name)->get();  
+        
+        $array[$name] = $value->blackout_start;
+        foreach ($hotel as $hotels => $value) {
+         $blackout=$value->blackout_start;
+         $blackoutend=$value->blackout_end;
+        $DB_Blackout_Date = getDatesFromRange($blackout, $blackoutend); 
+        $date_new=implode('", "', $DB_Blackout_Date);
+        }
     }
     ?>
 <script type="text/javascript">
     $(document).ready(function() { 
-       $('#check_in').on('keyup', function() {
-        var check_in = $('#check_in').val();
-        //var mydate = new Date(check_in.value);
-        var check_out = $('#check_out').val();
+    $('#check_in').on('keyup', function() {
+    var check_in = $('#check_in').val();
+    var check_out = $('#check_out').val();
     var startDate = formatDate(new Date(check_in)); //YYYY-MM-DD
     var endDate = formatDate(new Date(check_out)); //YYYY-MM-DD
     
@@ -789,8 +852,6 @@ ini_set('max_execution_time', 3000);
       var dt = new Date(dt);
       var dtt = formatDate(dt.setDate(dt.getDate() + 1));
        dt=dtt;
-    
-    
     }
     return arr;
     }
@@ -803,13 +864,10 @@ ini_set('max_execution_time', 3000);
     if (month.length < 2) month = '0' + month;
     if (day.length < 2) day = '0' + day;
     
-    //return [year, month, day].join('-');
     return [month,day, year].join('/');
     }
     
     var dateArr = getDateArray(startDate, endDate);
-    
-    //console.log(dateArr);
     
     var blackout_dates = []; 
     var blackout_dates1 = []; 
@@ -835,4 +893,49 @@ ini_set('max_execution_time', 3000);
        
     });
     });
+</script>
+<script>
+    function customfn(id) {
+        if (infowindow) {
+            infowindow.close();
+        }
+        var latlong = {
+            lat: locations[id][1],
+            lng: locations[id][2]
+        };
+       var info_html='<div class="info_pop_text">'+'<img alt="" src="'+ locations[id][4]+'" width="120" height="70" class="img-responsive" />'+ '<span style="padding:20px;">'+ locations[id][3]+'</span>'+'</img>'+ '<h5>Address: '+ locations[id][0]+'</h5>'+'<h5>Photo: '+'<img alt="" src="'+  locations[id][5]+'" width="70%" height="150" class="img-responsive" />'+'</h5>'+  '<h5>Service: '+ locations[id][6]+'</h5>'+'</div>';
+                     
+        var infowindow = new google.maps.InfoWindow({
+          content: info_html
+        });
+       var image='uploads/users/google-map-marker.png';
+        for (var j = markers.length - 1; j >= 0; j--) {
+           
+            google.maps.event.addListener(markers[j], "click", function(e) {
+                infowindow.close();
+                for (var p = markers.length - 1; p >= 0; p--) {
+                   markers[p].setIcon(image);
+    
+                }
+                
+            });
+        }
+        google.maps.event.addListener(infowindow, 'closeclick', function() {
+            var infolan = infowindow.position.lng();
+            for (var p = markers.length - 1; p >= 0; p--) {
+                if (markers[p].position.lng() == infolan) {
+                    markers[p].setIcon(image);
+                   
+                }
+            }
+        });
+    
+        if(temp_infowindow != ""){
+            temp_infowindow.close();
+        }
+    
+        infowindow.open(map, markers[id]);
+        temp_infowindow = infowindow;
+        
+    }
 </script>

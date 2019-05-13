@@ -77,12 +77,8 @@ class Users extends Sximo  {
 		$total = (count($total) != 0 ? $total[0]->total : 0 );
 
 		return $results = array('rows'=> $result , 'total' => $total);	
+    }	
 
-
-	
-	}	
-
-	
 	public static function level( $id ) {
 
 		$group_id = 0;
@@ -98,5 +94,6 @@ class Users extends Sximo  {
     {
         return $this->belongsTo('App\Models\Hotel','hotel_id');
     }
+     
 
 }

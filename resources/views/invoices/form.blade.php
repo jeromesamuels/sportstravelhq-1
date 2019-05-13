@@ -49,12 +49,7 @@
                                 # 11725383
                             </div>
                         </div>
-                       <!--  <div class="form-group" >
-                            <div class="col-md-4">
-                                <label for="Check Out" class="control-label text-left"> Trip Status: </label>
-                               <input  type='text' name='trip_status' id='trip_status' value='{{ $row['trip_status'] }}' class='form-control input-sm ' />
-                            </div>
-                        </div> -->
+                      
                         <div class="form-group" >
                             <div class="col-md-4">
                                 <label for="Check Out" class="control-label text-left">Check In Date: </label>
@@ -169,16 +164,6 @@
                             
                           
                         </div>
-                         <!--  <div class="form-group" >
-                          <div class="col-md-4">
-                                <label for="Check Out" class="control-label text-left">Payment Status: </label>
-                                {{ $row['payment_status'] }}
-                            </div>
-                            <div class="col-md-4">
-                                <label for="Check Out" class="control-label text-left">Due Date: </label>
-                                {{ $row['due_date'] }}
-                            </div>
-                            </div> -->
                        
                         <div class="form-group" >
                             <label for="Est Amt Due" class=" control-label col-md-3 text-left" style="text-align: left;" > Estmiated Amount Due: 
@@ -204,7 +189,7 @@
         </div>
         <input type="hidden" name="action_task" value="save" />
         {!! Form::close() !!}
-        @if($invoice_id!='' )
+        @if($invoice_id!='' && session('level')==1)
          <a href="#myModal" class="btn btn-success" id="custId_new" data-toggle="modal" data-id="" title="" style="float:right;margin-bottom: 40px;">Send Email </a> 
          @else
             <button type="button" class="btn btn-success" disabled>Send Email</button>
@@ -225,11 +210,6 @@
                     {{ csrf_field() }}
                     <input type="hidden" name="invoice_id"  id="invoice_id" value="{{ $row['invoice_id'] }}">
                  
-                   <!--  <div class="form-group">
-                      
-                      <label>Upload Invoice</label>
-                        <input type="file" class="form-control" name="invoice_file" id="invoice_file" required="">
-                    </div>
  -->
                     <div class="form-group">
                         <label>Enter Email Address </label>
@@ -298,9 +278,7 @@ jQuery(function($){
                 
                   success: function(result){
                   if(result.trim() != "error"){
-                        //var str = result.trim();
-                       // alert(result);
-                         
+                     
                         console.log(result);
                         var obj = $.parseJSON(result); //parse data with array
                         //console.log(obj['phone_number']);
