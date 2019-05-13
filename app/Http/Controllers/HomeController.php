@@ -354,7 +354,7 @@ class HomeController extends Controller {
             $trip_booking = Usertrips::where('entry_by', session('uid'))->get();
             $rfps_new = Rfp::where('status', 2)->get();
         } else {
-            $data_client = User::where('group_id', 4)->get();
+            $data_client = User::where('group_id', 4)->orderBy('created_at','desc')->get();
             $trip_booking = Usertrips::all();
              $rfps_new = Rfp::where('status', 2)->get();
         }

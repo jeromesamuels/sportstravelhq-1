@@ -390,20 +390,25 @@
         </div>
     </div>
 </div>
-
 <script>
-$(document).ready(function(){
-	$('.copy').click(function() {
-		var total = $('input[class="ids[]"]:checkbox:checked').length;
-
-		if(confirm('are u sure Copy selected rows ?'))
-		{
-			$('input[name="action_task"]').val('copy');
-			$('#SximoTable').submit();// do the rest here	
-		}
-	})	
-	
-});	
+    $(document).ready(function(){
+    	$('.copy').click(function() {
+    		var total = $('input[class="ids"]:checkbox:checked').length;
+          if(total != ''){
+    		if(confirm('are u sure Copy selected rows ?'))
+    		{
+               
+    			$('input[name="action_task"]').val('copy');
+    			$('#SximoTable').submit();// do the rest here	
+               
+    		}
+           }
+            else{
+             alert('Please select the Row')
+            }
+    	})	
+    	
+    });	
 </script>	
 	
 @stop

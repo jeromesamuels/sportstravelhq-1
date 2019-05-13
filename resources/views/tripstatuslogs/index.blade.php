@@ -25,6 +25,7 @@
 		         @if($access['is_excel'] ==1)
 					<li><a href="{{ url( $pageModule .'/export?do=excel&return='.$return) }}"><i class="fa fa-download"></i> Export CSV </a></li>	
 				@endif
+				
 		        </ul>
 		    </div>	
 		</div>    
@@ -84,6 +85,6 @@
 	@include('footer')
 	</div>
 </div>	
-	</div>	  
+</div>	  
 
 @stop
