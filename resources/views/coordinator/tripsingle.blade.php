@@ -180,9 +180,8 @@
                 </div>
                 <?php 
                 
-                foreach($trip_id_new as $trip_id) {}
-                if(count($trip_id_new) >= 1){  
-
+              
+                if($trip_id != null ){  
                     if($trip_id->status==1){
                    ?>
                 <div class="row" id="progress_bar">
@@ -468,8 +467,7 @@
             <?php   }
 
                }
-               
-
+          
                 elseif($trip->status == 6){
                     ?>     
                  <div class="row" id="progress_bar">
@@ -588,38 +586,37 @@
                             <h5>Date Created</h5>
                             <p style="font-size: 14px;color: #b1afaf;">{{ $trip->added }}</p>
                         </div>
-                         <?php  foreach($data2 as $data_new) { ?>
+                         <?php 
+                         if($invoices != ''){
+                           ?>
                         <div class="status_detail">
                             <h5>Invoice #</h5>
-                            @if($data2->count() > 0)
-                            <p style="font-size: 14px;color: #b1afaf;"><?php echo $data_new->invoice_id;?></p>
+                            @if($invoices->count() > 0)
+                            <p style="font-size: 14px;color: #b1afaf;"><?php echo $invoices->invoice_id;?></p>
                             @else
                             <p style="font-size: 14px;color: #b1afaf;">Not generated invoice yet</p>
                             @endif
                             <h5>Invoice Status</h5>
-                            @if($data2->count() > 0)
+                            @if($invoices->count() > 0)
                             <p style="font-size: 14px;color: #b1afaf;">Paid</p>
                             @else
                             <p style="font-size: 14px;color: #b1afaf;">Unpaid</p>
                             @endif
                         </div>
-                      
+                       
                         <div class="status_detail1">
                             <h5>Document</h5>
-                            @if($data_new->invoice_file != '')
-                            <a href="../../uploads/users/{{ $data_new->invoice_file }}" target="_blank" style="font-size: 14px;color: #00b0e4;" ><i class="fa fa-file-excel-o" aria-hidden="true"></i> Roster File</a>
+                            @if($invoice->invoice_file != '')
+                            <a href="../../uploads/users/{{ $invoice->invoice_file }}" target="_blank" style="font-size: 14px;color: #00b0e4;" ><i class="fa fa-file-excel-o" aria-hidden="true"></i> Roster File</a>
                             @else
                             <a href="#" style="font-size: 14px;color: #00b0e4;" ><i class="fa fa-file-excel-o" aria-hidden="true"></i> Roster File</a>
                             @endif
                         </div>
-                    <?php  } ?>
+                    <?php } ?>
                     </div>
                     <?php  ?>
                     <div class="col-sm-9" id="print_div">
-                        <!--    <p class="text-right">
-                            <span>{{ $trip->check_in }} To {{ $trip->check_out }}</span><br>
-                            <span>{{ count($trip->rfps) }} RFPs Reserved For this Trip</span>
-                            </p> -->
+                       
                         <table class="table " >
                             <tbody>
                                 <tr>
@@ -686,18 +683,7 @@
         <div class="sbox" style="border-top: none;padding: 0;background: transparent; box-shadow: none;">
             <div class="sbox-content dashboard-container" style=" padding: 0;">
                 <div class="row">
-                    <?php 
-                       
-                        foreach($data_hotel as $value){
-                           $name=$value->type;
-                        
-                            $purchases = App\Models\invoices::where('invoices.hotel_type', '=', $name)->sum('invoices.amt_paid');    
-                            $array[$name] = $purchases;
-                            $y = $array[$value->type];
-                            $sum =array_sum($array);
-                        }
-                        
-                        ?>
+                    
                     <div class="col-md-4">
                         <div class="widget-box box-shadow" style=" margin: 0;background: #5dbbe0;padding: 20px;">
                             <div class="head">
@@ -705,7 +691,7 @@
                             </div>
                             <br />
                             <div class="body">
-                                <h1 style="color:#fff;font-size: 40px;">${{ $sum }}</h1>
+                                <h1 style="color:#fff;font-size: 40px;">${{ $purchases }}</h1>
                                 <p style="color:#fff;">Total Revenue till today</p>
                             </div>
                         </div>

@@ -162,7 +162,7 @@
         @foreach ($trips as $trip)
        
         <?php 
-              
+         
            $rpf_count=$trip->rfps;
           if(count($rpf_count) == 0){
             ?>
@@ -172,13 +172,9 @@
                 {{ date('d-M-Y',strtotime($trip->added)) }}
               </td>
                 <td>
-
-            <?php foreach($data_client as $client_value){
-                ?>
-           
-             <img src="{{ URL('/uploads/users') }}/<?php echo $client_value->avatar;?>" border="0" width="40" height="40" class="img-circle" style="margin-right:5px;"> {{ $client_value->first_name }} {{ $client_value->last_name }} 
-         <?php  } ?>
-
+      
+             <img src="{{ URL('/uploads/users') }}/<?php echo $trip->tripuser->avatar;?>" border="0" width="40" height="40" class="img-circle" style="margin-right:5px;"> {{ $trip->tripuser->first_name }} {{ $trip->tripuser->last_name }} 
+       
          </td>
             <td>
                 <!-- {{ count($trip->rfps) }} response--> 
@@ -341,6 +337,7 @@
           @endforeach
       <?php
         $rfpUserIds = [];
+      
         foreach ($rfps as $rfp){
                 
         ?>
@@ -348,10 +345,8 @@
             <td> {{ date('d-M-Y',strtotime($rfp->updated_at)) }}</td>
             <td>
 
-             @foreach($data_client as $client_value)
-             <img src="{{ URL('/uploads/users') }}/<?php echo $client_value->avatar;?>" border="0" width="40" height="40" class="img-circle" style="margin-right:5px;"> {{ $client_value->first_name }} {{ $client_value->last_name }} 
-             @endforeach
-
+             <img src="{{ URL('/uploads/users') }}/<?php echo $rfp->usertripInfo->tripuser->avatar;?>" border="0" width="40" height="40" class="img-circle" style="margin-right:5px;"> {{ $rfp->usertripInfo->tripuser->first_name }} {{ $rfp->usertripInfo->tripuser->last_name }} 
+           
            </td>
             <td>
               
@@ -367,7 +362,7 @@
                 $rfp_status=$rfp->status;
             
                 if($rfp->status==1){
-                    ?>
+               ?>
                 
               <div class="body">
                     <div class="hotel_revenue" style=" padding: 20px 0px;">

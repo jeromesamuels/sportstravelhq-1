@@ -10,8 +10,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Models\Rfp;
 use App\Models\Invoices;
+use App\Models\Hotel;
+use App\Models\Usertrips;
 use App\User;
+
 class CorporateUsersController extends Controller {
+
     protected $layout = "layouts.main";
     protected $data = array();
     public $module = 'corporate_user';
@@ -24,12 +28,13 @@ class CorporateUsersController extends Controller {
         //die;
         $this->data = array('pageTitle' => $this->info['title'], 'pageNote' => $this->info['note'], 'pageModule' => 'corporate/user', 'return' => self::returnUrl());
     }
+
     public function index(Request $request) {
         // Make Sure users Logged
         if (!\Auth::check()) return redirect('user/login')->with('status', 'error')->with('message', 'You are not login');
         $corporate_user_id = 6; // static corporate user Id
         $filter = ['params' => " AND tb_groups.level >= '" . CorporateUsers::level($corporate_user_id) . "'"];
-        $this->data['data_hotel'] = DB::table('hotels')->groupBy('type')->get();
+        $this->data['data_hotel'] = Hotel::groupBy('type')->get();
         foreach ($this->data['data_hotel'] as $value) {
             $name = $value->type;
             $currentMonth = date('m');
@@ -37,29 +42,32 @@ class CorporateUsersController extends Controller {
             $this->data['purchases_due'] = Invoices::where('invoices.hotel_type', '=', $name)->sum('invoices.est_amt_due');
         }
         $this->data['rfps_new'] = Rfp::where('status', 2)->get();
-        $this->data['trip_booking'] = DB::table('user_trips')->get();
+        $this->data['trip_booking'] = Usertrips::all();
         $this->grab($request, $filter);
         if ($this->access['is_view'] == 0) return redirect('dashboard')->with('message', __('core.note_restric'))->with('status', 'error');
         return view('corporate.user.index', $this->data);
     }
+
     function create(Request $request) {
         $this->hook($request);
         if ($this->access['is_add'] == 0) return redirect('dashboard')->with('message', __('core.note_restric'))->with('status', 'error');
         
         $this->data['row'] = $this->model->getColumnTable($this->info['table']);
-        $this->data['hotels'] = \DB::table('hotels')->where('active', 1)->get();
+        $this->data['hotels'] = Hotel::where('active', 1)->get();
         $this->data['id'] = '';
         return view('corporate.user.form', $this->data);
     }
+
     function edit(Request $request, $id) {
         $this->hook($request, $id);
         if (!isset($this->data['row'])) return redirect($this->module)->with('message', 'Record Not Found !')->with('status', 'error');
         if ($this->access['is_edit'] == 0) return redirect('dashboard')->with('message', __('core.note_restric'))->with('status', 'error');
         $this->data['row'] = (array)$this->data['row'];
-        $this->data['hotels'] = \DB::table('hotels')->where('active', 1)->get();
+        $this->data['hotels'] = Hotel::where('active', 1)->get();
         $this->data['id'] = $id;
         return view('corporate.user.form', $this->data);
     }
+
     function show(Request $request, $id) {
         /* Handle import , export and view */
         $task = $id;
@@ -96,6 +104,7 @@ class CorporateUsersController extends Controller {
                 break;
             }
         }
+
         function store(Request $request) {
             $task = $request->input('action_task');
             switch ($task) {
@@ -196,9 +205,9 @@ class CorporateUsersController extends Controller {
                     $groups = $request->input('groups');
                     for ($i = 0;$i < count($groups);$i++) {
                         if ($request->input('uStatus') == 'all') {
-                            $users = \DB::table('tb_users')->where('group_id', '=', $groups[$i])->get();
+                            $users =User::where('group_id', '=', $groups[$i])->get();
                         } else {
-                            $users = \DB::table('tb_users')->where('active', '=', $request->input('uStatus'))->where('group_id', '=', $groups[$i])->get();
+                            $users = User::where('active', '=', $request->input('uStatus'))->where('group_id', '=', $groups[$i])->get();
                         }
                         foreach ($users as $row) {
                             $data['note'] = $request->input('message');
@@ -228,15 +237,29 @@ class CorporateUsersController extends Controller {
             }
         }
         function getCoordinator() {
-            $this->data = array('invitations' => \DB::table('invitations')->where('group_id', 4)->get(), 'roleTitle' => 'Travel Coordinator', 'slug' => 'coordinator', 'roleID' => '4',);
+            $this->data = array(
+                'invitations' => \DB::table('invitations')->where('group_id', 4)->get(), 
+                'roleTitle' => 'Travel Coordinator', 
+                'slug' => 'coordinator',
+                 'roleID' => '4',);
             return view('core.users.invite', $this->data);
         }
         function getHotelManager() {
-            $this->data = array('invitations' => \DB::table('invitations')->where('group_id', 3)->get(), 'roleTitle' => 'Hotel Manager', 'slug' => 'hotelmanager', 'roleID' => '4',);
+            $this->data = array(
+                'invitations' => \DB::table('invitations')->where('group_id', 3)->get(), 
+                'roleTitle' => 'Hotel Manager', 
+                'slug' => 'hotelmanager', 
+                'roleID' => '4',);
             return view('core.users.invite', $this->data);
         }
         function getCorporate() {
-            $this->data = array('invitations' => \DB::table('invitations')->where('group_id', 6)->get(), 'corporates' => \DB::table('tb_users')->where('group_id', 6)->get(), 'hotels' => \DB::table('hotels')->where('active', 1)->get(), 'roleTitle' => 'Corporate', 'slug' => 'corporate', 'roleID' => '4',);
+            $this->data = array(
+             'invitations' => \DB::table('invitations')->where('group_id', 6)->get(),
+             'corporates' => User::where('group_id', 6)->get(),
+             'hotels' => Hotel::where('active', 1)->get(), 
+             'roleTitle' => 'Corporate',
+             'slug' => 'corporate', 
+             'roleID' => '4',);
             return view('core.users.invite', $this->data);
         }
         function postDoinvite(Request $request) {

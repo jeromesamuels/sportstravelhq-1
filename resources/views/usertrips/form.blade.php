@@ -190,8 +190,6 @@
 <script type="text/javascript">
     $(document).ready(function() { 
     	
-    	
-    	
     	$("#from_state_id").jCombo("{!! url('usertrips/comboselect?filter=states:id:abbr|name') !!}",
     	{  selected_value : '{{ $row["from_state_id"] }}' });
     	

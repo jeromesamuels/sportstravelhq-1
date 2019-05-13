@@ -9,32 +9,26 @@
     <div class="page-content-wrapper no-margin">
                 <div class="sbox" style="border-top: none">
             <div class="sbox-content dashboard-container">
+                @foreach($data_hotel as $value)
                 <?php 
                  
-                    foreach($data_hotel as $value){
-                       $name=$value->type;
-                    
+                    $name=$value->type;
                     $currentMonth = date('m');
                     /*Amount Paid*/
                     
-                        $array[$name] = $purchases;
-                         $y = $array[$value->type];
-                         $sum_new =array_sum($array);
+                    $array[$name] = $purchases;
+                    $y = $array[$value->type];
+                    $sum_new =array_sum($array);
                     
                     /* pending amount*/
                     
-                        $array[$name] = $purchases_due;
-                         $y = $array[$value->type];
-                         $sum_due =array_sum($array);
-                         $revenu_due=$sum_new-$sum_due;
-                    
-                    }
-                    
-                     /*Total Booking of this month*/
-                   
-                    
-                      
+                    $array[$name] = $purchases_due;
+                    $y = $array[$value->type];
+                    $sum_due =array_sum($array);
+                    $revenu_due=$sum_new-$sum_due;
+               
                     ?>
+                @endforeach
                 <div class="row" style="border-bottom:1px solid #eee;">
                     <h2 style="padding-bottom: 20px;">User Overview</h2>
                 </div>

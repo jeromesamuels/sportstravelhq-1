@@ -33,7 +33,9 @@
     <h1>Dashboard </h1>
     <span style="padding: 10px 15px;font-size: 16px;"><i class="fa fa-home" aria-hidden="true"></i> - BlackOut Dates </span>
 </section>
-@foreach($hotel as $hotels)
+
+
+
 <div class="page-content row">
     <div class="page-content-wrapper no-margin">
         <div class="sbox" style="border-top: none">
@@ -237,5 +239,5 @@
         </div>
     </div>
 </div>
-@endforeach
+
 @endsection

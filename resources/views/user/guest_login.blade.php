@@ -68,14 +68,6 @@
 					<button type="submit" class="btn btn-default btn-block"> Submit </button>
 				</div>			 	
 
-			<!-- 	<div class="animated fadeInLeft delayp1" >					       
-						<p class="text-center ">						
-							<a href="javascript:void(0)" class="forgot"> @lang('core.forgotpassword') ? </a> | 
-							<a href="{{ url('user/register')}}"> @lang('core.registernew') </a>|
-							<a href="{{ url('user/trips')}}">Send a Bid Request </a>
-						</p>
-				</div>	 -->
-			
 			   </form>			
 			</div>
 		

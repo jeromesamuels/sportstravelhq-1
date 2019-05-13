@@ -8,6 +8,8 @@ use App\Models\Core\Users;
 use App\Models\Rfp;
 use App\Models\usertrip;
 use Carbon\Carbon;
+use App\User;
+use App\Models\Hotel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -23,8 +25,8 @@ class CorporateController extends Controller
 	}
 
     public function index() {
-        $this->data['tc_users'] = \DB::table('tb_users')->get()->where("group_id", 4)->count();
-        $this->data['hotel_info'] = \DB::table('hotels')->get()->where("id", Session::get('hid'))->first();
+        $this->data['tc_users'] = User::where("group_id", 4)->count();
+        $this->data['hotel_info'] = Hotel::find(Session::get('hid'));
 
     	return view('corporate.index', $this->data);
     }

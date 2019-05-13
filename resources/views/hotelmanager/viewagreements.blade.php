@@ -47,7 +47,7 @@
                                        <a href="{{ route('hotelmanager.agreementDownload',$agreement->id) }}">Download</a>
                                    </td>
                                    <td>
-                                   
+                                  
                                     
                                        <div class="dropdown">
                                              <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown"> Action </button>

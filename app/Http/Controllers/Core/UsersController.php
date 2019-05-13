@@ -2,8 +2,10 @@
 use App\Http\Controllers\Controller;
 use App\Models\Core\Users;
 use App\Models\Usertrips;
+use App\Models\AgreementForm;
 use App\Models\Rfp;
 use App\Models\Invoices;
+use App\Models\Invitition;
 use App\Models\Core\Groups;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -11,6 +13,7 @@ use App\User;
 use App\Models\Hotel;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Validator, Input, Redirect;
+
 class UsersController extends Controller {
     protected $layout = "layouts.main";
     protected $data = array();
@@ -22,41 +25,45 @@ class UsersController extends Controller {
         $this->info = $this->model->makeInfo($this->module);
         $this->data = array('pageTitle' => $this->info['title'], 'pageNote' => $this->info['note'], 'pageModule' => 'core/users', 'return' => self::returnUrl());
     }
+
     public function index(Request $request) {
         // Make Sure users Logged
         if (!\Auth::check()) return redirect('user/login')->with('status', 'error')->with('message', 'You are not login');
         $filter = ['params' => " AND tb_groups.level > '" . Users::level(session('gid')) . "'"];
         $this->grab($request, $filter);
-        $this->data['data_hotel'] = DB::table('hotels')->groupBy('type')->get();
-        foreach ($this->data['data_hotel'] as $value) {
-            $name = $value->type;
-            $currentMonth = date('m');
-            $this->data['purchases'] = Invoices::where('invoices.hotel_type', '=', $name)->sum('invoices.amt_paid');
-            $this->data['purchases_due'] = Invoices::where('invoices.hotel_type', '=', $name)->sum('invoices.est_amt_due');
-        }
+        $this->data['data_hotel'] = Hotel::groupBy('type')->get();
+            foreach ($this->data['data_hotel'] as $value) {
+                $name = $value->type;
+                $currentMonth = date('m');
+                $this->data['purchases'] = Invoices::where('invoices.hotel_type', '=', $name)->sum('invoices.amt_paid');
+                $this->data['purchases_due'] = Invoices::where('invoices.hotel_type', '=', $name)->sum('invoices.est_amt_due');
+            }
         $this->data['rfps_new'] = Rfp::where('status', 2)->get();
-        $this->data['trip_booking'] = DB::table('user_trips')->get();
+        $this->data['trip_booking'] = Usertrips::all();
         if ($this->access['is_view'] == 0) return redirect('dashboard')->with('message', __('core.note_restric'))->with('status', 'error');
         // Render into template
         return view('core.' . $this->module . '.index', $this->data);
     }
+
     function create(Request $request) {
         $this->hook($request);
         if ($this->access['is_add'] == 0) return redirect('dashboard')->with('message', __('core.note_restric'))->with('status', 'error');
         $this->data['row'] = $this->model->getColumnTable($this->info['table']);
-        $this->data['hotels'] = \DB::table('hotels')->where('active', 1)->get();
+        $this->data['hotels'] = Hotel::where('active', 1)->get();
         $this->data['id'] = '';
         return view('core.users.form', $this->data);
     }
+
     function edit(Request $request, $id) {
         $this->hook($request, $id);
         if (!isset($this->data['row'])) return redirect($this->module)->with('message', 'Record Not Found !')->with('status', 'error');
         if ($this->access['is_edit'] == 0) return redirect('dashboard')->with('message', __('core.note_restric'))->with('status', 'error');
         $this->data['row'] = (array)$this->data['row'];
-        $this->data['hotels'] = \DB::table('hotels')->where('active', 1)->get();
+        $this->data['hotels'] = Hotel::where('active', 1)->get();
         $this->data['id'] = $id;
         return view('core.users.form', $this->data);
     }
+
     function show(Request $request, $id) {
         /* Handle import , export and view */
         $task = $id;
@@ -161,22 +168,23 @@ class UsersController extends Controller {
                     $return = 'core/users?return=' . self::returnUrl();
                 }
                 /*guest update agreement*/
-                $invitition = DB::table('invitations')->where('email', $request->input('email'))->get();
+                $invitition = Invitition::where('email', $request->input('email'))->get();
                 $user_invitition = User::find($request->input('id'));
-                $rfps = DB::table('rfps')->where('sales_manager', $request->input('email'))->get();
+                $rfps = Rfp::where('sales_manager', $request->input('email'))->get();
                 $sales_manager = $user_invitition->first_name . '' . $user_invitition->last_name;
                 if (count($invitition) == 1 && count($rfps) == 1) {
                     $hotel =Hotel::find($request->input('hotel_id'));
                    
-                    \DB::table('agreement_forms')->where('reciever_email', $request->input('email'))->update(['reciever_id' => $request->input('id'), 'hotel_name' => $hotel->name, 'hotel_details' => $hotel->address]);
-                    \DB::table('rfps')->where('sales_manager', $request->input('email'))->update(['user_id' => $request->input('id'), 'sales_manager' => $sales_manager]);
-                    \DB::table('invitations')->where('email', $request->input('email'))->update(['status' => 1]);
+                    AgreementForm::where('reciever_email', $request->input('email'))->update(['reciever_id' => $request->input('id'), 'hotel_name' => $hotel->name, 'hotel_details' => $hotel->address]);
+                    Rfp::where('sales_manager', $request->input('email'))->update(['user_id' => $request->input('id'), 'sales_manager' => $sales_manager]);
+                    Invitition::where('email', $request->input('email'))->update(['status' => 1]);
                 }
                 return redirect($return)->with('message', __('core.note_success'))->with('status', 'success');
             } else {
                 return redirect()->back()->with('message', __('core.note_error'))->with('status', 'error')->withErrors($validator)->withInput();
             }
         }
+
         public function destroy($request) {
             // Make Sure users Logged
             if (!\Auth::check()) return redirect('user/login')->with('status', 'error')->with('message', 'You are not login');
@@ -192,10 +200,12 @@ class UsersController extends Controller {
                 return ['message' => __('No Item Deleted'), 'status' => 'error'];
             }
         }
+
         function getBlast() {
             $this->data = array('groups' => Groups::all(), 'pageTitle' => 'Blast Email', 'pageNote' => 'Send email to users');
             return view('core.users.blast', $this->data);
         }
+
         function postDoblast(Request $request) {
             $rules = array('subject' => 'required', 'message' => 'required|min:10', 'groups' => 'required',);
             $validator = Validator::make($request->all(), $rules);
@@ -205,9 +215,9 @@ class UsersController extends Controller {
                     $groups = $request->input('groups');
                     for ($i = 0;$i < count($groups);$i++) {
                         if ($request->input('uStatus') == 'all') {
-                            $users = \DB::table('tb_users')->where('group_id', '=', $groups[$i])->get();
+                            $users =User::where('group_id', '=', $groups[$i])->get();
                         } else {
-                            $users = \DB::table('tb_users')->where('active', '=', $request->input('uStatus'))->where('group_id', '=', $groups[$i])->get();
+                            $users =User::where('active', '=', $request->input('uStatus'))->where('group_id', '=', $groups[$i])->get();
                         }
                         foreach ($users as $row) {
                             $data['note'] = $request->input('message');
@@ -236,18 +246,36 @@ class UsersController extends Controller {
                 return redirect('core/users/blast')->with('message', 'The following errors occurred')->with('status', 'error')->withErrors($validator)->withInput();
             }
         }
+
         function getCoordinator() {
-            $this->data = array('invitations' => \DB::table('invitations')->where('group_id', 4)->get(), 'roleTitle' => 'Travel Coordinator', 'slug' => 'coordinator', 'roleID' => '4',);
+            $this->data = array(
+             'invitations' => Invitition::where('group_id', 4)->get(),
+             'roleTitle' => 'Travel Coordinator', 
+             'slug' => 'coordinator', 
+             'roleID' => '4',);
             return view('core.users.invite', $this->data);
         }
+
         function getHotelManager() {
-            $this->data = array('invitations' => \DB::table('invitations')->where('group_id', 5)->get(), 'roleTitle' => 'Hotel Manager', 'slug' => 'hotelmanager', 'roleID' => '5',);
+            $this->data = array(
+                'invitations' => Invitition::where('group_id', 5)->get(), 
+                'roleTitle' => 'Hotel Manager',
+                'slug' => 'hotelmanager', 
+                'roleID' => '5',);
             return view('core.users.invite', $this->data);
         }
+
         function getCorporate() {
-            $this->data = array('invitations' => \DB::table('invitations')->where('group_id', 6)->get(), 'corporates' => \DB::table('tb_users')->where('group_id', 6)->get(), 'hotels' => \DB::table('hotels')->where('active', 1)->get(), 'roleTitle' => 'Corporate', 'slug' => 'corporate', 'roleID' => '6',);
+            $this->data = array(
+                'invitations' => Invitition::where('group_id', 6)->get(), 
+                'corporates' => User::where('group_id', 6)->get(),
+                'hotels' => Hotel::where('active', 1)->get(), 
+                'roleTitle' => 'Corporate',
+                'slug' => 'corporate', 
+                'roleID' => '6',);
             return view('core.users.invite', $this->data);
         }
+
         function postDoinvite(Request $request) {
             $rules = array('email' => 'required|email|unique:tb_users|unique:invitations',);
             $messages = ['unique' => 'Invitation already sent and/or this email is already registered.', ];
@@ -269,12 +297,18 @@ class UsersController extends Controller {
                     $headers.= 'From: ' . $this->config['cnf_appname'] . ' <' . $this->config['cnf_email'] . '>' . "\r\n";
                     mail($data['to'], $data['subject'], $message, $headers);
                 }
-                \DB::table('invitations')->insert(['email' => $request->input('email'), 'group_id' => $request->input('group_id') ]);
+               
+                 $Invitition  = new Invitition();
+                 $Invitition->email= $request->input('email');
+                 $Invitition->group_id  = $request->input('group_id');
+                 $Invitition->save();
+
                 return redirect('core/users/' . $request->input('redirect_to'))->with('message', 'Message has been sent')->with('status', 'success');
             } else {
                 return redirect('core/users/' . $request->input('redirect_to'))->with('message', 'The following errors occurred')->with('status', 'error')->withErrors($validator)->withInput();
             }
         }
+
         public function getSearch($mode = 'native') {
             $this->data['tableForm'] = $this->info['config']['forms'];
             $this->data['tableGrid'] = $this->info['config']['grid'];

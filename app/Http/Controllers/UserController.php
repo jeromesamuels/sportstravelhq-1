@@ -1,7 +1,6 @@
-<?php namespace App\Http\Controllers;
-
+<?php 
+namespace App\Http\Controllers;
 use App\Libary\SiteHelpers;
-
 use Redirect;
 use Socialize;
 use Illuminate\Http\Request;
@@ -11,10 +10,13 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use App\Models\usertrips;
+use App\Models\Usertrips;
 use App\Models\hotelamenities;
 use App\Models\Rfp;
+use App\Models\Invoices;
+use App\Models\Invitition;
 use App\User;
+use App\Models\Hotel;
 use Carbon\Carbon;
 use Twilio\Rest\Client;
 use App\Http\Controllers\Controller;
@@ -39,7 +41,7 @@ class UserController extends Controller
             endif;
         else:
             $this->data['socialize'] = config('services');
-            $this->data['hotel_type'] = DB::table('hotels')->groupBy('type')->get();
+            $this->data['hotel_type'] = Hotel::groupBy('type')->get();
             return view('user.register', $this->data);
         endif;
     }
@@ -52,9 +54,10 @@ class UserController extends Controller
             else:
                 return redirect('user/login');
             endif;
+
         else :
             $this->data['socialize'] = config('services');
-            return view('user.register', $this->data);
+            return view('user.register_tc', $this->data);
         endif;
     }
 
@@ -103,7 +106,11 @@ class UserController extends Controller
                 $authen->o_name = $request->input('o_name');
             }
             if ($user_type == 1) {
-                \DB::table('hotels')->insert(['hotel_code' => $request->input('hotel_code'), 'type' => $request->input('hotel_type'), 'service_type' => $request->input('service_type') ]);
+                 $hotel  = new Hotel();
+                 $hotel->hotel_code= $request->input('hotel_code');
+                 $hotel->type  = $request->input('hotel_type');
+                 $hotel->service_type  = $request->input('service_type');
+                 $hotel->save();
             }
             if ($user_type == 1) {
                 $authen->group_id = 5;
@@ -112,7 +119,7 @@ class UserController extends Controller
             } else {
                 $authen->group_id = $this->config['cnf_group'];
             }
-            $hotel_id = DB::table('hotels')->where("hotel_code", $request->input('hotel_code'))->pluck('id');
+            $hotel_id = Hotel::where("hotel_code", $request->input('hotel_code'))->pluck('id');
             foreach ($hotel_id as $hotel_id_new) {
                 $authen->hotel_id = $hotel_id_new;
             }
@@ -183,7 +190,7 @@ class UserController extends Controller
     public function getCode(Request $request) {
         $num = $request->input('code_send');
         if ($num != '') {
-            \DB::table('tb_users')->where('id', session('uid'))->update('activation', $num);
+            User::where('id', session('uid'))->update('activation', $num);
             return redirect('dashboard')->with(['message' => 'Verified you code!', 'status' => 'success']);
             return view('user.code_activation', compact('num'));
         } else {
@@ -193,8 +200,8 @@ class UserController extends Controller
 
     public function userTrips()
     {
-        $trips     = usertrips::orderBy('added', 'desc')->where('status', 6)->get();
-        $rfps      = DB::table('rfps')->where('user_id', null)->get();
+        $trips     = Usertrips::orderBy('added', 'desc')->where('status', 6)->get();
+        $rfps      = Rfp::where('user_id', null)->get();
         $amenities = hotelamenities::all();
 
         return view('hotelmanager.viewtrips', compact('trips', 'amenities', 'rfps'));
@@ -219,20 +226,21 @@ class UserController extends Controller
         $authen->save();
         $email = $request->input('email');
         return redirect('user/trips')->with(['email' => $email]);
-        //return redirect('user/trips')->with(['message'=>'Please see the all trips!','status'=>'sucess']);
-        //return view('user.guest_login');
+        
     }
+
 
     public function TripDetails($id, $email)
     {
-        $trip = usertrips::find($id);
-        //$trips = usertrips::orderBy('added', 'desc')->where('status', 6)->get();
-        $rfp        = DB::table('rfps')->where('sales_manager', $email)->get();
+        $trip = Usertrips::find($id);
+        $rfp        = Rfp::where('sales_manager', $email)->get();
+        $trip_id_detail= Rfp::where("user_trip_id",$id)->get(); 
         $amenities  = hotelamenities::all();
-        $guest_user = DB::table('invitations')->where('email', '=', $email)->get();
-        $rfps_new = DB::table('rfps')->where('status', 2)->get();
+        $guest_user = Invitition::where('email', '=', $email)->get();
+        $rfps_new = Rfp::where('status', 2)->get();
+        $invoice= Invoices::find($trip->id);
         if (count($guest_user) == 1) {
-            return view('hotelmanager.tripSingleguest', compact('trip', 'rfp', 'email', 'rfps_new'));
+            return view('hotelmanager.tripSingleguest', compact('trip', 'rfp', 'email', 'rfps_new','trip_id_detail','invoice'));
         } else {
             return redirect('user/login');
         }
@@ -246,8 +254,7 @@ class UserController extends Controller
             'eventDistance'     => 'required|max:500',
             'offerValidityDate' => 'required|date|after:today',
         ]);
-        // echo $request->eventDistance;
-        $trip = usertrips::find($request->trip_id);
+        $trip = Usertrips::find($request->trip_id);
         //geting Trip Amenities
         $amenitie_ids = [];
         foreach ($trip->amenities as $amenity) {
@@ -265,8 +272,6 @@ class UserController extends Controller
         $rfp->offer_rate        = $request->offer_rate;
         $rfp->cc_authorization  = 1;
         $rfp->offer_validity    = $request->offerValidityDate;
-        //$rfp->check_in = $trip->check_in;
-        //$rfp->check_out = $trip->check_out;
         $rfp->check_in        = date("Y-m-d", strtotime($trip->check_in));
         $rfp->check_out       = date("Y-m-d", strtotime($trip->check_out));
         $rfp->sales_manager   = $request->email;
@@ -287,7 +292,7 @@ class UserController extends Controller
         //return redirect('user/login')->with(['message'=>'Invalid Code Activation!','status'=>'error']);
         $user = User::where('activation', '=', $num)->get();
         if (count($user) >= 1) {
-            \DB::table('tb_users')->where('activation', $num)->update(array('active' => 1, 'activation' => ''));
+            User::where('activation', $num)->update(array('active' => 1, 'activation' => ''));
             return redirect('user/login')->with(['message' => 'Your account is active now!', 'status' => 'success']);
         } else {
             return redirect('user/login')->with(['message' => 'Invalid Code Activation!', 'status' => 'error']);
@@ -374,7 +379,7 @@ class UserController extends Controller
                             return redirect('user/login')->with(['status' => 'error', 'message' => 'Your Account is BLocked']);
                         }
                     } else {
-                        \DB::table('tb_users')->where('id', '=', $row->id)->update(array('last_login' => date("Y-m-d H:i:s")));
+                        User::where('id', '=', $row->id)->update(array('last_login' => date("Y-m-d H:i:s")));
                         $level = 99;
                         $sql   = \DB::table('tb_groups')->where('group_id', $row->group_id)->get();
                         if (count($sql)) {
@@ -411,13 +416,13 @@ class UserController extends Controller
                                 if (!$request->has("send_code") && $row->vcode == 0) {
                                     $code          = rand(10000, 10000000);
                                     $user_id       = $row->id;
-                                    $phone         = DB::table('tb_users')->where('id', '=', $row->id)->pluck('phone_number');
+                                    $phone         = User::where('id', '=', $row->id)->pluck('phone_number');
                                     $account_sid   = 'AC4174865c2b5f392f5ffe63f9cd5123fb';
                                     $auth_token    = '424cddd97c717bd28f77b212168b6ad2';
                                     $twilio_number = "+13055703074";
                                     $client        = new Client($account_sid, $auth_token);
                                     $client->messages->create(
-// Where to send a text message (your cell phone?)
+
                                         $phone,
                                         array(
                                             'from' => $twilio_number,
@@ -425,7 +430,7 @@ class UserController extends Controller
                                         )
                                     );
 
-                                    \DB::table('tb_users')->where('id', '=', $row->id)->update(array('activation' => $code));
+                                    User::where('id', '=', $row->id)->update(array('activation' => $code));
 
 
                                     $login_code_session['user_id'] = $user_id;
@@ -440,7 +445,7 @@ class UserController extends Controller
 
                                 $vcode = $request->input('vcode');
                                 if ($vcode == 1) {
-                                    \DB::table('tb_users')->where('id', '=', $row->id)->update(array('vcode' => 1));
+                                    User::where('id', '=', $row->id)->update(array('vcode' => 1));
 
                                 }
 
@@ -455,7 +460,6 @@ class UserController extends Controller
                                     return redirect('dashboard');
                                 }
 
-//return redirect('user/activation',compact('code'));
                             }
                         }
 
@@ -580,9 +584,7 @@ class UserController extends Controller
     public function postSavehotel(Request $request)
     {
         if ($request->has('assign_hotel')) {
-            \DB::table('tb_users')
-               ->where('id', $request->user_id)
-               ->update(['hotel_id' => $request->hotel_id]);
+            User::where('id', $request->user_id)->update(['hotel_id' => $request->hotel_id]);
 
             return redirect('core/users/corporate')->with(['status' => 'success', 'message' => 'Hotel assigned to corporate!']);
         }
@@ -683,7 +685,7 @@ class UserController extends Controller
     function autosocialize($social)
     {
         $user  = Socialize::driver($social)->user();
-        $users = \DB::table('tb_users')->where('email', $user->email)->get();
+        $users = User::where('email', $user->email)->get();
         if (count($users)) {
             $row = $users[0];
 

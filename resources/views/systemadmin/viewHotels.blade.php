@@ -163,8 +163,6 @@
                 $(document).on("click", ".Information_click", function(e) {
                  e.preventDefault();
                        var title = $(this).attr("title");
-                        
-                       //alert(title);
                        var id = $(this).data("id");
                        var row_id = "#"+id+"_img";
                        var img = $(row_id).val();

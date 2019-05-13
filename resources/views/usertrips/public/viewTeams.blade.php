@@ -5,9 +5,6 @@
 <section class="page-header row">
     <h2>Team Listing <small> Here all Team listings are listed </small></h2>
 </section>
-
-    
-
     <div class="page-content row">
         <div class="page-content-wrapper no-margin">
 
@@ -49,9 +46,7 @@
                                     <div class="dropdown">
                                       <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown"> Action </button>
                                       <ul class="dropdown-menu">
-                                        <!--<li>
-                                            <a href="{{ route('systemadmin.editHotels',$team->id) }}">Edit</a>
-                                        </li>-->
+                                      
                                         <li>
                                             <form action="{{ action('UsertripsController@getTeamdelete',$team->id) }}" method="post">
                                                 {{ csrf_field() }}

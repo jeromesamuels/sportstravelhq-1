@@ -119,11 +119,11 @@
                     <p style="font-size: 14px;">Total Revenue of this Month</p>
                 </div>
                 <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                     @if(session('level')==1 || session('level')==2)
+                    @if(session('level')==1 || session('level')==2)
                     <h4 style="float:right;top: 50px;position: absolute;right: 10px;color: #5dbbe0;">${{ $monthly_purchase_due_all }}</h4>
                     @else
-                      <h4 style="float:right;top: 50px;position: absolute;right: 10px;color: #5dbbe0;">${{ $monthly_purchase_due }}</h4>
-                      @endif
+                    <h4 style="float:right;top: 50px;position: absolute;right: 10px;color: #5dbbe0;">${{ $monthly_purchase_due }}</h4>
+                    @endif
                 </div>
                 <div class="progress" style="margin-bottom: 10px;height: 6px; ">
                     <div class="progress-bar" role="progressbar" aria-valuenow="70"
@@ -139,7 +139,7 @@
                     <p style="font-size: 14px;">This Month</p>
                 </div>
                 <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                      @if(session('level')==1 || session('level')==2)
+                    @if(session('level')==1 || session('level')==2)
                     <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $monthly_purchase_all }}</h4>
                     @else
                     <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $monthly_purchase }}</h4>
@@ -158,9 +158,8 @@
                     <h4 >Paid Invoice</h4>
                     <p style="font-size: 14px;">This Month </p>
                 </div>
-             
                 <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                      @if(session('level')==1 || session('level')==2)
+                    @if(session('level')==1 || session('level')==2)
                     <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $monthly_purchase_all }}</h4>
                     @else
                     <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $monthly_purchase }}</h4>
@@ -183,8 +182,8 @@
                     @if(session('level')==1 || session('level')==2)
                     <h4 style="float:right;top: 50px;position: absolute;right: 10px;color: #5dbbe0;">${{ $monthly_purchase_due_all }}</h4>
                     @else
-                      <h4 style="float:right;top: 50px;position: absolute;right: 10px;color: #5dbbe0;">${{ $monthly_purchase_due }}</h4>
-                     @endif
+                    <h4 style="float:right;top: 50px;position: absolute;right: 10px;color: #5dbbe0;">${{ $monthly_purchase_due }}</h4>
+                    @endif
                 </div>
                 <div class="progress" style="margin-bottom: 10px;height: 6px; ">
                     <div class="progress-bar" role="progressbar" aria-valuenow="70"
@@ -201,7 +200,6 @@
 <?php 
     $name=$value->type;
     $array[$name] = $purchases_new;
-    
     ?>
 @endforeach            
 <div class="sbox" style="border-top: none;padding: 0;background: transparent; box-shadow: none;">
@@ -212,24 +210,18 @@
                     <div class="head">
                         <span>Revenue By Corporate</span>                        
                     </div>
-                     @if(session('level')==1 || session('level')==2)
-                       <div class="body">
-                       @foreach($data_all as $all_data)
-                        <?php  
-
-                          $type_all=$all_data->type;
-                         
-                             $purchases_invoices = DB::table('invoices')->where('invoices.hotel_type', '=', $type_all)->sum('invoices.amt_paid');
-                         
-                             $array[$type_all] = $purchases_invoices;
-                             $sum=0;
-
-                             $y = $array[$type_all];
-                     
-                            $sum =array_sum($array);
-                              
-                          
-                             ?>
+                    @if(session('level')==1 || session('level')==2)
+                    <div class="body">
+                        @foreach($data_all as $all_data)
+                             <?php  
+                               $type_all=$all_data->type;
+                               $purchases_invoices = DB::table('invoices')->where('invoices.hotel_type', '=', $type_all)->sum('invoices.amt_paid');
+                               $array[$type_all] = $purchases_invoices;
+                               $sum=0;
+                               $y = $array[$type_all];
+                               $sum =array_sum($array);
+                                
+                               ?>
                         <div class="hotel_revenue" style="    padding: 20px;">
                             <h4><?php echo  $type_all; ?></h4>
                             <?php 
@@ -249,7 +241,7 @@
                         <br /><br />
                         @endforeach
                     </div>
-                   @else
+                    @else
                     <div class="body">
                         @foreach($data_hotel as $value)
                         <?php  
@@ -257,18 +249,16 @@
                                $date_future = date("Y", strtotime('+2 year'));
                                $date_year = date("Y");
                                for($i=$date_start;$i<=$date_future;$i++){ 
-                                  
                                $name=$value->type;
-                                   
                                $array[$name] = $purchases_new;
-                               if($corporate->group_id==6){
-                               
-                               $purchases = DB::table('invoices')->where(['invoices.hotel_type'=> $name])->whereRaw('YEAR(created_at) = ?',$i)->sum('invoices.amt_paid');
-                               }
-                               else{
-                                 
-                                 $purchases = DB::table('invoices')->where(['invoices.hotel_name'=> $value->id])->whereRaw('YEAR(created_at) = ?',$i)->sum('invoices.amt_paid');
-                               }
+                                   if($corporate->group_id==6){
+                                   
+                                   $purchases = DB::table('invoices')->where(['invoices.hotel_type'=> $name])->whereRaw('YEAR(created_at) = ?',$i)->sum('invoices.amt_paid');
+                                   }
+                                   else{
+                                     
+                                     $purchases = DB::table('invoices')->where(['invoices.hotel_name'=> $value->id])->whereRaw('YEAR(created_at) = ?',$i)->sum('invoices.amt_paid');
+                                   }
                                $sum=0;
                                $hotel_type=$value->type; 
                                 $y = $array[$value->type];
@@ -282,7 +272,7 @@
                                 $maxplayers = $sum;
                                 $percentage =($purchases / $maxplayers) * 100; // floor (round down) optional
                                 $type_percent=round($percentage);
-                            ?>
+                                ?>
                             <div class="final_range">
                                 <div class="skills hotel_range" style="width:<?php echo  $type_percent; ?>%">
                                 </div>
@@ -295,7 +285,6 @@
                         @endforeach
                     </div>
                     @endif
-
                 </div>
             </div>
             <div class="col-md-8 col-sm-12">
@@ -361,22 +350,22 @@
                                 $date_start = date("Y", strtotime('-5 year'));
                                 $date_future = date("Y", strtotime('+5 year'));
                                 $date_year = date("Y");
-                                for($i=$date_start;$i<=$date_future;$i++){ 
-                                 $name=$value->type;
-                                 $array[$name] = $purchases_new;
-                                 if($corporate->group_id==6){
-                                   $purchases = DB::table('invoices')->where(['invoices.hotel_type'=> $name])->whereRaw('YEAR(created_at) = ?',$i)->sum('invoices.amt_paid');
-                                 }
-                                 else{
-                                     $purchases = DB::table('invoices')->where(['invoices.hotel_name'=> $value->id])->whereRaw('YEAR(created_at) = ?',$i)->sum('invoices.amt_paid');
-                                 }
-                                 $chotel_type=$hcorporateData->type; 
-                                 $cy = $array[$hcorporateData->type];
-                                    
-                                  ?>
-                                    { y: <?php echo  $purchases; ?>, label: '<?php echo  $i; ?>' },
-                                   
-                                <?php  } } ?>
+                                    for($i=$date_start;$i<=$date_future;$i++){ 
+                                     $name=$value->type;
+                                     $array[$name] = $purchases_new;
+                                         if($corporate->group_id==6){
+                                           $purchases = DB::table('invoices')->where(['invoices.hotel_type'=> $name])->whereRaw('YEAR(created_at) = ?',$i)->sum('invoices.amt_paid');
+                                         }
+                                         else{
+                                             $purchases = DB::table('invoices')->where(['invoices.hotel_name'=> $value->id])->whereRaw('YEAR(created_at) = ?',$i)->sum('invoices.amt_paid');
+                                         }
+                                     $chotel_type=$hcorporateData->type; 
+                                     $cy = $array[$hcorporateData->type];
+                                        
+                                      ?>
+                                        { y: <?php echo  $purchases; ?>, label: '<?php echo  $i; ?>' },
+                                       
+                                    <?php  } } ?>
                               
                                ]
                              }
@@ -410,10 +399,7 @@
                     </div>
                 </div>
             </div>
-            <?php 
-                $data= DB::table('user_trips')->get();
-                      
-                ?>
+           
             <div class="col-md-4 col-sm-12">
                 <div class="widget-box box-shadow" style=" margin: 0;background: #fff;padding: 20px;">
                     <div class="head">
@@ -421,7 +407,7 @@
                     </div>
                     <br />
                     <div class="body">
-                        <h1 style="color:#5dbbe0;font-size: 40px;">{{ count($data)}}</h1>
+                        <h1 style="color:#5dbbe0;font-size: 40px;">{{ count($trip)}}</h1>
                         <p>Total Booking till today</p>
                     </div>
                 </div>

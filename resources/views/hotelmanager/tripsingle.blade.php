@@ -181,8 +181,7 @@
                 
                  <?php 
               
-                if(count($trip_id_detail) >= 1){  
-                foreach($trip_id_detail as $trip_id){
+                if($trip_id != null){  
                 if($trip_id->status==1){
                 ?>
                 <div class="row" id="progress_bar">
@@ -467,8 +466,7 @@
                 </div>
             <?php   }
              }
-         }
-
+       
                 elseif($trip->status == 6){
                     ?>     
                  <div class="row" id="progress_bar">
@@ -583,11 +581,13 @@
                             <h5>Date Created</h5>
                             <p style="font-size: 14px;color: #b1afaf;">{{ $trip->added }}</p>
                         </div>
-                         <?php  foreach($invoice as $data_new) { ?>
+                         <?php  
+                        if($invoice != null){ ?>
+                      
                         <div class="status_detail">
                             <h5>Invoice #</h5>
                             @if($invoice->count() > 0)
-                            <p style="font-size: 14px;color: #b1afaf;"><?php echo $data_new->invoice_id;?></p>
+                            <p style="font-size: 14px;color: #b1afaf;"><?php echo $invoice->invoice_id;?></p>
                             @else
                             <p style="font-size: 14px;color: #b1afaf;">Not generated invoice yet</p>
                             @endif
@@ -601,13 +601,13 @@
                       
                         <div class="status_detail1">
                             <h5>Document</h5>
-                            @if($data_new->invoice_file != '')
-                            <a href="../../uploads/users/{{ $data_new->invoice_file }}" target="_blank" style="font-size: 14px;color: #00b0e4;" ><i class="fa fa-file-excel-o" aria-hidden="true"></i> Roster File</a>
+                            @if($invoice->invoice_file != '')
+                            <a href="../../uploads/users/{{ $invoice->invoice_file }}" target="_blank" style="font-size: 14px;color: #00b0e4;" ><i class="fa fa-file-excel-o" aria-hidden="true"></i> Roster File</a>
                             @else
                             <a href="#" style="font-size: 14px;color: #00b0e4;" ><i class="fa fa-file-excel-o" aria-hidden="true"></i> Roster File</a>
                             @endif
                         </div>
-                    <?php  } ?>
+                    <?php  }  ?>
                     </div>
                     <?php  ?>
                     <div class="col-sm-9" id="print_div">
@@ -705,7 +705,7 @@
                             </div>
                             <br />
                             <div class="body">
-                                <h1 style="color:#5dbbe0;font-size: 40px;">{{ count($trip_booking)}}</h1>
+                                <h1 style="color:#5dbbe0;font-size: 40px;">{{ count($rfps_new)}}</h1>
                                 <p>Total Booking </p>
                             </div>
                         </div>
@@ -960,10 +960,6 @@
             for (var j = 0; j < results.length; j++) {
               geocoder.geocode({'address': destinationList[j]},
                   showGeocodedAddressOnMap(true));
-           /*outputDiv.innerHTML += originList[i] + ' to ' + destinationList[j] +
-                  ': ' + results[j].distance.text + ' in ' +
-                  results[j].duration.text + '<br>';*/
-            //KM x 0.621371 = Miles
           
             var string = results[j].distance.text;
               string = string.split(" ");

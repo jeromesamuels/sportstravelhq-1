@@ -49,4 +49,7 @@ class Rfp extends Model
         return $this->belongsTo(usertrip::class, 'user_trip_id');
     }
 
+    public function usertripInfo(){
+        return $this->belongsTo('App\Models\Usertrips','user_trip_id');
+    }
 }
