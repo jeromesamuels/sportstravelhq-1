@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers\HotelManager;
 use App\Http\Controllers\Controller;
-use App\Models\usertrips;
+use App\Models\Usertrips;
 use App\Models\invoices;
 use App\Models\hotelamenities;
 use App\Models\Roomlisting;
@@ -21,9 +21,9 @@ class TripsController extends Controller {
     }
 
     public function index() {
-        $trips = usertrips::with('tripuser')->orderBy('added', 'desc')->get();
+        $trips = Usertrips::with('tripuser')->orderBy('added', 'desc')->get();
         $date_month = date('m');
-        $trip_month = usertrips::whereRaw('MONTH(added) = ?', $date_month)->get();
+        $trip_month = Usertrips::whereRaw('MONTH(added) = ?', $date_month)->get();
         $user = User::find(session('uid'));
        
         if (session('level') == 1) {
@@ -39,14 +39,14 @@ class TripsController extends Controller {
             $active_rfp = Rfp::where("status", '!=', 3)->where('user_id', session('uid'))->get();
             $accepted_rfp = Rfp::where("status", 2)->where('user_id', session('uid'))->get();
         }
-        $trip_booking = usertrips::where("status", 6)->get();
+        $trip_booking = Usertrips::where("status", 6)->get();
         $data_grp = User::where('group_id', 4)->get();
         $amenities = hotelamenities::all();
         return view('hotelmanager.viewtrips', compact('trips', 'amenities', 'rfps', 'trip_booking', 'active_rfp', 'accepted_rfp', 'data_all', 'purchases', 'data_grp', 'trip_month'));
     }
 
     public function show($id) {
-        $trip = usertrips::with('tripuser')->find($id);
+        $trip = Usertrips::with('tripuser')->find($id);
         $rfp = Rfp::where('user_trip_id', '=', $id)->where('user_id', '=', session('uid'))->first();
         $trip_id =Rfp::where("user_trip_id", $trip->id)->first();
         if($trip_id != null){
@@ -59,7 +59,7 @@ class TripsController extends Controller {
         $user = User::find(session('uid'));
         $hotel = Hotel::find($user->hotel_id);
       
-        $trip_booking = usertrips::all();
+        $trip_booking = Usertrips::all();
         if (session('level') == 1) {
           $rfps_new = Rfp::with('usertripInfo','usertripInfo.tripuser')->orderBy('updated_at', 'desc')->get();
           $purchases = Invoices::sum('invoices.amt_paid');
@@ -78,7 +78,7 @@ class TripsController extends Controller {
         }
        
         if (session('uid') == 5) {
-            usertrips::where('id', $id)->update(['status' => 6]);
+            Usertrips::where('id', $id)->update(['status' => 6]);
         }
         
         return view('hotelmanager.tripsingle', compact('trip', 'rfp', 'trip_id', 'invoice', 'trip_booking', 'rfps_new', 'hotel', 'purchases'));
@@ -90,9 +90,9 @@ class TripsController extends Controller {
 
     public function filterByAmenities(Request $request) {
         if ($request->data) {
-            $trips = usertrips::join('trip_amenities', 'trip_amenities.trip_id', '=', 'user_trips.id')->whereIn('trip_amenities.amenity_id', explode(',', $request->data))->all();
+            $trips = Usertrips::join('trip_amenities', 'trip_amenities.trip_id', '=', 'user_trips.id')->whereIn('trip_amenities.amenity_id', explode(',', $request->data))->all();
         } else {
-            $trips = usertrips::all();
+            $trips = Usertrips::all();
         }
         return view('hotelmanager.table')->withTrips($trips);
     }

@@ -7,6 +7,7 @@ use App\Models\hotelamenities;
 use App\Models\Rfp;
 use App\Models\Team;
 use App\Models\Usertrips;
+use App\Models\Invitition;
 use App\Models\Invoices;
 use App\User;
 
@@ -91,7 +92,7 @@ class Helper {
                 });
             }
             /*send it to Guest user*/
-            $guest_users = DB::table('invitations')->where(['group_id' => 5, 'status' => 0])->get();
+            $guest_users = Invitition::where(['group_id' => 5, 'status' => 0])->get();
             if (count($guest_users) > 0) {
                 foreach ($guest_users as $guest_users_new) {
                     $to_guest = $guest_users_new->email;

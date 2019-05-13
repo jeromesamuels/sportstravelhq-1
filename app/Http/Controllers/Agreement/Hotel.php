@@ -5,7 +5,7 @@
  *
  * @category Agreement
  * @package  App\Http\Controllers\Agreement
- * @author   Joseph Montane <jm@comentum.com>
+ * @author   Joseph Montanez <jm@comentum.com>
  * @license  https://opensource.org/licenses/BSD-3-Clause BSD
  * @link     https://sportstravelhq.com
  */
@@ -13,8 +13,7 @@
 namespace App\Http\Controllers\Agreement;
 
 use App\Http\Controllers\Controller;
-use App\Library\Agreement\Agreement;
-use Debugbar;
+use App\Library\Agreement\AgreementData;
 use Illuminate\Http\Request;
 
 /**
@@ -23,7 +22,7 @@ use Illuminate\Http\Request;
  *
  * @category Agreement
  * @package  App\Http\Controllers\Agreement
- * @author   Joseph Montane <jm@comentum.com>
+ * @author   Joseph Montanez <jm@comentum.com>
  * @license  https://opensource.org/licenses/BSD-3-Clause BSD
  * @link     https://sportstravelhq.com
  */
@@ -39,16 +38,16 @@ class Hotel extends Controller
      */
     public function index(Request $request)
     {
-        Debugbar::disable();
+        \Debugbar::disable();
 
         $trip       = [];
-        $doc_values = (array) new Agreement();
+        $agreementData = new AgreementData();
 
         return view(
             'agreement.index',
             [
                 'trip'       => $trip,
-                'doc_values' => $doc_values,
+                'doc_values' => $agreementData->toArray(),
             ]
         );
     }

@@ -1,7 +1,7 @@
 <?php namespace App\Http\Controllers;
 use App\Models\Invoices;
 use App\Models\Hotel;
-use App\Models\usertrips;
+use App\Models\Usertrips;
 use App\Models\AgreementForm;
 use App\User;
 use Illuminate\Http\Request;
@@ -36,7 +36,7 @@ class InvoicesController extends Controller {
         $this->data['users'] = User::find(session('uid'));
         $this->data['hotel'] = User::find($this->data['users']->hotel_id);
         $this->data['hotel_type'] = Hotel::find($this->data['users']->hotel_id);
-        $this->data['trips'] = usertrips::whereRaw('MONTH(added) = ?', [$currentMonth])->get();
+        $this->data['trips'] = Usertrips::whereRaw('MONTH(added) = ?', [$currentMonth])->get();
         $this->data['client'] = User::where('group_id', 4)->get();
       if ($this->data['users']->group_id == 6) {
             $this->data['purchases']= Invoices::whereRaw('MONTH(created_at) = ?', [$currentMonth])->where('invoices.hotel_type', '=', $this->data['hotel_type']->type)->sum('invoices.amt_paid');

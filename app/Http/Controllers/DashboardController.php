@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\User;
 use App\Models\Hotel;
-use App\Models\usertrips;
+use App\Models\Usertrips;
 use App\Models\Hotelamenities;
 use App\Models\Rfp;
 use App\Models\Invoices;
@@ -23,7 +23,7 @@ class DashboardController extends Controller {
         $this->data['data_accept'] = Rfp::where("status", 2)->get();
         $this->data['purchases_month'] = Invoices::sum('invoices.amt_paid');
         $this->data['data_hotel'] = Hotel::groupBy('type')->get();
-        $this->data['trips'] = usertrips::count();
+        $this->data['trips'] = Usertrips::count();
         $this->data['a_req'] = "101";
         $this->data['data_client'] = User::orderby('id', 'DESC')->limit(3)->get();
         if (\Session::get('level') == 5) {

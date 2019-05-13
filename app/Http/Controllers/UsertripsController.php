@@ -9,6 +9,7 @@ use App\Models\Rfp;
 use App\Models\Team;
 use App\Models\Usertrips;
 use App\Models\Invoices;
+//use App\Models\usertrip;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
@@ -25,7 +26,7 @@ class UsertripsController extends Controller
 {
     protected $layout = "layouts.main";
     protected $data = array();
-    public $module = 'usertrips';
+    public $module = 'Usertrips';
     static $per_page = '10';
 
     public function __construct()
@@ -36,7 +37,7 @@ class UsertripsController extends Controller
         $this->data  = array(
             'pageTitle'  => $this->info['title'],
             'pageNote'   => $this->info['note'],
-            'pageModule' => 'usertrips',
+            'pageModule' => 'Usertrips',
             'return'     => self::returnUrl(),
         );
     }
@@ -223,7 +224,7 @@ class UsertripsController extends Controller
 
         $mode  = isset($_GET['view']) ? 'view' : 'default';
         $model = new Usertrips();
-        $info  = $model::makeInfo('usertrips');
+        $info  = $model::makeInfo('Usertrips');
         $data  = array(
             'pageTitle' => $info['title'],
             'pageNote'  => $info['note'],
@@ -363,6 +364,11 @@ class UsertripsController extends Controller
             $guestemail = Rfp::find($rfp_id);
             $group = DB::table('invitations')->where('email', $guestemail->sales_manager)->first();
             $log_id   = Session::get('uid');
+
+            /**
+             * @TODO: There is where agreement logic will start
+             */
+
             $agree_id = AgreementForm::where('id', $rfp_id)->first();
             if ($agree_id === null) {
                 $agreement_sent = date("Y-m-d H:i");
@@ -401,6 +407,9 @@ class UsertripsController extends Controller
 
         return response()->json([
             'success'   => true,
+            /**
+             * @TODO: Redirect to the questionnaire, not view agreements
+             */
             'redirect'  => route('hotelmanager.viewAgreements'),
             'view_data' => 'Accepted Successfully !',
         ]);
@@ -412,7 +421,7 @@ class UsertripsController extends Controller
     {
        
     $trip=Rfp::find($rfp_id);
-    $trip_entry=usertrips::find($trip->user_trip_id);
+    $trip_entry=Usertrips::find($trip->user_trip_id);
     $trip_user=User::find($trip->user_id);
     $user=User::find(session('uid'));
     $trip_entry_user=User::find($trip_entry->entry_by);
@@ -581,7 +590,7 @@ class UsertripsController extends Controller
         if (Session::get('level') != 4) {
             return redirect(URL("/"));
         }
-        $trips  = usertrips::where('entry_by', session('uid'))->orderBy('added', 'desc')->get();
+        $trips       = Usertrips::where('entry_by', session('uid'))->orderBy('added', 'desc')->get();
         $data_client = User::where('id', session('uid'))->get();
         if(count($trips)!=''){
         $purchases   = Invoices::sum('invoices.amt_paid');
@@ -591,7 +600,7 @@ class UsertripsController extends Controller
         }
         $amenities   = hotelamenities::all();
         $client = User::where('group_id', 4)->get();
-        $data        = usertrips::all();
+        $data        = Usertrips::all();
         $data_all    = Rfp::all();
         $get_invoice = Rfp::where("status", '!=', 3)->get();
         $data_accept = Rfp::where("status", 2)->get();
@@ -606,18 +615,15 @@ class UsertripsController extends Controller
         if (Session::get('level') != 4) {
             return redirect(URL("/"));
         }
-        $trip        = usertrips::with('tripuser')->find($id);
+        $trip        = Usertrips::with('tripuser')->find($id);
         $trip_id = Rfp::where("user_trip_id", $trip->id)->first();
-
+        $invoices='';
         if($trip_id != null){
            $invoices    = Invoices::where('rfp_id',$trip_id->id)->first();
         }
-        else{
-          $invoices='';  
-        }
         $data_hotel  = Hotel::groupBy('type')->get();
         $purchases =   Invoices::sum('invoices.amt_paid');
-        $data        = usertrips::all();
+        $data        = Usertrips::all();
         $rfps_new    = Rfp::where('status', 2)->get();
         $rfp          = Rfp::where('user_trip_id', '=', $id)->where('user_id', '=', session('uid'))->first();
 

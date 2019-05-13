@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Session;
 use App\Models\Rfp;
 use App\Models\Invoices;
 use App\Models\Hotel;
-use App\Models\usertrips;
+use App\Models\Usertrips;
 use App\User;
 
 class CorporateUsersController extends Controller {
@@ -42,7 +42,7 @@ class CorporateUsersController extends Controller {
             $this->data['purchases_due'] = Invoices::where('invoices.hotel_type', '=', $name)->sum('invoices.est_amt_due');
         }
         $this->data['rfps_new'] = Rfp::where('status', 2)->get();
-        $this->data['trip_booking'] = usertrips::all();
+        $this->data['trip_booking'] = Usertrips::all();
         $this->grab($request, $filter);
         if ($this->access['is_view'] == 0) return redirect('dashboard')->with('message', __('core.note_restric'))->with('status', 'error');
         return view('corporate.user.index', $this->data);

@@ -36,7 +36,8 @@
   },
   "autoload": {
     "classmap": [
-      "database",
+      "database/seeds",
+      "database/factories",
       "app/Library/",
       "app/Models/"
     ],
@@ -45,9 +46,9 @@
     }
   },
   "autoload-dev": {
-    "classmap": [
-      "tests/TestCase.php"
-    ]
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
   },
   "scripts": {
     "post-autoload-dump": [
@@ -61,7 +62,16 @@
       "@php artisan key:generate --ansi"
     ]
   },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "config": {
-    "preferred-install": "dist"
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "sort-packages": true
+  },
+  "extra": {
+    "laravel": {
+      "dont-discover": []
+    }
   }
 }
