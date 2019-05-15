@@ -986,7 +986,7 @@
                                 $user_trip_status = App\Models\Rfp::where('user_trip_id', $trip->id)->pluck('status');
                                 
                                 ?>
-                            @if ($rfp->status != 2)
+                            @if ($rfp->status != 4)
                             <button href="#confirm_decline" class="btn btn-light" id="custId" data-toggle="modal" data-id="{{ $rfp->id }}"> Declined RFP</a> 
                             @else
                             <button  class="btn btn-light" id="custId" data-toggle="modal" data-id="{{ $rfp->id }}"disabled=""> Declined RFP  </button>

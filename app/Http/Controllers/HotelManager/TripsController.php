@@ -25,14 +25,23 @@ class TripsController extends Controller {
         $date_month = date('m');
         $trip_month = Usertrips::whereRaw('MONTH(added) = ?', $date_month)->get();
         $user = User::find(session('uid'));
-       
-        if (session('level') == 1 || session('level') == 6) {
+        $Hotel = Hotel::find($user->hotel_id);
+
+        if (session('level') == 1) {
             $rfps = Rfp::all();
             $data_all =Rfp::all();
             $purchases = invoices::sum('invoices.amt_paid');
             $active_rfp = Rfp::where("status", '!=', 3)->get();
             $accepted_rfp =  Rfp::where("status", 2)->get();
-        } else {
+        } 
+        elseif(session('level') == 6){
+            $rfps = Rfp::with('usertripInfo','usertripInfo.tripuser')->where('user_id', session('uid'))->orderBy('updated_at', 'desc')->get();
+            $data_all = Rfp::all();
+            $purchases = Invoices::where('invoices.hotel_type', $Hotel->type)->sum('invoices.amt_paid');
+            $active_rfp = Rfp::where("status", '!=', 3)->get();
+            $accepted_rfp = Rfp::where("status", 2)->get();
+        }
+        else {
             $rfps = Rfp::with('usertripInfo','usertripInfo.tripuser')->where('user_id', session('uid'))->orderBy('updated_at', 'desc')->get();
 
             $data_all = Rfp::where('user_id', session('uid'))->get();

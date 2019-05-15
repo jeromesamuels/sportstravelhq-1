@@ -70,13 +70,13 @@
 					<div class="btn-group">
 						<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icon-menu5"></i> Bulk Action </button>
 				        <ul class="dropdown-menu">
-				         @if($access['is_excel'] ==1)
+				       <!--   @if($access['is_excel'] ==1)
 							<li><a href="{{ url( $pageModule .'/export?do=excel&return='.$return) }}"><i class="fa fa-download"></i> Export CSV </a></li>	
 						@endif
 						@if($access['is_add'] ==1)
 							<li><a href="{{ url($pageModule .'/import?return='.$return) }}" onclick="SximoModal(this.href, 'Import CSV'); return false;"><i class="fa fa-cloud-upload"></i> Import CSV</a></li>
 							<li><a href="javascript://ajax" class=" copy " title="Copy" ><i class="fa fa-copy"></i> Copy selected</a></li>
-						@endif	
+						@endif	 -->
 							<li><a href="{{ url($pageModule) }}"  ><i class="fa fa-times"></i> Clear Search </a></li>
 				          	<li role="separator" class="divider"></li>
 				         @if($access['is_remove'] ==1)

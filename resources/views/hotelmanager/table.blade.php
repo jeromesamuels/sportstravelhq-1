@@ -862,14 +862,14 @@
                     <a href="#" style="color: #5dbbe0;font-weight: bold;" class="dropdown-toggle" data-toggle="dropdown">View Trip <i class="fa fa-chevron-down" aria-hidden="true" style="color: #000;padding-top: 5px;padding-left: 5px;"></i></a>
                   <ul class="dropdown-menu">
                         <li ><a href="{{ route('hotelmanager.trips.show',$rfp->user_trip_id) }}"  class="btn btn-light"  title="View Trips" >View Details</a></li>
+                         @if ($rfp->status!= 4)
                         <li >
-                         
-                        
                             <a href="#confirm_decline" class="btn btn-light" id="custId2" data-toggle="modal" data-id="{{ $rfp->id }}" title="{{ $rfp->id }}"> Declined RFP</a> 
-                       
                         </li>
-                        
-                        @if ($rfp->status== 8 || $rfp->status== 4)
+                        @else
+                        <li >  <a href="#confirm_decline" class="btn btn-light" id="custId2" data-toggle="modal" data-id="{{ $rfp->id }}" title="{{ $rfp->id }}"  disabled=""> Declined RFP</a>  </li>
+                        @endif 
+                        @if ($rfp->status== 4)
                         <li > <a href="#myModal" class="btn btn-light" id="custId_new" data-toggle="modal" data-id="{{ $rfp->id }}" title="{{ $rfp->id }}"> Complete business </a> </li>
                        @else
                        <li > <a href="#myModal" class="btn btn-light" id="custId_new" data-toggle="modal" data-id="{{ $rfp->id }}" title="{{ $rfp->id }}" disabled="">Complete business </a> </li>

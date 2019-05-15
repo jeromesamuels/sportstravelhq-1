@@ -48,7 +48,7 @@
                 </div>
                
                 <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                    <h3 style="float:right;top: 30px;position: absolute;right: 25px;">{{ count($rfps) }}</h3>
+                    <h3 style="float:right;top: 30px;position: absolute;right: 25px;">{{ count($trip_booking) }}</h3>
                 </div>
                 <div class="progress" style="margin-bottom: 10px;height: 6px; ">
                     <div class="progress-bar" role="progressbar" aria-valuenow="70"
@@ -144,7 +144,7 @@
                     </div><br />
                    
                     <div class="body">
-                           <h1 style="color:#5dbbe0;font-size: 40px;">{{ count($rfps) }}</h1>
+                           <h1 style="color:#5dbbe0;font-size: 40px;">{{ count($trips) }}</h1>
                        <p>Total Bookings</p>
                     </div>
                 </div>
