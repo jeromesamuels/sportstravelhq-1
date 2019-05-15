@@ -26,7 +26,7 @@ class TripsController extends Controller {
         $trip_month = Usertrips::whereRaw('MONTH(added) = ?', $date_month)->get();
         $user = User::find(session('uid'));
        
-        if (session('level') == 1) {
+        if (session('level') == 1 || session('level') == 6) {
             $rfps = Rfp::all();
             $data_all =Rfp::all();
             $purchases = invoices::sum('invoices.amt_paid');

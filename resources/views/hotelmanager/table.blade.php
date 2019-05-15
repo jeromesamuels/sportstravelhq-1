@@ -811,10 +811,7 @@
                     </ul>
                 </div>
                 <?php }
-                 
-                
                     ?>
-                
             </td>
             <td>
                 <?php //echo $rfp->status;
@@ -877,6 +874,11 @@
                        @else
                        <li > <a href="#myModal" class="btn btn-light" id="custId_new" data-toggle="modal" data-id="{{ $rfp->id }}" title="{{ $rfp->id }}" disabled="">Complete business </a> </li>
                        @endif 
+                        @if ($rfp->status== 4)
+                        <li ><a href="{{ route('downloadReceipt',['download'=>'pdf', 'rfp_id' => $rfp->id]) }}"> <button id="download_receipt" title="{{ $rfp->id }}" class="btn btn-light ">Download Receipt</button></a></li>
+                        @else
+                        <li > <button  title="{{ $rfp->id }}" class="btn btn-light " disabled="">Download Receipt</button></li>
+                        @endif
                     </ul>
                 </div>
            

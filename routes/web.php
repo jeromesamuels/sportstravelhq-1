@@ -148,7 +148,7 @@ Route::post('multipleInvoice', 'InvoicesController@multipleInvoice')->name('invo
 Route::post('/trips/recordFilter', 'UsertripsController@recordFilter');
 Route::post('zipHotel', 'InvoicesController@zipHotel');
  //Download Receipt
-Route::post('/downloadReceipt/{id}', 'InvoicesController@downloadReceipt');
+Route::get('downloadReceipt', 'InvoicesController@downloadReceipt')->name('downloadReceipt');
 
 Route::get('get-location-from-ip', function () {
     $ip   = \Request::ip();
