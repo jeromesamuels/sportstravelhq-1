@@ -34,6 +34,7 @@ class TripsController extends Controller {
             $accepted_rfp =  Rfp::where("status", 2)->get();
         } else {
             $rfps = Rfp::with('usertripInfo','usertripInfo.tripuser')->where('user_id', session('uid'))->orderBy('updated_at', 'desc')->get();
+
             $data_all = Rfp::where('user_id', session('uid'))->get();
             $purchases = Invoices::where('invoices.hotel_name', $user->hotel_id)->sum('invoices.amt_paid');
             $active_rfp = Rfp::where("status", '!=', 3)->where('user_id', session('uid'))->get();

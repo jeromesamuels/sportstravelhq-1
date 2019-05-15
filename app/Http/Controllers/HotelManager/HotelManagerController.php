@@ -81,22 +81,14 @@ class HotelManagerController extends Controller {
         $user = User::find(session('uid'));
         $hotel_data = Hotel::find($user->hotel_id);
         if (Session::get('level') != 1 && Session::get('level') != 6) {
-            $agreements = AgreementForm::where('reciever_id', '=', Session::get('uid'))->orWhere('coordinator_id', '=', Session::get('uid'))->orderBy('created_at', 'DESC')->get();
+            $agreements = AgreementForm::with('agreementRfp')->where('reciever_id', '=', Session::get('uid'))->orWhere('coordinator_id', '=', Session::get('uid'))->orderBy('created_at', 'DESC')->get();
         } elseif ($hotel_data->name != '' && Session::get('level') == 6) {
-            $agreements = AgreementForm::orderBy('created_at', 'DESC')->where('hotel_name', $hotel_data->name)->get();
+            $agreements = AgreementForm::with('agreementRfp')->orderBy('created_at', 'DESC')->where('hotel_name', $hotel_data->name)->get();
         } else {
-            $agreements = AgreementForm::orderBy('created_at', 'DESC')->get();
+            $agreements = AgreementForm::with('agreementRfp')->orderBy('created_at', 'DESC')->get();
         }
-        $rfp_status='';
-        if ($agreements != '') {
-        foreach ($agreements as $agreement) {
-                $rfp_status = Rfp::find($agreement->for_rfp);
-         } 
-             return view('hotelmanager.viewagreements', compact('agreements', 'rfp_status'));
-         }
-        else {
-             return redirect()->back();
-            }
+          return view('hotelmanager.viewagreements', compact('agreements')); 
+        
     }
 
     public function downloadAgreement($id) {

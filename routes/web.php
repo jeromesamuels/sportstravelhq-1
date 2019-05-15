@@ -121,6 +121,7 @@ Route::group(['namespace' => 'HotelManager', 'middleware' => 'auth', 'prefix' =>
     Route::get('/room-listing', 'BillingController@showRoomListing')->name('hotelmanager.showRoomListing');
     Route::get('/room-listing/download/{id}', 'BillingController@downloadRoomListing')->name('hotelmanager.roomListingDownload');
     Route::delete('/room-listing/{id}', 'BillingController@destroyRoomListing')->name('hotelmanager.destroyRoomListing');
+   
 });
 Route::group(['namespace' => 'Corporate', 'middleware' => 'auth', 'prefix' => "corporate"], function () {
     Route::get('/', 'CorporateController@index')->name('corporate.home');
@@ -146,6 +147,8 @@ Route::post('sendInvoice', 'InvoicesController@sendInvoice')->name('invoices.sen
 Route::post('multipleInvoice', 'InvoicesController@multipleInvoice')->name('invoices.multipleInvoice');
 Route::post('/trips/recordFilter', 'UsertripsController@recordFilter');
 Route::post('zipHotel', 'InvoicesController@zipHotel');
+ //Download Receipt
+Route::post('/downloadReceipt/{id}', 'InvoicesController@downloadReceipt');
 
 Route::get('get-location-from-ip', function () {
     $ip   = \Request::ip();
