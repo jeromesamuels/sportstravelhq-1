@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use Mail;
 use Vsmoraes\Pdf\Pdf;
+//use PDF;
 
 class InvoicesController extends Controller {
     private $pdf;
@@ -276,28 +277,16 @@ class InvoicesController extends Controller {
             return Redirect::back();
         }
 
-       public function downloadReceipt($id)
+       public function downloadReceipt(Request $request)
         {
-            $rfp = Invoices::where('rfp_id', $id)->first();
-            $trip = Usertrips::find($rfp->user_trip_id);
-           // return view('user.receipt', compact('rfp'));
-            $html = view('user.receipt', compact('rfp'))->render();
-            $file_name="Receipt.pdf";*/
-            //$pdf = $this->pdf->load($html)->save('/uploads/users/Receipt.pdf');
-            $file=$this->pdf->load($html, 'A3')->filename(public_path() . '/uploads/users/' . $file_name)->output();
-            $response = - 1;
-            $response = response()->download($file);
-            if ($response !== - 1) {
-                return $response;
+            if($request->has('rfp_id') && Invoices::where('rfp_id', $request->rfp_id)->get()->count()){
+                $rfp = Invoices::where('rfp_id', $request->rfp_id)->first();
+                $html = view('user.receipt', compact('rfp'))->render();
+                return $this->pdf->load($html)->download();
             }
+           return Redirect::back();
+       }
 
-              //return redirect()->back()->with('success', 'File uploaded successfully.');
-
-              // return $file;
-            /*  return response()->json([
-            'success'   => true,
-            'view_data' => (string)view('user.receipt', compact('rfp')),
-        ]);*/
-        }
+      
     }
     

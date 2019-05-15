@@ -1003,9 +1003,9 @@
                         <li > <button data-toggle="modal" data-target="#upload_roomingList"  data-id="{{ $rfp->id }}" title="{{ $rfp->id }}" class="btn btn-light " disabled="">Upload Rooming List</button></li>
                         @endif
                         @if ($rfp->status== 4)
-                        <li > <button id="download_receipt" title="{{ $rfp->id }}" class="btn btn-light ">Download Receipt</button></li>
+                        <li ><a href="{{ route('downloadReceipt',['download'=>'pdf', 'rfp_id' => $rfp->id]) }}"> <button id="download_receipt" title="{{ $rfp->id }}" class="btn btn-light ">Download Receipt</button></a></li>
                         @else
-                        <li > <button id="download_receipt" title="{{ $rfp->id }}" class="btn btn-light " disabled="">Download Receipt</button></li>
+                        <li > <button  title="{{ $rfp->id }}" class="btn btn-light " disabled="">Download Receipt</button></li>
                         @endif
                         <?php } ?>
                     </ul>
@@ -1146,25 +1146,8 @@
         </div>
     </div>
 </div>
-<script>
 
-    /* download receipt */
-    $(document).on("click", "#download_receipt", function() {
-        var id = $(this).attr("title");
-    
-        //alert(reason);
-        var url = '{{ url("/downloadReceipt/") }}' + '/' + id;
-    
-         $.post(url, function(response) {
-                if(response.success) {
-                   // alert('sucess');
-                    //alert(response.view_data);
-                    //window.location.href=response.redirect;
-                    //location.reload();
-                }
-            }, 'json');
-    
-      });
+<script>
 
     /*decline RFP */
      $(document).on("click", ".btn-rfp-decline", function() {
