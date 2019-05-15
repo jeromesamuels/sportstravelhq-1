@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 use App\Models\Invoices;
 use App\Models\Hotel;
+use App\Models\Rfp;
 use App\Models\Usertrips;
 use App\Models\AgreementForm;
 use App\User;
@@ -273,6 +274,30 @@ class InvoicesController extends Controller {
                 $message->attachData($pdf, "invoice.pdf");
             });
             return Redirect::back();
+        }
+
+       public function downloadReceipt($id)
+        {
+            $rfp = Invoices::where('rfp_id', $id)->first();
+            $trip = Usertrips::find($rfp->user_trip_id);
+           // return view('user.receipt', compact('rfp'));
+            $html = view('user.receipt', compact('rfp'))->render();
+            $file_name="Receipt.pdf";*/
+            //$pdf = $this->pdf->load($html)->save('/uploads/users/Receipt.pdf');
+            $file=$this->pdf->load($html, 'A3')->filename(public_path() . '/uploads/users/' . $file_name)->output();
+            $response = - 1;
+            $response = response()->download($file);
+            if ($response !== - 1) {
+                return $response;
+            }
+
+              //return redirect()->back()->with('success', 'File uploaded successfully.');
+
+              // return $file;
+            /*  return response()->json([
+            'success'   => true,
+            'view_data' => (string)view('user.receipt', compact('rfp')),
+        ]);*/
         }
     }
     

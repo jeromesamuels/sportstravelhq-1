@@ -606,8 +606,8 @@
                        
                         <div class="status_detail1">
                             <h5>Document</h5>
-                            @if($invoice->invoice_file != '')
-                            <a href="../../uploads/users/{{ $invoice->invoice_file }}" target="_blank" style="font-size: 14px;color: #00b0e4;" ><i class="fa fa-file-excel-o" aria-hidden="true"></i> Roster File</a>
+                            @if($invoices->invoice_file != '')
+                            <a href="../../uploads/users/{{ $invoices->invoice_file }}" target="_blank" style="font-size: 14px;color: #00b0e4;" ><i class="fa fa-file-excel-o" aria-hidden="true"></i> Roster File</a>
                             @else
                             <a href="#" style="font-size: 14px;color: #00b0e4;" ><i class="fa fa-file-excel-o" aria-hidden="true"></i> Roster File</a>
                             @endif

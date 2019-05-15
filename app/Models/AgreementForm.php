@@ -13,4 +13,7 @@ class AgreementForm extends Model
     public function hotelmanager(){
     	return $this->belongsTo(Core\Users::class,'reciever_id');
     }
+    public function agreementRfp(){
+    	return $this->belongsTo('App\Models\Rfp','for_rfp');
+    }
 }

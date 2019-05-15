@@ -12,7 +12,9 @@
     </ul>
 </div>
 @endif
-
+@php
+ini_set('max_execution_time', 3000);
+@endphp
 <style type="text/css">
     .error {
     border: 2px solid red;
@@ -464,24 +466,25 @@
             
                 this.addressArray = place.address_components;
                  if(this.addressArray.length === 9) {
-                    this.street_number = this.addressArray[5].long_name;
-                    //this.country = this.addressArray[6].short_name;
-                    this.zipcode = this.addressArray[7].short_name;
-                    this.city=this.addressArray[3].short_name;
+                 
                     document.getElementById('from_city').value=this.addressArray[3].short_name;
                     document.getElementById('from_zip').value=this.addressArray[7].short_name;
                     document.getElementById('from_state_id').value=this.addressArray[5].long_name;
                  } 
                 
                  else{
-                     this.street_number = this.addressArray[4].long_name;
-                    //this.country = this.addressArray[5].short_name;
-                     this.zipcode = this.addressArray[6].short_name;
-                     this.city=this.addressArray[2].short_name;
+                    var zip=this.addressArray[6].short_name;
+                    if(zip.match(/^\d+$/)) {
+                      document.getElementById('from_zip').value=this.addressArray[6].short_name;  
+                    }
+                    else{
+                        document.getElementById('from_zip').value='';   
+                    }
+
                    document.getElementById('from_city').value=this.addressArray[2].short_name;
-                   document.getElementById('from_zip').value=this.addressArray[6].short_name;
                    document.getElementById('from_state_id').value=this.addressArray[4].long_name;
                  }
+
                 }
                  var from_zipcode = $('#from_zip').val();
                     $.ajax({
