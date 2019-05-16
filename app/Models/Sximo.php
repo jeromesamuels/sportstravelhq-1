@@ -7,11 +7,10 @@ use Illuminate\Http\Request;
 
 class Sximo extends Model {
 
-	public function __construct() 
-	{
-		parent::__construct();
-
-   }	
+    public function __construct($attributes = array())
+    {
+        parent::__construct($attributes);
+    }
 
 	public static function getRows( $args , $gid = 0 )
 	{
