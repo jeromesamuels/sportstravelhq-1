@@ -20,7 +20,7 @@ class NotificationController extends Controller {
         $this->grab($request);
         if ($this->access['is_view'] == 0) return redirect('dashboard')->with('message', __('core.note_restric'))->with('status', 'error');
         // Render into template
-        \DB::table('tb_notification')->where('userid', session('uid'))->update(['is_read' => '1']);
+        Notification::where('userid', session('uid'))->update(['is_read' => '1']);
         return view($this->module . '.index', $this->data);
     }
     function create(Request $request) {

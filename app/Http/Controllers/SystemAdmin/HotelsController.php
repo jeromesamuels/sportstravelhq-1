@@ -6,7 +6,7 @@ use App\Models\Rfp;
 use App\User;
 use App\Models\Invoices;
 use App\Models\UserTrip;
-use App\Models\hotelamenities;
+use App\Models\HotelAmenities;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -40,7 +40,7 @@ class HotelsController extends Controller {
     }
 
     public function createHotels() {
-        $amenities = hotelamenities::all();
+        $amenities = HotelAmenities::all();
         return view('systemadmin.createHotels', compact('amenities'));
     }
 
@@ -51,6 +51,8 @@ class HotelsController extends Controller {
              "service_type" => "required|max:191", 
              "name" => "required|max:191",
              "zip" => "required",
+             "state" => "required",
+             "phone" => "required",
              "address" => "required|max:191",
              "city" => "required|max:191",
              "type" => "required|max:191", 
@@ -72,6 +74,8 @@ class HotelsController extends Controller {
         $hotel->service_type = $request->service_type;
         $hotel->name = $request->name;
         $hotel->zip = $request->zip;
+        $hotel->state = $request->state;
+        $hotel->phone = $request->phone;
         $hotel->address = $request->address;
         $hotel->city = $request->city;
         $hotel->type = $request->type;
@@ -93,7 +97,7 @@ class HotelsController extends Controller {
 
     public function editHotels($id) {
         $hotel = Hotel::find($id);
-        $amenities = hotelamenities::all();
+        $amenities = HotelAmenities::all();
         $hotel_type = Hotel::where('type', '!=', $hotel->type)->groupBy('type')->pluck('type');
         return view('systemadmin.editHotels', compact('hotel', 'amenities', 'hotel_type'));
     }
@@ -102,7 +106,7 @@ class HotelsController extends Controller {
         $hotel = Hotel::find($id);
         $user = User::where('hotel_id', $id)->pluck('id');
         $data_hotel = Hotel::groupBy('type')->get();
-        $amenities = hotelamenities::all();
+        $amenities = HotelAmenities::all();
         $currentMonth = date('m');
         $purchases = Invoices::where('invoices.hotel_name', $id)->whereRaw('MONTH(created_at) = ?', [$currentMonth])->sum('invoices.amt_paid');
         $purchases_due = Invoices::where('invoices.hotel_name', $id)->whereRaw('MONTH(created_at) = ?', [$currentMonth])->sum('invoices.est_amt_due');
@@ -120,28 +124,42 @@ class HotelsController extends Controller {
             "service_type" => "required|max:191", 
             "name" => "required|max:191", 
             "zip" => "required",
+            "state" => "required",
+            "phone" => "required",
             "address" => "required|max:191", 
             "city" => "required|max:191",
             "type" => "required|max:191", 
-            "logo" => "required|max:555", 
-            "property" => "required|max:555", 
             "rating" => "required|min:1|max:4",
             "active" => "required", ]);
 
         /*For hotel type logo*/
+        $hotel_id=Hotel::find($id);
+        if($request->file('logo') !=''){
         $file = $request->file('logo')->getClientOriginalName();
         $destinationPath = './uploads/users/';
         $uploadSuccess = $request->file('logo')->move($destinationPath, $file);
+        }
+        else{
+            $file=$hotel_id->logo;
+        }
         /*For hotel type property*/
+        if($request->file('property') !=''){
         $filep = $request->file('property')->getClientOriginalName();
         $destinationPathp = './uploads/users/';
         $uploadSuccessp = $request->file('property')->move($destinationPathp, $filep);
+        }
+        else{
+          $filep=$hotel_id->property; 
+        }
+        
         $hotel = Hotel::find($id);
         $hotel->hotel_code = $request->hotel_code;
         $hotel->IATA_number = $request->IATA_number;
         $hotel->service_type = $request->service_type;
         $hotel->name = $request->name;
         $hotel->zip = $request->zip;
+        $hotel->state = $request->state;
+        $hotel->phone = $request->phone;
         $hotel->address = $request->address;
         $hotel->city = $request->city;
         $hotel->type = $request->type;

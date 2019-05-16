@@ -26,13 +26,13 @@
                              <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Hotel Code</label>
-                                    <input type="text" class="form-control" placeholder="Enter Hotel Code" name="hotel_code">
+                                    <input type="text" class="form-control" placeholder="Enter Hotel Code" name="hotel_code" >
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>IATA Number</label>
-                                    <input type="number" class="form-control" placeholder="Enter IATA number for hotel" name="IATA_number" id="IATA" maxlength="8">
+                                    <input type="text" class="form-control" placeholder="Enter IATA number for hotel" name="IATA_number" id="IATA" >
                                     <p class="res" style="color:red;"></p>
                                 </div>
                             </div>
@@ -55,8 +55,26 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
+                                    <label>Hotel City</label>
+                                    <input type="text" class="form-control" placeholder="Enter City Name" name="city">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
                                     <label>Hotel Zip</label>
                                     <input type="number" class="form-control" placeholder="Enter Zip Code" name="zip">
+                                </div>
+                            </div>
+                             <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Hotel State</label>
+                                    <input type="text" class="form-control" placeholder="Enter State" name="state">
+                                </div>
+                            </div>
+                             <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    <input type="number" class="form-control" placeholder="Enter Phone Number" name="phone">
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -74,12 +92,6 @@
                                         <option value="3">3 Stars</option>
                                         <option value="4">4 Stars</option>
                                     </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Hotel City</label>
-                                    <input type="text" class="form-control" placeholder="Enter City Name" name="city">
                                 </div>
                             </div>
                             <div class="col-sm-6">

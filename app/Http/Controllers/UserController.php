@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Models\UserTrip;
-use App\Models\hotelamenities;
+use App\Models\HotelAmenities;
 use App\Models\Rfp;
 use App\Models\Invoices;
 use App\Models\Invitation;
@@ -202,7 +202,7 @@ class UserController extends Controller
     {
         $trips     = UserTrip::orderBy('added', 'desc')->where('status', 6)->get();
         $rfps      = Rfp::where('user_id', null)->get();
-        $amenities = hotelamenities::all();
+        $amenities = HotelAmenities::all();
 
         return view('hotelmanager.viewtrips', compact('trips', 'amenities', 'rfps'));
     }
@@ -235,7 +235,7 @@ class UserController extends Controller
         $trip = UserTrip::find($id);
         $rfp        = Rfp::where('sales_manager', $email)->get();
         $trip_id_detail= Rfp::where("user_trip_id",$id)->get(); 
-        $amenities  = hotelamenities::all();
+        $amenities  = HotelAmenities::all();
         $guest_user = Invitation::where('email', '=', $email)->get();
         $rfps_new = Rfp::where('status', 2)->get();
         $invoice= Invoices::find($trip->id);
@@ -280,7 +280,6 @@ class UserController extends Controller
         $rfp->amenitie_ids    = json_encode($amenitie_ids);
         $rfp->hotels_message  = $request->message;
         $rfp->save();
-        //$r = \Helper::addTripStatusLog(2, $trip->id, $rfp->id);
         Session::flash('success', 'Bid has been Sent successfully');
 
         return redirect()->back();
@@ -289,7 +288,6 @@ class UserController extends Controller
     public function getActivation(Request $request)
     {
         $num = $request->input('code');
-        //return redirect('user/login')->with(['message'=>'Invalid Code Activation!','status'=>'error']);
         $user = User::where('activation', '=', $num)->get();
         if (count($user) >= 1) {
             User::where('activation', $num)->update(array('active' => 1, 'activation' => ''));
@@ -406,11 +404,7 @@ class UserController extends Controller
                         }
                         session($session);
                         if ($request->ajax() == true) {
-                            /*if( config('sximo.cnf_front') =='false') :
-                            return response()->json(['status' => 'success', 'url' => url('dashboard')]);
-                            else :
-                            return response()->json(['status' => 'success', 'url' => url('')]);
-                            endif;  */
+                         
                         } else {
                             if ($session['level'] == 2 || $session['level'] == 1 || $session['level'] == 4 || $session['level'] == 5 || $session['level'] == 6) {
                                 if (!$request->has("send_code") && $row->vcode == 0) {

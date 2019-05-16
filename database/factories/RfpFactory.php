@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\hotelamenities;
+use App\Models\HotelAmenities;
 use App\Models\Rfp;
 use Faker\Generator as Faker;
 

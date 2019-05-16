@@ -53,7 +53,7 @@
         <tbody>
 						
             @foreach ($rowData as $row)
-            <?php $trip_log=App\Models\Tripstatuslogs::where('trip_id', $row->trip_id)->first();
+            <?php $trip_log=App\Models\TripstatusLogs::where('trip_id', $row->trip_id)->first();
             ?>
                 <tr>
 					<td width="30"> {{ ++$i }} </td>	

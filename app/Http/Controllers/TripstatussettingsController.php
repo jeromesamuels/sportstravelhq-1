@@ -1,5 +1,5 @@
 <?php namespace App\Http\Controllers;
-use App\Models\Tripstatussettings;
+use App\Models\TripstatusSettings;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Validator, Input, Redirect;

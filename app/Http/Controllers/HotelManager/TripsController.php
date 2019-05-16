@@ -2,8 +2,8 @@
 namespace App\Http\Controllers\HotelManager;
 use App\Http\Controllers\Controller;
 use App\Models\UserTrip;
-use App\Models\invoices;
-use App\Models\hotelamenities;
+use App\Models\Invoices;
+use App\Models\HotelAmenities;
 use App\Models\Roomlisting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -30,7 +30,7 @@ class TripsController extends Controller {
         if (session('level') == 1) {
             $rfps = Rfp::all();
             $data_all =Rfp::all();
-            $purchases = invoices::sum('invoices.amt_paid');
+            $purchases = Invoices::sum('invoices.amt_paid');
             $active_rfp = Rfp::where("status", '!=', 3)->get();
             $accepted_rfp =  Rfp::where("status", 2)->get();
         } 
@@ -51,7 +51,8 @@ class TripsController extends Controller {
         }
         $trip_booking = UserTrip::where("status", 6)->get();
         $data_grp = User::where('group_id', 4)->get();
-        $amenities = hotelamenities::all();
+        $amenities = HotelAmenities::all();
+        
         return view('hotelmanager.viewtrips', compact('trips', 'amenities', 'rfps', 'trip_booking', 'active_rfp', 'accepted_rfp', 'data_all', 'purchases', 'data_grp', 'trip_month'));
     }
 
@@ -113,7 +114,7 @@ class TripsController extends Controller {
         $destinationPath = './uploads/users/';
         $extension = $request->file('rooming_file')->getClientOriginalExtension();
         $uploadSuccess = $request->file('rooming_file')->move($destinationPath, $file);
-        if ($extension == 'csv' || $extension == 'xls') {
+        if ($extension == 'csv' || $extension == 'xls' || $extension == 'xlsx') {
             $hotel_id_new = Rfp::find($request->trip_id);
             $user_email_new = User::find($hotel_id_new->user_id);
             $roomListing = new Roomlisting();

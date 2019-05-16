@@ -56,8 +56,26 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
+                                    <label>Hotel City</label>
+                                    <input type="text" class="form-control" placeholder="Enter City Name" name="city" value="{{ $hotel->city }}">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
                                     <label>Hotel Zip</label>
                                     <input type="number" class="form-control" placeholder="Enter Zip Code" name="zip" value="{{ $hotel->zip }}">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Hotel State</label>
+                                    <input type="text" class="form-control" placeholder="Enter State" name="state" value="{{ $hotel->state }}">
+                                </div>
+                            </div>
+                             <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    <input type="number" class="form-control" placeholder="Enter Phone Number" name="phone" value="{{ $hotel->phone }}">
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -79,25 +97,13 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label>Hotel City</label>
-                                    <input type="text" class="form-control" placeholder="Enter City Name" name="city" value="{{ $hotel->city }}">
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
                                     <label>Hotel Type</label>
-                                  
                                     <select class=" form-control" name="type" id="type" >
                                           <option value="{{ $hotel->type }}" selected=""><?php echo ucfirst($hotel->type) ?></option>
-                                        <?php 
-                                         
-                                          foreach ($hotel_type as $value_type) {
-                                           $hotel_type_new=ucfirst($value_type);
-                                        ?>
-
+                                        @foreach ($hotel_type as $value_type) 
+                                        <?php $hotel_type_new=ucfirst($value_type); ?>
                                         <option value="{{ $value_type }}" >{{ $hotel_type_new }} </option>
-
-                                        <?php } ?>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>

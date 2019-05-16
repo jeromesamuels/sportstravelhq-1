@@ -10,6 +10,7 @@ use App\Models\Hotel;
 use App\Models\UserTrip;
 use App\Models\Rfp;
 use App\Models\Invoices;
+use App\Models\Notification;
 use App\User;
 use DateTime;
 class HomeController extends Controller {
@@ -26,13 +27,16 @@ class HomeController extends Controller {
      * @return Response
      */
     public function index(Request $request) {
+
         \App::setLocale(\Session::get('lang'));
         if (config('sximo.cnf_front') == 'false' && $request->segment(1) == ''):
             return redirect('dashboard');
         endif;
         $page = $request->segment(1);
+         
         \DB::table('tb_pages')->where('alias', $page)->update(array('views' => \DB::raw('views+1')));
         if ($page != '') {
+
             $sql = \DB::table('tb_pages')->where('alias', '=', $page)->where('status', '=', 'enable')->get();
             $row = $sql[0];
             if (file_exists(base_path() . '/resources/views/layouts/' . config('sximo.cnf_theme') . '/template/' . $row->filename . '.blade.php') && $row->filename != '') {
@@ -82,13 +86,11 @@ class HomeController extends Controller {
                 $this->data['content'] = \PostHelpers::formatContent($row->note);
                 $this->data['note'] = $row->note;
                 $page = 'layouts.' . config('sximo.cnf_theme') . '.index';
-                // return $this->data;
-                // die();
                 return view($page, $this->data);
             } else {
                 return 'Please Set Default Page';
             }
-        }echo "1string";die;
+        }
     }
 
     public function getLang(Request $request, $lang = 'en') {
@@ -167,7 +169,7 @@ class HomeController extends Controller {
     }
 
     public function getLoad() {
-        $result = \DB::table('tb_notification')->where('userid', \Session::get('uid'))->where('is_read', '0')->orderBy('created', 'desc')->limit(5)->get();
+        $result = Notification::where('userid', \Session::get('uid'))->where('is_read', '0')->orderBy('created', 'desc')->limit(5)->get();
         $data = array();
         $i = 0;
         foreach ($result as $row) {

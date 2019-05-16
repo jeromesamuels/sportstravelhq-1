@@ -3,7 +3,7 @@ namespace App\Helpers;
 use Illuminate\Support\Facades\DB;
 use App\Models\AgreementForm;
 use App\Models\Hotel;
-use App\Models\hotelamenities;
+use App\Models\HotelAmenities;
 use App\Models\Rfp;
 use App\Models\Team;
 use App\Models\UserTrip;
@@ -18,7 +18,7 @@ class Helper {
         $r = '
         <ul class="unstyled centered">
             ';
-        $amenities = hotelamenities::where('id', '<', 5)->get();
+        $amenities = HotelAmenities::where('id', '<', 5)->get();
         foreach ($amenities as $key => $value) {
             $r.= '
             <li>
@@ -37,7 +37,7 @@ class Helper {
         $r = '
         <ul class="unstyled centered">
             ';
-        $amenities = hotelamenities::where('id', '>', 4)->get();
+        $amenities = HotelAmenities::where('id', '>', 4)->get();
         foreach ($amenities as $key => $value) {
             $r.= '
             <li>

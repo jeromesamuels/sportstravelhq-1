@@ -1,9 +1,9 @@
-<?php namespace App\Models;
-
+<?php 
+namespace App\Models;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 
-class invoices extends Sximo  {
+class Invoices extends Sximo  {
 	
 	protected $table = 'invoices';
 	protected $primaryKey = 'id';

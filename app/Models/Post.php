@@ -3,7 +3,7 @@
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 
-class post extends Sximo  {
+class Post extends Sximo  {
 	
 	protected $table = 'tb_pages';
 	protected $primaryKey = 'pageID';
