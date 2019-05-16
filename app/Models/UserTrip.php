@@ -2,6 +2,9 @@
 
 use App\Models\Core\Users;
 
+/**
+ * @property int entry_by
+ */
 class UserTrip extends Sximo
 {
     //-- This table does not have created_at and updated_at

@@ -5,6 +5,9 @@ namespace App\Models;
 use App\Models\Core\Users;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property \App\Models\UserTrip trip
+ */
 class Rfp extends Model
 {
     /**
@@ -40,20 +43,30 @@ class Rfp extends Model
     {
         return $this->belongsTo(Users::class);
     }
-      public function userInfo(){
-    	return $this->belongsTo('App\Models\Core\Users','user_id');
+
+    public function hotel()
+    {
+        return $this->hasOneThrough(Hotel::class, Users::class);
     }
+
+    public function userInfo()
+    {
+        return $this->belongsTo('App\Models\Core\Users', 'user_id');
+    }
+
     // One To Many Relation with Trips
     public function trip()
     {
         return $this->belongsTo(UserTrip::class, 'user_trip_id');
     }
 
-    public function usertripInfo(){
-        return $this->belongsTo('App\Models\UserTrip','user_trip_id');
+    public function usertripInfo()
+    {
+        return $this->belongsTo('App\Models\UserTrip', 'user_trip_id');
     }
 
-    public function invoices(){
+    public function invoices()
+    {
         return $this->hasMany(invoices::class);
     }
 }
