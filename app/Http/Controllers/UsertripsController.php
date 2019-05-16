@@ -1,14 +1,18 @@
 <?php
 namespace App\Http\Controllers;
+
 use App\Models\AgreementForm;
 use App\Models\Hotel;
 use App\Models\HotelAmenities;
+use App\Library\Agreement\AgreementBuilder;
+use App\Library\Agreement\AgreementData;
+use App\Library\Agreement\Mapper;
+use App\Models\Invitation;
 use App\Models\TripAmenity;
 use App\Models\Rfp;
 use App\Models\Team;
 use App\Models\UserTrip;
 use App\Models\Invoices;
-use App\Models\Invitation;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
@@ -327,27 +331,53 @@ class UsertripsController extends Controller
 
     public function acceptRFP($rfp_id)
     {
-        Rfp::where('id', $rfp_id)->update(['status' => 2]);
-        $trip_id = Rfp::find($rfp_id);
-        if ($trip_id->user_id != 0) {
-            $group = User::find($trip_id->user_id);
-            $hotel = Hotel::find($group->hotel_id);
-            $log_id   = Session::get('uid');
+        /**
+         * The request for proposal bid
+         *
+         * @var \App\Models\Rfp $rfp
+         */
+        $rfp  = Rfp::findOrFail($rfp_id);
+
+        //-- Set status to 2, I think this means viewed?
+        $rfp->status = RFP::STATUS_VIEWED;
+        $rfp->save();
+
+        /**
+         * @var \App\User $user
+         */
+        $user = \Auth::user();
+
+        //-- Check to make sure this user can access this RFP to accept!!!
+        if (!$user->can('accept', [Rfp::class, $rfp])) {
+            //-- Maybe migrate to middleware instead?
+            abort(403, 'Access denied');
+        }
+
+        if ($rfp->user_id != 0) {
+            $group = $rfp->user;
+            $hotel = $group->hotel;
+            $log_id   = $user->id;
             $agree_id = AgreementForm::where('for_rfp', $rfp_id)->first();
             if ($agree_id === null) {
                 $agreement_sent = date("Y-m-d H:i");
                 $created_at     = date("Y-m-d H:i");
 
+                $agreementBuilder = new AgreementBuilder();
+                $agreementBuilder
+                    ->setHotel($hotel)
+                    ->setRfp($rfp);
+                $agreementBuilder->create();
+
                 $aggreement                 = new AgreementForm();
                 $aggreement->id             = $rfp_id;
                 $aggreement->sender_id      = $log_id;
-                $aggreement->reciever_id    = $trip_id->user_id;
+                $aggreement->reciever_id    = $group->user_id;
                 $aggreement->reciever_group = $group->group_id;
                 $aggreement->coordinator_id = $log_id;
                 $aggreement->reciever_email = $group->email;
                 $aggreement->hotel_name     = $hotel->name;
                 $aggreement->hotel_details  = $hotel->address;
-                $aggreement->agreement_text = $trip_id->hotels_message;
+                $aggreement->agreement_text = $rfp->hotels_message;
                 $aggreement->for_rfp        = $rfp_id;
                 $aggreement->agreement_sent = $agreement_sent;
                 $aggreement->save();
@@ -359,10 +389,12 @@ class UsertripsController extends Controller
                     'view_data' => 'Already Accepted !',
                 ]);
             }
-            $r = \Helper::addTripStatusLog(4, $trip_id->user_trip_id, $rfp_id);
+            $r = \Helper::addTripStatusLog(4, $rfp->user_trip_id, $rfp_id);
 
         } else {
-            $guestemail = Rfp::find($rfp_id);
+
+            $guestemail = Rfp::findOrFail($rfp_id);
+
             $group = Invitation::where('email', $guestemail->sales_manager)->first();
             $log_id   = Session::get('uid');
 
@@ -413,8 +445,6 @@ class UsertripsController extends Controller
             'redirect'  => route('hotelmanager.viewagreements'),
             'view_data' => 'Accepted Successfully !',
         ]);
-
-
     }
 
     public function acceptAgree($rfp_id)

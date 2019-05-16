@@ -23,7 +23,7 @@ class TripSeeder extends Seeder
         $coordinator_id = 3;
 
         //-- First Create
-        $trips = factory(UserTrip::class, 1)
+        $trips = factory(UserTrip::class, 25)
             ->create(['entry_by' => $coordinator_id]);
 
         //-- THEN integrate over each!

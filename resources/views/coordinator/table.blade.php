@@ -1087,7 +1087,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary btn-rfp-accept" id="rfp-accept" title="" >Yes Forword</button>
+                <button type="button" class="btn btn-primary btn-rfp-accept" id="rfp-accept" title="">Yes Forword</button>
             </div>
         </div>
     </div>

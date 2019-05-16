@@ -1,5 +1,14 @@
 <?php
-
+/**
+ * This class maps all database to hotel agreement
+ * php version 7.1
+ *
+ * @category Library
+ * @package  App\Library
+ * @author   Joseph Montanez <jm@comentum.com>
+ * @license  https://opensource.org/licenses/BSD-3-Clause BSD
+ * @link     https://sportstravelhq.com
+ */
 
 namespace App\Library\Agreement;
 
@@ -7,6 +16,16 @@ namespace App\Library\Agreement;
 use App\Models\Hotel;
 use DateTime;
 
+/**
+ * Class Mapper
+ * php version 7.1
+ *
+ * @category Library
+ * @package  App\Library
+ * @author   Joseph Montanez <jm@comentum.com>
+ * @license  https://opensource.org/licenses/BSD-3-Clause BSD
+ * @link     https://sportstravelhq.com
+ */
 class Mapper
 {
 
@@ -19,14 +38,16 @@ class Mapper
      *
      * @return \App\Library\Agreement\AgreementData
      */
-
     public function mapFromHotel(Hotel $hotel, AgreementData $data): AgreementData
     {
+        //-- Pull the state from the hotel address
+        $address = new HotelAddress();
+        $address->parseAddress($hotel->address);
+
         $data->hotel_name = $hotel->name;
         $data->hotel_address = $hotel->address;
         $data->hotel_city = $hotel->city;
-        //-- Where is the hotel state?
-        $data->hotel_state = '';
+        $data->hotel_state = $address->state;
         $data->hotel_zipcode = $hotel->zip;
         //-- Where is the hotel phone number?
         $data->hotel_phone = '';
@@ -36,6 +57,9 @@ class Mapper
         return $data;
     }
 
+    /**
+     * @return array
+     */
     public function mapToAgreement()
     {
 

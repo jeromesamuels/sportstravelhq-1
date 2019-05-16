@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Rfp;
+use App\Policies\RfpPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -14,6 +16,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         'App\Model' => 'App\Policies\ModelPolicy',
+        Rfp::class => RfpPolicy::class,
     ];
 
     /**

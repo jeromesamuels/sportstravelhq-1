@@ -125,10 +125,13 @@ class SximoHelpers {
         return base64_encode($a);
     }
 
+
     static function storeNote($args) {
         $args = array_merge(array('url' => '#', 'userid' => '0', 'title' => '', 'note' => '', 'created' => date("Y-m-d H:i:s"), 'icon' => 'fa fa-envelope', 'is_read' => 0), $args);
         \DB::table('tb_notification')->insert($args);
     }
+
+  
 
     static public function showForm($module = null) {
         $sql = \DB::table('tb_module')->where('module_name', $module)->get();
