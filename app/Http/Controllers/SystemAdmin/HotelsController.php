@@ -5,7 +5,7 @@ use App\Models\Hotel;
 use App\Models\Rfp;
 use App\User;
 use App\Models\Invoices;
-use App\Models\Usertrips;
+use App\Models\UserTrip;
 use App\Models\hotelamenities;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -33,9 +33,9 @@ class HotelsController extends Controller {
         /* pending amount*/
         $purchases_due_month = Invoices::whereRaw('MONTH(created_at)', [$currentMonth])->sum('invoices.est_amt_due');
         $purchases_due = Invoices::sum('invoices.est_amt_due');
-        $trips = Usertrips::all();
+        $trips = UserTrip::all();
         $rfps_new = Rfp::where('status', 2)->get();
-        $trip_booking = Usertrips::whereRaw('MONTH(added) = ?', [$currentMonth])->get();
+        $trip_booking = UserTrip::whereRaw('MONTH(added) = ?', [$currentMonth])->get();
         return view('systemadmin.viewHotels', compact('hotels', 'searchField', 'purchases', 'purchases_due', 'trip_booking', 'data_hotel', 'rfps_new', 'purchases_month', 'purchases_due_month','trips'));
     }
 
@@ -109,7 +109,7 @@ class HotelsController extends Controller {
         $hotel_contract = Rfp::get()->where("status", '!=', 3)->all();
         $hotel_trips = Rfp::where('user_id', $user)->orderBy('created_at', 'desc')->paginate(10);
         /*Total Booking of this month*/
-        $trip_booking = Usertrips::whereRaw('MONTH(added) = ?', [$currentMonth])->get();
+        $trip_booking = UserTrip::whereRaw('MONTH(added) = ?', [$currentMonth])->get();
         return view('systemadmin.hotelProfile ', compact('hotel', 'amenities', 'data_hotel', 'trip_booking', 'hotel_trips', 'purchases', 'purchases_due', 'hotel_contract'));
     }
 

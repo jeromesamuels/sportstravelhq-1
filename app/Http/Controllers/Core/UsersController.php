@@ -1,11 +1,11 @@
 <?php namespace App\Http\Controllers\core;
 use App\Http\Controllers\Controller;
 use App\Models\Core\Users;
-use App\Models\Usertrips;
+use App\Models\UserTrip;
 use App\Models\AgreementForm;
 use App\Models\Rfp;
 use App\Models\Invoices;
-use App\Models\Invitition;
+use App\Models\Invitation;
 use App\Models\Core\Groups;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -39,7 +39,7 @@ class UsersController extends Controller {
                 $this->data['purchases_due'] = Invoices::where('invoices.hotel_type', '=', $name)->sum('invoices.est_amt_due');
             }
         $this->data['rfps_new'] = Rfp::where('status', 2)->get();
-        $this->data['trip_booking'] = Usertrips::all();
+        $this->data['trip_booking'] = UserTrip::all();
         if ($this->access['is_view'] == 0) return redirect('dashboard')->with('message', __('core.note_restric'))->with('status', 'error');
         // Render into template
         return view('core.' . $this->module . '.index', $this->data);
@@ -168,7 +168,7 @@ class UsersController extends Controller {
                     $return = 'core/users?return=' . self::returnUrl();
                 }
                 /*guest update agreement*/
-                $invitition = Invitition::where('email', $request->input('email'))->get();
+                $invitition = Invitation::where('email', $request->input('email'))->get();
                 $user_invitition = User::find($request->input('id'));
                 $rfps = Rfp::where('sales_manager', $request->input('email'))->get();
                 $sales_manager = $user_invitition->first_name . '' . $user_invitition->last_name;
@@ -177,7 +177,7 @@ class UsersController extends Controller {
                    
                     AgreementForm::where('reciever_email', $request->input('email'))->update(['reciever_id' => $request->input('id'), 'hotel_name' => $hotel->name, 'hotel_details' => $hotel->address]);
                     Rfp::where('sales_manager', $request->input('email'))->update(['user_id' => $request->input('id'), 'sales_manager' => $sales_manager]);
-                    Invitition::where('email', $request->input('email'))->update(['status' => 1]);
+                    Invitation::where('email', $request->input('email'))->update(['status' => 1]);
                 }
                 return redirect($return)->with('message', __('core.note_success'))->with('status', 'success');
             } else {
@@ -249,7 +249,7 @@ class UsersController extends Controller {
 
         function getCoordinator() {
             $this->data = array(
-             'invitations' => Invitition::where('group_id', 4)->get(),
+             'invitations' => Invitation::where('group_id', 4)->get(),
              'roleTitle' => 'Travel Coordinator', 
              'slug' => 'coordinator', 
              'roleID' => '4',);
@@ -258,7 +258,7 @@ class UsersController extends Controller {
 
         function getHotelManager() {
             $this->data = array(
-                'invitations' => Invitition::where('group_id', 5)->get(), 
+                'invitations' => Invitation::where('group_id', 5)->get(),
                 'roleTitle' => 'Hotel Manager',
                 'slug' => 'hotelmanager', 
                 'roleID' => '5',);
@@ -267,7 +267,7 @@ class UsersController extends Controller {
 
         function getCorporate() {
             $this->data = array(
-                'invitations' => Invitition::where('group_id', 6)->get(), 
+                'invitations' => Invitation::where('group_id', 6)->get(),
                 'corporates' => User::where('group_id', 6)->get(),
                 'hotels' => Hotel::where('active', 1)->get(), 
                 'roleTitle' => 'Corporate',
@@ -298,7 +298,7 @@ class UsersController extends Controller {
                     mail($data['to'], $data['subject'], $message, $headers);
                 }
                
-                 $Invitition  = new Invitition();
+                 $Invitition  = new Invitation();
                  $Invitition->email= $request->input('email');
                  $Invitition->group_id  = $request->input('group_id');
                  $Invitition->save();
@@ -317,4 +317,3 @@ class UsersController extends Controller {
             return view('sximo.module.utility.search', $this->data);
         }
     }
-    

@@ -6,8 +6,8 @@ use App\Models\Hotel;
 use App\Models\hotelamenities;
 use App\Models\Rfp;
 use App\Models\Team;
-use App\Models\Usertrips;
-use App\Models\Invitition;
+use App\Models\UserTrip;
+use App\Models\Invitation;
 use App\Models\Invoices;
 use App\User;
 
@@ -52,7 +52,7 @@ class Helper {
     }
 
     static function addTripStatusLog($step, $trip_id, $rfp_id = 0, $reason = 0) {
-        $user_trip = Usertrips::where('id', '=', $trip_id)->first();
+        $user_trip = UserTrip::where('id', '=', $trip_id)->first();
         $coordinator = User::where('id', '=', $user_trip->entry_by)->first();
         if ($rfp_id != 0) {
             $user_rfp = Rfp::where('id', '=', $rfp_id)->first();
@@ -92,7 +92,7 @@ class Helper {
                 });
             }
             /*send it to Guest user*/
-            $guest_users = Invitition::where(['group_id' => 5, 'status' => 0])->get();
+            $guest_users = Invitation::where(['group_id' => 5, 'status' => 0])->get();
             if (count($guest_users) > 0) {
                 foreach ($guest_users as $guest_users_new) {
                     $to_guest = $guest_users_new->email;
@@ -106,7 +106,7 @@ class Helper {
                 }
             }
             if ($trip_status->group_level == 10) {
-                $user_trip = Usertrips::where('id', '=', $rfp_id)->first();
+                $user_trip = UserTrip::where('id', '=', $rfp_id)->first();
                 $to = $user_trip->sales_manager;
                 $subject = "[ " . config('sximo.cnf_appname') . " ] " . $trip_status->mail_subject;
                 $data_guest = array("trip_id" => $trip_id, "trip_name" => $user_trip->trip_name);

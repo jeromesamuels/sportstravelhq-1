@@ -46,10 +46,14 @@ class Rfp extends Model
     // One To Many Relation with Trips
     public function trip()
     {
-        return $this->belongsTo(usertrip::class, 'user_trip_id');
+        return $this->belongsTo(UserTrip::class, 'user_trip_id');
     }
 
     public function usertripInfo(){
-        return $this->belongsTo('App\Models\Usertrips','user_trip_id');
+        return $this->belongsTo('App\Models\UserTrip','user_trip_id');
+    }
+
+    public function invoices(){
+        return $this->hasMany(invoices::class);
     }
 }

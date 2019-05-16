@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use App\Models\Usertrips;
+use App\Models\UserTrip;
 use App\Models\hotelamenities;
 use App\Models\Rfp;
 use App\Models\Invoices;
-use App\Models\Invitition;
+use App\Models\Invitation;
 use App\User;
 use App\Models\Hotel;
 use Carbon\Carbon;
@@ -200,7 +200,7 @@ class UserController extends Controller
 
     public function userTrips()
     {
-        $trips     = Usertrips::orderBy('added', 'desc')->where('status', 6)->get();
+        $trips     = UserTrip::orderBy('added', 'desc')->where('status', 6)->get();
         $rfps      = Rfp::where('user_id', null)->get();
         $amenities = hotelamenities::all();
 
@@ -232,11 +232,11 @@ class UserController extends Controller
 
     public function TripDetails($id, $email)
     {
-        $trip = Usertrips::find($id);
+        $trip = UserTrip::find($id);
         $rfp        = Rfp::where('sales_manager', $email)->get();
         $trip_id_detail= Rfp::where("user_trip_id",$id)->get(); 
         $amenities  = hotelamenities::all();
-        $guest_user = Invitition::where('email', '=', $email)->get();
+        $guest_user = Invitation::where('email', '=', $email)->get();
         $rfps_new = Rfp::where('status', 2)->get();
         $invoice= Invoices::find($trip->id);
         if (count($guest_user) == 1) {
@@ -254,7 +254,7 @@ class UserController extends Controller
             'eventDistance'     => 'required|max:500',
             'offerValidityDate' => 'required|date|after:today',
         ]);
-        $trip = Usertrips::find($request->trip_id);
+        $trip = UserTrip::find($request->trip_id);
         //geting Trip Amenities
         $amenitie_ids = [];
         foreach ($trip->amenities as $amenity) {

@@ -6,7 +6,7 @@ use App\Models\Core\Users;
 use App\Models\Rfp;
 use App\User;
 use App\Models\Hotel;
-use App\Models\Usertrips;
+use App\Models\UserTrip;
 use App\Models\Invoices;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -32,14 +32,14 @@ class HotelManagerController extends Controller {
         $data_hotel = Hotel::find($hotel->hotel_id);
         $purchases = Invoices::where('invoices.hotel_name', '=', $hotel->hotel_id)->sum('invoices.amt_paid');
         $purchases_due = Invoices::where('invoices.hotel_name', '=', $hotel->hotel_id)->sum('invoices.est_amt_due');
-        $trip_booking = Usertrips::all();
+        $trip_booking = UserTrip::all();
         $rfps_new = Rfp::where(['user_id' => session('uid') ])->get();
         return view('hotelmanager.index', compact('hotels', 'searchField', 'data_hotel', 'purchases', 'purchases_due', 'trip_booking', 'rfps_new'));
     }
 
     public function saveBid(Request $request) {
         $this->validate($request, ['trip_id' => 'required|numeric|min:0', 'offer_rate' => 'required|numeric|min:0', 'eventDistance' => 'required|max:500', 'offerValidityDate' => 'required|date|after:today', ]);
-        $trip = Usertrips::find($request->trip_id);
+        $trip = UserTrip::find($request->trip_id);
         //geting Trip Amenities
         $amenitie_ids = [];
         foreach ($trip->amenities as $amenity) {
@@ -152,7 +152,7 @@ class HotelManagerController extends Controller {
         $extension = $request->file('invoice_file')->getClientOriginalExtension();
         $uploadSuccess = $request->file('invoice_file')->move($destinationPath, $file);
         $trip_idd = Rfp::find($request->rfp_id);
-        $trip = Usertrips::find($trip_idd->user_trip_id);
+        $trip = UserTrip::find($trip_idd->user_trip_id);
         //geting Trip Amenities
         $amenitie_ids = [];
         foreach ($trip->amenities as $amenity) {

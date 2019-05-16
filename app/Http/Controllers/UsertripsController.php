@@ -7,7 +7,7 @@ use App\Models\hotelamenities;
 use App\Models\TripAmenity;
 use App\Models\Rfp;
 use App\Models\Team;
-use App\Models\Usertrips;
+use App\Models\UserTrip;
 use App\Models\Invoices;
 //use App\Models\usertrip;
 use App\User;
@@ -32,7 +32,7 @@ class UsertripsController extends Controller
     public function __construct()
     {
         parent::__construct();
-        $this->model = new Usertrips();
+        $this->model = new UserTrip();
         $this->info  = $this->model->makeInfo($this->module);
         $this->data  = array(
             'pageTitle'  => $this->info['title'],
@@ -223,7 +223,7 @@ class UsertripsController extends Controller
     {
 
         $mode  = isset($_GET['view']) ? 'view' : 'default';
-        $model = new Usertrips();
+        $model = new UserTrip();
         $info  = $model::makeInfo('Usertrips');
         $data  = array(
             'pageTitle' => $info['title'],
@@ -296,7 +296,7 @@ class UsertripsController extends Controller
     public function getRFPs($trip_id)
     {
         $data['rfps']        = Rfp::where("user_trip_id", $trip_id)->get();
-        $data['trip_detail'] = Usertrips::where("id", $trip_id)->first();
+        $data['trip_detail'] = UserTrip::where("id", $trip_id)->first();
 
         return response()->json([
             'success'   => true,
@@ -410,7 +410,7 @@ class UsertripsController extends Controller
             /**
              * @TODO: Redirect to the questionnaire, not view agreements
              */
-            'redirect'  => route('hotelmanager.viewAgreements'),
+            'redirect'  => route('hotelmanager.viewagreements'),
             'view_data' => 'Accepted Successfully !',
         ]);
 
@@ -421,7 +421,7 @@ class UsertripsController extends Controller
     {
        
     $trip=Rfp::find($rfp_id);
-    $trip_entry=Usertrips::find($trip->user_trip_id);
+    $trip_entry=UserTrip::find($trip->user_trip_id);
     $trip_user=User::find($trip->user_id);
     $user=User::find(session('uid'));
     $trip_entry_user=User::find($trip_entry->entry_by);
@@ -540,7 +540,7 @@ class UsertripsController extends Controller
         $q     = (new Team)->newQuery();
         $teams = $q->get();
 
-        return view($this->module . '.public' . '.viewTeams', compact('teams'));
+        return view(strtolower($this->module) . '.public' . '.viewTeams', compact('teams'));
     }
 
     public function getTeamdelete($id)
@@ -590,7 +590,7 @@ class UsertripsController extends Controller
         if (Session::get('level') != 4) {
             return redirect(URL("/"));
         }
-        $trips       = Usertrips::where('entry_by', session('uid'))->orderBy('added', 'desc')->get();
+        $trips       = UserTrip::where('entry_by', session('uid'))->orderBy('added', 'desc')->get();
         $data_client = User::where('id', session('uid'))->get();
         if(count($trips)!=''){
         $purchases   = Invoices::sum('invoices.amt_paid');
@@ -600,7 +600,7 @@ class UsertripsController extends Controller
         }
         $amenities   = hotelamenities::all();
         $client = User::where('group_id', 4)->get();
-        $data        = Usertrips::all();
+        $data        = UserTrip::all();
         $data_all    = Rfp::all();
         $get_invoice = Rfp::where("status", '!=', 3)->get();
         $data_accept = Rfp::where("status", 2)->get();
@@ -615,7 +615,7 @@ class UsertripsController extends Controller
         if (Session::get('level') != 4) {
             return redirect(URL("/"));
         }
-        $trip        = Usertrips::with('tripuser')->find($id);
+        $trip        = UserTrip::with('tripuser')->find($id);
         $trip_id = Rfp::where("user_trip_id", $trip->id)->first();
         $invoices='';
         if($trip_id != null){
@@ -623,7 +623,7 @@ class UsertripsController extends Controller
         }
         $data_hotel  = Hotel::groupBy('type')->get();
         $purchases =   Invoices::sum('invoices.amt_paid');
-        $data        = Usertrips::all();
+        $data        = UserTrip::all();
         $rfps_new    = Rfp::where('status', 2)->get();
         $rfp          = Rfp::where('user_trip_id', '=', $id)->where('user_id', '=', session('uid'))->first();
 
