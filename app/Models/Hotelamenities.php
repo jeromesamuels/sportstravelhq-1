@@ -1,9 +1,9 @@
-<?php namespace App\Models;
-
+<?php 
+namespace App\Models;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 
-class hotelamenities extends Sximo  {
+class HotelAmenities extends Sximo  {
 	
 	protected $table = 'hotel_amenities';
 	protected $primaryKey = 'id';

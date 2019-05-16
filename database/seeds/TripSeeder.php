@@ -4,7 +4,7 @@ use App\Models\Core\Groups;
 use App\Models\Core\Users;
 use App\Models\Rfp;
 use App\Models\TripAmenity;
-use App\Models\tripstatussettings;
+use App\Models\TripstatusSettings;
 use App\Models\UserTrip;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
@@ -50,7 +50,7 @@ class TripSeeder extends Seeder
                         );
 
                         //-- If the trip has one or more RFPs change trip status?
-                        $trip_status  = tripstatussettings::where('title', 'Bid Sent');
+                        $trip_status  = TripstatusSettings::where('title', 'Bid Sent');
                         $trip->status = $trip_status->first()->id;
                         $trip->save();
                     }

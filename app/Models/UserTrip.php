@@ -42,7 +42,7 @@ class UserTrip extends Sximo
     // Many To Many Relation with Hotal Amenties
     public function amenities()
     {
-        return $this->belongsToMany(hotelamenities::class, 'trip_amenities', 'trip_id', 'amenity_id');
+        return $this->belongsToMany(HotelAmenities::class, 'trip_amenities', 'trip_id', 'amenity_id');
     }
 
     // One To Many Relation with RFPS
@@ -56,7 +56,7 @@ class UserTrip extends Sximo
      */
     public function status_logs()
     {
-        return $this->hasMany(tripstatuslogs::class, 'user_id');
+        return $this->hasMany(TripstatusLogs::class, 'user_id');
     }
 
     public static function querySelect()

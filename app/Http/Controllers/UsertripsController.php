@@ -1,15 +1,14 @@
 <?php
 namespace App\Http\Controllers;
-
 use App\Models\AgreementForm;
 use App\Models\Hotel;
-use App\Models\hotelamenities;
+use App\Models\HotelAmenities;
 use App\Models\TripAmenity;
 use App\Models\Rfp;
 use App\Models\Team;
 use App\Models\UserTrip;
 use App\Models\Invoices;
-//use App\Models\usertrip;
+use App\Models\Invitation;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
@@ -20,13 +19,11 @@ use Input;
 use Redirect;
 use Validator;
 
-//use App\Http\Controllers\Session;
-
 class UsertripsController extends Controller
 {
     protected $layout = "layouts.main";
     protected $data = array();
-    public $module = 'Usertrips';
+    public $module = 'Usertrip';
     static $per_page = '10';
 
     public function __construct()
@@ -37,7 +34,7 @@ class UsertripsController extends Controller
         $this->data  = array(
             'pageTitle'  => $this->info['title'],
             'pageNote'   => $this->info['note'],
-            'pageModule' => 'Usertrips',
+            'pageModule' => 'Usertrip',
             'return'     => self::returnUrl(),
         );
     }
@@ -156,6 +153,7 @@ class UsertripsController extends Controller
 
     function store(Request $request)
     {
+
         $task = $request->input('action_task');
         switch ($task) {
             default:
@@ -164,6 +162,7 @@ class UsertripsController extends Controller
                 if ($validator->passes()) {
                     $data = $this->validatePost($request);
                     $id   = $this->model->insertRow($data, $request->input($this->info['key']));
+
                     /* Insert logs */
                     $this->model->logs($request, $id);
                     if (!is_null($request->input('apply'))) {
@@ -269,6 +268,7 @@ class UsertripsController extends Controller
 
     function store_public($request)
     {
+
         if (session('gid') != 4) {
             return Redirect::back()->with('message', __('core.note_error'))->with('status',
                 'error')->withErrors(['message1' => 'Only travel coordinator\'s can book a trip'])->withInput();
@@ -278,6 +278,7 @@ class UsertripsController extends Controller
         if ($validator->passes()) {
             $data = $this->validatePost($request);
             $this->model->insertRow($data, $request->input('id'));
+
             $trip_id = DB::getPdo()->lastInsertId();
             $r       = \Helper::addTripStatusLog(1, $trip_id);
             foreach ($request->input('trip_amenities') as $amenity_id) {
@@ -362,7 +363,7 @@ class UsertripsController extends Controller
 
         } else {
             $guestemail = Rfp::find($rfp_id);
-            $group = DB::table('invitations')->where('email', $guestemail->sales_manager)->first();
+            $group = Invitation::where('email', $guestemail->sales_manager)->first();
             $log_id   = Session::get('uid');
 
             /**
@@ -393,9 +394,8 @@ class UsertripsController extends Controller
                     'view_data' => 'Already Accepted !',
                 ]);
             }
-            //$r = \Helper::addTripStatusLog(10, $trip_id, $rfp_id);
             $user_trip = Rfp::find($rfp_id);
-            $invitations = DB::table('invitations')->where('email', '=', $user_trip->sales_manager)->first();
+            $invitations = Invitation::where('email', '=', $user_trip->sales_manager)->first();
             $to_guest      = $user_trip->sales_manager;
             $subject_guest = "Coordinator Has Accepted Proposal";
             $data_guest    = array("trip_id" => $user_trip->user_trip_id, "subject_guest" => $subject_guest, "to_guest" => $to_guest, "group" => $invitations->group_id);
@@ -598,7 +598,7 @@ class UsertripsController extends Controller
         else{
          $purchases=0;   
         }
-        $amenities   = hotelamenities::all();
+        $amenities   = HotelAmenities::all();
         $client = User::where('group_id', 4)->get();
         $data        = UserTrip::all();
         $data_all    = Rfp::all();

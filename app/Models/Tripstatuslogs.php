@@ -4,7 +4,7 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-class tripstatuslogs extends Sximo  {
+class TripstatusLogs extends Sximo  {
 	
 	protected $table = 'trip_status_logs';
 	protected $primaryKey = ['trip_id', 'user_id', 'rfp_id'];

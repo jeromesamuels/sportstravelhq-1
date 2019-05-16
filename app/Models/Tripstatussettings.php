@@ -3,7 +3,7 @@
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 
-class tripstatussettings extends Sximo  {
+class TripstatusSettings extends Sximo  {
 	
 	protected $table = 'trip_statuses';
 	protected $primaryKey = 'id';

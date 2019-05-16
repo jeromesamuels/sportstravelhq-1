@@ -18,7 +18,7 @@ class CorporateUsersController extends Controller {
 
     protected $layout = "layouts.main";
     protected $data = array();
-    public $module = 'corporate_user';
+    public $module = 'CorporateUser';
     static $per_page = '10';
     public function __construct() {
         parent::__construct();

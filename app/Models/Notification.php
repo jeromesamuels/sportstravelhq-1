@@ -3,7 +3,7 @@
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 
-class notification extends Sximo  {
+class Notification extends Sximo  {
 	
 	protected $table = 'tb_notification';
 	protected $primaryKey = 'id';
