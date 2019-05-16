@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\ChangeUserPasswordCommand;
+use App\Console\Commands\DeleteAllTripsCommand;
 use App\Console\Commands\GearmanWkHtmlToPdfWorker;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -17,6 +18,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         ChangeUserPasswordCommand::class,
         GearmanWkHtmlToPdfWorker::class,
+        DeleteAllTripsCommand::class,
     ];
 
     /**
