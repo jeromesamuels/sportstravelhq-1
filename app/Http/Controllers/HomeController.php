@@ -250,8 +250,8 @@ class HomeController extends Controller {
     public function revenue() {
         /*for corportae*/
         $client = User::where('group_id', 4)->get();
-        $corporate = User::find(session('uid'));
-        $hcorporateData = Hotel::find($corporate->hotel_id);
+        $corporate = User::findOrFail(session('uid'));
+        $hcorporateData = Hotel::findOrFail($corporate->hotel_id);
         $data_hotel = Hotel::groupBy('type')->where('id', $corporate->hotel_id)->get();
         $data_all = Hotel::groupBy('type')->get();
         
@@ -330,8 +330,8 @@ class HomeController extends Controller {
     }
 
     public function booking() {
-        $corporate = User::find(session('uid'));
-        $hotel_type = Hotel::find($corporate->hotel_id);
+        $corporate = User::findOrFail(session('uid'));
+        $hotel_type = Hotel::findOrFail($corporate->hotel_id);
         if ($corporate->group_id == 6) {
             $data_hotel = Hotel::groupBy('type')->where('type', $hotel_type->type)->get();
             foreach ($data_hotel as $value) {
@@ -402,8 +402,8 @@ class HomeController extends Controller {
     }
 
     public function Reports() {
-        $user = User::find(session('uid'));
-        $user_data = Hotel::find($user->hotel_id);
+        $user = User::findOrFail(session('uid'));
+        $user_data = Hotel::findOrFail($user->hotel_id);
         $hotel = Hotel::where('type', $user_data->type)->get();
         $purchases_date = Invoices::where('invoices.hotel_name', '=', $user->hotel_id)->pluck('created_at');
           foreach($purchases_date as $purchases_date_new){
@@ -417,7 +417,7 @@ class HomeController extends Controller {
 
     public function adminAccount() {
         $data_hotel = Hotel::groupBy('type')->get();
-        $user = User::find(session('uid'));
+        $user = User::findOrFail(session('uid'));
         $trip_booking = UserTrip::all();
         $rfps_new = Rfp::where('status', 2)->get();
         foreach ($data_hotel as $value) {

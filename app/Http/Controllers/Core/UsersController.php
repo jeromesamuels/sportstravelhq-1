@@ -169,11 +169,11 @@ class UsersController extends Controller {
                 }
                 /*guest update agreement*/
                 $invitition = Invitation::where('email', $request->input('email'))->get();
-                $user_invitition = User::find($request->input('id'));
+                $user_invitition = User::findOrFail($request->input('id'));
                 $rfps = Rfp::where('sales_manager', $request->input('email'))->get();
                 $sales_manager = $user_invitition->first_name . '' . $user_invitition->last_name;
                 if (count($invitition) == 1 && count($rfps) == 1) {
-                    $hotel =Hotel::find($request->input('hotel_id'));
+                    $hotel =Hotel::findOrFail($request->input('hotel_id'));
                    
                     AgreementForm::where('reciever_email', $request->input('email'))->update(['reciever_id' => $request->input('id'), 'hotel_name' => $hotel->name, 'hotel_details' => $hotel->address]);
                     Rfp::where('sales_manager', $request->input('email'))->update(['user_id' => $request->input('id'), 'sales_manager' => $sales_manager]);

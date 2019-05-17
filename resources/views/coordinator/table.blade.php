@@ -1021,7 +1021,6 @@
     $(document).ready(function(){
     $('#upload_roomingList').on('show.bs.modal', function (e) {
         var rowid = $(e.relatedTarget).data('id');
-      
         document.getElementById('trip_id').value = rowid;
         document.getElementById('upload_file').title = rowid;
        
@@ -1029,14 +1028,12 @@
     
     $('#confirm_decline').on('show.bs.modal', function (e) {
         var rowid = $(e.relatedTarget).data('id');
-      
         document.getElementById('rfp_decline').title = rowid;
        
      });
      $('#confirm_forword').on('show.bs.modal', function (e) {
     
         var rowid = $(e.relatedTarget).data('id');
-        console.log("IDDD-"+rowid);
         document.getElementById('rfp-accept-f').title = rowid;
      
     
@@ -1046,7 +1043,6 @@
     
       
         var title = $('.confirm_forword').attr('title');
-       
         document.getElementById('rfp-accept').title = title;
        
      });

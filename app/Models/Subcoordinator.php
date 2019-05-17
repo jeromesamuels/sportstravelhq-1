@@ -1,11 +1,10 @@
 <?php 
-namespace App\Models\Core;
+namespace App\Models;
 
-use App\Models\Sximo;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 
-class Users extends Sximo  {
+class Subcoordinator extends Sximo  {
 	
 	protected $table = 'tb_users';
 	protected $primaryKey = 'id';
@@ -13,10 +12,6 @@ class Users extends Sximo  {
 	public function __construct() {
 		parent::__construct();
 		
-	}
-
-	public function rfps(){
-		return $this->hasMany('App\Models\Rfp','user_id');
 	}
 
 	public static function querySelect(){
@@ -66,7 +61,9 @@ class Users extends Sximo  {
 		if($global == 0 )
 				$params .= " AND {$table}.entry_by ='".$gid."'"; 	
 		// End Update permission global / own access new ver 1.1			
-        
+        if($global == 1)
+        	$params .= " AND {$table}.group_id = 4"; 
+
 		$rows = array();
 	    $result = \DB::select( self::querySelect() . self::queryWhere(). " 
 				{$params} ". self::queryGroup() ." {$orderConditional}  {$limitConditional} ");
@@ -91,9 +88,9 @@ class Users extends Sximo  {
 		return $group_id;
 			
 	}
-	 public function hotel()
+	 public function UsertripsEntry()
     {
-        return $this->belongsTo('App\Models\Hotel','hotel_id');
+        return $this->belongsTo('App\Models\UserTrip','entry_by');
     }
      
 
