@@ -27,9 +27,9 @@ class HotelManagerController extends Controller {
             $q->where('name', "LIKE", $request->searchField . "%");
             $searchField = $request->searchField;
         }
-        $hotel = User::find(session('uid'));
+        $hotel = User::findOrFail(session('uid'));
         $hotels = $q->where('id', $hotel->hotel_id)->get();
-        $data_hotel = Hotel::find($hotel->hotel_id);
+        $data_hotel = Hotel::findOrFail($hotel->hotel_id);
         $purchases = Invoices::where('invoices.hotel_name', '=', $hotel->hotel_id)->sum('invoices.amt_paid');
         $purchases_due = Invoices::where('invoices.hotel_name', '=', $hotel->hotel_id)->sum('invoices.est_amt_due');
         $trip_booking = UserTrip::all();
@@ -39,7 +39,7 @@ class HotelManagerController extends Controller {
 
     public function saveBid(Request $request) {
         $this->validate($request, ['trip_id' => 'required|numeric|min:0', 'offer_rate' => 'required|numeric|min:0', 'eventDistance' => 'required|max:500', 'offerValidityDate' => 'required|date|after:today', ]);
-        $trip = UserTrip::find($request->trip_id);
+        $trip = UserTrip::findOrFail($request->trip_id);
         //geting Trip Amenities
         $amenitie_ids = [];
         foreach ($trip->amenities as $amenity) {
@@ -78,8 +78,10 @@ class HotelManagerController extends Controller {
     public function viewAgreements() {
         $this->checkAgreementFormAvailability();
         $agreement = AgreementForm::orderBy('created_at', 'DESC')->get();
-        $user = User::find(session('uid'));
+        
+        $user = User::findOrFail(session('uid'));
         $hotel_data = Hotel::find($user->hotel_id);
+
         if (Session::get('level') != 1 && Session::get('level') != 6) {
             $agreements = AgreementForm::with('agreementRfp')->where('reciever_id', '=', Session::get('uid'))->orWhere('coordinator_id', '=', Session::get('uid'))->orderBy('created_at', 'DESC')->get();
         } elseif ($hotel_data->name != '' && Session::get('level') == 6) {
@@ -87,12 +89,13 @@ class HotelManagerController extends Controller {
         } else {
             $agreements = AgreementForm::with('agreementRfp')->orderBy('created_at', 'DESC')->get();
         }
+       
           return view('hotelmanager.viewagreements', compact('agreements')); 
         
     }
 
     public function downloadAgreement($id) {
-        $agreement = AgreementForm::find($id);
+        $agreement = AgreementForm::findOrFail($id);
         if ($agreement->downloaded == true) {
             Session::flash('error', 'You cannot Download Agreement for the Second Time');
             return redirect()->back();
@@ -110,7 +113,7 @@ class HotelManagerController extends Controller {
     }
 
     public function agreementDetails($id) {
-        $agreement = AgreementForm::find($id);
+        $agreement = AgreementForm::findOrFail($id);
         $IATA_number = Hotel::where('name', '=', $agreement->hotel_name)->pluck('IATA_number');
         if ($agreement) {
             return view('hotelmanager.agreementDetails', compact('agreement', 'IATA_number'));
@@ -118,7 +121,7 @@ class HotelManagerController extends Controller {
     }
 
     public function RFPDetails($id) {
-        $rfp = Rfp::find($id);
+        $rfp = Rfp::findOrFail($id);
         if ($rfp) {
             return view('hotelmanager.rfpdetails', compact('rfp'));
         }
@@ -135,7 +138,7 @@ class HotelManagerController extends Controller {
         }
         if (count($expired) > 0) {
             foreach ($expired as $id) {
-                AgreementForm::find($id)->delete();
+                AgreementForm::findOrFail($id)->delete();
             }
         }
     }
@@ -151,8 +154,8 @@ class HotelManagerController extends Controller {
         $destinationPath = './uploads/users/';
         $extension = $request->file('invoice_file')->getClientOriginalExtension();
         $uploadSuccess = $request->file('invoice_file')->move($destinationPath, $file);
-        $trip_idd = Rfp::find($request->rfp_id);
-        $trip = UserTrip::find($trip_idd->user_trip_id);
+        $trip_idd = Rfp::findOrFail($request->rfp_id);
+        $trip = UserTrip::findOrFail($trip_idd->user_trip_id);
         //geting Trip Amenities
         $amenitie_ids = [];
         foreach ($trip->amenities as $amenity) {
@@ -160,12 +163,12 @@ class HotelManagerController extends Controller {
         }
         // Getting manager info
         $hotel_manager_id = Session::get('uid');
-        $hotel_manger_info = User::find($hotel_manager_id);
+        $hotel_manger_info = User::findOrFail($hotel_manager_id);
         $email = $hotel_manger_info->email;
         $phone_number = $hotel_manger_info->phone_number;
         $hotel_id = $hotel_manger_info->hotel_id;
         //Getting hotel info
-        $hotel_info = Hotel::find($hotel_id);
+        $hotel_info = Hotel::findOrFail($hotel_id);
         $hotel_name = $hotel_info->name;
         $hotel_type = $hotel_info->type;
         $hotel_address = $hotel_info->address;
@@ -195,14 +198,14 @@ class HotelManagerController extends Controller {
         if (is_null($record_exists)) {
             $rfp->save();
             Rfp::where('id', $rfp->rfp_id)->update(['status' => 4]);
-            $users = User::find(1);
+            $users = User::findOrFail(1);
             /*send an invoice*/
             $to = [$email, $users->email];
             \Mail::send('user.emails.invoiceMail', compact('rfp'), function ($message) use ($rfp, $to) {
                 $message->to($to)->subject('Manager Uploaded Invoice');
             });
             $record_exists = Invoices::where('rfp_id', '=', $rfp->rfp_id)->first();
-            $IATA_number = Hotel::find($hotel_id);
+            $IATA_number = Hotel::findOrFail($hotel_id);
             return view('hotelmanager.tripInvoice', compact('rfp', 'record_exists', 'IATA_number','hotel_info'));
         } else {
             return redirect()->back()->with('message', __('Record Already Exists!!'))->with('status', 'Error');
@@ -210,15 +213,15 @@ class HotelManagerController extends Controller {
     }
 
     public function blackoutDates() {
-        $user = User::find(session('uid'));
-        $hotels =Hotel::find($user->hotel_id);
+        $user = User::findOrFail(session('uid'));
+        $hotels =Hotel::findOrFail($user->hotel_id);
 
         return view('hotelmanager.blackoutDates', compact('hotels'));
     }
 
     public function blackoutStore(Request $request) {
         $this->validate($request, ['start' => 'required', 'end' => 'required', 'blackout_reason' => 'required|max:500', ]);
-        $hotel = Hotel::find($request->hotel_id);
+        $hotel = Hotel::findOrFail($request->hotel_id);
         $hotel->blackout_start = $request->start;
         $hotel->blackout_end = $request->end;
         $hotel->blackout_reason = $request->blackout_reason;
@@ -228,7 +231,7 @@ class HotelManagerController extends Controller {
     }
 
     public function blackoutReport() {
-        $user = User::find(session('uid'));
+        $user = User::findOrFail(session('uid'));
         if (session('level') == 1) {
             $hotel =Hotel::orderBY('updated_at', 'desc')->where('blackout_start', '!=', '')->get();
         } else {

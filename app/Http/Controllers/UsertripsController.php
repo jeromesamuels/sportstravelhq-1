@@ -32,6 +32,7 @@ class UsertripsController extends Controller
 
     public function __construct()
     {
+
         parent::__construct();
         $this->model = new UserTrip();
         $this->info  = $this->model->makeInfo($this->module);
@@ -331,53 +332,33 @@ class UsertripsController extends Controller
 
     public function acceptRFP($rfp_id)
     {
-        /**
+       /**
          * The request for proposal bid
          *
          * @var \App\Models\Rfp $rfp
          */
-        $rfp  = Rfp::findOrFail($rfp_id);
-
-        //-- Set status to 2, I think this means viewed?
-        $rfp->status = RFP::STATUS_VIEWED;
-        $rfp->save();
-
-        /**
-         * @var \App\User $user
-         */
-        $user = \Auth::user();
-
-        //-- Check to make sure this user can access this RFP to accept!!!
-        if (!$user->can('accept', [Rfp::class, $rfp])) {
-            //-- Maybe migrate to middleware instead?
-            abort(403, 'Access denied');
-        }
-
-        if ($rfp->user_id != 0) {
-            $group = $rfp->user;
-            $hotel = $group->hotel;
-            $log_id   = $user->id;
+        Rfp::where('id', $rfp_id)->update(['status' => 2]);
+        $trip_id = Rfp::findOrFail($rfp_id);
+        
+        if ($trip_id->user_id != 0) {
+            $group = User::findOrFail($trip_id->user_id);
+            $hotel = Hotel::findOrFail($group->hotel_id);
+            $log_id   = Session::get('uid');
             $agree_id = AgreementForm::where('for_rfp', $rfp_id)->first();
             if ($agree_id === null) {
                 $agreement_sent = date("Y-m-d H:i");
                 $created_at     = date("Y-m-d H:i");
 
-                $agreementBuilder = new AgreementBuilder();
-                $agreementBuilder
-                    ->setHotel($hotel)
-                    ->setRfp($rfp);
-                $agreementBuilder->create();
-
                 $aggreement                 = new AgreementForm();
                 $aggreement->id             = $rfp_id;
                 $aggreement->sender_id      = $log_id;
-                $aggreement->reciever_id    = $group->user_id;
+                $aggreement->reciever_id    = $trip_id->user_id;
                 $aggreement->reciever_group = $group->group_id;
                 $aggreement->coordinator_id = $log_id;
                 $aggreement->reciever_email = $group->email;
                 $aggreement->hotel_name     = $hotel->name;
                 $aggreement->hotel_details  = $hotel->address;
-                $aggreement->agreement_text = $rfp->hotels_message;
+                $aggreement->agreement_text = $trip_id->hotels_message;
                 $aggreement->for_rfp        = $rfp_id;
                 $aggreement->agreement_sent = $agreement_sent;
                 $aggreement->save();
@@ -389,13 +370,11 @@ class UsertripsController extends Controller
                     'view_data' => 'Already Accepted !',
                 ]);
             }
-            $r = \Helper::addTripStatusLog(4, $rfp->user_trip_id, $rfp_id);
+            $r = \Helper::addTripStatusLog(4, $trip_id->user_trip_id, $rfp_id);
 
         } else {
-
             $guestemail = Rfp::findOrFail($rfp_id);
-
-            $group = Invitation::where('email', $guestemail->sales_manager)->first();
+            $group = DB::table('invitations')->where('email', $guestemail->sales_manager)->first();
             $log_id   = Session::get('uid');
 
             /**
@@ -426,8 +405,9 @@ class UsertripsController extends Controller
                     'view_data' => 'Already Accepted !',
                 ]);
             }
-            $user_trip = Rfp::find($rfp_id);
-            $invitations = Invitation::where('email', '=', $user_trip->sales_manager)->first();
+            //$r = \Helper::addTripStatusLog(10, $trip_id, $rfp_id);
+            $user_trip = Rfp::findOrFail($rfp_id);
+            $invitations = DB::table('invitations')->where('email', '=', $user_trip->sales_manager)->first();
             $to_guest      = $user_trip->sales_manager;
             $subject_guest = "Coordinator Has Accepted Proposal";
             $data_guest    = array("trip_id" => $user_trip->user_trip_id, "subject_guest" => $subject_guest, "to_guest" => $to_guest, "group" => $invitations->group_id);
@@ -442,19 +422,20 @@ class UsertripsController extends Controller
             /**
              * @TODO: Redirect to the questionnaire, not view agreements
              */
-            'redirect'  => route('hotelmanager.viewagreements'),
+            'redirect'  => route('hotelmanager.viewAgreements'),
             'view_data' => 'Accepted Successfully !',
         ]);
+
     }
 
     public function acceptAgree($rfp_id)
     {
        
-    $trip=Rfp::find($rfp_id);
-    $trip_entry=UserTrip::find($trip->user_trip_id);
-    $trip_user=User::find($trip->user_id);
-    $user=User::find(session('uid'));
-    $trip_entry_user=User::find($trip_entry->entry_by);
+    $trip=Rfp::findOrFail($rfp_id);
+    $trip_entry=UserTrip::findOrFail($trip->user_trip_id);
+    $trip_user=User::findOrFail($trip->user_id);
+    $user=User::findOrFail(session('uid'));
+    $trip_entry_user=User::findOrFail($trip_entry->entry_by);
     if (session('level') == 4) {
            
             Rfp::where('id', $rfp_id)->update(['status' => 5]);
@@ -499,7 +480,7 @@ class UsertripsController extends Controller
 
               
              /*send an email to Main Corporate  for aggreement acceptance*/
-             $corporate=User::find(5);
+             $corporate=User::findOrFail(5);
              $to_corp     = $corporate->email;
              $subject_corp = "Manager Has Accepted Aggreement";
              $data_corp    = array("trip_id" => $trip->user_trip_id, "manager_name"=>session('fid'),"coordinator_name"=>$coordinator_name,"subject_corp" => $subject, "to_corp" => $to_corp);
@@ -575,7 +556,7 @@ class UsertripsController extends Controller
 
     public function getTeamdelete($id)
     {
-        Team::find($id)->delete();
+        Team::findOrFail($id)->delete();
         Session::flash("success", "Record Deleted");
 
         return redirect()->back();
@@ -645,7 +626,7 @@ class UsertripsController extends Controller
         if (Session::get('level') != 4) {
             return redirect(URL("/"));
         }
-        $trip        = UserTrip::with('tripuser')->find($id);
+        $trip        = UserTrip::with('tripuser')->findOrFail($id);
         $trip_id = Rfp::where("user_trip_id", $trip->id)->first();
         $invoices='';
         if($trip_id != null){

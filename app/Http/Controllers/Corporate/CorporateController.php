@@ -26,7 +26,7 @@ class CorporateController extends Controller
 
     public function index() {
         $this->data['tc_users'] = User::where("group_id", 4)->count();
-        $this->data['hotel_info'] = Hotel::find(Session::get('hid'));
+        $this->data['hotel_info'] = Hotel::findOrFail(Session::get('hid'));
 
     	return view('corporate.index', $this->data);
     }
@@ -40,7 +40,7 @@ class CorporateController extends Controller
     		'offerValidityDate' => 'required|date|after:today',
     	]);
 
-    	$trip = usertrip::find($request->trip_id);
+    	$trip = usertrip::findOrFail($request->trip_id);
     	//geting Trip Amenities
     	$amenitie_ids = [];
     	foreach ($trip->amenities as $amenity) {
@@ -79,7 +79,7 @@ class CorporateController extends Controller
     }
 
     public function downloadAgreement($id){
-        $agreement = AgreementForm::find($id);
+        $agreement = AgreementForm::findOrFail($id);
         if(Session::get('uid') != $agreement->reciever_id){
             return redirect()->back();
         }
@@ -98,7 +98,7 @@ class CorporateController extends Controller
     }
 
     public function agreementDetails($id){
-        $agreement = AgreementForm::find($id);
+        $agreement = AgreementForm::findOrFail($id);
         if(Session::get('uid') != $agreement->reciever_id){
             return redirect()->back();
         }
@@ -109,7 +109,7 @@ class CorporateController extends Controller
     }
 
     public function RFPDetails($id){
-        $rfp = Rfp::find($id);
+        $rfp = Rfp::findOrFail($id);
         if(Session::get('uid') != $rfp->user_id){
             return redirect()->back();
         }
@@ -131,7 +131,7 @@ class CorporateController extends Controller
 
        if(count($expired) > 0){
             foreach($expired as $id){
-                AgreementForm::find($id)->delete();
+                AgreementForm::findOrFail($id)->delete();
             }
        }
     }

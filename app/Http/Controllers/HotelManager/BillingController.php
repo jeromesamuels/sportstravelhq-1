@@ -22,7 +22,7 @@ class BillingController extends Controller {
     }
 
     public function downloadRoomListing($id) {
-        $roomListing = Roomlisting::find($id);
+        $roomListing = Roomlisting::findOrFail($id);
         if (Session::get('uid') != $roomListing->hmanager_id && Session::get('level') != 1) {
             return redirect()->back();
         }
@@ -35,7 +35,7 @@ class BillingController extends Controller {
     }
 
     public function destroyRoomListing($id) {
-        Roomlisting::find($id)->delete();
+        Roomlisting::findOrFail($id)->delete();
         Session::flash('success', 'Record Deleted Successfully');
         return redirect()->back();
     }

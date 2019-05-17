@@ -24,8 +24,8 @@ class TripsController extends Controller {
         $trips = UserTrip::with('tripuser')->orderBy('added', 'desc')->get();
         $date_month = date('m');
         $trip_month = UserTrip::whereRaw('MONTH(added) = ?', $date_month)->get();
-        $user = User::find(session('uid'));
-        $Hotel = Hotel::find($user->hotel_id);
+        $user = User::findOrFail(session('uid'));
+        $Hotel = Hotel::findOrFail($user->hotel_id);
 
         if (session('level') == 1) {
             $rfps = Rfp::all();
@@ -57,7 +57,7 @@ class TripsController extends Controller {
     }
 
     public function show($id) {
-        $trip = UserTrip::with('tripuser')->find($id);
+        $trip = UserTrip::with('tripuser')->findOrFail($id);
         $rfp = Rfp::where('user_trip_id', '=', $id)->where('user_id', '=', session('uid'))->first();
         $trip_id =Rfp::where("user_trip_id", $trip->id)->first();
         if($trip_id != null){
@@ -67,8 +67,8 @@ class TripsController extends Controller {
           $invoice='';  
         }
         $data_hotel = Hotel::groupBy('type')->get();
-        $user = User::find(session('uid'));
-        $hotel = Hotel::find($user->hotel_id);
+        $user = User::findOrFail(session('uid'));
+        $hotel = Hotel::findOrFail($user->hotel_id);
       
         $trip_booking = UserTrip::all();
         if (session('level') == 1) {
@@ -115,13 +115,13 @@ class TripsController extends Controller {
         $extension = $request->file('rooming_file')->getClientOriginalExtension();
         $uploadSuccess = $request->file('rooming_file')->move($destinationPath, $file);
         if ($extension == 'csv' || $extension == 'xls' || $extension == 'xlsx') {
-            $hotel_id_new = Rfp::find($request->trip_id);
-            $user_email_new = User::find($hotel_id_new->user_id);
+            $hotel_id_new = Rfp::findOrFail($request->trip_id);
+            $user_email_new = User::findOrFail($hotel_id_new->user_id);
             $roomListing = new Roomlisting();
             $roomListing->cordinator_id = Session::get('uid');
             $roomListing->hmanager_id = $hotel_id_new->user_id;
             $roomListing->file = $file;
-            $user_data = User::find($hotel_id_new->user_id);
+            $user_data = User::findOrFail($hotel_id_new->user_id);
             $roomListing->save();
             Rfp::where('id', $request->trip_id)->update(['status' => 8]);
             $data = array('name' => $user_data->first_name . " " . $user_data->last_name, "trip_id" => $request->trip_id);
