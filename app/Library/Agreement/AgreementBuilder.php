@@ -14,8 +14,7 @@ namespace App\Library\Agreement;
 
 
 /**
- * Class AgreementBuilder
- * php version 7.1
+ * Class AgreementBuilder√
  *
  * @category Library
  * @package  App\Library

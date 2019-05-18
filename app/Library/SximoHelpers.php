@@ -137,8 +137,22 @@ class SximoHelpers {
         $sql = \DB::table('tb_module')->where('module_name', $module)->get();
         if (count($sql) >= 1) {
             $row = $sql[0];
+
+            $mapped_module_name = ucwords($row->module_name);
+            $mapped_module_names = [
+                'UserTrip' => ['Usertrips', 'Usertrip'],
+            ];
+
+            foreach ($mapped_module_names as $model_name => $matches) {
+                foreach ($matches as $match) {
+                    if ($mapped_module_name === $match) {
+                        $mapped_module_name = $model_name;
+                    }
+                }
+            }
+
             // Load Model
-            $model = '\\App\\Models\\' . ucwords($row->module_name);
+            $model = '\\App\\Models\\' . $mapped_module_name;
             $model = new $model();
             $info = $model->makeInfo($row->module_id);
             $data['row'] = $model->find(0);

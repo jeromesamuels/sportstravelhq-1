@@ -20,3 +20,14 @@ Route::prefix('agreement')
             agreementRoutes();
         }
     );
+
+
+Route::group(
+    ['namespace' => 'Client', 'middleware' => 'auth', 'prefix' => "client"],
+    function () {
+        Route::get('preferences/index', 'PreferencesController@index')
+             ->name('client-preferences-index');
+        Route::post('preferences/store', 'PreferencesController@store')
+             ->name('client-preferences-store');
+    }
+);

@@ -2,11 +2,13 @@
 
 namespace App;
 
+use App\Models\HotelAgreementDefault;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
  * @property int id
+ * @property HotelAgreementDefault|null hotelAgreementDefault
  */
 class User extends Authenticatable
 {
@@ -17,7 +19,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-     protected $table = 'tb_users';
+    protected $table = 'tb_users';
      
     protected $fillable = [
         'name', 'email', 'password',
@@ -32,5 +34,14 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    /**
+     * Fetches the user's hotel agreement defaults
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function hotelAgreementDefault()
+    {
+        return $this->hasOne(HotelAgreementDefault::class);
+    }
 
 }
