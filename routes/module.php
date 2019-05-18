@@ -41,4 +41,11 @@ Route::resource('corporateuser','CorporateuserController');
 Route::resource('subcoordinator','SubcoordinatorController');
 // End Routes for subcoordinator 
 
+                    
+// Start Routes for state 
+Route::resource('state','StateController');
+// -- Post Method --
+
+// End Routes for state 
+
                     ?>

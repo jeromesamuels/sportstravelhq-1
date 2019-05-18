@@ -525,7 +525,7 @@ class UsertripsController extends Controller
         }
 
         // Render into template
-        return view($this->module . '.public' . '.team', $this->data);
+        return view('usertrips' . '.public' . '.team', $this->data);
     }
 
     public function getTeamstore(Request $request)
@@ -551,7 +551,7 @@ class UsertripsController extends Controller
         $q     = (new Team)->newQuery();
         $teams = $q->get();
 
-        return view(strtolower($this->module) . '.public' . '.viewTeams', compact('teams'));
+        return view('usertrips' . '.public' . '.viewTeams', compact('teams'));
     }
 
     public function getTeamdelete($id)

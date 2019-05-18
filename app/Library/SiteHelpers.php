@@ -1143,6 +1143,7 @@ public static function alphaID($in, $to_num = false, $pad_up = false, $passKey =
 			$parent = " parent: '#".$lookey."',";
 			$parent_field =  "&parent={$lookey}:";
 		}	
+	
 		$pre_jCombo = "
 		\$(\"#{$field}\").jCombo(\"{!! url('{$class}/comboselect?filter={$table}:{$key}:{$val}') !!}$parent_field\",
 		{ ".$parent." selected_value : '{{ \$row[\"{$field}\"] }}' });

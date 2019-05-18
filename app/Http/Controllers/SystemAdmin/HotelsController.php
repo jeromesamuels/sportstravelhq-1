@@ -5,9 +5,11 @@ use App\Models\Hotel;
 use App\Models\Rfp;
 use App\User;
 use App\Models\Invoices;
+use App\Models\State;
 use App\Models\UserTrip;
 use App\Models\HotelAmenities;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class HotelsController extends Controller {
@@ -41,7 +43,8 @@ class HotelsController extends Controller {
 
     public function createHotels() {
         $amenities = HotelAmenities::all();
-        return view('systemadmin.createHotels', compact('amenities'));
+        $states =State::all();
+        return view('systemadmin.createHotels', compact('amenities','states'));
     }
 
     public function storeHotels(Request $request) {
@@ -90,21 +93,22 @@ class HotelsController extends Controller {
     }
 
     public function deleteHotels($id) {
-        Hotel::find($id)->delete();
+        Hotel::findOrFail($id)->delete();
         Session::flash("success", "Record Deleted");
         return redirect()->back();
     }
 
     public function editHotels($id) {
-        $hotel = Hotel::find($id);
+        $hotel = Hotel::findOrFail($id);
         $amenities = HotelAmenities::all();
         $hotel_type = Hotel::where('type', '!=', $hotel->type)->groupBy('type')->pluck('type');
         return view('systemadmin.editHotels', compact('hotel', 'amenities', 'hotel_type'));
     }
 
     public function hotelProfile($id) {
-        $hotel = Hotel::find($id);
+        $hotel = Hotel::findOrFail($id);
         $user = User::where('hotel_id', $id)->pluck('id');
+        if(count($user)>= 1){
         $data_hotel = Hotel::groupBy('type')->get();
         $amenities = HotelAmenities::all();
         $currentMonth = date('m');
@@ -115,6 +119,10 @@ class HotelsController extends Controller {
         /*Total Booking of this month*/
         $trip_booking = UserTrip::whereRaw('MONTH(added) = ?', [$currentMonth])->get();
         return view('systemadmin.hotelProfile ', compact('hotel', 'amenities', 'data_hotel', 'trip_booking', 'hotel_trips', 'purchases', 'purchases_due', 'hotel_contract'));
+       }
+       else{
+        return redirect()->back();
+       }
     }
 
     public function updateHotels(Request $request, $id) {
@@ -133,7 +141,7 @@ class HotelsController extends Controller {
             "active" => "required", ]);
 
         /*For hotel type logo*/
-        $hotel_id=Hotel::find($id);
+        $hotel_id=Hotel::findOrFail($id);
         if($request->file('logo') !=''){
         $file = $request->file('logo')->getClientOriginalName();
         $destinationPath = './uploads/users/';
@@ -152,7 +160,7 @@ class HotelsController extends Controller {
           $filep=$hotel_id->property; 
         }
         
-        $hotel = Hotel::find($id);
+        $hotel = Hotel::findOrFail($id);
         $hotel->hotel_code = $request->hotel_code;
         $hotel->IATA_number = $request->IATA_number;
         $hotel->service_type = $request->service_type;
