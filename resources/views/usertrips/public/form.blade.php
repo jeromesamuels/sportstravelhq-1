@@ -704,10 +704,10 @@ ini_set('max_execution_time', 3000);
         $("#to_state_id").jCombo("{!! url('usertrips/comboselect?filter=states:id:abbr|name') !!}",
         {  selected_value : '{{ $row["to_state_id"] }}' });
         
-        $("#double_queen_qty").jCombo("{!! url('usertrips/comboselect?filter=room_qty:id:title') !!}",
+        $("#double_queen_qty").jCombo("{!! url('UserTrip/comboselect?filter=room_qty:id:title') !!}",
         {  selected_value : '{{ $row["double_queen_qty"] }}' });
         
-        $("#double_king_qty").jCombo("{!! url('usertrips/comboselect?filter=room_qty:id:title') !!}",
+        $("#double_king_qty").jCombo("{!! url('UserTrip/comboselect?filter=room_qty:id:title') !!}",
         {  selected_value : '{{ $row["double_king_qty"] }}' });
         
     

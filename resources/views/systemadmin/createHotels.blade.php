@@ -66,9 +66,15 @@
                                 </div>
                             </div>
                              <div class="col-sm-6">
-                                <div class="form-group">
+                                 <div class="form-group">
                                     <label>Hotel State</label>
-                                    <input type="text" class="form-control" placeholder="Enter State" name="state">
+                                    <select class=" form-control" name="state" id="state" >
+                                    <option value="">Please select the State </option>
+                                    @foreach($states as $state)
+                                    <option value="{{ $state->name }}" >{{ $state->name }}</option>
+                                    @endforeach
+                                    </select>
+                                    
                                 </div>
                             </div>
                              <div class="col-sm-6">
