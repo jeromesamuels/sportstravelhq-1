@@ -135,7 +135,8 @@ class SximoHelpers {
 
     static public function showForm($module = null) {
         $sql = \DB::table('tb_module')->where('module_name', $module)->get();
-        if (count($sql) >= 1) {
+        if (count($sql) >= 1)
+        {
             $row = $sql[0];
 
             $mapped_module_name = ucwords($row->module_name);
@@ -152,10 +153,11 @@ class SximoHelpers {
             }
 
             // Load Model
-            $model = '\\App\\Models\\' . $mapped_module_name;
-            $model = new $model();
+            $model_class_path = '\\App\\Models\\' . $mapped_module_name;
+            $model = new $model_class_path();
             $info = $model->makeInfo($row->module_id);
             $data['row'] = $model->find(0);
+
             if (file_exists(base_path() . "/resources/views/" . 'usertrips' . "/public/form.blade.php")) {
                 return view('usertrips.public.form', $data);
             } else {

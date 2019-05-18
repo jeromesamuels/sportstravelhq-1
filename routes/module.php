@@ -1,13 +1,18 @@
 <?php
         
+// Start Routes for users 
+Route::resource('users','UsersController');
+// End Routes for users 
+
+                    
 // Start Routes for hotelamenities 
 Route::resource('hotelamenities','HotelamenitiesController');
 // End Routes for hotelamenities 
 
                     
-// Start Routes for usertrips 
-Route::resource('usertrips','UsertripsController');
-// End Routes for usertrips 
+// Start Routes for usertrip 
+Route::resource('usertrip','UsertripController');
+// End Routes for usertrip 
 
                     
 // Start Routes for invoices 
@@ -25,5 +30,15 @@ Route::resource('tripstatuslogs','TripstatuslogsController');
 // -- Post Method --
 
 // End Routes for tripstatuslogs 
+
+                    
+// Start Routes for corporateuser 
+Route::resource('corporateuser','CorporateuserController');
+// End Routes for corporateuser 
+
+                    
+// Start Routes for subcoordinator 
+Route::resource('subcoordinator','SubcoordinatorController');
+// End Routes for subcoordinator 
 
                     ?>

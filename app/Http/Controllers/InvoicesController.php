@@ -35,9 +35,9 @@ class InvoicesController extends Controller {
             return redirect('dashboard')->with('message', __('core.note_restric'))->with('status', 'error');
         }
         $currentMonth = date('m');
-        $this->data['users'] = User::find(session('uid'));
-        $this->data['hotel'] = User::find($this->data['users']->hotel_id);
-        $this->data['hotel_type'] = Hotel::find($this->data['users']->hotel_id);
+        $this->data['users'] = User::findOrFail(session('uid'));
+        $this->data['hotel'] = User::findOrFail($this->data['users']->hotel_id);
+        $this->data['hotel_type'] = Hotel::findOrFail($this->data['users']->hotel_id);
         $this->data['trips'] = UserTrip::whereRaw('MONTH(added) = ?', [$currentMonth])->get();
         $this->data['client'] = User::where('group_id', 4)->get();
       if ($this->data['users']->group_id == 6) {
@@ -221,7 +221,7 @@ class InvoicesController extends Controller {
 
         function getHotels() {
             $hotel_id = $_REQUEST['id'];
-            $hotel = Hotel::find($hotel_id);
+            $hotel = Hotel::findOrFail($hotel_id);
             $users = User::where('hotel_id', $hotel_id)->first();
             $hotel_info = ['address' => $hotel->address, 'phone' => $users->phone_number, 'name' => $users->first_name . ' ' . $users->last_name, 'email' => $users->email];
             return json_encode($hotel_info);
@@ -237,7 +237,7 @@ class InvoicesController extends Controller {
             $email = $request->input('email');
             $rfps = Invoices::where('invoice_id', $invoice_id)->get();
             foreach ($rfps as $rfp) {
-                $hotel = Hotel::find($rfp->hotel_name);
+                $hotel = Hotel::findOrFail($rfp->hotel_name);
                 $hname = $hotel->name;
             }
             $users = User::where('id', 1)->first();
@@ -258,7 +258,7 @@ class InvoicesController extends Controller {
                 $rfps = Invoices::where('id', $value)->get();
                 foreach ($rfps as $values) {
                     $hotel_id = $values->hotel_name;
-                    $hotels = Hotel::find($hotel_id);
+                    $hotels = Hotel::findOrFail($hotel_id);
                 }
                 $datae[] = $rfps;
                 $hotel[] = $hotels;
