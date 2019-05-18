@@ -11,15 +11,18 @@
         <div class="page-content row">
             <div class="page-content-wrapper no-margin">
                 <div class="sbox">
-                    <div class="sbox-title">
-                        <div class="row">
-                            <div class="col-sm-2">
-                                <h1>Hotel Defaults</h1>
-                            </div>
-                        </div>
-                    </div>
+
+                    @include('includes.alerts', ['errors' => $errors]);
 
                     <form method="POST" action="{{ route('client-preferences-store') }}">
+                        <div class="sbox-title">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <h1>Hotel Defaults</h1>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="sbox-content">
                             <div class="row justify-content-center">
                                 <div class="col-md-8 col-lg-5">
@@ -111,6 +114,26 @@
                                             'errors' => $errors,
                                         ])
                                     </div>
+                                    <div class="form-group row">
+                                        @include('includes.input', [
+                                            'type' => 'text',
+                                            'label' => 'Title',
+                                            'name' => 'title',
+                                            'placeholder' => 'Organization Lead',
+                                            'value' => $hotel_defaults->title,
+                                            'errors' => $errors,
+                                        ])
+                                    </div>
+                                    <div class="form-group row">
+                                        @include('includes.input', [
+                                            'type' => 'text',
+                                            'label' => 'Signature Type',
+                                            'name' => 'signature_type',
+                                            'placeholder' => '???',
+                                            'value' => $hotel_defaults->signature_type,
+                                            'errors' => $errors,
+                                        ])
+                                    </div>
 
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary btn-block">Save</button>
@@ -118,6 +141,83 @@
                                 </div>
                             </div>
                         </div>
+
+
+
+                        <div class="sbox-title">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <h1>Teams Defaults</h1>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="sbox-content">
+                            <div class="row justify-content-center">
+                                <?php
+                                /**
+                                 * List of teams
+                                 *
+                                 * @var \App\Models\Team[] $teams
+                                 */
+                                /**
+                                 * List of team defaults
+                                 *
+                                 * @var \App\Models\TeamPaymentDefault[] $team_defaults
+                                 */
+                                use Illuminate\Support\ViewErrorBag;
+                                ?>
+                                @foreach ($teams as $team)
+                                    <div class="col-md-4">
+                                        <h4>{{ $team->team_name }}</h4>
+                                        <div class="form-group row">
+                                            @include('includes.input', [
+                                                'label' => 'First Name',
+                                                'name' => 'teams[' . $team->id . '][first_name]',
+                                                'placeholder' => 'John',
+                                                'value' => $team_defaults[$team->id]->first_name ?? '',
+                                                'errors' => $errors->get('teams', [])[$team->id] ?? new \Illuminate\Support\ViewErrorBag(),
+                                            ])
+                                        </div>
+                                        <div class="form-group row">
+                                            @include('includes.input', [
+                                                'label' => 'Last Name',
+                                                'name' => 'teams[' . $team->id . '][last_name]',
+                                                'placeholder' => 'Doe',
+                                                'value' => $team_defaults[$team->id]->last_name ?? '',
+                                                'errors' => $errors->get('teams', [])[$team->id] ?? new \Illuminate\Support\ViewErrorBag(),
+                                            ])
+                                        </div>
+                                        <div class="form-group row">
+                                            @include('includes.input', [
+                                                'label' => 'Email',
+                                                'type' => 'email',
+                                                'name' => 'teams[' . $team->id . '][email]',
+                                                'placeholder' => 'john@example.com',
+                                                'value' => $team_defaults[$team->id]->email ?? '',
+                                                'errors' => $errors->get('teams', [])[$team->id] ?? new \Illuminate\Support\ViewErrorBag(),
+                                            ])
+                                        </div>
+                                        <div class="form-group row">
+                                            @include('includes.input', [
+                                                'label' => 'Phone',
+                                                'type' => 'tel',
+                                                'name' => 'teams[' . $team->id . '][phone]',
+                                                'placeholder' => '555-555-5555',
+                                                'value' => $team_defaults[$team->id]->phone ?? '',
+                                                'errors' => $errors->get('teams', [])[$team->id] ?? new \Illuminate\Support\ViewErrorBag(),
+                                            ])
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block">Save</button>
+                        </div>
+
                     </form>
                 </div>
             </div>
@@ -125,7 +225,7 @@
     </div>
     <script type="text/javascript">
         jQuery(function ($) {
-            $('[name=phone]').inputmask("+1 (999) 999-9999 ext. 9999");
+            $('[name*=phone]').inputmask("+1 (999) 999-9999 ext. 9999");
         });
     </script>
 @endsection

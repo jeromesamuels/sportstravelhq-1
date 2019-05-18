@@ -25,6 +25,15 @@ class CreateTeamCcAuthFormTable extends Migration
             $table->string('phone', 32);
 
             $table->timestamps();
+
+            //-- Lookup indexes
+            $table->index(['user_id', 'team_id']);
+            $table->index(['user_id']);
+            $table->index(['team_id']);
+        });
+
+        Schema::table('hotel_agreement_defaults', function (Blueprint $table) {
+            $table->index(['user_id']);
         });
     }
 
