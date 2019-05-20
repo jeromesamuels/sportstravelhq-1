@@ -58,7 +58,6 @@ class SubcoordinatorController extends Controller {
          $this->data['coordinator']='';
         }
 
-		//echo '<pre>';print_r($this->data);die;
 		return view( $this->module.'.index',$this->data);
 	}	
 

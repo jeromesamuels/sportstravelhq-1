@@ -282,25 +282,23 @@ $agreement_text = '<div id="Translation"><h3>The standard Lorem Ipsum passage, u
                     (place.address_components[2] && place.address_components[2].short_name || '')
                    
                   ].join(' ');
-            
                   this.addressArray = place.address_components;
                  if(this.addressArray.length === 9) {
-                    this.street_number = this.addressArray[5].long_name;
-                    //this.country = this.addressArray[6].short_name;
-                    this.zipcode = this.addressArray[7].short_name;
-                    this.city=this.addressArray[3].short_name;
+                   
                     document.getElementById('city').value=this.addressArray[3].short_name;
                     document.getElementById('zip').value=this.addressArray[7].short_name;
                    document.getElementById('state').value=this.addressArray[5].long_name;
                  } 
                 
                  else{
-                     this.street_number = this.addressArray[4].long_name;
-                    //this.country = this.addressArray[5].short_name;
-                     this.zipcode = this.addressArray[6].short_name;
-                     this.city=this.addressArray[2].short_name;
+                    var zip=this.addressArray[6].short_name;
+                    if(zip.match(/^\d+$/)) {
+                      document.getElementById('zip').value=this.addressArray[6].short_name;  
+                    }
+                    else{
+                        document.getElementById('from_zip').value='';   
+                    }
                    document.getElementById('city').value=this.addressArray[2].short_name;
-                   document.getElementById('zip').value=this.addressArray[6].short_name;
                    document.getElementById('state').value=this.addressArray[4].long_name;
                  }
                 }

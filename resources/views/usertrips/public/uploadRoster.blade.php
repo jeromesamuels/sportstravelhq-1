@@ -20,7 +20,7 @@
                          <input type="hidden" class="form-control"  name="rfp_id" value="{{ $team->user_trip_id }}">
                         {{ csrf_field() }}
                         <div class="row">
-                             <legend class="text-left">Upload a roster as CSV format! </legend>
+                             <legend class="text-left">Upload a roster! </legend>
                             <div class="col-md-1 col-sm-12" ></div>
                             
                             <div class="col-md-10 col-sm-12 left-section" style="padding:10px 30px;background-color: #c5e1ec;">

@@ -157,7 +157,6 @@ class SximoHelpers {
             $model = new $model_class_path();
             $info = $model->makeInfo($row->module_id);
             $data['row'] = $model->find(0);
-
             if (file_exists(base_path() . "/resources/views/" . 'usertrips' . "/public/form.blade.php")) {
                 return view('usertrips.public.form', $data);
             } else {

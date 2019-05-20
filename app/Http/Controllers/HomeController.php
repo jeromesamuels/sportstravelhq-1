@@ -397,8 +397,16 @@ class HomeController extends Controller {
             $purchases_due =0;     
             }
         
+        $user=User::findOrFail(session('uid'));
+        $parent_coordinator=$user->entry_by;
+        if($parent_coordinator != ''){
+         $coordinator=User::findOrFail($parent_coordinator);
+        }
+        else{
+         $coordinator='';
+        }
 
-        return view('client.clientProfile', compact('clientTrips', 'data_rfps', 'data_client', 'data_hotel', 'purchases', 'purchases_due', 'trip_booking'));
+        return view('client.clientProfile', compact('clientTrips', 'data_rfps', 'data_client', 'data_hotel', 'purchases', 'purchases_due', 'trip_booking','parent_coordinator','coordinator'));
     }
 
     public function Reports() {

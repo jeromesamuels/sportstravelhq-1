@@ -437,6 +437,15 @@
                                     <b>Member Since</b>
                                     <p style="color:#5dbbe0;" id="corporate_created_at">{{ $membership }}</p>
                                 </div>
+                                @if($coordinator != '')
+                                <div class="contact-info ">
+                                    <b>Parent coordinator</b>
+                                    <p style="color: #8c8787;font-weight: bold;">{{$coordinator->first_name.' '.$coordinator->last_name}}</p>
+                                    <b>Organization</b>
+                                    <p style="color: #8c8787;font-weight: bold;">{{$coordinator->o_name}}</p>
+                                </div>
+                                @endif
+
                             </div>
                             <?php } ?>
                         </div>

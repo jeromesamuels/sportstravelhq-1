@@ -69,7 +69,7 @@
     margin-top: 40px;
     background: #f5f5f5;
     padding: 25px 50px;
-    height: 150px;
+    height: 180px;
     }
     .progress p{
     font-size: 16px;
@@ -603,16 +603,17 @@
                             <p style="font-size: 14px;color: #b1afaf;">Unpaid</p>
                             @endif
                         </div>
-                       
-                        <div class="status_detail1">
+                           <?php } ?>
+                           @if(count($trip->rfps)>=1)
+                           <div class="status_detail1">
                             <h5>Document</h5>
-                            @if($invoices->invoice_file != '')
-                            <a href="../../uploads/users/{{ $invoices->invoice_file }}" target="_blank" style="font-size: 14px;color: #00b0e4;" ><i class="fa fa-file-excel-o" aria-hidden="true"></i> Roster File</a>
+                            @if($trip_id->roster != '')
+                            <a href="../uploads/users/{{ $trip_id->roster }}" target="_blank" style="font-size: 14px;color: #00b0e4;" ><i class="fa fa-file-excel-o" aria-hidden="true"></i> Roster File</a>
                             @else
-                            <a href="#" style="font-size: 14px;color: #00b0e4;" ><i class="fa fa-file-excel-o" aria-hidden="true"></i> Roster File</a>
+                            <a href="#" style="font-size: 14px;color: #00b0e4;" ><i class="fa fa-file-excel-o" aria-hidden="true"></i> No Roster File</a>
                             @endif
-                        </div>
-                    <?php } ?>
+                            </div>
+                            @endif
                     </div>
                     <?php  ?>
                     <div class="col-sm-9" id="print_div">
