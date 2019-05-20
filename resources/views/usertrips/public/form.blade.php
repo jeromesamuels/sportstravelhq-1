@@ -343,8 +343,9 @@ ini_set('max_execution_time', 3000);
     <div class="form-group" >
         <h4>Room Types - Select all that apply</h4>
         <label for="Double Queen Rooms" class="control-label col-md-5 text-left"> Double Queen Rooms 
-        <select name='double_queen_qty' rows='5' id='double_queen_qty' class='select2' ></select> 
+        <select name='double_queen_qty' rows='5' id='double_queen_qty' class='select2' ></select>
         </label>
+
         <label for="Double King Rooms" class=" control-label col-md-5 text-left"> Double King Rooms 
         <select name='double_king_qty' rows='5' id='double_king_qty' class='select2' ></select> 
         </label>
@@ -403,11 +404,6 @@ ini_set('max_execution_time', 3000);
             <div class="searchcontainer"></div>
         </div>
         <div id="map" class="trip-map" style="height:400px;"></div>
-        <!--  <div id="infowindow-content">
-            <img src="" width="16" height="16" id="place-icon">
-            <span id="place-name"  class="title"></span><br>
-            <span id="place-address"></span>
-            </div> -->
         <script>
             var autocomplete = '';
             var map = '';
@@ -446,7 +442,6 @@ ini_set('max_execution_time', 3000);
                 google.maps.event.addListener(autocomplete, 'place_changed', function() {
             
                 infowindow.close();
-               // marker.setVisible(false);
                 var place = autocomplete.getPlace();
                 if (!place.geometry) {
                   window.alert("No details available for input: '" + place.name + "'");
@@ -584,7 +579,7 @@ ini_set('max_execution_time', 3000);
                 google.maps.event.addListener(autocomplete2, 'place_changed', function() {
             
                 infowindow.close();
-                marker.setVisible(false);
+                //marker.setVisible(false);
                 var place = autocomplete2.getPlace();
                 if (!place.geometry) {
                   window.alert("No details available for input: '" + place.name + "'");
@@ -599,9 +594,9 @@ ini_set('max_execution_time', 3000);
                  
                   map.setZoom(17);  // Why 17? Because it looks good.
                 }
-                marker.setPosition(place.geometry.location);
+               // marker.setPosition(place.geometry.location);
                
-                marker.setVisible(true);
+                //marker.setVisible(true);
             
                 var address = '';
                 if (place.address_components ) {
@@ -614,22 +609,21 @@ ini_set('max_execution_time', 3000);
             
                   this.addressArray = place.address_components;
                  if(this.addressArray.length === 9) {
-                    this.street_number = this.addressArray[5].long_name;
-                    //this.country = this.addressArray[6].short_name;
-                    this.zipcode = this.addressArray[7].short_name;
-                    this.city=this.addressArray[3].short_name;
+                   
                     document.getElementById('to_city').value=this.addressArray[3].short_name;
                     document.getElementById('to_zip').value=this.addressArray[7].short_name;
                    document.getElementById('to_state_id').value=this.addressArray[5].long_name;
                  } 
                 
                  else{
-                     this.street_number = this.addressArray[4].long_name;
-                    //this.country = this.addressArray[5].short_name;
-                     this.zipcode = this.addressArray[6].short_name;
-                     this.city=this.addressArray[2].short_name;
+                     var zip=this.addressArray[6].short_name;
+                    if(zip.match(/^\d+$/)) {
+                      document.getElementById('to_zip').value=this.addressArray[6].short_name;  
+                    }
+                    else{
+                        document.getElementById('from_zip').value='';   
+                    }
                      document.getElementById('to_city').value=this.addressArray[2].short_name;
-                     document.getElementById('to_zip').value=this.addressArray[6].short_name;
                      document.getElementById('to_state_id').value=this.addressArray[4].long_name;
                  }
                 }
@@ -697,17 +691,17 @@ ini_set('max_execution_time', 3000);
 </script>
 <script type="text/javascript">
     $(document).ready(function() { 
-    
+       
         $("#from_state_id").jCombo("{!! url('usertrips/comboselect?filter=states:id:abbr|name') !!}",
         {  selected_value : '{{ $row["from_state_id"] }}' });
         
         $("#to_state_id").jCombo("{!! url('usertrips/comboselect?filter=states:id:abbr|name') !!}",
         {  selected_value : '{{ $row["to_state_id"] }}' });
         
-        $("#double_queen_qty").jCombo("{!! url('UserTrip/comboselect?filter=room_qty:id:title') !!}",
+        $("#double_queen_qty").jCombo("{!! url('usertrips/comboselect?filter=room_qty:id:title') !!}",
         {  selected_value : '{{ $row["double_queen_qty"] }}' });
         
-        $("#double_king_qty").jCombo("{!! url('UserTrip/comboselect?filter=room_qty:id:title') !!}",
+        $("#double_king_qty").jCombo("{!! url('usertrips/comboselect?filter=room_qty:id:title') !!}",
         {  selected_value : '{{ $row["double_king_qty"] }}' });
         
     
@@ -720,7 +714,6 @@ ini_set('max_execution_time', 3000);
     
     
         $('.select2').select2();
-    
         var separator = ' - ', dateFormat = 'MM/DD/YYYY';
         var options = {
             autoUpdateInput: false,

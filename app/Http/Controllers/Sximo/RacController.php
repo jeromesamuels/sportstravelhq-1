@@ -68,6 +68,7 @@ class RacController extends Controller {
 	function show( Request $request , $id ) 
 	{
 		/* Handle import , export and view */
+		
 		$task =$id ;
 		switch( $task)
 		{

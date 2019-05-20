@@ -35,6 +35,7 @@ abstract class Controller extends BaseController {
 
 	function getComboselect( Request $request)
 	{
+		
 		if($request->ajax() == true && \Auth::check() == true)
 		{
 			$param = explode(':',$request->input('filter'));

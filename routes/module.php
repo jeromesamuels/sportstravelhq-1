@@ -11,7 +11,7 @@ Route::resource('hotelamenities','HotelamenitiesController');
 
                     
 // Start Routes for usertrip 
-Route::resource('usertrip','UsertripController');
+Route::resource('usertrips','UsertripsController');
 // End Routes for usertrip 
 
                     
@@ -48,4 +48,4 @@ Route::resource('state','StateController');
 
 // End Routes for state 
 
-                    ?>
+  ?>

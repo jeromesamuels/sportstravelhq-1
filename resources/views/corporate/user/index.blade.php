@@ -327,9 +327,6 @@
                 
                 });
                 
-                
-                      
-                       
             </script>
             <div class="col-md-4 col-sm-12">
                 <div class="widget-box box-shadow" style=" margin: 0;background: #fff;padding: 20px;">

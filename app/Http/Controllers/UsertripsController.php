@@ -228,7 +228,7 @@ class UsertripsController extends Controller
 
         $mode  = isset($_GET['view']) ? 'view' : 'default';
         $model = new UserTrip();
-        $info  = $model::makeInfo('Usertrips');
+        $info  = $model::makeInfo('Usertrip');
         $data  = array(
             'pageTitle' => $info['title'],
             'pageNote'  => $info['note'],
@@ -549,9 +549,16 @@ class UsertripsController extends Controller
     public function getTeamview(Request $request)
     {
         $q     = (new Team)->newQuery();
-        $teams = $q->get();
-
-        return view('usertrips' . '.public' . '.viewTeams', compact('teams'));
+        $teams = $q->orderBy('id','desc')->get();
+        $user=User::findOrFail(session('uid'));
+        $parent_coordinator=$user->entry_by;
+        if($parent_coordinator != ''){
+         $coordinator=User::findOrFail($parent_coordinator);
+        }
+        else{
+         $coordinator='';
+        }
+        return view('usertrips' . '.public' . '.viewTeams', compact('teams','coordinator'));
     }
 
     public function getTeamdelete($id)
@@ -564,7 +571,7 @@ class UsertripsController extends Controller
 
     public function uploadRoster($rfp_id, $team)
     {
-        Rfp::where('user_trip_id', $rfp_id)->update(['team' => $team]);
+        Rfp::where('id', $rfp_id)->update(['team' => $team]);
 
         return response()->json([
             'success'   => true,
@@ -574,9 +581,9 @@ class UsertripsController extends Controller
 
     public function uploadRosters($rfp_id)
     {
-        $teams = Rfp::where('user_trip_id', $rfp_id)->get();
+        $teams = Rfp::where('id', $rfp_id)->get();
 
-        return view($this->module . '.public' . '.uploadRoster', compact('teams'));
+        return view('usertrips' . '.public' . '.uploadRoster', compact('teams'));
     }
 
     public function uploadRostertore(Request $request)
@@ -616,8 +623,8 @@ class UsertripsController extends Controller
         $get_invoice = Rfp::where("status", '!=', 3)->get();
         $data_accept = Rfp::where("status", 2)->get();
         $data_submit = Rfp::where("status", 1)->get();
-
-        return view('coordinator.viewtrips', compact('trips', 'amenities', 'data_client', 'purchases', 'data_all', 'data_submit', 'get_invoice', 'data_accept', 'data','client'));
+        $team = Team::all();
+        return view('coordinator.viewtrips', compact('trips', 'amenities', 'data_client', 'purchases', 'data_all', 'data_submit', 'get_invoice', 'data_accept', 'data','client','team'));
 
     }
 

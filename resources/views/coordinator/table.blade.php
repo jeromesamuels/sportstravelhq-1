@@ -1003,6 +1003,12 @@
                         <li > <button data-toggle="modal" data-target="#upload_roomingList"  data-id="{{ $rfp->id }}" title="{{ $rfp->id }}" class="btn btn-light " disabled="">Upload Rooming List</button></li>
                         @endif
 
+                        @if($rfp->status== 2)
+                        <li ><button data-toggle="modal" data-target="#upload_roster" data-target="#upload_roster"  data-id="{{ $rfp->id }}" title="{{ $rfp->id }}" class="btn btn-light ">Upload Roster</button></li>
+                        @else
+                        <li ><button data-toggle="modal" data-target="#upload_roster" title="{{ $rfp->id }}" class="btn btn-light " disabled="">Upload Roster</button></li >
+                        @endif
+
                         @if ($rfp->status== 4)
                         <li ><a href="{{ route('downloadReceipt',['download'=>'pdf', 'rfp_id' => $rfp->id]) }}"> <button id="download_receipt" title="{{ $rfp->id }}" class="btn btn-light ">Download Receipt</button></a></li>
                         @else
@@ -1017,6 +1023,7 @@
     </tbody>
 </table>
 </div>
+
 <script>
     $(document).ready(function(){
     $('#upload_roomingList').on('show.bs.modal', function (e) {
@@ -1032,7 +1039,6 @@
        
      });
      $('#confirm_forword').on('show.bs.modal', function (e) {
-    
         var rowid = $(e.relatedTarget).data('id');
         document.getElementById('rfp-accept-f').title = rowid;
      
@@ -1040,14 +1046,62 @@
        
      });
        $('#confirm_accept').on('show.bs.modal', function (e) {
-    
-      
         var title = $('.confirm_forword').attr('title');
         document.getElementById('rfp-accept').title = title;
        
      });
+     $('#upload_roster').on('show.bs.modal', function (e) {
+        var rowid = $(e.relatedTarget).data('id');
+        document.getElementById('btn-upload-roster').title = rowid;
+       
+     });
     });
     
+</script>
+<!--begin::AcceptModal-->
+<div class="modal fade" id="upload_roster" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>Select a Team</h5>
+                <select id="upload_roster_select" name='upload_roster_select' rows='5' class='select2'>
+                    <option value="">--Please select a Team to be added--</option>
+                    @foreach($team as $teams) 
+                    <option value="{{ $teams->team_name }}">{{ $teams->team_name }}</option>
+                    @endforeach
+                </select>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary btn-upload-roster" id="btn-upload-roster" title="" >Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).on("click", ".btn-upload-roster", function() {
+
+            var id = $(this).attr("title");
+            var e = document.getElementById ("upload_roster_select");
+            var team = e.options [e.selectedIndex] .value;
+            var url = '{{ url("/uploadRoster/") }}' + '/' + id + '/' + team;
+
+            $.post(url,'/' + team, function(response) {
+                if(response.success) {
+                    alert(response.view_data);
+                     window.location = "{{ url('/uploadRosters') }}" + '/' + id ;
+
+                }
+            }, 'json');
+
+        });
 </script>
 <div class="modal fade" id="confirm_forword" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

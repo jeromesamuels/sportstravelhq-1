@@ -11,10 +11,12 @@
             <div class="sbox">
                 <div class="sbox-title">
                     <div class="row">
-                       <div class="col-md-12">
-            <a href="{{ action("UsertripsController@getTeam") }}" class="btn btn-success btn-md" style="margin: 0 20px 20px 0; padding: 10px 20px; font-size: 16px;">Create New</a>
+             <div class="col-md-12">
            
-        </div>
+            @if($coordinator=='') 
+            <a href="{{ action("UsertripsController@getTeam") }}" class="btn btn-success btn-md" style="margin: 0 20px 20px 0; padding: 10px 20px; font-size: 16px;">Create New</a>
+            @endif
+            </div>
                     </div>
                 </div>
                 <div class="sbox-content">
@@ -46,12 +48,16 @@
                                     <div class="dropdown">
                                       <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown"> Action </button>
                                       <ul class="dropdown-menu">
-                                      
+                                        
                                         <li>
                                             <form action="{{ action('UsertripsController@getTeamdelete',$team->id) }}" method="post">
                                                 {{ csrf_field() }}
                                                 {{ method_field("DELETE") }}
+                                                @if($coordinator=='') 
                                                 <button type="submit" onclick="return confirm('Are you sure you want to delete?')" style="border:none;background:transparent;outline:none;display: block;padding-left:20px">Delete</button>
+                                                @else
+                                                <button type="submit" onclick="return confirm('Are you sure you want to delete?')" style="border:none;background:transparent;outline:none;display: block;padding-left:20px" disabled="">Delete</button>
+                                                @endif
                                             </form>
                                         </li>
                                       </ul>
