@@ -1003,7 +1003,7 @@
                         <li > <button data-toggle="modal" data-target="#upload_roomingList"  data-id="{{ $rfp->id }}" title="{{ $rfp->id }}" class="btn btn-light " disabled="">Upload Rooming List</button></li>
                         @endif
 
-                        @if($rfp->status== 2)
+                        @if($rfp->status== 6)
                         <li ><button data-toggle="modal" data-target="#upload_roster" data-target="#upload_roster"  data-id="{{ $rfp->id }}" title="{{ $rfp->id }}" class="btn btn-light ">Upload Roster</button></li>
                         @else
                         <li ><button data-toggle="modal" data-target="#upload_roster" title="{{ $rfp->id }}" class="btn btn-light " disabled="">Upload Roster</button></li >

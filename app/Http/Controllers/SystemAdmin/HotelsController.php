@@ -38,7 +38,12 @@ class HotelsController extends Controller {
         $trips = UserTrip::all();
         $rfps_new = Rfp::where('status', 2)->get();
         $trip_booking = UserTrip::whereRaw('MONTH(added) = ?', [$currentMonth])->get();
+        if(session('level')==1 || session('level')==2){
         return view('systemadmin.viewHotels', compact('hotels', 'searchField', 'purchases', 'purchases_due', 'trip_booking', 'data_hotel', 'rfps_new', 'purchases_month', 'purchases_due_month','trips'));
+       }
+       else{
+       abort(404);
+       }
     }
 
     public function createHotels() {

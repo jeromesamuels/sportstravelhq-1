@@ -14,7 +14,7 @@
         <div class="sbox">
             <div class="sbox-title clearfix">
                 <div class="sbox-tools " >
-                    <a href="{{ url($pageModule.'?return='.$return) }}" class="tips btn btn-sm "  title="{{ __('core.btn_back') }}" ><i class="fa  fa-times"></i></a> 
+                    <a href="{{ url('usertrips'.'?return='.$return) }}" class="tips btn btn-sm "  title="{{ __('core.btn_back') }}" ><i class="fa  fa-times"></i></a> 
                 </div>
                 <div class="sbox-tools pull-left" >
                     <button name="apply" class="tips btn btn-sm btn-default  "  title="{{ __('core.btn_back') }}" ><i class="fa  fa-check"></i> {{ __('core.sb_apply') }} </button>

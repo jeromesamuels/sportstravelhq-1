@@ -56,7 +56,7 @@ class UsertripsController extends Controller
         }
 
         // Render into template
-        return view($this->module . '.index', $this->data);
+        return view('usertrips' . '.index', $this->data);
     }
 
     public function compare(Request $request)
@@ -71,7 +71,7 @@ class UsertripsController extends Controller
         }
 
         // Render into template
-        return view($this->module . '.public' . '.compare', $this->data);
+        return view('usertrips' . '.public' . '.compare', $this->data);
     }
 
     function getDatesFromRange($start, $end, $format = 'm/d/Y')
@@ -104,7 +104,7 @@ class UsertripsController extends Controller
         $this->data['row'] = $this->model->getColumnTable($this->info['table']);
         $this->data['id']  = '';
 
-        return view($this->module . '.form', $this->data);
+        return view('usertrips' . '.form', $this->data);
     }
 
     function edit(Request $request, $id)
@@ -119,7 +119,7 @@ class UsertripsController extends Controller
         $this->data['row'] = (array)$this->data['row'];
         $this->data['id']  = $id;
 
-        return view($this->module . '.form', $this->data);
+        return view('usertrips' . '.form', $this->data);
     }
 
     function show(Request $request, $id)
@@ -151,7 +151,7 @@ class UsertripsController extends Controller
                     return redirect('dashboard')->with('message', __('core.note_restric'))->with('status', 'error');
                 }
 
-                return view($this->module . '.view', $this->data);
+                return view('usertrips' . '.view', $this->data);
                 break;
         }
     }
@@ -171,12 +171,12 @@ class UsertripsController extends Controller
                     /* Insert logs */
                     $this->model->logs($request, $id);
                     if (!is_null($request->input('apply'))) {
-                        return redirect($this->module . '/' . $id . '/edit?' . $this->returnUrl())->with('message', __('core.note_success'))->with('status', 'success');
+                        return redirect('usertrips' . '/' . $id . '/edit?' . $this->returnUrl())->with('message', __('core.note_success'))->with('status', 'success');
                     }
 
-                    return redirect($this->module . '?' . $this->returnUrl())->with('message', __('core.note_success'))->with('status', 'success');
+                    return redirect('usertrips' . '?' . $this->returnUrl())->with('message', __('core.note_success'))->with('status', 'success');
                 } else {
-                    return redirect($this->module . '/' . $request->input($this->info['key']) . '/edit')
+                    return redirect('usertrips' . '/' . $request->input($this->info['key']) . '/edit')
                         ->with('message', __('core.note_error'))->with('status', 'error')
                         ->withErrors($validator)->withInput();
                 }
@@ -225,7 +225,7 @@ class UsertripsController extends Controller
 
     public static function display()
     {
-
+      
         $mode  = isset($_GET['view']) ? 'view' : 'default';
         $model = new UserTrip();
         $info  = $model::makeInfo('Usertrip');
@@ -532,14 +532,14 @@ class UsertripsController extends Controller
     {
         $this->validate($request, [
             "team_name" => "required|max:191",
-            "age_group" => "required|max:191",
-            "gender"    => "required",
+          /*  "age_group" => "required|max:191",
+            "gender"    => "required",*/
         ]);
         /*For hotel type logo*/
         $team            = new Team();
         $team->team_name = $request->team_name;
-        $team->age_group = $request->age_group;
-        $team->gender    = $request->gender == "true" ? true : false;
+       /* $team->age_group = $request->age_group;
+        $team->gender    = $request->gender == "true" ? true : false;*/
         $team->save();
         Session::flash("success", "New Team Added Successfully");
 
