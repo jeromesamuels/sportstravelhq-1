@@ -1006,7 +1006,13 @@ function detailviewsave( $model ,$request , $detail , $id )
 		if($this->info['type'] =='ajax'){
 			$pagination->setPath( $this->module.'/data' );
 		} else {
+			
+			if($this->module=='Usertrip'){
+              $pagination->setPath('usertrips');
+			}
+			else{
 			$pagination->setPath( $this->module );	
+		    }
 		}
 		$this->data['param']		= $params;
 		$this->data['rowData']		= $results['rows'];

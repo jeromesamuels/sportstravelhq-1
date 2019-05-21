@@ -126,13 +126,8 @@
                                <div class="col-sm-3">
                                    <div class="form-group">
                                        <label>
-                                           <input type="checkbox" value="{{ $amenity->id }}" name="amenities[]" style="opacity: 1;position: static" 
-                                            @foreach ($hotel->amenities as $amenityItem)
-                                                @if($amenityItem->id == $amenity->id)
-                                                    checked 
-                                                @endif
-                                            @endforeach
-                                           > {{ $amenity->title}}
+                                           <input type="checkbox" value="{{ $amenity->id }}" name="amenities[]" style="opacity: 1;position: static" >
+                                            {{ $amenity->title}}
                                        </label>
                                    </div>
                                </div>

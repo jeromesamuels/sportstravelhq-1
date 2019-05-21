@@ -6,6 +6,9 @@
 	 .m-header--fixed .m-body {
         padding-top: 20px !important;
     }
+    .cus-blackhead-part{
+    	margin-top: 60px;
+    }
 </style>
 <section class="page-header row">
 	<h2> {{ $pageTitle }} <small> {{ $pageNote }} </small></h2>

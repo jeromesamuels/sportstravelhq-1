@@ -26,8 +26,8 @@
                         <tr>
                             <th>Sr</th>
                             <th>Team Name</th>
-                            <th>Age Group</th>
-                            <th>Gender</th>
+                           <!--  <th>Age Group</th>
+                            <th>Gender</th> -->
                             
                             <th>Action</th>
                         </tr>
@@ -35,7 +35,7 @@
                             <tr>
                                 <td>{{ $loop->index + 1 }}</td>
                                 <td>{{ $team->team_name }}</td>
-                                <td>{{ $team->age_group }}</td>
+                               <!--  <td>{{ $team->age_group }}</td>
                               
                                 <td>
                                     @if ($team->gender)
@@ -43,7 +43,7 @@
                                     @else
                                         <span class="label label-info" style="padding:4px 8px; font-size:12px">Female</span>
                                     @endif
-                                </td>
+                                </td> -->
                                 <td>
                                     <div class="dropdown">
                                       <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown"> Action </button>

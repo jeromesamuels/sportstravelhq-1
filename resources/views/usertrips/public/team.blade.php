@@ -9,7 +9,7 @@
 <div class="container">
     <div class="page-content row">
         <div class="page-content-wrapper no-margin">
-            <h2> Create Team </h2>
+            <h2 style="margin-top: 50px;"> Create Team </h2>
             <div class="sbox" style="padding:50px;">
                 <div class="sbox-content">
                     @include('includes.alerts')
@@ -25,7 +25,7 @@
                                         <input type="text" class="form-control" placeholder="Enter Team Name" name="team_name">
                                     </div>
                                 </div>
-                                <div class="col-sm-12">
+                                <!-- <div class="col-sm-12">
                                     <div class="form-group">
                                         <label>Age Group (U1 - U20)</label>
                                         <input type="text" class="form-control" placeholder="Enter Age Group" name="age_group">
@@ -42,7 +42,7 @@
                                         Female
                                         </label>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="col-sm-12" style="margin-top:30px;">
                                     <div class="form-group text-left">
                                         <button type="submit" class="btn btn-success">Submit</button>

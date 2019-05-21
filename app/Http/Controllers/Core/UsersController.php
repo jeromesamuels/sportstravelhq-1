@@ -29,8 +29,8 @@ class UsersController extends Controller {
     public function index(Request $request) {
         // Make Sure users Logged
         if (!\Auth::check()) return redirect('user/login')->with('status', 'error')->with('message', 'You are no Logged in');
-        $filter = ['params' => " AND tb_groups.level > '" . Users::level(session('gid')) . "'"];
-        $this->grab($request, $filter);
+        //$filter = ['params' => " AND tb_groups.level > '" . Users::level(session('gid')) . "'"];
+        $this->grab($request);
         $this->data['data_hotel'] = Hotel::groupBy('type')->get();
             foreach ($this->data['data_hotel'] as $value) {
                 $name = $value->type;
