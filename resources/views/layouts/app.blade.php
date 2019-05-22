@@ -1,177 +1,396 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="_token" content="{{ csrf_token() }}">
-<title> {{ config('sximo.cnf_appname')}} </title>
-
-<link rel="shortcut icon" href="{{ asset('favicon.ico')}}" type="image/x-icon">
-<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
-
-<link href="{{ asset('sximo5/sximo.min.css')}}" rel="stylesheet">
-<link href="{{ asset('sximo5/js/plugins/iCheck/skins/square/green.css')}}" rel="stylesheet">
-<link href="{{ asset('sximo5/js/plugins/fancybox/jquery.fancybox.css') }}" rel="stylesheet">
-<link href="{{ asset('sximo5/js/plugins/toast/css/jquery.toast.css')}}" rel="stylesheet">
-<!-- Icon CSS -->   
-<link href="{{ asset('sximo5/fonts/icomoon.css')}}" rel="stylesheet">
-<link href="{{ asset('sximo5/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css')}}" rel="stylesheet">
-<link href="{{ asset('sximo5/fonts/awesome/css/font-awesome.min.css')}}" rel="stylesheet">
-<!--<link href="{{ asset('sximo5/css/colors.css')}}" rel="stylesheet"> -->
-
-<!-- Sximo 5 Main CSS -->
-<link href="{{ asset('sximo5/css/style.css')}}" rel="stylesheet">
-<link href="{{ asset('sximo5/css/all-themes.css')}}" rel="stylesheet">
-<!--<link href="{{ asset('sximo5/css/sximo.css')}}" rel="stylesheet"> -->
-
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
-
-<script type="text/javascript" src="{{ asset('sximo5/sximo.min.js') }}"></script>
-
-<script type="text/javascript" src="{{ asset('sximo5/js/sximo.js') }}"></script>
-<script type="text/javascript" src="{{ asset('sximo5/js/plugins/node-waves/waves.js') }}"></script>
-
-<script type="text/javascript" src="{{ asset('sximo5/js/admin.js') }}"></script>
-
-<!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-<![endif]-->         
-
-<style>
-    .amenityFilter + * .select2-selection__rendered{
-      border: 1px solid #dddddd !important;
-    }
-    #m_header{
-    backface-visibility: hidden;
-    z-index: 99;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-
-    }
-  
-    section.content {
-    margin: 0;
-  }
-</style>
-</head>
-
-<body class="m-page--wide m-header--fixed m-header--fixed-mobile m-footer--push m-aside--offcanvas-default index-page sidebar-collapse">
-<div id="wrapper">
-
-     <!--  <aside id="leftsidebar" class="sidebar">
-         @include('layouts.sidebar')             
-      </aside>
-
-      <aside id="rightsidebar" class="right-sidebar hide">
-         @include('layouts.rightbar')            
-        </aside> -->
-
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="_token" content="{{ csrf_token() }}">
+        <title> {{ config('sximo.cnf_appname')}} </title>
+        <link rel="shortcut icon" href="{{ asset('favicon.ico')}}" type="image/x-icon">
+        <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+        <link href="{{ asset('sximo5/sximo.min.css')}}" rel="stylesheet">
+        <link href="{{ asset('sximo5/js/plugins/iCheck/skins/square/green.css')}}" rel="stylesheet">
+        <link href="{{ asset('sximo5/js/plugins/fancybox/jquery.fancybox.css') }}" rel="stylesheet">
+        <link href="{{ asset('sximo5/js/plugins/toast/css/jquery.toast.css')}}" rel="stylesheet">
+        <!-- Icon CSS -->   
+        <link href="{{ asset('sximo5/fonts/icomoon.css')}}" rel="stylesheet">
+        <link href="{{ asset('sximo5/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css')}}" rel="stylesheet">
+        <link href="{{ asset('sximo5/fonts/awesome/css/font-awesome.min.css')}}" rel="stylesheet">
+        <!-- Sximo 5 Main CSS -->
+        <link href="{{ asset('sximo5/css/style.css')}}" rel="stylesheet">
+        <link href="{{ asset('sximo5/css/all-themes.css')}}" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+        <script type="text/javascript" src="{{ asset('sximo5/sximo.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('sximo5/js/sximo.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('sximo5/js/plugins/node-waves/waves.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('sximo5/js/admin.js') }}"></script>
+        <!--begin::Web font -->
+        <!--  <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
+            <script>
+                WebFont.load({
+                      google: {"families":["Poppins:300,400,500,600,700","Roboto:300,400,500,600,700"]},
+                      active: function() {
+                          sessionStorage.fonts = true;
+                      }
+                    });
+                  
+            </script> -->
+        <!--end::Web font -->
+        <!--begin:: Global Mandatory Vendors -->
+        <link href="{{ asset('frontend/sportstravel/vendors/perfect-scrollbar/css/perfect-scrollbar.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('frontend/sportstravel/vendors/tether/dist/css/tether.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('frontend/sportstravel/vendors/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('frontend/sportstravel/vendors/bootstrap-datetime-picker/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('frontend/sportstravel/vendors/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('frontend/sportstravel/vendors/bootstrap-daterangepicker/daterangepicker.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('frontend/sportstravel/vendors/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('frontend/sportstravel/vendors/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('frontend/sportstravel/vendors/bootstrap-select/dist/css/bootstrap-select.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('frontend/sportstravel/vendors/select2/dist/css/select2.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('frontend/sportstravel/vendors/nouislider/distribute/nouislider.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('frontend/sportstravel/vendors/owl.carousel/dist/assets/owl.carousel.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('frontend/sportstravel/vendors/owl.carousel/dist/assets/owl.theme.default.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('frontend/sportstravel/vendors/ion-rangeslider/css/ion.rangeSlider.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('frontend/sportstravel/vendors/ion-rangeslider/css/ion.rangeSlider.skinFlat.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('frontend/sportstravel/vendors/dropzone/dist/dropzone.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('frontend/sportstravel/vendors/summernote/dist/summernote.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('frontend/sportstravel/vendors/bootstrap-markdown/css/bootstrap-markdown.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('frontend/sportstravel/vendors/animate.css/animate.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('frontend/sportstravel/vendors/toastr/build/toastr.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('frontend/sportstravel/vendors/jstree/dist/themes/default/style.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('frontend/sportstravel/vendors/morris.js/morris.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('frontend/sportstravel/vendors/chartist/dist/chartist.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('frontend/sportstravel/vendors/sweetalert2/dist/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('frontend/sportstravel/vendors/socicon/css/socicon.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('frontend/sportstravel/vendors/vendors/line-awesome/css/line-awesome.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('frontend/sportstravel/vendors/vendors/flaticon/css/flaticon.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('frontend/sportstravel/vendors/vendors/metronic/css/styles.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('frontend/sportstravel/vendors/vendors/fontawesome5/css/all.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('frontend/sportstravel/assets/demo/base/style.bundle.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('frontend/sportstravel/assets/vendors/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
+        <script src="{{ asset('frontend/sportstravel/vendors/jquery/dist/jquery.js') }}" type="text/javascript"></script>
+        <style>
+            .amenityFilter + * .select2-selection__rendered{
+            border: 1px solid #dddddd !important;
+            }
+            #m_header{
+            backface-visibility: hidden;
+            z-index: 99;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            }
+            .m-page .m-page__container {
+            padding: 0 0px !important;
+            }
+            .pace-progress {
+            transform: unset !important;
+            }
+            section.content {
+            margin: 0;
+            }
+            .navbar-brand {
+            padding: 0 0px;
+            }
+            #myNavbar li {
+            padding: 0px 0px !important;
+            margin: 0 14px;
+            }
+            body.close-sidemenu section.content {
+            margin: 0;
+            }
+            .img-circle{
+            object-fit: cover;
+            }
+            .navbar-brand img {
+            display: block;
+            }
+            .m-body .m-content {
+            padding: 0;
+            }
+            .page-content-wrapper{
+            width:100%;
+            }
+            .cus-blackhead-part {
+            width:100%;
+            background-color: #000;
+            padding: 10px 0;
+            }
+            .cus-blackhead-part ul li a:active {
+            color: #fff;
+            }
+            .cus-blackhead-part .m-menu__nav li:active:after {
+            content: '';
+            background-image: url(../uploads/images/triangle.png);
+            width: 60px;
+            height: 20px;
+            display: block;
+            background-repeat: no-repeat;
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -29px;
+            }
+            .cus-blackhead-part .m-menu__nav li ul.ml-menu li:active:after, .cus-blackhead-part .m-menu__nav li ul.ml-menu li:hover:after {
+            display: none !important;  
+            }
+            .cus-blackhead-part .m-menu__nav li ul.ml-menu li:hover {
+            opacity: 1;
+            display: block;
+            visibility: visible;
+            }
+            .modal-header {
+            display: block;
+            }
+            #myNavbar a {
+            color: #88cee8;
+            font-size: 17px;
+            letter-spacing:1px;
+            text-transform: uppercase;
+            }
+            .navbar-collapse {
+            padding-right: 0;
+            padding-left: 0;
+            }
+            #myNavbar li{
+            padding: 0px 14px;
+            }
+            #myNavbar ul{
+            margin: 0px 0 30px;
+            }
+            .m-header .m-header__top {
+            background: #5dbbe0;
+            height: 90px;
+            }
+            .m-topbar .m-topbar__nav.m-nav > .m-nav__item > .m-nav__link .m-nav__link-icon .m-nav__link-icon-wrapper > i {
+            color: #5dbbe0;
+            }
+            .m-nav__link-icon-wrapper{
+            background: #000;
+            }
+            .m-grid{
+            background-color: #eee;
+            }
+            #myNavbar ul li ul {
+            background: #5dbbe0;
+            min-width: 200px;
+            padding: 10px;
+            z-index: 999;
+            }
+            #myNavbar ul li ul li a{
+            color: #fff;
+            font-size: 15px;
+            }
+            #myNavbar ul li ul li a:hover,#myNavbar ul li a:hover {
+            color: #fff !important;
+            }
+            #myNavbar ul li a:active {
+            color: #fff;
+            }
+            #myNavbar ul li:hover:after {
+            content: '';
+            background-image: url(http://13.92.240.159/demo/public/uploads/images/triangle.png);
+            width: 60px;
+            height: 20px;
+            display: block;
+            background-repeat: no-repeat;
+            position: absolute;
+            left: 0;
+            margin: 0 auto;
+            right: 0;
+            bottom: -38px;
+            }
+            .info-boxes{
+            margin: 10px 0;
+            padding: 10px 0;
+            font-size: 20px;
+            }
+            .sbox b {
+            width: auto;
+            }
+            .pagination li,.page-item.disabled .page-link,.pagination > li > a,.page-item:last-child .page-link{
+            border-radius: 50%;
+            border: 1px solid #eee;
+            }
+            .page-item.active .page-link {
+            background-color: #5dbbe0;
+            border-color: #5dbbe0;
+            border-radius: 50%;
+            }
+            .pagination{
+            float: right;
+            }
+            .pagination>li>a, .pagination>li>span{
+            padding: 6px 13px;
+            }
+            .ml-menu.dropdown-menu > li > a:hover, .dropdown-menu > .dropdown-item:hover {
+            background: transparent;
+            }
+            .m-nav-sticky{margin-top:0px !important;}
+            #custom_navigation ul li ul {
+            margin-top: 0rem;
+            }
+            .sidebar,.right-sidebar,.sidebar .menu{
+            top:0px !important;
+            height: 0 !important;
+            display: block;
+            }
+            .navbar {
+            min-height: 0 !important;
+            margin-bottom: 0 !important;
+            }
+            .nav{
+            padding-inline-start: 0;
+            }
+            .pace-progress{
+            transform: unset;
+            }
+            .cus-blackhead-part{
+            margin-top: 80px;
+            }
+        </style>
+    </head>
+    <body class="m-page--wide m-header--fixed m-header--fixed-mobile m-footer--push m-aside--offcanvas-default index-page sidebar-collapse">
+        <div id="wrapper">
         <section class="content">
-           @include('layouts.header') 
-          <div class="m-container m-container--responsive m-container--xxl">
-            <div class="ajaxLoading"></div>
-            @yield('content') 
-          </div>  
-        </section>
-
-<div class="modal fade" id="sximo-modal" tabindex="-1" role="dialog">
-<div class="modal-dialog">
-  <div class="modal-content">
-    <div class="modal-header bg-default">
-      <button type="button " class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-      <h4 class="modal-title">Modal title</h4>
-    </div>
-    <div class="modal-body" id="sximo-modal-content">
-    </div>
-  </div>
-</div>
-</div>
-     <!-- begin::Footer -->
-      <footer class="m-grid__item m-footer ">
-        <div class="m-container m-container--responsive m-container--xxl m-container--full-height m-page__container">
-          <div class="m-footer__wrapper">
-            <div class="m-stack m-stack--flex-tablet-and-mobile m-stack--ver m-stack--desktop">
-              <div class="m-stack__item m-stack__item--left m-stack__item--middle m-stack__item--last">
-                <span class="m-footer__copyright">
-                   2019 &copy; Copyright <a href="http://13.92.240.159/demo/public/" class="m-link">Sports Travel HQ</a>
-                </span>
-              </div>
-              <div class="m-stack__item m-stack__item--right m-stack__item--middle m-stack__item--first">
-       <!--          <ul class="m-footer__nav m-nav m-nav--inline m--pull-right">
-                  <li class="m-nav__item">
-                    <a href="#" class="m-nav__link">
-                      <span class="m-nav__link-text">About</span>
-                    </a>
-                  </li>
-                  <li class="m-nav__item">
-                    <a href="#" class="m-nav__link">
-                      <span class="m-nav__link-text">Privacy</span>
-                    </a>
-                  </li>
-                  <li class="m-nav__item">
-                    <a href="#" class="m-nav__link">
-                      <span class="m-nav__link-text">T&C</span>
-                    </a>
-                  </li>
-                  <li class="m-nav__item">
-                    <a href="#" class="m-nav__link">
-                      <span class="m-nav__link-text">Purchase</span>
-                    </a>
-                  </li>
-                  <li class="m-nav__item m-nav__item--last">
-                    <a href="#" class="m-nav__link" data-toggle="m-tooltip" title="Support Center" data-placement="left">
-                      <i class="m-nav__link-icon flaticon-info m--icon-font-size-lg3"></i>
-                    </a>
-                  </li>
-                </ul> -->
-              </div>
+            @include('layouts.header') 
+            <div class="m-container m-container--responsive m-container--xxl">
+                <div class="ajaxLoading"></div>
+                @yield('content') 
             </div>
-          </div>
+        </section>
+        <div class="modal fade" id="sximo-modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-default">
+                        <button type="button " class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Modal title</h4>
+                    </div>
+                    <div class="modal-body" id="sximo-modal-content">
+                    </div>
+                </div>
+            </div>
         </div>
-      </footer>
-        
-      <!-- end::Footer -->
-
-{{ SiteHelpers::showNotification() }} 
-     <script type="text/javascript">
+        <!-- begin::Footer -->
+        <footer class="m-grid__item m-footer ">
+            <div class="m-container m-container--responsive m-container--xxl m-container--full-height m-page__container">
+                <div class="m-footer__wrapper">
+                    <div class="m-stack m-stack--flex-tablet-and-mobile m-stack--ver m-stack--desktop">
+                        <div class="m-stack__item m-stack__item--left m-stack__item--middle m-stack__item--last">
+                            <span class="m-footer__copyright">
+                            2019 &copy; Copyright <a href="http://13.92.240.159/demo/public/" class="m-link">Sports Travel HQ</a>
+                            </span>
+                        </div>
+                        <div class="m-stack__item m-stack__item--right m-stack__item--middle m-stack__item--first">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- end::Footer -->
+        {{ SiteHelpers::showNotification() }} 
+        <script type="text/javascript">
             $(window).load(function() {
               $("body").removeClass("pace-progress");
-           });
-        </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-<script type="text/javascript">
-jQuery(document).ready(function ($) {
-
-   setInterval(function(){ 
-     // var noteurl = $('.notif-value').attr('code'); 
-        $.get('{{ url("home/load") }}',function(data){
-          $('.notif-alert').html(data.total);
-          var html = '';
-          $.each( data.note, function( key, val ) {
-           html += '<li><a href="'+val.url+'"><div class="icon-circle bg-light-green"><i class="'+val.icon+'"></i></div><div class="menu-info"><h4>'+val.title+'</h4><p>'+val.text+'</p> <p><i class="material-icons">access_time</i>'+val.date+'</p> </div></a></li>' ;
             });
-          $('#notification-menu').html(html); 
-        });
-
-    }, 60000); 
-})
-
-</script>
-
-
-<?php /*
-<!-- odr -->
-<link rel="stylesheet" href="{{ asset('../odr/style.css') }}" type="text/css" />
-<script type="text/javascript" src="{{ asset('../odr/odr.js.php') }}"></script>
-<!-- /odr -->
-*/ ?>
-
-
-@section('pageLevelScripts')
-@show
-</body>
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+        <script type="text/javascript">
+            jQuery(document).ready(function ($) {
+            
+               setInterval(function(){ 
+                 // var noteurl = $('.notif-value').attr('code'); 
+                    $.get('{{ url("home/load") }}',function(data){
+                      $('.notif-alert').html(data.total);
+                      var html = '';
+                      $.each( data.note, function( key, val ) {
+                       html += '<li><a href="'+val.url+'"><div class="icon-circle bg-light-green"><i class="'+val.icon+'"></i></div><div class="menu-info"><h4>'+val.title+'</h4><p>'+val.text+'</p> <p><i class="material-icons">access_time</i>'+val.date+'</p> </div></a></li>' ;
+                        });
+                      $('#notification-menu').html(html); 
+                    });
+            
+                }, 60000); 
+            })
+            
+        </script>
+        <!--begin:: Global Mandatory Vendors -->
+        <script src="{{ asset('frontend/sportstravel/vendors/popper.js/dist/umd/popper.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/bootstrap/dist/js/bootstrap.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/js-cookie/src/js.cookie.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/moment/min/moment.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/tooltip.js/dist/umd/tooltip.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/perfect-scrollbar/dist/perfect-scrollbar.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/wnumb/wNumb.js') }}" type="text/javascript"></script>
+        <!--end:: Global Mandatory Vendors -->
+        <!--begin:: Global Optional Vendors -->
+        <script src="{{ asset('frontend/sportstravel/vendors/jquery.repeater/src/lib.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/jquery.repeater/src/jquery.input.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/jquery.repeater/src/repeater.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/jquery-form/dist/jquery.form.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/block-ui/jquery.blockUI.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/js/framework/components/plugins/forms/bootstrap-datepicker.init.js') }}" type="text/javascript"></script>
+        <script type="text/javascript" src="{{ asset('sximo5/js/plugins/jquery.jCombo.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('sximo5/js/plugins/parsley.js') }}"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/bootstrap-datetime-picker/js/bootstrap-datetimepicker.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/bootstrap-timepicker/js/bootstrap-timepicker.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/js/framework/components/plugins/forms/bootstrap-timepicker.init.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/bootstrap-daterangepicker/daterangepicker.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/js/framework/components/plugins/forms/bootstrap-daterangepicker.init.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/bootstrap-maxlength/src/bootstrap-maxlength.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/bootstrap-switch/dist/js/bootstrap-switch.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/js/framework/components/plugins/forms/bootstrap-switch.init.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/vendors/bootstrap-multiselectsplitter/bootstrap-multiselectsplitter.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/bootstrap-select/dist/js/bootstrap-select.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/select2/dist/js/select2.full.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/typeahead.js/dist/typeahead.bundle.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/handlebars/dist/handlebars.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/inputmask/dist/jquery.inputmask.bundle.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/inputmask/dist/inputmask/inputmask.date.extensions.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/inputmask/dist/inputmask/inputmask.numeric.extensions.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/inputmask/dist/inputmask/inputmask.phone.extensions.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/nouislider/distribute/nouislider.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/owl.carousel/dist/owl.carousel.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/autosize/dist/autosize.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/clipboard/dist/clipboard.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/ion-rangeslider/js/ion.rangeSlider.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/dropzone/dist/dropzone.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/summernote/dist/summernote.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/markdown/lib/markdown.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/bootstrap-markdown/js/bootstrap-markdown.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/js/framework/components/plugins/forms/bootstrap-markdown.init.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/jquery-validation/dist/jquery.validate.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/jquery-validation/dist/additional-methods.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/js/framework/components/plugins/forms/jquery-validation.init.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/bootstrap-notify/bootstrap-notify.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/js/framework/components/plugins/base/bootstrap-notify.init.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/toastr/build/toastr.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/jstree/dist/jstree.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/raphael/raphael.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/morris.js/morris.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/chartist/dist/chartist.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/chart.js/dist/Chart.bundle.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/js/framework/components/plugins/charts/chart.init.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/vendors/bootstrap-session-timeout/dist/bootstrap-session-timeout.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/vendors/jquery-idletimer/idle-timer.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/waypoints/lib/jquery.waypoints.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/counterup/jquery.counterup.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/es6-promise-polyfill/promise.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/sweetalert2/dist/sweetalert2.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('frontend/sportstravel/vendors/js/framework/components/plugins/base/sweetalert2.init.js') }}" type="text/javascript"></script>
+        <!--end:: Global Optional Vendors -->
+        <!--begin::Global Theme Bundle -->
+        <script src="{{ asset('frontend/sportstravel/assets/demo/base/scripts.bundle.js') }}" type="text/javascript"></script>
+        <!--end::Global Theme Bundle -->
+        <!--begin::Page Vendors -->
+        <script src="{{ asset('frontend/sportstravel/assets/vendors/custom/fullcalendar/fullcalendar.bundle.js') }}" type="text/javascript"></script>
+        <!--end::Page Vendors -->
+        <!--begin::Page Scripts -->
+        <script src="{{ asset('frontend/sportstravel/assets/app/js/dashboard.js') }}" type="text/javascript"></script>
+        <script data-pace-options='{ "elements": { "selectors": [".selector"] }, "startOnPageLoad": false }' src="js/pace/pace.min.js"></script>
+        @section('pageLevelScripts')
+        @show
+    </body>
 </html>

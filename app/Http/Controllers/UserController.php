@@ -45,6 +45,21 @@ class UserController extends Controller
             return view('user.register', $this->data);
         endif;
     }
+    public function registerHotel(){
+        if (config('sximo.cnf_regist') == 'false') :
+            if (\Auth::check()):
+                return redirect('')->with(['message' => 'Youre already login', 'status' => 'error']);
+            else:
+                return redirect('user/login');
+            endif;
+        else:
+            $this->data['socialize'] = config('services');
+            $this->data['hotel_type'] = Hotel::groupBy('type')->get();
+            return view('user.register_hotel', $this->data);
+        endif;
+      
+    }
+
     public function getRegisterTC() {
         $this->data['tc_email'] = Input::get('tc_email');
         $this->data['group_id'] = Input::get('group_id');

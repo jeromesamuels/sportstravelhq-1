@@ -282,7 +282,27 @@ class UsertripsController extends Controller
         $validator = Validator::make($request->all(), $rules);
         if ($validator->passes()) {
             $data = $this->validatePost($request);
-            $this->model->insertRow($data, $request->input('id'));
+             $usertrip  = new UserTrip();
+             $usertrip->entry_by= session('uid');
+             $usertrip->trip_name  = $request->input('trip_name');
+             $usertrip->from_address_1  = $request->input('from_address_1');
+             $usertrip->from_city  = $request->input('from_city');
+             $usertrip->from_state_id  = $request->input('from_state_id');
+             $usertrip->from_zip  = $request->input('from_zip');
+             $usertrip->to_address_1  = $request->input('to_address_1');
+             $usertrip->to_city  = $request->input('to_city');
+             $usertrip->to_state_id  = $request->input('to_state_id');
+             $usertrip->to_zip  = $request->input('to_zip');
+             $usertrip->check_in  = $request->input('check_in');
+             $usertrip->check_out  = $request->input('check_out');
+             $usertrip->budget_from  = $request->input('budget_from');
+             $usertrip->budget_to  = $request->input('budget_to');
+             $usertrip->double_queen_qty  = $request->input('double_queen_qty');
+             $usertrip->double_king_qty  = $request->input('double_king_qty');
+             $usertrip->comment  = $request->input('comment');
+             $usertrip->service_type  = $request->input('service_type');
+             $usertrip->save();
+            // $this->model->insertRow($data, $request->input('id'));
 
             $trip_id = DB::getPdo()->lastInsertId();
             $r       = \Helper::addTripStatusLog(1, $trip_id);

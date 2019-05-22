@@ -339,7 +339,6 @@
         $rfpUserIds = [];
       
         foreach ($rfps as $rfp){
-                
         ?>
         <tr style="border-bottom-style: dashed;border-color: #eee;">
             <td> {{ date('d-M-Y',strtotime($rfp->updated_at)) }}</td>

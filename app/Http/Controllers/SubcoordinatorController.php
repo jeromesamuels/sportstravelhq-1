@@ -139,6 +139,7 @@ class SubcoordinatorController extends Controller {
 	
 	}	
 	 function postSave($request, $id = 0) {
+
             $rules = $this->validateForm();
             if ($request->input('id') == '') {
                 $rules['password'] = 'required|between:6,12|confirmed';
@@ -181,6 +182,13 @@ class SubcoordinatorController extends Controller {
                     }
                     $this->model->insertRow($updates, $id);
                 }
+                //manager_access
+                $manager_status=$request->input('manager_access');
+                if($manager_status==''){
+                	$manager_status=0;
+                }
+                Subcoordinator::where('id', $id)->update(['manager_access' => $manager_status]);
+               
                 if (!is_null($request->input('apply'))) {
                     $return = 'subcoordinator/' . $id . '?return=' . self::returnUrl();
                 } else {

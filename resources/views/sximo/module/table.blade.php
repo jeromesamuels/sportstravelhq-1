@@ -23,7 +23,7 @@
 
  {!! Form::open(array('url'=>'sximo/module/savetable/'.$module_name, 'class'=>'form-horizontal','id'=>'fTable')) !!}
 
-		@include('sximo.module.tab',array('active'=>'table','type'=>$type))
+@include('sximo.module.tab',array('active'=>'table','type'=>$type))
 		
 	<div class="infobox infobox-success fade in">
 	  <button type="button" class="close" data-dismiss="alert"> x </button>  
@@ -80,7 +80,7 @@
 					id="label" value="<?php echo $rows['label'];?>" />
 					</div>
 
-					@if($config->lang =='true')
+				@if($config->lang =='true')
 				  <?php $lang = SiteHelpers::langOption();
 				  if($sximoconfig['cnf_multilang'] ==1) {
 					foreach($lang as $l) { if($l['folder'] !='en') {
