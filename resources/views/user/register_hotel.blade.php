@@ -37,17 +37,38 @@
                     @if(Session::has('message'))
                     {!! Session::get('message') !!}
                     @endif
-                    <h5>Enter your name and contact information to register</h5>
+                    <h5>Manager Sign Up</h5>
                     <ul class="parsley-error-list">
                         @foreach($errors->all() as $error)
                         <li>{{ $error }}</li>
                         @endforeach
                     </ul>
                     <div class="form-group has-feedback">
-                        <input type="hidden" name="user_type" id="user_type" value="2"> 
+                        <input type="hidden" name="user_type" id="user_type" value="1"> 
                     </div>
                     <div class="form-group has-feedback">
-                        {!! Form::text('o_name', null, array('class'=>'form-control', 'placeholder'=> __('Organization name') )) !!}
+                        <select class="selectpicker form-control" name="hotel_type" id="hotel_type" >
+                            <option value="" >Please select Hotel type</option>
+                              <?php 
+                                foreach ($hotel_type as $value_type) {
+                                 $hotel_type_new=ucfirst($value_type->type);
+                                ?>
+                            <option value="{{ $value_type->type }}" >{{ $hotel_type_new }} </option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="form-group has-feedback">
+                        {!! Form::text('hotel_code', null, array('class'=>'form-control' ,'placeholder'=> __('Hotel Code') )) !!}
+                    </div>
+                    <div class="form-group has-feedback" style="display:none">
+                        {!! Form::text('hotel_address', null, array('class'=>'form-control' ,'placeholder'=> __('Hotel Address') )) !!}
+                    </div>
+                    <div class="form-group has-feedback">
+                        <select class="selectpicker form-control" name="service_type" id="service_type" >
+                            <option value="">Please select the service provide </option>
+                            <option value="1" title="Prepared Meals (Full Service)">Full service </option>
+                            <option value="2" title="Limited service">Limited service</option>
+                        </select>
                     </div>
                     <div class="form-group has-feedback">
                         {!! Form::text('username', null, array('class'=>'form-control','required'=>'true'  ,'placeholder'=> __('core.username') )) !!}
@@ -98,8 +119,6 @@
                     </div>
                     <p style="padding:10px 0" class="text-center">
                         Already a user? <a href="{{ URL::to('user/login')}}"> @lang('core.signin')   </a>
-                    </p>
-                    <p  class="text-center"><a href="{{ URL::to('user/register_hotel')}}" style="font-size: 18px;">Manager Sign Up? </a>
                     </p>
                     {!! Form::close() !!}
                 </div>
@@ -152,7 +171,9 @@
                     map: map,
                     anchorPoint: new google.maps.Point(0, -29)
                   });
+                
                     google.maps.event.addListener(autocomplete, 'place_changed', function() {
+                
                     infowindow.close();
                     marker.setVisible(false);
                     var place = autocomplete.getPlace();
@@ -170,6 +191,7 @@
                     }
                     marker.setPosition(place.geometry.location);
                     marker.setVisible(true);
+                
                     var address = '';
                     if (place.address_components ) {
                       address = [
@@ -181,8 +203,8 @@
                       this.addressArray = place.address_components;
                      if(this.addressArray.length === 9) {
                        
-                        document.getElementById('city').value=this.addressArray[3].short_name;
-                        document.getElementById('zip').value=this.addressArray[7].short_name;
+                       document.getElementById('city').value=this.addressArray[3].short_name;
+                       document.getElementById('zip').value=this.addressArray[7].short_name;
                        document.getElementById('state').value=this.addressArray[5].long_name;
                      } 
                     
@@ -237,11 +259,11 @@
                       autocomplete.setTypes(types);
                     });
                   }
-                
                   setupClickListener('changetype-all', []);
                   setupClickListener('changetype-address', ['address']);
                   setupClickListener('changetype-establishment', ['establishment']);
                   setupClickListener('changetype-geocode', ['geocode']);
+                
                   document.getElementById('use-strict-bounds')
                       .addEventListener('click', function() {
                         console.log('Checkbox clicked! New state=' + this.checked);
@@ -266,7 +288,9 @@
                 $(document).ready(function() {
                 
                 	$("#signup").on("click", function(e) {
+                
                 	    e.preventDefault();
+                
                 		$.confirm({
                 		    columnClass: 'col-md-10 terms-condition',
                 		    title: 'Your Agreement with Sports Travel HQ!',
@@ -288,6 +312,7 @@
                 		    }
                 		});
                 
+                
                 	});
                 
                 });
@@ -298,12 +323,26 @@
             </script>
             <script type="text/javascript">
                 $(document).ready(function() {
-                $("#email").keyup(function(e){
-                 e.preventDefault();
-                 validateEmail($('#email').val());
-                 return false;
+                      $("#email").keyup(function(e){
+                      e.preventDefault();
+                      validateEmail($('#email').val());
+                      return false;
                  });
                 });
+                function validateEmail(email) {
+                	var htype=document.getElementById("hotel_type").value;
+                    var re = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/;
+                            
+                    if (re.test(email)) {
+                        if (email.indexOf('@'+htype, email.length - '@'+htype.length) !== -1) {
+                            $("#show_error").hide();
+                            $("#email").val();
+                        } else {
+                           $("#show_error").show();
+                           $("#email").val("");
+                        }
+                    } 
+                }
             </script>
         </div>
     </div>

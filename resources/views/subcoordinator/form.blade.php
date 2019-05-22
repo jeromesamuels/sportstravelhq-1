@@ -28,6 +28,19 @@
 		</ul>	
 
 {!! Form::open(array('url'=>'subcoordinator?return='.$return, 'class'=>'form-horizontal validated','files' => true )) !!}
+        <div class="form-group">
+        	<div class="col-md-8">
+				 </div>
+				<div class="col-md-4">
+				<label for="Manager Access" class=" control-label text-left">Manager Access</label>
+				@if($row['manager_access']==1)
+				  <input type="checkbox" class="ids" name="manager_access" value="1" style="left: 111px;width: 50px;height: 22px;opacity: 1" checked />
+				@else
+				  <input type="checkbox" class="ids" name="manager_access" value="0" style="left: 111px;width: 50px;height: 22px;opacity: 1" />
+				 @endif
+				 </div> 
+				 
+		</div>
 		<div class="col-md-6">
 			  <div class="form-group hidethis " style="display:none;">
 				<label for="Id" class=" control-label col-md-4 text-left"> Id </label>
@@ -48,8 +61,6 @@
 				 <div class="col-md-2">
 				 </div>
 			  </div>
-
-
 
 			  <div class="form-group  " >
 				<label for="Username" class=" control-label col-md-4 text-left"> Username <span class="asterix"> * </span></label>
@@ -136,9 +147,9 @@
 				  {!! Form::text('hotel_id', $row['hotel_id'], array('class'=>'form-control input-sm', 'placeholder'=>'', 'required'=>'true','readonly')) !!} 
 				 </div> 
 				 <div class="col-md-2">
-				 </div>
+				 </div> 
 			  </div>
-			
+
 			</div>
 			
 

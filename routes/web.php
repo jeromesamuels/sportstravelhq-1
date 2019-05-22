@@ -18,6 +18,7 @@ Route::get('dashboard/import', 'DashboardController@getImport');
 /* Auth & Profile */
 Route::get('user/profile', 'UserController@getProfile');
 Route::get('user/login', 'UserController@getLogin');
+Route::get('user/register_hotel', 'UserController@registerHotel');
 Route::get('user/login/code', 'UserController@getLoginCodePage')->name('login_code');
 Route::get('user/register', 'UserController@getRegister');
 //Route::get('user/register_tc/{tc_email}','UserController@getRegisterTC');

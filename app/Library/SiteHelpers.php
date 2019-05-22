@@ -101,7 +101,6 @@ class SiteHelpers
 			}	
 				
 		}	
-		//echo '<pre>';print_r($data); echo '</pre>'; exit;
 		return $data;
 	}
 	

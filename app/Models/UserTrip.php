@@ -34,6 +34,7 @@ class UserTrip extends Sximo
         'added',
         'status',
         'invoice_status',
+        'service_type',
     ];
 
     // One To Many Relation With Users Table
@@ -41,6 +42,7 @@ class UserTrip extends Sximo
     {
         return $this->belongsTo(Users::class, "entry_by");
     }
+    
 
     // Many To Many Relation with Hotal Amenties
     public function amenities()

@@ -3,11 +3,13 @@
 		background: #FFF;
 
 	}
-
+    .m-page .m-page__container {
+    padding: 0 0px;
+    }
 </style>
 
 <div class="home-banner">
-	<div class="container">
+	<div class="m-container m-container--responsive m-container--xxl">
 		<div class="row">
 
 
@@ -19,9 +21,7 @@
 
 		<div class="col-md-12">
 			<div class="sbox">
-				<!--<b>Powered by: <img src="{{ asset('frontend/sportstravel/assets/images/logo_white.png') }}" /></b>-->
-				<?php //echo "hii";
-	   //die;?>	
+				
 				<?php echo $content ;?>
 			</div>
 		</div>

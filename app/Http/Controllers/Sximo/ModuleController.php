@@ -564,8 +564,7 @@ class ModuleController extends Controller {
     function getTable( $id )
     {
 
-		$row = \DB::table('tb_module')->where('module_name', $id)
-								->get();
+		$row = \DB::table('tb_module')->where('module_name', $id)->get();
 		if(count($row) <= 0){
 			 return redirect('sximo/module')->with('message','Can not find module')->with('status','error');        
 		}
@@ -574,13 +573,11 @@ class ModuleController extends Controller {
         $fp = base_path().'/resources/views/sximo/module/template/'.$this->getTemplateName($row->module_type).'/config/info.json';
         $fp = json_decode(file_get_contents($fp));
         $this->data['config'] = $fp;
-
 		$config = \SiteHelpers::CF_decode_json($row->module_config); 
 		$this->data['tables']     = $config['grid'];
-						
 		$this->data['module'] = 'module';
 		$this->data['module_name'] = $row->module_name;
-        $this->data['type']     = ($row->module_type =='ajax' ? 'addon' : $row->module_type);  
+        $this->data['type']     = ($row->module_type =='ajax' ? 'addon' : $row->module_type); 
 		return view('sximo.module.table',$this->data);
                             
     } 

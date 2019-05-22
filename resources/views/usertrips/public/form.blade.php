@@ -89,7 +89,6 @@ ini_set('max_execution_time', 3000);
     font-size: 15px;
     font-weight: 300;
     }
-  
     .pac-card {
     margin: 10px 10px 0 0px;
     border-radius: 2px 0 0 2px;
@@ -345,7 +344,6 @@ ini_set('max_execution_time', 3000);
         <label for="Double Queen Rooms" class="control-label col-md-5 text-left"> Double Queen Rooms 
         <select name='double_queen_qty' rows='5' id='double_queen_qty' class='select2' ></select>
         </label>
-
         <label for="Double King Rooms" class=" control-label col-md-5 text-left"> Double King Rooms 
         <select name='double_king_qty' rows='5' id='double_king_qty' class='select2' ></select> 
         </label>
@@ -377,6 +375,14 @@ ini_set('max_execution_time', 3000);
         });
         });
     </script>
+    <div class="form-group ">
+        <h4>Service Provide</h4>
+        <select class="form-control" name="service_type" id="service_type" style="width: 75%;" >
+            <option value="">--Please Select--</option>
+            <option value="1" title="Prepared Meals (Full Service)">Full service </option>
+            <option value="2" title="Limited service">Limited service</option>
+        </select>
+    </div>
     <div class="form-group" >
         <h4>Comments/Needs</h4>
         <label for="Comment" class="control-label col-md-8 text-left"> Anything we missed? </label>
@@ -438,7 +444,7 @@ ini_set('max_execution_time', 3000);
             
                infowindow = new google.maps.InfoWindow();
               var infowindowContent = document.getElementById('infowindow-content');
-          
+            
                 google.maps.event.addListener(autocomplete, 'place_changed', function() {
             
                 infowindow.close();
@@ -475,11 +481,11 @@ ini_set('max_execution_time', 3000);
                     else{
                         document.getElementById('from_zip').value='';   
                     }
-
+            
                    document.getElementById('from_city').value=this.addressArray[2].short_name;
                    document.getElementById('from_state_id').value=this.addressArray[4].long_name;
                  }
-
+            
                 }
                  var from_zipcode = $('#from_zip').val();
                     $.ajax({
@@ -621,7 +627,7 @@ ini_set('max_execution_time', 3000);
                       document.getElementById('to_zip').value=this.addressArray[6].short_name;  
                     }
                     else{
-                        document.getElementById('from_zip').value='';   
+                        document.getElementById('to_zip').value='';   
                     }
                      document.getElementById('to_city').value=this.addressArray[2].short_name;
                      document.getElementById('to_state_id').value=this.addressArray[4].long_name;
@@ -630,7 +636,6 @@ ini_set('max_execution_time', 3000);
                
                 infowindowContent.children['place-icon'].src = place.icon;
                 infowindowContent.children['place-name'].textContent = place.name;
-              
                 infowindowContent.children['place-address'].textContent = address;
             
                 infowindow.open(map, marker);
