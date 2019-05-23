@@ -22,6 +22,7 @@ use App\Http\Controllers\Controller;
 use Input;
 use Redirect;
 use Validator;
+use Auth;
 
 class UsertripsController extends Controller
 {
@@ -363,18 +364,18 @@ class UsertripsController extends Controller
         if ($trip_id->user_id != 0) {
             $group = User::findOrFail($trip_id->user_id);
             $hotel = Hotel::findOrFail($group->hotel_id);
-            $log_id   = Session::get('uid');
+            $coordinatorId=Rfp::with('trip')->where('id',$rfp_id)->first();
+            //$log_id   = Session::get('uid');
             $agree_id = AgreementForm::where('for_rfp', $rfp_id)->first();
             if ($agree_id === null) {
                 $agreement_sent = date("Y-m-d H:i");
                 $created_at     = date("Y-m-d H:i");
-
                 $aggreement                 = new AgreementForm();
                 $aggreement->id             = $rfp_id;
-                $aggreement->sender_id      = $log_id;
+                $aggreement->sender_id      = $coordinatorId->trip->entry_by;
                 $aggreement->reciever_id    = $trip_id->user_id;
                 $aggreement->reciever_group = $group->group_id;
-                $aggreement->coordinator_id = $log_id;
+                $aggreement->coordinator_id = $coordinatorId->trip->entry_by;
                 $aggreement->reciever_email = $group->email;
                 $aggreement->hotel_name     = $hotel->name;
                 $aggreement->hotel_details  = $hotel->address;
@@ -454,7 +455,7 @@ class UsertripsController extends Controller
     $trip=Rfp::findOrFail($rfp_id);
     $trip_entry=UserTrip::findOrFail($trip->user_trip_id);
     $trip_user=User::findOrFail($trip->user_id);
-    $user=User::findOrFail(session('uid'));
+    $user=Auth::user();
     $trip_entry_user=User::findOrFail($trip_entry->entry_by);
     if (session('level') == 4) {
            
@@ -570,7 +571,7 @@ class UsertripsController extends Controller
     {
         $q     = (new Team)->newQuery();
         $teams = $q->orderBy('id','desc')->get();
-        $user=User::findOrFail(session('uid'));
+        $user=Auth::user();
         $parent_coordinator=$user->entry_by;
         if($parent_coordinator != ''){
          $coordinator=User::findOrFail($parent_coordinator);
@@ -628,7 +629,15 @@ class UsertripsController extends Controller
         if (Session::get('level') != 4) {
             return redirect(URL("/"));
         }
-        $trips       = UserTrip::where('entry_by', session('uid'))->orderBy('added', 'desc')->get();
+        $user=Auth::user();
+        if($user->manager_access==1){
+          $parent_coordinator=$user->entry_by;
+        }
+        else{
+          $parent_coordinator='';  
+        }
+        $trips= UserTrip::with('tripuser')->where('entry_by', session('uid'))->orWhere('entry_by', $parent_coordinator)->orderBy('added', 'desc')->get();
+
         $data_client = User::where('id', session('uid'))->get();
         if(count($trips)!=''){
         $purchases   = Invoices::sum('invoices.amt_paid');
@@ -653,7 +662,7 @@ class UsertripsController extends Controller
         if (Session::get('level') != 4) {
             return redirect(URL("/"));
         }
-        $trip        = UserTrip::with('tripuser')->findOrFail($id);
+        $trip = UserTrip::with('tripuser')->findOrFail($id);
         $trip_id = Rfp::where("user_trip_id", $trip->id)->first();
         $invoices='';
         if($trip_id != null){

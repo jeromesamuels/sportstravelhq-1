@@ -34,11 +34,11 @@
 				<div class="col-md-4">
 				<label for="Manager Access" class=" control-label text-left">Manager Access</label>
 				@if($row['manager_access']==1)
-				  <input type="checkbox" class="ids" name="manager_access" value="1" style="left: 111px;width: 50px;height: 22px;opacity: 1" checked />
+				  <input type="checkbox" class="ids" name="manager_access" id="manager_access" value="" onclick="myFunction()" style="left: 111px;width: 50px;height: 22px;opacity: 1" checked />
 				@else
-				  <input type="checkbox" class="ids" name="manager_access" value="0" style="left: 111px;width: 50px;height: 22px;opacity: 1" />
-				 @endif
-				 </div> 
+				  <input type="checkbox" class="ids" name="manager_access" id="manager_access" value="" onclick="myFunction()" style="left: 111px;width: 50px;height: 22px;opacity: 1" />
+				@endif
+			   </div> 
 				 
 		</div>
 		<div class="col-md-6">
@@ -242,8 +242,16 @@
 
 
 <script type="text/javascript">
+function myFunction() {
+  var checkBox = document.getElementById("manager_access");
+  if (checkBox.checked == true){
+  	$("#manager_access").val(1);
+  } else {
+  	$("#manager_access").val(0);
+  }
+}
 
-  $(document).ready(function() { 
+ $(document).ready(function() { 
 
     $("#group_id").on("change", function() {
     	console.log($(this).val());

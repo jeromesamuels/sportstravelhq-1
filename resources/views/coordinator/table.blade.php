@@ -189,10 +189,9 @@
             </td>
             <td> {{ date('d-M-Y',strtotime($trip->added)) }} </td>
             <td>
-                <?php foreach($data_client as $client_value){
-                    ?>
-                <img src="{{ URL('/uploads/users') }}/<?php echo $client_value->avatar;?>" border="0" width="40" height="40" class="img-circle" style="margin-right:5px;"> {{ $client_value->first_name }} {{ $client_value->last_name }} 
-                <?php  } ?>
+             
+                <img src="{{ URL('/uploads/users') }}/<?php echo $trip->tripuser->avatar;?>" border="0" width="40" height="40" class="img-circle" style="margin-right:5px;"> {{ $trip->tripuser->first_name }} {{ $trip->tripuser->last_name }} 
+               
             </td>
             <td>
                 <!-- {{ count($trip->rfps) }} response--> 
@@ -978,7 +977,16 @@
                     <a href="#" style="color: #5dbbe0;font-weight: bold;" class="dropdown-toggle" data-toggle="dropdown">View Trip <i class="fa fa-chevron-down" aria-hidden="true" style="color: #000;padding-top: 5px;padding-left: 5px;"></i></a>
                     <ul class="dropdown-menu">
                         <li ><a href="{{ route('coordinator.trips.show',$trip->id) }}"  class="btn btn-light"  title="View Trips" >View Details</a></li>
+                       
                         <li>
+                            @if($trip->status==0 || $trip->status==6 && count($trip->rfps)=='')
+                            <a  href="{{ url('usertrips/'.$trip->id.'/edit?return=') }}" class="tips" title="{{ __('core.btn_edit') }}">Edit Trip Details </a>
+                              @else
+                            <button  class="btn btn-light" id="custId" data-toggle="modal" data-id="{{ $trip->id }}"disabled=""> Edit Trip Details </button>
+                            @endif
+                        </li>
+                        <li>
+                      
                             <?php  foreach ($trip->rfps as $rfp){ 
                                 $invoice_id=$trip->id;
                                 $invoice_user_id=$rfp->user_id; 

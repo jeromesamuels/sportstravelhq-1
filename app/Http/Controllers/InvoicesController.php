@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use Mail;
 use Vsmoraes\Pdf\Pdf;
-//use PDF;
+use Auth;
 
 class InvoicesController extends Controller {
     private $pdf;
@@ -35,7 +35,7 @@ class InvoicesController extends Controller {
             return redirect('dashboard')->with('message', __('core.note_restric'))->with('status', 'error');
         }
         $currentMonth = date('m');
-        $this->data['users'] = User::findOrFail(session('uid'));
+        $this->data['users'] = Auth::user();
         $this->data['hotel'] = User::findOrFail($this->data['users']->hotel_id);
         $this->data['hotel_type'] = Hotel::findOrFail($this->data['users']->hotel_id);
         $this->data['trips'] = UserTrip::whereRaw('MONTH(added) = ?', [$currentMonth])->get();

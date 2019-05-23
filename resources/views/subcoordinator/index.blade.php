@@ -3,7 +3,7 @@
 @section('content')
 {{--*/ usort($tableGrid, "SiteHelpers::_sort") /*--}}
 
-@if($coordinator=='')
+@if($coordinator=='' || $user->manager_access==1)
 <section class="page-header row">
 	<h2> {{ $pageTitle }} <small> {{ $pageNote }} </small></h2>
 	<ol class="breadcrumb">
