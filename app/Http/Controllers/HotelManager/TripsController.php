@@ -12,6 +12,7 @@ use App\User;
 use App\Models\Hotel;
 use App\Models\Rfp;
 use Mail;
+use Auth;
 
 class TripsController extends Controller {
     public function __construct() {
@@ -23,7 +24,7 @@ class TripsController extends Controller {
     public function index() {
         $date_month = date('m');
         $trip_month = UserTrip::whereRaw('MONTH(added) = ?', $date_month)->get();
-        $user = User::findOrFail(session('uid'));
+        $user = Auth::user();
         $Hotel = Hotel::findOrFail($user->hotel_id);
 
         if (session('level') == 1) {
@@ -69,7 +70,7 @@ class TripsController extends Controller {
           $invoice='';  
         }
         $data_hotel = Hotel::groupBy('type')->get();
-        $user = User::findOrFail(session('uid'));
+        $user = Auth::user();
         $hotel = Hotel::findOrFail($user->hotel_id);
       
         $trip_booking = UserTrip::all();
@@ -112,6 +113,7 @@ class TripsController extends Controller {
 
     public function uploadRoomingList(Request $request) {
         $this->validate($request, ['trip_id' => 'numeric|min:0']);
+        $tripuserId= Rfp::with('trip')->where('id', $request->trip_id)->first();
         $file = $request->file('rooming_file')->getClientOriginalName();
         $destinationPath = './uploads/users/';
         $extension = $request->file('rooming_file')->getClientOriginalExtension();
@@ -120,7 +122,7 @@ class TripsController extends Controller {
             $hotel_id_new = Rfp::findOrFail($request->trip_id);
             $user_email_new = User::findOrFail($hotel_id_new->user_id);
             $roomListing = new Roomlisting();
-            $roomListing->cordinator_id = Session::get('uid');
+            $roomListing->cordinator_id = $tripuserId->trip->entry_by;
             $roomListing->hmanager_id = $hotel_id_new->user_id;
             $roomListing->file = $file;
             $user_data = User::findOrFail($hotel_id_new->user_id);

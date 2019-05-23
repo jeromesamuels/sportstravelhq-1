@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
+use Auth;
 class HotelManagerController extends Controller {
 
     public function __construct() {
@@ -79,11 +80,20 @@ class HotelManagerController extends Controller {
         $this->checkAgreementFormAvailability();
         $agreement = AgreementForm::orderBy('created_at', 'DESC')->get();
         
-        $user = User::findOrFail(session('uid'));
+        $user = Auth::user();
+        $parent_coordinator= $user->entry_by;
+        if($parent_coordinator ==''){
+            $user_id=session('uid');
+        }
+        else{
+            $user_id=$parent_coordinator;
+        }
+
         $hotel_data = Hotel::find($user->hotel_id);
 
         if (Session::get('level') != 1 && Session::get('level') != 6) {
-            $agreements = AgreementForm::with('agreementRfp')->where('reciever_id', '=', Session::get('uid'))->orWhere('coordinator_id', '=', Session::get('uid'))->orderBy('created_at', 'DESC')->get();
+            $agreements = AgreementForm::with('agreementRfp')->where('reciever_id', '=', session('uid'))->orWhere('coordinator_id', '=', $user_id)->orderBy('created_at', 'DESC')->get();
+           
         } elseif ($hotel_data->name != '' && Session::get('level') == 6) {
             $agreements = AgreementForm::with('agreementRfp')->orderBy('created_at', 'DESC')->where('hotel_name', $hotel_data->name)->get();
         } else {
@@ -213,7 +223,7 @@ class HotelManagerController extends Controller {
     }
 
     public function blackoutDates() {
-        $user = User::findOrFail(session('uid'));
+        $user = Auth::user();
         $hotels =Hotel::findOrFail($user->hotel_id);
 
         return view('hotelmanager.blackoutDates', compact('hotels'));
@@ -231,7 +241,7 @@ class HotelManagerController extends Controller {
     }
 
     public function blackoutReport() {
-        $user = User::findOrFail(session('uid'));
+        $user = Auth::user();
         if (session('level') == 1) {
             $hotel =Hotel::orderBY('updated_at', 'desc')->where('blackout_start', '!=', '')->get();
         } else {
