@@ -4,15 +4,24 @@ use App\Models\Sximo;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property int    level
+ * @property string description
+ * @property string name
+ * @property int    group_id
+ */
 class Groups extends Sximo  {
 	
 	protected $table = 'tb_groups';
 	protected $primaryKey = 'group_id';
 
-	public function __construct() {
-		parent::__construct();
-		
-	}
+    //-- This table does not have created_at and updated_at
+    public $timestamps = false;
+
+    public function __construct($attributes = array())
+    {
+        parent::__construct($attributes);
+    }
 
 	public static function querySelect(  ){
 		

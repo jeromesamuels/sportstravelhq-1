@@ -4,6 +4,7 @@ use App\Models\Core\Users;
 
 /**
  * @property int entry_by
+ * @property int id
  */
 class UserTrip extends Sximo
 {
@@ -42,7 +43,7 @@ class UserTrip extends Sximo
     {
         return $this->belongsTo(Users::class, "entry_by");
     }
-    
+
 
     // Many To Many Relation with Hotal Amenties
     public function amenities()

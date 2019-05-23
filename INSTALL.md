@@ -94,6 +94,8 @@ If you want to seed some details:
 
     php artisan db:seed --class=TripSeeder
 
+    php artisan db:seed --class=UserSeeder
+
 ## NPM
 
 Node / NPM is needed once installed go to this directory and run:

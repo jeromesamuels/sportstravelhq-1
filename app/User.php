@@ -2,7 +2,9 @@
 
 namespace App;
 
+use App\Models\Core\Groups;
 use App\Models\HotelAgreementDefault;
+use App\Models\Organization;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -42,6 +44,36 @@ class User extends Authenticatable
     public function hotelAgreementDefault()
     {
         return $this->hasOne(HotelAgreementDefault::class);
+    }
+
+    /**
+     * Support for multiple organizations per user if needed
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function organizations()
+    {
+        return $this->belongsToMany(Organization::class);
+    }
+
+    /**
+     * Support for a single organization for a user if needed
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class);
+    }
+
+    /**
+     * Get the group of the user
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function group()
+    {
+        return $this->belongsTo(Groups::class, 'group_id', 'group_id');
     }
 
 }
