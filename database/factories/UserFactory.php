@@ -1,8 +1,9 @@
 <?php
 
-use App\Models\Core\Users;
+use App\User;
+use Faker\Generator;
 
-$factory->define(Users::class, function (Faker\Generator $faker, $attrs) {
+$factory->define(User::class, function (Faker\Generator $faker, $attrs) {
     $password = $attrs['password'] ?? 'secret';
 
     $account_type = $attrs['account_type'] ?? '';

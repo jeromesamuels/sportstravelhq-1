@@ -100,3 +100,26 @@ While the system is setup to allow multi organizations from a user. It would be 
 
 ## Permissions
 
+### Check if user is in Organization
+
+The primary way to check if a user has permissions to edit anything within an organization is to check their user id.
+
+    $organization->hasUserId($user->id);
+
+### Check if the user is a manager or subcoordinator
+
+A client that just signs up is a manager and the account holder of the organization.
+
+    if ($user->is_manager) {
+        //-- do your manager stuff here....
+    } else if ($user->is_subcoordinator) {
+        //-- do you sub-coordinator stuff here
+    }
+    
+### Check if the user is the organization's account holder
+
+There is only ever one account holder per organization. Here is how to check if the user is the account holder.
+
+    if ($organization->isAccountHolder($user->id)) {
+        //-- do account holder stuff here
+    }

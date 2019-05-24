@@ -18,6 +18,14 @@ class Groups extends Sximo  {
     //-- This table does not have created_at and updated_at
     public $timestamps = false;
 
+    const SUPER_ADMIN = 1;
+    const ADMINISTRATOR = 2;
+    const USERS = 3;
+    const TRAVEL_COORDINATOR = 4;
+    const HOTEL_MANAGER = 5;
+    const CORPORATE = 6;
+    const SUB_COORDINATOR = 7;
+
     public function __construct($attributes = array())
     {
         parent::__construct($attributes);

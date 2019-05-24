@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Core\Users;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -41,17 +42,17 @@ class Rfp extends Model
 
     public function user()
     {
-        return $this->belongsTo(Users::class);
+        return $this->belongsTo(User::class);
     }
 
     public function hotel()
     {
-        return $this->hasOneThrough(Hotel::class, Users::class);
+        return $this->hasOneThrough(Hotel::class, User::class);
     }
 
     public function userInfo()
     {
-        return $this->belongsTo('App\Models\Core\Users', 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     // One To Many Relation with Trips
@@ -62,11 +63,11 @@ class Rfp extends Model
 
     public function usertripInfo()
     {
-        return $this->belongsTo('App\Models\UserTrip', 'user_trip_id');
+        return $this->belongsTo(UserTrip::class, 'user_trip_id');
     }
 
     public function invoices()
     {
-        return $this->hasMany(invoices::class);
+        return $this->hasMany(Invoices::class);
     }
 }
