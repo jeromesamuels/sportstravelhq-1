@@ -14,7 +14,7 @@ use App\User;
 use App\Models\Hotel;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Validator, Input, Redirect ; 
-
+use Auth;
 
 class SubcoordinatorController extends Controller {
 
@@ -49,8 +49,8 @@ class SubcoordinatorController extends Controller {
 			return redirect('dashboard')->with('message', __('core.note_restric'))->with('status','error');				
 		// Render into template
 	
-        $user=User::findOrFail(session('uid'));
-        $parent_coordinator=$user->entry_by;
+        $this->data['user']=Auth::user();
+        $parent_coordinator=$this->data['user']->entry_by;
         if($parent_coordinator != ''){
          $this->data['coordinator']=User::findOrFail($parent_coordinator);
         }
@@ -184,9 +184,7 @@ class SubcoordinatorController extends Controller {
                 }
                 //manager_access
                 $manager_status=$request->input('manager_access');
-                if($manager_status==''){
-                	$manager_status=0;
-                }
+
                 Subcoordinator::where('id', $id)->update(['manager_access' => $manager_status]);
                
                 if (!is_null($request->input('apply'))) {

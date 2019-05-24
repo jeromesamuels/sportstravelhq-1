@@ -41,9 +41,9 @@
                             </div>
                         </div>
                         <div class="form-group  " >
-                            <label for="Address 1" class=" control-label col-md-4 text-left"> Address 1 <span class="asterix"> * </span></label>
+                            <label for="Address 1" class=" control-label col-md-4 text-left"> From Address <span class="asterix"> * </span></label>
                             <div class="col-md-6">
-                                <input  type='text' name='from_address_1' id='from_address_1' value='{{ $row['from_address_1'] }}' 
+                            <input  type='text' name='from_address_1' id='from_address_1' value='{{ $row['from_address_1'] }}' 
                                 required     class='form-control input-sm ' /> 
                             </div>
                             <div class="col-md-2">
@@ -59,24 +59,24 @@
                             </div>
                         </div>
                         <div class="form-group  " >
-                            <label for="State" class=" control-label col-md-4 text-left"> State <span class="asterix"> * </span></label>
+                            <label for="State" class=" control-label col-md-4 text-left"> State</label>
                             <div class="col-md-6">
-                                <select name='from_state_id' rows='5' id='from_state_id' class='select2 ' required  ></select> 
+                              <input  type='text' name='from_state_id' id='from_state_id' value='{{ $row['from_state_id'] }}'    class='form-control input-sm ' /> 
                             </div>
                             <div class="col-md-2">
                             </div>
                         </div>
                         <div class="form-group  " >
-                            <label for="Zip" class=" control-label col-md-4 text-left"> Zip <span class="asterix"> * </span></label>
+                            <label for="Zip" class=" control-label col-md-4 text-left"> Zip </label>
                             <div class="col-md-6">
                                 <input  type='text' name='from_zip' id='from_zip' value='{{ $row['from_zip'] }}' 
-                                required     class='form-control input-sm ' /> 
+                                 class='form-control input-sm ' /> 
                             </div>
                             <div class="col-md-2">
                             </div>
                         </div>
                         <div class="form-group  " >
-                            <label for="Address 1" class=" control-label col-md-4 text-left"> Address 1 <span class="asterix"> * </span></label>
+                            <label for="Address 1" class=" control-label col-md-4 text-left"> To Address <span class="asterix"> * </span></label>
                             <div class="col-md-6">
                                 <input  type='text' name='to_address_1' id='to_address_1' value='{{ $row['to_address_1'] }}' 
                                 class='form-control input-sm ' /> 
@@ -94,15 +94,15 @@
                             </div>
                         </div>
                         <div class="form-group  " >
-                            <label for="State" class=" control-label col-md-4 text-left"> State <span class="asterix"> * </span></label>
+                            <label for="State" class=" control-label col-md-4 text-left"> State </label>
                             <div class="col-md-6">
-                                <select name='to_state_id' rows='5' id='to_state_id' class='select2 '   ></select> 
+                                 <input  type='text' name='to_state_id' id='to_state_id' value='{{ $row['to_state_id'] }}' class='form-control input-sm ' /> 
                             </div>
                             <div class="col-md-2">
                             </div>
                         </div>
                         <div class="form-group  " >
-                            <label for="Zip" class=" control-label col-md-4 text-left"> Zip <span class="asterix"> * </span></label>
+                            <label for="Zip" class=" control-label col-md-4 text-left"> Zip </label>
                             <div class="col-md-6">
                                 <input  type='text' name='to_zip' id='to_zip' value='{{ $row['to_zip'] }}' 
                                 class='form-control input-sm ' /> 

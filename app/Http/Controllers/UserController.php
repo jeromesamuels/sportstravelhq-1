@@ -20,6 +20,7 @@ use App\Models\Hotel;
 use Carbon\Carbon;
 use Twilio\Rest\Client;
 use App\Http\Controllers\Controller;
+use Auth;
 
 class UserController extends Controller
 {
@@ -372,7 +373,7 @@ class UserController extends Controller
                 \Auth::attempt(array('username' => $request->input('email'), 'password' => $request->input('password')), $remember)
             ) {
                 if (\Auth::check()) {
-                    $row = User::find(\Auth::user()->id);
+                    $row =Auth::user();
                     if ($row->active == 'Inactive') {
                         // inactive
                         if ($request->ajax() == true) {
@@ -513,7 +514,7 @@ class UserController extends Controller
         if (!\Auth::check()) {
             return redirect('user/login');
         }
-        $info       = User::find(\Auth::user()->id);
+        $info       = Auth::user();
         $this->data = array(
             'pageTitle' => 'My Profile',
             'pageNote'  => 'View Detail My Info',
@@ -713,7 +714,7 @@ class UserController extends Controller
         } else {
             \Auth::loginUsingId($id);
             if (\Auth::check()) {
-                $row = User::find(\Auth::user()->id);
+                $row = Auth::user();
                 if ($row->active == '0') {
 // inactive 
                     \Auth::logout();
