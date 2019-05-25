@@ -2,7 +2,6 @@
 namespace App\Http\Controllers\HotelManager;
 use App\Http\Controllers\Controller;
 use App\Models\AgreementForm;
-use App\Models\Core\Users;
 use App\Models\Rfp;
 use App\User;
 use App\Models\Hotel;
@@ -11,8 +10,8 @@ use App\Models\Invoices;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\DB;
 use Auth;
+
 class HotelManagerController extends Controller {
 
     public function __construct() {

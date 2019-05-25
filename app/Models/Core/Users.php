@@ -2,8 +2,10 @@
 
 namespace App\Models\Core;
 
+use App\Models\Hotel;
 use App\Models\Organization;
 use App\Models\OrganizationUser;
+use App\Models\Rfp;
 use App\Models\Sximo;
 
 /**
@@ -22,7 +24,7 @@ class Users extends Sximo
 
     public function rfps()
     {
-        return $this->hasMany('App\Models\Rfp', 'user_id');
+        return $this->hasMany(Rfp::class, 'user_id');
     }
 
     public static function querySelect()
@@ -107,7 +109,7 @@ class Users extends Sximo
 
     public function hotel()
     {
-        return $this->belongsTo('App\Models\Hotel', 'hotel_id');
+        return $this->belongsTo(Hotel::class, 'hotel_id');
     }
 
     /**

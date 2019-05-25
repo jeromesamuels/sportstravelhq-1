@@ -38,6 +38,8 @@ class ClientRegisterTest extends TestCase
 
         $response->assertSessionDoesntHaveErrors();
 
+        dd(session());
+
         $response->assertStatus(302);
     }
 }

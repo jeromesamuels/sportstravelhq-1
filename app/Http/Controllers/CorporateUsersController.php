@@ -1,13 +1,8 @@
 <?php namespace App\Http\Controllers;
-use App\Http\Controllers\Controller;
-use App\Models\Core\Users;
 use App\Models\Core\Groups;
 use App\Models\Core\CorporateUsers;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Validator, Input, Redirect;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
 use App\Models\Rfp;
 use App\Models\Invoices;
 use App\Models\Hotel;

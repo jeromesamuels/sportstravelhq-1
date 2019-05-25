@@ -2,18 +2,19 @@
 
 namespace App\Models;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class AgreementForm extends Model
 {
     public function cordinator(){
-    	return $this->belongsTo(Core\Users::class,'coordinator_id');
+    	return $this->belongsTo(User::class,'coordinator_id');
     }
 
     public function hotelmanager(){
-    	return $this->belongsTo(Core\Users::class,'reciever_id');
+    	return $this->belongsTo(User::class,'reciever_id');
     }
     public function agreementRfp(){
-    	return $this->belongsTo('App\Models\Rfp','for_rfp');
+    	return $this->belongsTo(Rfp::class,'for_rfp');
     }
 }

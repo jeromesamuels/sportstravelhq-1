@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\Core\Groups;
-use App\Models\Core\Users;
 use App\User;
 use Tests\TestCase;
 

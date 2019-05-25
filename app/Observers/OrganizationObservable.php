@@ -2,8 +2,8 @@
 
 namespace App\Observers;
 
-use App\Models\Core\Users;
 use App\Models\Organization;
+use App\User;
 
 class OrganizationObservable
 {
@@ -60,7 +60,7 @@ class OrganizationObservable
     {
         // Update all coordinators cached org name
         $organization->users()->each(
-            function (Users $user) use ($organization) {
+            function (User $user) use ($organization) {
                 $user->o_name = $organization->name;
                 $user->save();
             }

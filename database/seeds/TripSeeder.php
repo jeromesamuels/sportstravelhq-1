@@ -1,11 +1,11 @@
 <?php
 
 use App\Models\Core\Groups;
-use App\Models\Core\Users;
 use App\Models\Rfp;
 use App\Models\TripAmenity;
 use App\Models\TripstatusSettings;
 use App\Models\UserTrip;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
@@ -20,7 +20,7 @@ class TripSeeder extends Seeder
     {
         $faker = \Faker\Factory::create();
 
-        $coordinator_id = 3;
+        $coordinator_id = 740;
 
         //-- First Create
         $trips = factory(UserTrip::class, 25)
@@ -39,7 +39,7 @@ class TripSeeder extends Seeder
                     //-- Add RFPs ... maybe
                     if ($faker->boolean) {
                         $manager_group = Groups::where('name', 'Hotel Manager')->first();
-                        $manager = Users::where('group_id', $manager_group->group_id)->inRandomOrder()->first();
+                        $manager = User::where('group_id', $manager_group->group_id)->inRandomOrder()->first();
                         $rfp     = factory(Rfp::class, $faker->numberBetween(1, 3))->create(
                             [
                                 'user_id'      => $manager->id,

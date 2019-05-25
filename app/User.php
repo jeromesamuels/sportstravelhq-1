@@ -5,6 +5,7 @@ namespace App;
 use App\Models\Core\Groups;
 use App\Models\HotelAgreementDefault;
 use App\Models\Organization;
+use App\Models\UserTrip;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -123,6 +124,17 @@ class User extends Authenticatable
     public function getFullNameAttribute($value)
     {
         return trim($this->fisrtname . ' ' . $this->lastname);
+    }
+
+
+    /**
+     * Fetches the user's hotel agreement defaults
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function trips()
+    {
+        return $this->hasMany(UserTrip::class, 'entry_by', 'id');
     }
 
 }

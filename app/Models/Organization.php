@@ -7,8 +7,8 @@ use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property \App\Models\Core\Users coordinators
- * @property \App\Models\Core\Users subcoordinators
+ * @property \App\User coordinators
+ * @property \App\User subcoordinators
  */
 class Organization extends Model
 {

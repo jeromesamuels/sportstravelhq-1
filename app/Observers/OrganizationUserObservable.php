@@ -2,7 +2,6 @@
 
 namespace App\Observers;
 
-use App\Models\Core\Users;
 use App\Models\Organization;
 use App\Models\OrganizationUser;
 

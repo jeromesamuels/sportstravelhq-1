@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Core\Users;
+use App\User;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class OrganizationUser extends Pivot
@@ -15,7 +15,7 @@ class OrganizationUser extends Pivot
      */
     public function user()
     {
-        return $this->belongsTo(Users::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**

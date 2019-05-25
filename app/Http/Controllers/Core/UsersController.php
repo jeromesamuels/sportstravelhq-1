@@ -8,10 +8,8 @@ use App\Models\Invoices;
 use App\Models\Invitation;
 use App\Models\Core\Groups;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\User;
 use App\Models\Hotel;
-use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Validator, Input, Redirect;
 
 class UsersController extends Controller {

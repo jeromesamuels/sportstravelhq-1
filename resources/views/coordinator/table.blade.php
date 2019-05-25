@@ -972,8 +972,6 @@
             </td>
             <td>
                 <div class="dropdown trips-dropdown">
-                    <?php  
-                        ?>
                     <a href="#" style="color: #5dbbe0;font-weight: bold;" class="dropdown-toggle" data-toggle="dropdown">View Trip <i class="fa fa-chevron-down" aria-hidden="true" style="color: #000;padding-top: 5px;padding-left: 5px;"></i></a>
                     <ul class="dropdown-menu">
                         <li ><a href="{{ route('coordinator.trips.show',$trip->id) }}"  class="btn btn-light"  title="View Trips" >View Details</a></li>
@@ -985,14 +983,9 @@
                             <button  class="btn btn-light" id="custId" data-toggle="modal" data-id="{{ $trip->id }}"disabled=""> Edit Trip Details </button>
                             @endif
                         </li>
-                        <li>
                       
-                            <?php  foreach ($trip->rfps as $rfp){ 
-                                $invoice_id=$trip->id;
-                                $invoice_user_id=$rfp->user_id; 
-                                $user_trip_status = App\Models\Rfp::where('user_trip_id', $trip->id)->pluck('status');
-                                
-                                ?>
+                        @foreach ($trip->rfps as $rfp)
+                        <li>
                             @if ($rfp->status != 4)
                             <a href="#confirm_decline" class="btn btn-light" id="custId" data-toggle="modal" data-id="{{ $rfp->id }}"> Declined RFP</a> 
                             @else
@@ -1000,7 +993,7 @@
                             @endif
                         </li>
                         @if ($rfp->status== 1 || $rfp->status== 3)
-                        <li > <button data-toggle="modal"  data-target="#confirm_forword"  data-id="{{ $rfp->id }}" title="{{ $rfp->id }}" class="btn btn-light confirm_forword">Accept RFP</button>    </li>
+                        <li ><button data-toggle="modal"  data-target="#confirm_forword"  data-id="{{ $rfp->id }}" title="{{ $rfp->id }}" class="btn btn-light confirm_forword">Accept RFP</button>    </li>
                         @else
                         <li > <button data-toggle="modal" data-target="#confirm_forword"  data-id="{{ $rfp->id }}" title="{{ $rfp->id }}" class="btn btn-light " disabled="">Accept RFP</button>   </li>
                         @endif
@@ -1022,7 +1015,7 @@
                         @else
                         <li > <button  title="{{ $rfp->id }}" class="btn btn-light " disabled="">Download Receipt</button></li>
                         @endif
-                        <?php } ?>
+                        @endforeach
                     </ul>
                 </div>
             </td>

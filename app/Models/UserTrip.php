@@ -1,6 +1,6 @@
 <?php namespace App\Models;
 
-use App\Models\Core\Users;
+use App\User;
 
 /**
  * @property int entry_by
@@ -41,7 +41,7 @@ class UserTrip extends Sximo
     // One To Many Relation With Users Table
     public function tripuser()
     {
-        return $this->belongsTo(Users::class, "entry_by");
+        return $this->belongsTo(User::class, "entry_by");
     }
 
 
