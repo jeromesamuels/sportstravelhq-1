@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Library\Agreement\AgreementBuilder;
+use App\Library\Agreement\HotelAgreement;
 use App\Models\AgreementForm;
 use App\Models\Hotel;
 use App\Models\HotelAmenities;
@@ -339,7 +341,8 @@ class UsertripsController extends Controller
     public function compareRFP($rfp_id)
     {
         $value = explode(',', $rfp_id);
-        $rfps  = Rfp::with('userInfo', 'userInfo.hotel')->whereIn("user_trip_id", $value)->get();
+
+        $rfps = Rfp::with('userInfo', 'userInfo.hotel')->whereIn("user_trip_id", $value)->get();
 
         return response()->json([
             'success'   => true,
@@ -354,12 +357,15 @@ class UsertripsController extends Controller
          *
          * @var \App\Models\Rfp $rfp
          */
-        Rfp::where('id', $rfp_id)->update(['status' => 2]);
-        $trip_id = Rfp::findOrFail($rfp_id);
+        $rfp = Rfp::findOrFail($rfp_id);
 
-        if ($trip_id->user_id != 0) {
-            $group         = User::findOrFail($trip_id->user_id);
-            $hotel         = Hotel::findOrFail($group->hotel_id);
+        $rfp->update(['status' => 2]);
+
+        dd($rfp->toArray());
+
+        if ($rfp->user_id != 0) {
+            $reciever      = User::findOrFail($rfp->user_id);
+            $hotel         = Hotel::findOrFail($reciever->hotel_id);
             $coordinatorId = Rfp::with('trip')->where('id', $rfp_id)->first();
             //$log_id   = Session::get('uid');
             $agree_id = AgreementForm::where('for_rfp', $rfp_id)->first();
@@ -369,13 +375,13 @@ class UsertripsController extends Controller
                 $aggreement                 = new AgreementForm();
                 $aggreement->id             = $rfp_id;
                 $aggreement->sender_id      = $coordinatorId->trip->entry_by;
-                $aggreement->reciever_id    = $trip_id->user_id;
-                $aggreement->reciever_group = $group->group_id;
+                $aggreement->reciever_id    = $reciever->id;
+                $aggreement->reciever_group = $reciever->group_id;
                 $aggreement->coordinator_id = $coordinatorId->trip->entry_by;
-                $aggreement->reciever_email = $group->email;
+                $aggreement->reciever_email = $reciever->email;
                 $aggreement->hotel_name     = $hotel->name;
                 $aggreement->hotel_details  = $hotel->address;
-                $aggreement->agreement_text = $trip_id->hotels_message;
+                $aggreement->agreement_text = $rfp->hotels_message;
                 $aggreement->for_rfp        = $rfp_id;
                 $aggreement->agreement_sent = $agreement_sent;
                 $aggreement->save();
@@ -387,16 +393,12 @@ class UsertripsController extends Controller
                     'view_data' => 'Already Accepted !',
                 ]);
             }
-            $r = \Helper::addTripStatusLog(4, $trip_id->user_trip_id, $rfp_id);
+            $r = \Helper::addTripStatusLog(4, $rfp->user_trip_id, $rfp_id);
 
         } else {
             $guestemail = Rfp::findOrFail($rfp_id);
-            $group      = DB::table('invitations')->where('email', $guestemail->sales_manager)->first();
+            $reciever   = DB::table('invitations')->where('email', $guestemail->sales_manager)->first();
             $log_id     = Session::get('uid');
-
-            /**
-             * @TODO: There is where agreement logic will start
-             */
 
             $agree_id = AgreementForm::where('id', $rfp_id)->first();
             if ($agree_id === null) {
@@ -407,7 +409,7 @@ class UsertripsController extends Controller
                 $aggreement->id             = $rfp_id;
                 $aggreement->sender_id      = $log_id;
                 $aggreement->reciever_id    = 0;
-                $aggreement->reciever_group = $group->group_id;
+                $aggreement->reciever_group = $reciever->group_id;
                 $aggreement->coordinator_id = $log_id;
                 $aggreement->reciever_email = $guestemail->sales_manager;
                 $aggreement->hotel_name     = '';
@@ -500,11 +502,12 @@ class UsertripsController extends Controller
             $corporate    = User::findOrFail(5);
             $to_corp      = $corporate->email;
             $subject_corp = "Manager Has Accepted Aggreement";
-            $data_corp    = array("trip_id"          => $trip->user_trip_id,
-                                  "manager_name"     => session('fid'),
-                                  "coordinator_name" => $coordinator_name,
-                                  "subject_corp"     => $subject,
-                                  "to_corp"          => $to_corp,
+            $data_corp    = array(
+                "trip_id"          => $trip->user_trip_id,
+                "manager_name"     => session('fid'),
+                "coordinator_name" => $coordinator_name,
+                "subject_corp"     => $subject,
+                "to_corp"          => $to_corp,
             );
             \Mail::send('emails.aggreement_corpmail', compact('data_corp'), function ($message_corp) use ($data_corp, $to_corp) {
                 //$message->from('SportTravelHQ');
@@ -654,14 +657,13 @@ class UsertripsController extends Controller
 
         $amenities   = HotelAmenities::all();
         $client      = User::where('group_id', 4)->get();
-        $data        = UserTrip::all();
-        $data_all    = Rfp::all();
         $get_invoice = Rfp::where("status", '!=', 3)->get();
         $data_accept = Rfp::where("status", 2)->get();
         $data_submit = Rfp::where("status", 1)->get();
         $team        = Team::all();
+
         return view('coordinator.viewtrips',
-            compact('trips', 'amenities', 'data_client', 'purchases', 'data_all', 'data_submit', 'get_invoice', 'data_accept', 'data', 'client', 'team'));
+            compact('trips', 'amenities', 'data_client', 'purchases', 'data_submit', 'get_invoice', 'data_accept', 'client', 'team'));
 
     }
 

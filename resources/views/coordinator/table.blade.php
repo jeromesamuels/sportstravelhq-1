@@ -166,25 +166,15 @@
     </thead>
     <tbody>
         @foreach ($trips as $trip)
-     
         <tr style="border-bottom-style: dashed;border-color: #eee;">
             <td>
-                <?php  
-                 $rfp_id =App\Models\Rfp::where('user_trip_id', $trip->id)->pluck('user_trip_id'); ?>
                 <span style="width: 40px;">
-                <?php $rfp_value='';
-                    if($rfp_id->count() > 0){
-                    foreach($rfp_id as $rfp) { 
-                        $rfp_value.= $rfp.",";  
-                    } 
-                    $rfp_value = rtrim($rfp_value,',');
-                    
-                    ?>
-                <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand">
-                <input type="checkbox" class="compare_cb" name="compare_cb" value="{{ $rfp_value }}" />&nbsp;
-                <span></span>
-                </label>
-                <?php } ?>
+                @if ($trip->rfps->count() > 0)
+                    <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand">
+                    <input type="checkbox" class="compare_cb" name="compare_cb" value="{{ $trip->rfps->pluck('user_trip_id')->implode(',') }}" />&nbsp;
+                    <span></span>
+                    </label>
+                @endif
                 </span>
             </td>
             <td> {{ date('d-M-Y',strtotime($trip->added)) }} </td>

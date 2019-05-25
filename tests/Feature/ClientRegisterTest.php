@@ -35,7 +35,7 @@ class ClientRegisterTest extends TestCase
                 'state'                 => 'Miami',
                 'zip'                   => $faker->postcode,
                 'email'                 => $email,
-                'phone'                 => $faker->phoneNumber,
+                'phone'                 => '760-' . $faker->numberBetween(400, 999) . '-' . $faker->numberBetween(1000, 9999),
                 'password'              => 'admin123',
                 'password_confirmation' => 'admin123',
             ]

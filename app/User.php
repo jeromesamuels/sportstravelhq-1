@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Models\Core\Groups;
+use App\Models\Hotel;
 use App\Models\HotelAgreementDefault;
 use App\Models\Organization;
 use App\Models\UserTrip;
@@ -135,6 +136,14 @@ class User extends Authenticatable
     public function trips()
     {
         return $this->hasMany(UserTrip::class, 'entry_by', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function hotel()
+    {
+        return $this->belongsTo(Hotel::class, 'hotel_id');
     }
 
 }
