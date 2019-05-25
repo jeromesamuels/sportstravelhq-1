@@ -39,6 +39,8 @@ class Rfp extends Model
         'Hotel Billing Receipt' => self::STATUS_BILLING_RECEIPT,
     ];
 
+    protected $fillable = ['status'];
+
     public function user()
     {
         return $this->belongsTo(User::class);

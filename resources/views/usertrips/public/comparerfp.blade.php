@@ -125,16 +125,16 @@
                 <td>
                     <table class="rfp-inner-table">
                         <tr>
-                            <td ><img alt="" src="../public/uploads/users/{{ $rfp->userInfo->hotel->property }}"  class="img-responsive" />
+                            <td ><img alt="" src="../public/uploads/users/{{ $rfp->userInfo->hotel->property ?? '' }}"  class="img-responsive" />
                             </td>
                         </tr>
                         <tr>
                             <td style="padding-bottom:0px;">
-                                <h5>{{ $rfp->userInfo->hotel->name }}</h5>
+                                <h5>{{ $rfp->userInfo->hotel->name ?? $rfp->userInfo->hotel_name  }}</h5>
                             </td>
                         </tr>
                         <tr>
-                            <td>{{ $rfp->userInfo->hotel->address }}</td>
+                            <td>{{ $rfp->userInfo->hotel->address ?? $rfp->userInfo->hotel_address }}</td>
                         </tr>
                         <tr>
                             <td>{{ $rfp->destination }}</td>
@@ -183,7 +183,7 @@
                         </tr>
                         <tr>
                             <td>
-                                @for ($i = 0; $i < $rfp->userInfo->hotel->rating; $i++)
+                                @for ($i = 0; $i < $rfp->userInfo->hotel->rating ?? 0; $i++)
                                 <span class="fa fa-star" style="color:#a9a902"></span>
                                 @endfor
                             </td>

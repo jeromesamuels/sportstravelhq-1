@@ -344,9 +344,11 @@ class UsertripsController extends Controller
 
         $rfps = Rfp::with('userInfo', 'userInfo.hotel')->whereIn("user_trip_id", $value)->get();
 
+        $view = view('usertrips.public.comparerfp', compact('rfps'));
+
         return response()->json([
             'success'   => true,
-            'view_data' => (string)view('usertrips.public.comparerfp', compact('rfps')),
+            'view_data' => $view->render(),
         ]);
     }
 
@@ -361,15 +363,22 @@ class UsertripsController extends Controller
 
         $rfp->update(['status' => 2]);
 
-        dd($rfp->toArray());
-
         if ($rfp->user_id != 0) {
-            $reciever      = User::findOrFail($rfp->user_id);
-            $hotel         = Hotel::findOrFail($reciever->hotel_id);
-            $coordinatorId = Rfp::with('trip')->where('id', $rfp_id)->first();
-            //$log_id   = Session::get('uid');
+            $reciever      = $rfp->user;
+            $hotel         = $rfp->hotel;
+            $coordinatorId = $rfp->trip;
+
             $agree_id = AgreementForm::where('for_rfp', $rfp_id)->first();
+
             if ($agree_id === null) {
+
+                $agreementBldr = new AgreementBuilder();
+                $agreementBldr
+                    ->setHotel($hotel)
+                    ->setRfp($rfp);
+
+                $agreementBldr->create();
+
                 $agreement_sent             = date("Y-m-d H:i");
                 $created_at                 = date("Y-m-d H:i");
                 $aggreement                 = new AgreementForm();
