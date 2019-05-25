@@ -28,6 +28,9 @@ class UserController extends Controller
 {
     protected $layout = "layouts.main";
 
+    const HOTEL_REGISTER = 1;
+    const CLIENT_REGISTER = 2;
+
     public function __construct()
     {
         parent::__construct();
@@ -123,7 +126,7 @@ class UserController extends Controller
             if ($request->input('o_name') != '') {
                 $authen->o_name = $request->input('o_name');
             }
-            if ($user_type == 1) {
+            if ($user_type == self::HOTEL_REGISTER) {
                  $hotel  = new Hotel();
                  $hotel->hotel_code = $request->input('hotel_code');
                  $hotel->type  = $request->input('hotel_type');
@@ -131,13 +134,14 @@ class UserController extends Controller
                  $hotel->save();
             }
 
-            if ($user_type == 1) {
-                $authen->group_id = 5;
-            } elseif ($user_type == 2) {
-                $authen->group_id = 4;
+            if ($user_type == self::HOTEL_REGISTER) {
+                $authen->group_id = Groups::HOTEL_MANAGER;
+            } elseif ($user_type == self::CLIENT_REGISTER) {
+                $authen->group_id = Groups::TRAVEL_COORDINATOR;
             } else {
                 $authen->group_id = $this->config['cnf_group'];
             }
+
             $is_client = $authen->is_manager || $authen->is_subcoordinator;
 
 
@@ -200,6 +204,7 @@ class UserController extends Controller
                 'code'      => $code,
                 'subject'   => "[ " . $this->config['cnf_appname'] . " ] REGISTRATION ",
             );
+
             if (config('sximo.cnf_activation') == 'confirmation') {
                 $to      = $request->input('email');
                 $subject = "[ " . $this->config['cnf_appname'] . " ] REGISTRATION ";

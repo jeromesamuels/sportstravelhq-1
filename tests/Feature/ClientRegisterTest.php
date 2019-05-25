@@ -15,12 +15,17 @@ class ClientRegisterTest extends TestCase
     {
         $faker = \Faker\Factory::create();
 
+        $this->app['config']->set('sximo.cnf_activation', false);
+        $this->app['config']->set('cnf_activation', false);
+
+
         $email = $faker->email;
 
         $response = $this->post(
             //'/user/register',
             '/user/create',
             [
+                'user_type'             => 2, //-- Client
                 'o_name'                => $faker->company,
                 'username'              => $email,
                 'firstname'             => $faker->firstName,
@@ -37,8 +42,6 @@ class ClientRegisterTest extends TestCase
         );
 
         $response->assertSessionDoesntHaveErrors();
-
-        dd(session());
 
         $response->assertStatus(302);
     }
