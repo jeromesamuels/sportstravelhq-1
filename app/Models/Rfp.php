@@ -6,6 +6,31 @@ use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * @property int                  id
+ * @property int                  user_trip_id
+ * @property int                  user_id
+ * @property \Carbon\Carbon       added
+ * @property int                  status
+ * @property string               destination
+ * @property string               hotel_information
+ * @property string               distance_event
+ * @property int                  offer_rate
+ * @property bool                 cc_authorization
+ * @property \Carbon\Carbon       offer_validity
+ * @property string               check_in
+ * @property string               check_out
+ * @property string               sales_manager
+ * @property string               king_beedrooms
+ * @property string               queen_beedrooms
+ * @property string               amenitie_ids
+ * @property int                  ramount
+ * @property string               receipt
+ * @property string               hotels_message
+ * @property int                  decline_reason
+ * @property string               team
+ * @property string               roster
+ * @property \Carbon\Carbon       created_at
+ * @property \Carbon\Carbon       updated_at
  * @property \App\Models\UserTrip trip
  */
 class Rfp extends Model

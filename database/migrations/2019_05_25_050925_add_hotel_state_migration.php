@@ -15,7 +15,14 @@ class AddHotelStateMigration extends Migration
     {
         Schema::table('hotels', function (Blueprint $table) {
             $table->string('state');
+            $table->string('phone');
         });
+
+        Schema::table('user_trips', function (Blueprint $table) {
+            $table->tinyInteger('service_type');
+        });
+
+
     }
 
     /**
@@ -27,6 +34,11 @@ class AddHotelStateMigration extends Migration
     {
         Schema::table('hotels', function (Blueprint $table) {
             $table->dropColumn('state');
+            $table->dropColumn('phone');
+        });
+
+        Schema::table('user_trips', function (Blueprint $table) {
+            $table->dropColumn('service_type');
         });
     }
 }

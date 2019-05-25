@@ -43,6 +43,8 @@ class AgreementBuilder
         $data   = new AgreementData();
         $mapper = new Mapper();
         $mapper->mapFromHotel($this->hotel, $data);
+        $mapper->mapFromRfp($this->rfp, $data);
+
     }
 
     /**

@@ -18,9 +18,9 @@ class CorporateUsersController extends Controller {
     public function __construct() {
         parent::__construct();
         $this->model = new CorporateUsers();
-        $this->info = $this->model->makeInfo($this->module);
+        $this->info = $this->model->makeInfo('corporate_user');
       
-        $this->data = array('pageTitle' => $this->info['title'], 'pageNote' => $this->info['note'], 'pageModule' => 'corporate/user', 'return' => self::returnUrl());
+        $this->data = array('pageTitle' => $this->info['title'] ?? '', 'pageNote' => $this->info['note'] ?? '', 'pageModule' => 'corporate/user', 'return' => self::returnUrl());
     }
 
     public function index(Request $request) {

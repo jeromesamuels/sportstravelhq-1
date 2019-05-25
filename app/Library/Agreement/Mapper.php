@@ -14,6 +14,7 @@ namespace App\Library\Agreement;
 
 
 use App\Models\Hotel;
+use App\Models\Rfp;
 use DateTime;
 
 /**
@@ -44,15 +45,13 @@ class Mapper
         $address = new HotelAddress();
         $address->parseAddress($hotel->address);
 
-        $data->hotel_name = $hotel->name;
+        $data->hotel_name    = $hotel->name;
         $data->hotel_address = $hotel->address;
-        $data->hotel_city = $hotel->city;
-        $data->hotel_state = $address->state;
+        $data->hotel_city    = $hotel->city;
+        $data->hotel_state   = $hotel->state;
         $data->hotel_zipcode = $hotel->zip;
-        //-- Where is the hotel phone number?
-        $data->hotel_phone = '';
-
-        $data->iata_no = $hotel->IATA_number;
+        $data->hotel_phone   = $hotel->phone;
+        $data->iata_no       = $hotel->IATA_number;
 
         return $data;
     }
@@ -185,5 +184,22 @@ class Mapper
         }
 
         return $doc_values;
+    }
+
+    /**
+     * Map the RFP data to the hotel agreement
+     *
+     * @param \App\Models\Rfp                      $rfp  The RFP to request
+     * @param \App\Library\Agreement\AgreementData $data The data object
+     *
+     * @return \App\Library\Agreement\AgreementData
+     */
+    public function mapFromRfp(Rfp $rfp, AgreementData $data)
+    {
+        $data->arrival_date = $rfp->check_in;
+        $data->departure_date = $rfp->check_out;
+
+
+        return $data;
     }
 }
