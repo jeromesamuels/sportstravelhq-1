@@ -26,6 +26,7 @@ class ClientBookHotel extends TestCase
         $response->assertSessionHas('status', 'success');
         $response->assertStatus(302);
     }
+
     /**
      * Test booking a single location trip
      *
