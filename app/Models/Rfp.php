@@ -32,6 +32,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon       created_at
  * @property \Carbon\Carbon       updated_at
  * @property \App\Models\UserTrip trip
+ * @property \App\User            user
+ * @property \App\Models\Hotel    hotel
  */
 class Rfp extends Model
 {
@@ -39,14 +41,13 @@ class Rfp extends Model
      * Constants for RFP status to make it easy to read a status
      */
     const STATUS_PENDING = 1;
-    const STATUS_VIEWED = 2;
+    const STATUS_BID_SELECTED = 2;
     const STATUS_BID_SENT = 3;
-    const STATUS_REVIEW = 4;
-    const STATUS_BID_SELECTED = 5;
-    const STATUS_AGREEMENT_CLIENT = 6;
-    const STATUS_AGREEMENT_HOTEL = 7;
+    const STATUS_AGREEMENT_CLIENT = 5;
+    const STATUS_AGREEMENT_HOTEL = 6;
     const STATUS_ROOMING_LIST = 8;
     const STATUS_BILLING_RECEIPT = 9;
+    const STATUS_HOTEL_BILLING_RECEIPT = 4;
 
     /**
      * A text friendly version of the RFP statuses
@@ -54,14 +55,14 @@ class Rfp extends Model
      * @var array
      */
     const STATUSES = [
-        'Bids Pending'          => self::STATUS_PENDING,
-        'Corporate Viewed'      => self::STATUS_VIEWED,
-        'Bids Sent'             => self::STATUS_BID_SENT,
-        'Bids Under Review'     => self::STATUS_REVIEW,
-        'Bid Selected'          => self::STATUS_BID_SELECTED,
-        'Client Agreement'      => self::STATUS_AGREEMENT_CLIENT,
-        'Hotel Agreement'       => self::STATUS_AGREEMENT_HOTEL,
-        'Hotel Billing Receipt' => self::STATUS_BILLING_RECEIPT,
+        'Bids Pending'          => Rfp::STATUS_PENDING,
+//        'Corporate Viewed'      => Rfp::STATUS_VIEWED,
+        'Bids Sent'             => Rfp::STATUS_BID_SENT,
+//        'Bids Under Review'     => Rfp::STATUS_REVIEW,
+        'Bid Selected'          => Rfp::STATUS_BID_SELECTED,
+        'Client Agreement'      => Rfp::STATUS_AGREEMENT_CLIENT,
+        'Hotel Agreement'       => Rfp::STATUS_AGREEMENT_HOTEL,
+        'Hotel Billing Receipt' => Rfp::STATUS_BILLING_RECEIPT,
     ];
 
     protected $fillable = ['status'];

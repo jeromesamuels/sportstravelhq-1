@@ -50,15 +50,12 @@ class QuestionnaireController extends Controller
         $user = Auth::user();
 
         $trip = UserTrip::findOrFail($request->get('trip_id'));
+        $trip->rfps();
 
         if (!$user->can('view', $trip)) {
             return response('You do not have access to this trip', 403);
         }
 
-        $user->trips()->where('entry_by', $user->id);
-
-        $trip          = [];
-        $agreementData = new AgreementData();
 
         return view(
             'agreement.questionnaire',

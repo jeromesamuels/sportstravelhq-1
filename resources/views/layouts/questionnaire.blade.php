@@ -9,9 +9,9 @@
     @if(!Request::get('print'))
         <link href="//fonts.googleapis.com/css?family=Mukta:400,700|Open+Sans:400,700" rel="stylesheet">
     @endif
-    <link href="{{ url(mix('css/agreement-style.css', 'hotel-agreement')) }}" rel="stylesheet">
+{{--    <link href="{{ url(mix('css/agreement-style.css', 'hotel-agreement')) }}" rel="stylesheet">--}}
     <!-- Vue Component Styles -->
-    <link href="{{ url(mix('css/agreement.css', 'hotel-agreement')) }}" rel="stylesheet">
+{{--    <link href="{{ url(mix('css/questionnaire.css', 'hotel-agreement')) }}" rel="stylesheet">--}}
 
     @if(!Request::get('print'))
         <style type="text/css" media="screen">

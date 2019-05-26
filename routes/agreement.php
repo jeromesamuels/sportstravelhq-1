@@ -9,10 +9,16 @@ use Illuminate\Support\Facades\Route;
  */
 function agreementRoutes()
 {
+    //-- Someone else without an account can fill out the hotel agreement
+    // make sure to send that person a signed URL
     Route::get('index', 'HotelController@index')
          ->name('agreement-index');
+
+
+    //-- The coordinator must be logged in to fill the questionair
     Route::get('questionnaire', 'QuestionnaireController@index')
-         ->name('questionnaire-index');
+        ->name('questionnaire-index')
+        ->middleware('auth');
 }
 
 Route::prefix('agreement')

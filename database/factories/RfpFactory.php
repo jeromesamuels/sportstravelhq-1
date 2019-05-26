@@ -20,7 +20,7 @@ $factory->define(Rfp::class, function (Faker $faker, $attrs) {
         'user_id'           => $attrs['user_id'] ?? 4,
         'added'             => new Carbon\Carbon(),
         //'status'            => $faker->randomElement($statuses),
-        'status'            => Rfp::STATUS_BID_SENT,
+        'status'            => Rfp::STATUS_PENDING,
         'destination'       => $faker->city,
         'hotel_information' => 0,
         'distance_event'    => 31.44,

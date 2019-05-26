@@ -160,6 +160,13 @@ class AgreementData
         'id_signature_date',
     ];
 
+    /**
+     * The ID to the RFP
+     *
+     * @var int
+     */
+    public $rfp_id;
+
 
     /**
      * Returns the array version needed for Vue. Some of these variables don't

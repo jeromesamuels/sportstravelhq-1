@@ -385,10 +385,10 @@ class UsertripsController extends Controller
             ]);
         }
 
-        $rfp->update(['status' => 2]);
+        $rfp->update(['status' => Rfp::STATUS_BID_SELECTED]);
 
         if ($rfp->user_id != 0) {
-            $reciever = $rfp->user;
+            $receiver = $rfp->user;
             $hotel    = $rfp->hotel;
             $trip     = $rfp->trip;
 
@@ -398,7 +398,7 @@ class UsertripsController extends Controller
                 $agreementBldr = new AgreementBuilder();
                 $agreementBldr
                     ->setTrip($trip)
-                    ->setHotelManager($reciever)
+                    ->setHotelManager($receiver)
                     ->setHotel($hotel)
                     ->setRfp($rfp);
 
@@ -424,10 +424,10 @@ class UsertripsController extends Controller
                 $aggreement                 = new AgreementForm();
                 $aggreement->id             = $rfp_id;
                 $aggreement->sender_id      = $coordinatorId->trip->entry_by;
-                $aggreement->reciever_id    = $reciever->id;
-                $aggreement->reciever_group = $reciever->group_id;
+                $aggreement->reciever_id    = $receiver->id;
+                $aggreement->reciever_group = $receiver->group_id;
                 $aggreement->coordinator_id = $coordinatorId->trip->entry_by;
-                $aggreement->reciever_email = $reciever->email;
+                $aggreement->reciever_email = $receiver->email;
                 $aggreement->hotel_name     = $hotel->name;
                 $aggreement->hotel_details  = $hotel->address;
                 $aggreement->agreement_text = $rfp->hotels_message;
@@ -446,7 +446,7 @@ class UsertripsController extends Controller
 
         } else {
             $guestemail = Rfp::findOrFail($rfp_id);
-            $reciever   = DB::table('invitations')->where('email', $guestemail->sales_manager)->first();
+            $receiver   = DB::table('invitations')->where('email', $guestemail->sales_manager)->first();
             $log_id     = Session::get('uid');
 
             $agree_id = AgreementForm::where('id', $rfp_id)->first();
@@ -458,7 +458,7 @@ class UsertripsController extends Controller
                 $aggreement->id             = $rfp_id;
                 $aggreement->sender_id      = $log_id;
                 $aggreement->reciever_id    = 0;
-                $aggreement->reciever_group = $reciever->group_id;
+                $aggreement->reciever_group = $receiver->group_id;
                 $aggreement->coordinator_id = $log_id;
                 $aggreement->reciever_email = $guestemail->sales_manager;
                 $aggreement->hotel_name     = '';

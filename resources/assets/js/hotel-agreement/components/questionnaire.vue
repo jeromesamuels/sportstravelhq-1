@@ -241,10 +241,6 @@
                 progress: 0,
                 progressInterval: null,
                 trip: data.trip,
-                guest_id: guest_id,
-                hotel_id: hotel_id,
-                teams: data.teams,
-                teams_chunks: chunk.default(data.teams, 3),
                 is_authorized: null,
                 first_name: '',
                 last_name: '',
@@ -255,15 +251,15 @@
                 errors: {},
                 error_message: '',
                 cc_require: data.cc_require,
-                team_contacts: data.teams.map((team, index) => {
-                    return {
-                        teams_id: team.teams_id,
-                        first_name: team.hotel_cc_auth_forms_first_name || '',
-                        last_name: team.hotel_cc_auth_forms_last_name || '',
-                        phone: team.hotel_cc_auth_forms_phone || '',
-                        email: team.hotel_cc_auth_forms_email || '',
-                    };
-                }),
+                // contacts: data.contacts.map((team, index) => {
+                //     return {
+                //         teams_id: team.teams_id,
+                //         first_name: team.hotel_cc_auth_forms_first_name || '',
+                //         last_name: team.hotel_cc_auth_forms_last_name || '',
+                //         phone: team.hotel_cc_auth_forms_phone || '',
+                //         email: team.hotel_cc_auth_forms_email || '',
+                //     };
+                // }),
             }
         },
         mount() {
@@ -399,5 +395,20 @@
     }
 </script>
 <style rel="stylesheet/scss" type="text/scss" lang="scss" scoped>
-    /* Custom SASS Here */
+    $icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
+    //$bootstrap-sass-asset-helper: true;
+    $brand-warning: #f37021;
+
+    $border-radius-base: 0;
+    $border-radius-large: 0;
+    $border-radius-small: 0;
+
+    @import "~bootstrap-sass/assets/stylesheets/bootstrap";
+    @import "~bootstrap-material-design/sass/bootstrap-material-design.scss";
+    @import "~bootstrap-material-design/sass/ripples.scss";
+
+    #app {
+        font-family: 'Open Sans', sans-serif;
+        background: #fff;
+    }
 </style>

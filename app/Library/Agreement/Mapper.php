@@ -199,6 +199,7 @@ class Mapper
      */
     public function mapFromRfp(Rfp $rfp, AgreementData $data)
     {
+        $data->rfp_id = $rfp->id;
         $data->arrival_date   = $rfp->check_in;
         $data->departure_date = $rfp->check_out;
 
@@ -271,7 +272,10 @@ class Mapper
     {
         $agreement = new HotelAgreementModel();
 
+        $agreement->rfp_id = $data->rfp_id;
         $agreement->hotel_id = $data->hotel_id;
+        $agreement->user_trip_id = $data->user_trip_id;
+        $agreement->travel_coordinator_id = $data->travel_coordinator_id;
 
         return $agreement;
     }
