@@ -365,11 +365,25 @@ class UsertripsController extends Controller
     public function acceptRFP($rfp_id)
     {
         /**
+         * The authorized User
+         *
+         * @var \App\User $user
+         */
+        $user = \Auth::user();
+
+        /**
          * The request for proposal bid
          *
          * @var \App\Models\Rfp $rfp
          */
         $rfp = Rfp::findOrFail($rfp_id);
+
+        if (!$user->can('accept', $rfp)) {
+            return response()->json([
+                'success'   => false,
+                'view_data' => 'Sorry, you are not allowed to accept this RFP.',
+            ]);
+        }
 
         $rfp->update(['status' => 2]);
 
@@ -387,7 +401,22 @@ class UsertripsController extends Controller
                     ->setHotel($hotel)
                     ->setRfp($rfp);
 
-                $agreementBldr->create();
+                $saved = $agreementBldr->create();
+
+                if (!$saved) {
+                    return response()->json([
+                        'success'   => false,
+                        'view_data' => 'Unable to accept bid, please try again later',
+                    ]);
+                } else {
+                    return response()->json([
+                        'success'   => true,
+                        'redirect'  => route('questionnaire-index', [
+                            'trip_id' => $rfp->user_trip_id,
+                        ]),
+                        'view_data' => 'Accepted Successfully !',
+                    ]);
+                }
 
                 $agreement_sent             = date("Y-m-d H:i");
                 $created_at                 = date("Y-m-d H:i");

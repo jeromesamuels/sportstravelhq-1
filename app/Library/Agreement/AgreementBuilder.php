@@ -54,20 +54,29 @@ class AgreementBuilder
      */
     public $trip;
 
+    /**
+     * The hotel agreement
+     *
+     * @var \App\Models\HotelAgreement
+     */
+    public $agreement;
+
     public function create()
     {
         $data   = new AgreementData();
         $mapper = new Mapper();
+
         $mapper->mapFromHotelManager($this->hotel_manager, $data);
         $mapper->mapFromHotel($this->hotel, $data);
         $mapper->mapFromRfp($this->rfp, $data);
         $mapper->mapFromTrip($this->trip, $data);
 
-        $agreement = new HotelAgreement();
-        $mapper->mapToRecord($data);
+        $this->agreement = $mapper->mapToRecord($data);
+
+        $saved = $this->agreement->save();
 
 
-        return $agreement;
+        return $saved;
     }
 
     /**

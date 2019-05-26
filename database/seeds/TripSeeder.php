@@ -20,7 +20,7 @@ class TripSeeder extends Seeder
     {
         $faker = \Faker\Factory::create();
 
-        $coordinator_id = 750;
+        $coordinator_id = 3;
 
         //-- First Create
         $trips = factory(UserTrip::class, 25)

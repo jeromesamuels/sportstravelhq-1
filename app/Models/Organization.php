@@ -82,7 +82,11 @@ class Organization extends Model
      */
     public function hasUserId($id)
     {
-        $user_ids = $this->users()->select('id')->get()->pluck('id');
+        $user_ids = $this->users()
+            ->select('tb_users.id')
+            ->get()
+            ->pluck('id')
+            ->all();
 
         return in_array($id, $user_ids);
     }

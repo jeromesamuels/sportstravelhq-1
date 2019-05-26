@@ -9,8 +9,10 @@ use Illuminate\Support\Facades\Route;
  */
 function agreementRoutes()
 {
-    Route::get('index', 'Hotel@index')
+    Route::get('index', 'HotelController@index')
          ->name('agreement-index');
+    Route::get('questionnaire', 'QuestionnaireController@index')
+         ->name('questionnaire-index');
 }
 
 Route::prefix('agreement')

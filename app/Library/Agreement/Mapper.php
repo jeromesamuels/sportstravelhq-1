@@ -272,8 +272,6 @@ class Mapper
 
         $agreement->hotel_id = $data->hotel_id;
 
-        $saved = $agreement->save();
-
         return $agreement;
     }
 }

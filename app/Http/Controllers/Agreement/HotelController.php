@@ -17,7 +17,7 @@ use App\Library\Agreement\AgreementData;
 use Illuminate\Http\Request;
 
 /**
- * Class Hotel
+ * Class HotelController
  * php version 7.1
  *
  * @category Agreement
@@ -26,7 +26,7 @@ use Illuminate\Http\Request;
  * @license  https://opensource.org/licenses/BSD-3-Clause BSD
  * @link     https://sportstravelhq.com
  */
-class Hotel extends Controller
+class HotelController extends Controller
 {
 
     /**
