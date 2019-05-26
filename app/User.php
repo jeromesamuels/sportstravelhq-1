@@ -13,11 +13,15 @@ use Illuminate\Notifications\Notifiable;
 /**
  * @property int                        id
  * @property HotelAgreementDefault|null hotelAgreementDefault
+ * @property string                     full_name
  * @property bool                       is_manager
  * @property bool                       is_subcoordinator
  * @property Organization               organization
  * @property bool                       is_super_admin
  * @property bool                       is_administrator
+ * @property bool                       is_hotel_manager
+ * @property bool                       is_corporate
+ * @property int                        group_id
  */
 class User extends Authenticatable
 {
@@ -106,6 +110,30 @@ class User extends Authenticatable
     }
 
     /**
+     * Fetch the users account and see if they are a hotel manager
+     *
+     * @param null $value Not used
+     *
+     * @return bool
+     */
+    public function getIsHotelManagerAttribute($value)
+    {
+        return $this->group_id === Groups::HOTEL_MANAGER;
+    }
+
+    /**
+     * Fetch the users account and see if they are corporate
+     *
+     * @param null $value Not used
+     *
+     * @return bool
+     */
+    public function getIsCorporateAttribute($value)
+    {
+        return $this->group_id === Groups::CORPORATE;
+    }
+
+    /**
      * Fetch the users account and see if they are a sub coordinator
      *
      * @param null $value Not used
@@ -150,7 +178,7 @@ class User extends Authenticatable
      */
     public function getFullNameAttribute($value)
     {
-        return trim($this->fisrtname . ' ' . $this->lastname);
+        return trim($this->first_name . ' ' . $this->last_name);
     }
 
 

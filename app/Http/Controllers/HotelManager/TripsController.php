@@ -65,6 +65,7 @@ class TripsController extends Controller {
     public function show($id) {
         $trip = UserTrip::with('tripuser')->findOrFail($id);
         $rfp = Rfp::where('user_trip_id', '=', $id)->where('user_id', '=', session('uid'))->first();
+
         $trip_id =Rfp::where("user_trip_id", $trip->id)->first();
         if($trip_id != null){
            $invoice    = Invoices::where('rfp_id',$trip_id->id)->first();
