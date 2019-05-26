@@ -381,9 +381,9 @@ class UsertripsController extends Controller
             $agree_id = AgreementForm::where('for_rfp', $rfp_id)->first();
 
             if ($agree_id === null) {
-
                 $agreementBldr = new AgreementBuilder();
                 $agreementBldr
+                    ->setHotelManager($reciever)
                     ->setHotel($hotel)
                     ->setRfp($rfp);
 

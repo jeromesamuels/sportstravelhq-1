@@ -13,6 +13,8 @@
 namespace App\Library\Agreement;
 
 
+use App\Library\Agreement\AgreementBuilder as self;
+
 /**
  * Class AgreementBuilder√
  *
@@ -38,13 +40,34 @@ class AgreementBuilder
      */
     public $rfp;
 
+    /**
+     * The Hotel Manager user
+     *
+     * @var \App\User
+     */
+    public $hotel_manager;
+
+    /**
+     * The trip
+     *
+     * @var \App\Models\UserTrip
+     */
+    public $trip;
+
     public function create()
     {
         $data   = new AgreementData();
         $mapper = new Mapper();
+        $mapper->mapFromHotelManager($this->hotel_manager, $data);
         $mapper->mapFromHotel($this->hotel, $data);
         $mapper->mapFromRfp($this->rfp, $data);
+        $mapper->mapFromTrip($this->trip, $data);
 
+        $agreement = new HotelAgreement();
+        $mapper->mapToRecord($data);
+
+
+        return $agreement;
     }
 
     /**
@@ -62,7 +85,7 @@ class AgreementBuilder
      *
      * @param \App\Models\Hotel $hotel The hotel to bind
      *
-     * @return self
+     * @return \App\Library\Agreement\AgreementBuilder
      */
     public function setHotel(\App\Models\Hotel $hotel): self
     {
@@ -86,11 +109,49 @@ class AgreementBuilder
      *
      * @param \App\Models\Rfp $rfp The request for proposal agreement bid
      *
-     * @return self
+     * @return \App\Library\Agreement\AgreementBuilder
      */
     public function setRfp(\App\Models\Rfp $rfp): self
     {
         $this->rfp = $rfp;
+
+        return $this;
+    }
+
+    /**
+     * Set the sales manager record for the agreement
+     *
+     * @param \App\User $hotel_manager The hotel manager
+     *
+     * @return \App\Library\Agreement\AgreementBuilder
+     */
+    public function setHotelManager(\App\User $hotel_manager): self
+    {
+        $this->hotel_manager = $hotel_manager;
+
+        return $this;
+    }
+
+    /**
+     * Get the trip
+     *
+     * @return \App\Models\UserTrip
+     */
+    public function getTrip(): \App\Models\UserTrip
+    {
+        return $this->trip;
+    }
+
+    /**
+     * Set the trip
+     *
+     * @param \App\Models\UserTrip $trip The trip to set
+     *
+     * @return \App\Library\Agreement\AgreementBuilder
+     */
+    public function setTrip(\App\Models\UserTrip $trip): self
+    {
+        $this->trip = $trip;
 
         return $this;
     }

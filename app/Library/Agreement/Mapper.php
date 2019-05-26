@@ -15,6 +15,8 @@ namespace App\Library\Agreement;
 
 use App\Models\Hotel;
 use App\Models\Rfp;
+use App\User;
+use Carbon\Carbon;
 use DateTime;
 
 /**
@@ -196,10 +198,82 @@ class Mapper
      */
     public function mapFromRfp(Rfp $rfp, AgreementData $data)
     {
-        $data->arrival_date = $rfp->check_in;
+        $data->arrival_date   = $rfp->check_in;
         $data->departure_date = $rfp->check_out;
 
 
         return $data;
+    }
+
+    /**
+     * Map the hotel manager data to the hotel agreement
+     *
+     * @param \App\User                            $hotel_manager The hotel
+     *                                                            manager user
+     * @param \App\Library\Agreement\AgreementData $data          The hotel
+     *                                                            agreement data
+     *
+     * @return \App\Library\Agreement\AgreementData
+     */
+    public function mapFromHotelManager(User $hotel_manager, AgreementData $data)
+    {
+        $data->hotel_agreements_hotel_first_name = $hotel_manager->first_name;
+        $data->hotel_agreements_hotel_last_name  = $hotel_manager->last_name;
+        $data->hotel_agreements_hotel_title      = 'Sales Manager';
+
+
+        return $data;
+
+    }
+
+    /**
+     * Map the trip details to the hotel agreement
+     *
+     * @param \App\Models\UserTrip                 $trip The trip to map from
+     * @param \App\Library\Agreement\AgreementData $data The data to map to
+     *
+     * @return \App\Library\Agreement\AgreementData
+     */
+    public function mapFromTrip(\App\Models\UserTrip $trip, AgreementData $data)
+    {
+        $data->user_trip_id = $trip->id;
+        $data->travel_coordinator_id = $trip->entry_by;
+
+        $coordinator = $trip->tripuser;
+
+        $data->hotel_agreements_first_name = $coordinator->first_name;
+        $data->hotel_agreements_last_name  = $coordinator->last_name;
+        $data->hotel_agreements_title = 'Coordinator';
+        $data->hotel_agreements_address = $coordinator->address;
+        $data->hotel_agreements_address2 = '';
+        $data->hotel_agreements_city = $coordinator->city;
+        $data->hotel_agreements_state = $coordinator->state;
+        $data->hotel_agreements_zipcode = $coordinator->zip;
+        $data->hotel_agreements_date = Carbon::now();
+        $data->hotel_agreements_email = $coordinator->email;
+        $data->hotel_agreements_phone = $coordinator->phone_number;
+        $data->hotel_agreements_rewards_number = '';
+
+
+        return $data;
+    }
+
+    /**
+     * Create a new hotel agreement from the mapped data
+     *
+     * @param \App\Library\Agreement\AgreementData $data The data to map onto
+     *                                                   the agreement
+     *
+     * @return \App\Library\Agreement\HotelAgreement
+     */
+    public function mapToRecord(AgreementData $data)
+    {
+        $agreement = new HotelAgreement();
+
+        $agreement->hotel_id = $data->hotel_id;
+
+        $saved = $agreement->save();
+
+        return $agreement;
     }
 }

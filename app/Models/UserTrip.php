@@ -3,8 +3,9 @@
 use App\User;
 
 /**
- * @property int entry_by
- * @property int id
+ * @property int   entry_by
+ * @property int   id
+ * @property \App\User tripuser
  */
 class UserTrip extends Sximo
 {

@@ -22,6 +22,8 @@ use Illuminate\Notifications\Notifiable;
  * @property bool                       is_hotel_manager
  * @property bool                       is_corporate
  * @property int                        group_id
+ * @property string                     first_name
+ * @property string                     last_name
  */
 class User extends Authenticatable
 {
