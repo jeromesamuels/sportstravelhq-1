@@ -44,7 +44,7 @@ class QuestionnaireController extends Controller
         $agreementData = new AgreementData();
 
         return view(
-            'agreement.index',
+            'agreement.questionnaire',
             [
                 'trip'       => $trip,
                 'doc_values' => $agreementData->toArray(),

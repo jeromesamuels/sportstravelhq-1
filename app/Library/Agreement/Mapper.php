@@ -15,6 +15,7 @@ namespace App\Library\Agreement;
 
 use App\Models\Hotel;
 use App\Models\Rfp;
+use App\Models\HotelAgreement as HotelAgreementModel;
 use App\User;
 use Carbon\Carbon;
 use DateTime;
@@ -264,11 +265,11 @@ class Mapper
      * @param \App\Library\Agreement\AgreementData $data The data to map onto
      *                                                   the agreement
      *
-     * @return \App\Library\Agreement\HotelAgreement
+     * @return \App\Models\HotelAgreement
      */
     public function mapToRecord(AgreementData $data)
     {
-        $agreement = new HotelAgreement();
+        $agreement = new HotelAgreementModel();
 
         $agreement->hotel_id = $data->hotel_id;
 
