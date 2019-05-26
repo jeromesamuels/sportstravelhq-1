@@ -16,6 +16,8 @@ use Illuminate\Notifications\Notifiable;
  * @property bool                       is_manager
  * @property bool                       is_subcoordinator
  * @property Organization               organization
+ * @property bool                       is_super_admin
+ * @property bool                       is_administrator
  */
 class User extends Authenticatable
 {
@@ -113,6 +115,30 @@ class User extends Authenticatable
     public function getIsSubcoordinatorAttribute($value)
     {
         return $this->group_id === Groups::SUB_COORDINATOR;
+    }
+
+    /**
+     * Fetch the users account and see if they are a super admin
+     *
+     * @param null $value Not used
+     *
+     * @return bool
+     */
+    public function getIsSuperAdminAttribute($value)
+    {
+        return $this->group_id === Groups::SUPER_ADMIN;
+    }
+
+    /**
+     * Fetch the users account and see if they are a administrator
+     *
+     * @param null $value Not used
+     *
+     * @return bool
+     */
+    public function getIsAdministratorAttribute($value)
+    {
+        return $this->group_id === Groups::ADMINISTRATOR;
     }
 
     /**

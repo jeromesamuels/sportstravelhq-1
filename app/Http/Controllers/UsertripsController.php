@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Library\Agreement\AgreementBuilder;
-use App\Library\Agreement\HotelAgreement;
 use App\Models\AgreementForm;
 use App\Models\Hotel;
 use App\Models\HotelAmenities;
@@ -271,15 +270,20 @@ class UsertripsController extends Controller
 
     function store_public($request)
     {
-
         /**
+         * The authorized user
+         *
          * @var \App\User $user
          */
         $user = Auth::user();
 
-        if (!$user->is_manager && !$user->is_subcoordinator) {
-            return Redirect::back()->with('message', __('core.note_error'))->with('status',
-                'error')->withErrors(['message1' => 'Only travel coordinator\'s can book a trip'])->withInput();
+        if (!$user->can('create', UserTrip::class)) {
+            return redirect()
+                ->back()
+                ->with('message', __('core.note_error'))
+                ->with('status', 'error')
+                ->withErrors(['message1' => 'Only travel coordinator\'s can book a trip'])
+                ->withInput();
         }
 
         $rules     = $this->validateForm();
