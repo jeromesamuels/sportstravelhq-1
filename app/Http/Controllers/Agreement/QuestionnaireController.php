@@ -14,7 +14,9 @@ namespace App\Http\Controllers\Agreement;
 
 use App\Http\Controllers\Controller;
 use App\Library\Agreement\AgreementData;
+use App\Models\UserTrip;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class QuestionnaireController
@@ -39,6 +41,21 @@ class QuestionnaireController extends Controller
     public function index(Request $request)
     {
         \Debugbar::disable();
+
+        /**
+         * The authorized user
+         *
+         * @var \App\User $user
+         */
+        $user = Auth::user();
+
+        $trip = UserTrip::findOrFail($request->get('trip_id'));
+
+        if (!$user->can('view', $trip)) {
+            return response('You do not have access to this trip', 403);
+        }
+
+        $user->trips()->where('entry_by', $user->id);
 
         $trip          = [];
         $agreementData = new AgreementData();
