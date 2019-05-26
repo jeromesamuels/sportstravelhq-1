@@ -15,6 +15,7 @@ class ClientLoginTest extends TestCase
      */
     public function testLoginPage()
     {
+        $faker = \Faker\Factory::create();
         $response = $this->get('/user/login');
 
         $response->assertSuccessful();

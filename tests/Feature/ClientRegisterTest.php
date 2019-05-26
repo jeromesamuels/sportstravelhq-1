@@ -22,7 +22,6 @@ class ClientRegisterTest extends TestCase
         $email = $faker->email;
 
         $response = $this->post(
-            //'/user/register',
             '/user/create',
             [
                 'user_type'             => 2, //-- Client
