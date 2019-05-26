@@ -11,7 +11,9 @@
     @endif
 {{--    <link href="{{ url(mix('css/agreement-style.css', 'hotel-agreement')) }}" rel="stylesheet">--}}
     <!-- Vue Component Styles -->
-{{--    <link href="{{ url(mix('css/questionnaire.css', 'hotel-agreement')) }}" rel="stylesheet">--}}
+    @if (config('APP_ENV') === 'production')
+        <link href="{{ url(mix('css/questionnaire.css', 'hotel-agreement')) }}" rel="stylesheet">
+    @endif
 
     @if(!Request::get('print'))
         <style type="text/css" media="screen">
@@ -36,7 +38,7 @@
     var print = @json(Request::get('print'));
 {{--    var trip = @json($trip);--}}
     var FULLURL = @json(url('/'));
-    var data = @json($doc_values);
+    var data = @json($agreement);
     window.Laravel = @json(['csrfToken' => csrf_token(), 'url' => url('/')]);
 </script>
 <script type="text/javascript" src="{{ url(mix('js/polyfill.js', 'hotel-agreement')) }}"></script>

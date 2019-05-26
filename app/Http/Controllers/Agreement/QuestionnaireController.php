@@ -14,6 +14,8 @@ namespace App\Http\Controllers\Agreement;
 
 use App\Http\Controllers\Controller;
 use App\Library\Agreement\AgreementData;
+use App\Models\HotelAgreement;
+use App\Models\Rfp;
 use App\Models\UserTrip;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -50,18 +52,17 @@ class QuestionnaireController extends Controller
         $user = Auth::user();
 
         $trip = UserTrip::findOrFail($request->get('trip_id'));
-        $trip->rfps();
 
         if (!$user->can('view', $trip)) {
             return response('You do not have access to this trip', 403);
         }
 
+        $agreement = HotelAgreement::where('user_trip_id', $trip->id)->with('rfp', 'hotel', 'trip')->first();
 
         return view(
             'agreement.questionnaire',
             [
-                'trip'       => $trip,
-                'doc_values' => $agreementData->toArray(),
+                'agreement' => $agreement,
             ]
         );
     }

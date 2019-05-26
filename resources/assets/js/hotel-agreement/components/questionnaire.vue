@@ -215,6 +215,7 @@
 <script type="text/ecmascript-6">
     import VueScrollTo from 'vue-scrollto';
     import VueSticky from 'vue-sticky';
+    import MaskedInput from 'vue-text-mask'
     import axios from 'axios';
 
     let http = axios.create({
@@ -227,12 +228,13 @@
     });
     export default {
         name: 'Questionnaire',
-        props: ['errors', 'formData'],
+        props: ['formData'],
         directives: {
             'sticky': VueSticky,
         },
         components: {
-            VueScrollTo
+            VueScrollTo,
+            MaskedInput
         },
         data() {
             return {
