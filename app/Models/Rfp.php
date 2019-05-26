@@ -73,9 +73,14 @@ class Rfp extends Model
 
     public function hotel()
     {
-        return $this->hasOneThrough(Hotel::class, User::class);
+        return $this->userInfo->hotel();
     }
 
+    /**
+     * Access the user
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function userInfo()
     {
         return $this->belongsTo(User::class, 'user_id');

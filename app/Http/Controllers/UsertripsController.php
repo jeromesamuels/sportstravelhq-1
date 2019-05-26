@@ -388,15 +388,16 @@ class UsertripsController extends Controller
         $rfp->update(['status' => 2]);
 
         if ($rfp->user_id != 0) {
-            $reciever      = $rfp->user;
-            $hotel         = $rfp->hotel;
-            $coordinatorId = $rfp->trip;
+            $reciever = $rfp->user;
+            $hotel    = $rfp->hotel;
+            $trip     = $rfp->trip;
 
             $agree_id = AgreementForm::where('for_rfp', $rfp_id)->first();
 
             if ($agree_id === null) {
                 $agreementBldr = new AgreementBuilder();
                 $agreementBldr
+                    ->setTrip($trip)
                     ->setHotelManager($reciever)
                     ->setHotel($hotel)
                     ->setRfp($rfp);

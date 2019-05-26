@@ -12,9 +12,6 @@
 
 namespace App\Library\Agreement;
 
-
-use App\Library\Agreement\AgreementBuilder as self;
-
 /**
  * Class AgreementBuilder√
  *
@@ -96,7 +93,7 @@ class AgreementBuilder
      *
      * @return \App\Library\Agreement\AgreementBuilder
      */
-    public function setHotel(\App\Models\Hotel $hotel): self
+    public function setHotel(\App\Models\Hotel $hotel): AgreementBuilder
     {
         $this->hotel = $hotel;
 
@@ -120,7 +117,7 @@ class AgreementBuilder
      *
      * @return \App\Library\Agreement\AgreementBuilder
      */
-    public function setRfp(\App\Models\Rfp $rfp): self
+    public function setRfp(\App\Models\Rfp $rfp): AgreementBuilder
     {
         $this->rfp = $rfp;
 
@@ -134,7 +131,7 @@ class AgreementBuilder
      *
      * @return \App\Library\Agreement\AgreementBuilder
      */
-    public function setHotelManager(\App\User $hotel_manager): self
+    public function setHotelManager(\App\User $hotel_manager): AgreementBuilder
     {
         $this->hotel_manager = $hotel_manager;
 
@@ -158,7 +155,7 @@ class AgreementBuilder
      *
      * @return \App\Library\Agreement\AgreementBuilder
      */
-    public function setTrip(\App\Models\UserTrip $trip): self
+    public function setTrip(\App\Models\UserTrip $trip): AgreementBuilder
     {
         $this->trip = $trip;
 

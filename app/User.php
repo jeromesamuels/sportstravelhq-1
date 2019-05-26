@@ -90,6 +90,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Access the hotel of the user
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function hotel()
+    {
+        return $this->belongsTo(Hotel::class);
+    }
+
+    /**
      * Get the group of the user
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -192,14 +202,6 @@ class User extends Authenticatable
     public function trips()
     {
         return $this->hasMany(UserTrip::class, 'entry_by', 'id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function hotel()
-    {
-        return $this->belongsTo(Hotel::class, 'hotel_id');
     }
 
 }
