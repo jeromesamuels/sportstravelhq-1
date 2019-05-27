@@ -91,7 +91,7 @@ class SximoHelpers {
             $rows = array($rows);
         }
         foreach ($rows as $k => $row) {
-            $r = DB::select(" select * from {$table_name} where {$where_field}= '{$row->$where_field}' ");
+            $r =  DB::table($table_name)->where($where_field, $row->$where_field)->get();
             if (count($r)) {
                 // update
                 unset($row->{$pk_field});
@@ -108,7 +108,7 @@ class SximoHelpers {
     }
 
     public static function write_route() {
-        $rows = DB::select("select module_name from tb_module where module_type = 'addon' ");
+        $rows = DB::table('tb_module')->where('module_type','addon')->pluck('module_name');
         $str = "<?php\n";
         foreach ($rows as $k => $row) {
             $str.= "Route::controller('{$row->module_name}', '" . studly_case($row->module_name) . "Controller');\n";

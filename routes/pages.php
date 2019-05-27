@@ -13,7 +13,7 @@ Route::get('screenshots', 'HomeController@index');
 Route::get('faq', 'HomeController@index');
 Route::get('galleries', 'HomeController@index');
 Route::get('pricing', 'HomeController@index');
-Route::get('team', 'HomeController@index');
+Route::get('team', 'TeamController@index');
 Route::get('preferences', 'HomeController@index');
 Route::get('trips', 'HomeController@index');
 //Route::get('teams', 'HomeController@getTeam');

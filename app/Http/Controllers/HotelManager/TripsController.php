@@ -27,7 +27,7 @@ class TripsController extends Controller {
         $trip_month = UserTrip::whereRaw('MONTH(added) = ?', $date_month)->get();
         $user = Auth::user();
         $Hotel = Hotel::findOrFail($user->hotel_id);
-
+       
         if (session('level') == Groups::SUPER_ADMIN) {
             $trips = UserTrip::with('tripuser')->orderBy('added', 'desc')->get();
             $rfps = Rfp::all();
@@ -36,20 +36,20 @@ class TripsController extends Controller {
             $active_rfp = Rfp::where("status", '!=', 3)->get();
             $accepted_rfp =  Rfp::where("status", 2)->get();
         } 
-        elseif(session('level') == Groups::CORPORATE){
+        elseif($user->group_id== Groups::CORPORATE){
             $rfps = Rfp::with('usertripInfo','usertripInfo.tripuser')->where('user_id', session('uid'))->orderBy('updated_at', 'desc')->get();
             $trips = UserTrip::with('tripuser')->orderBy('added', 'desc')->get();
+
             $data_all = Rfp::all();
             $purchases = Invoices::where('invoices.hotel_type', $Hotel->type)->sum('invoices.amt_paid');
             $active_rfp = Rfp::where("status", '!=', 3)->get();
             $accepted_rfp = Rfp::where("status", 2)->get();
         }
         else {
-            $trips = UserTrip::with('tripuser')
-                             ->orderBy('added', 'desc')
-                             ->where('service_type',$user->service_type)->get();
+            $trips = UserTrip::with('tripuser')->orderBy('added','desc')->where('service_type',$user->service_type)->get();
+          
             $rfps = Rfp::with('usertripInfo','usertripInfo.tripuser')->where('user_id', session('uid'))->orderBy('updated_at', 'desc')->get();
-
+              
             $data_all = Rfp::where('user_id', session('uid'))->get();
             $purchases = Invoices::where('invoices.hotel_name', $user->hotel_id)->sum('invoices.amt_paid');
             $active_rfp = Rfp::where("status", '!=', 3)->where('user_id', session('uid'))->get();

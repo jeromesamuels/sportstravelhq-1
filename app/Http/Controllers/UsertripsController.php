@@ -32,7 +32,7 @@ class UsertripsController extends Controller
 
         parent::__construct();
         $this->model = new UserTrip();
-        $this->info  = $this->model->makeInfo('usertrips');
+        $this->info  = $this->model->makeInfo('Usertrip');
         $this->data  = array(
             'pageTitle'  => $this->info['title'],
             'pageNote'   => $this->info['note'],
@@ -350,6 +350,9 @@ class UsertripsController extends Controller
 
     public function compareRFP($rfp_id)
     {
+        if (!\Auth::check()) {
+            return redirect('user/login')->with('status', 'error')->with('message', 'You are no Logged in');
+        }
         $value = explode(',', $rfp_id);
 
         $rfps = Rfp::with('userInfo', 'userInfo.hotel')->whereIn("user_trip_id", $value)->get();
@@ -376,35 +379,41 @@ class UsertripsController extends Controller
          *
          * @var \App\Models\Rfp $rfp
          */
-        $rfp = Rfp::findOrFail($rfp_id);
 
-        if (!$user->can('accept', $rfp)) {
-            return response()->json([
-                'success'   => false,
-                'view_data' => 'Sorry, you are not allowed to accept this RFP.',
-            ]);
+        if (!\Auth::check()) {
+            return redirect('user/login')->with('status', 'error')->with('message', 'You are no Logged in');
         }
-
-        $rfp->update(['status' => Rfp::STATUS_BID_SELECTED]);
-
-        if ($rfp->user_id != 0) {
-            $receiver = $rfp->user;
-            $hotel    = $rfp->hotel;
-            $trip     = $rfp->trip;
+        Rfp::where('id', $rfp_id)->update(['status' => 2]);
+        $trip_id = Rfp::findOrFail($rfp_id);
+        if ($trip_id->user_id != 0) {
+            $group = User::findOrFail($trip_id->user_id);
+            $hotel = Hotel::findOrFail($group->hotel_id);
+            $coordinatorId=Rfp::with('trip')->where('id',$rfp_id)->first();
+            //$log_id   = Session::get('uid');
 
             $agree_id = AgreementForm::where('for_rfp', $rfp_id)->first();
 
             if ($agree_id === null) {
-                $agreementBldr = new AgreementBuilder();
-                $agreementBldr
-                    ->setTrip($trip)
-                    ->setHotelManager($receiver)
-                    ->setHotel($hotel)
-                    ->setRfp($rfp);
+               /* $agreementBldr = new AgreementBuilder();
+                $agreementBldr->setTrip($trip)->setHotelManager($receiver)->setHotel($hotel)->setRfp($rfp);
+                $saved = $agreementBldr->create();*/
+                $agreement_sent = date("Y-m-d H:i");
+                $created_at     = date("Y-m-d H:i");
+                $aggreement                 = new AgreementForm();
+                $aggreement->id             = $rfp_id;
+                $aggreement->sender_id      = $coordinatorId->trip->entry_by;
+                $aggreement->reciever_id    = $trip_id->user_id;
+                $aggreement->reciever_group = $group->group_id;
+                $aggreement->coordinator_id = $coordinatorId->trip->entry_by;
+                $aggreement->reciever_email = $group->email;
+                $aggreement->hotel_name     = $hotel->name;
+                $aggreement->hotel_details  = $hotel->address;
+                $aggreement->agreement_text = $trip_id->hotels_message;
+                $aggreement->for_rfp        = $rfp_id;
+                $aggreement->agreement_sent = $agreement_sent;
+                $aggreement->save();
 
-                $saved = $agreementBldr->create();
-
-                if (!$saved) {
+                if (!$aggreement->save()) {
                     return response()->json([
                         'success'   => false,
                         'view_data' => 'Unable to accept bid, please try again later',
@@ -413,28 +422,11 @@ class UsertripsController extends Controller
                     return response()->json([
                         'success'   => true,
                         'redirect'  => route('questionnaire-index', [
-                            'trip_id' => $rfp->user_trip_id,
+                         'trip_id' => $rfp->user_trip_id,
                         ]),
                         'view_data' => 'Accepted Successfully !',
                     ]);
                 }
-
-                $agreement_sent             = date("Y-m-d H:i");
-                $created_at                 = date("Y-m-d H:i");
-                $aggreement                 = new AgreementForm();
-                $aggreement->id             = $rfp_id;
-                $aggreement->sender_id      = $coordinatorId->trip->entry_by;
-                $aggreement->reciever_id    = $receiver->id;
-                $aggreement->reciever_group = $receiver->group_id;
-                $aggreement->coordinator_id = $coordinatorId->trip->entry_by;
-                $aggreement->reciever_email = $receiver->email;
-                $aggreement->hotel_name     = $hotel->name;
-                $aggreement->hotel_details  = $hotel->address;
-                $aggreement->agreement_text = $rfp->hotels_message;
-                $aggreement->for_rfp        = $rfp_id;
-                $aggreement->agreement_sent = $agreement_sent;
-                $aggreement->save();
-
 
             } else {
                 return response()->json([
@@ -498,6 +490,7 @@ class UsertripsController extends Controller
 
     public function acceptAgree($rfp_id)
     {
+
 
         $trip            = Rfp::findOrFail($rfp_id);
         $trip_entry      = UserTrip::findOrFail($trip->user_trip_id);
@@ -574,6 +567,9 @@ class UsertripsController extends Controller
 
     public function declineRFP($rfp_id, $reason)
     {
+        if (!\Auth::check()) {
+            return redirect('user/login')->with('status', 'error')->with('message', 'You are no Logged in');
+        }
         Rfp::where('id', $rfp_id)->update(['status' => 3, 'decline_reason' => $reason]);
         $user_trip_id = Rfp::where('user_trip_id', $rfp_id)->pluck('user_trip_id');
         foreach ($user_trip_id as $item_new) {
@@ -622,6 +618,7 @@ class UsertripsController extends Controller
 
     public function getTeamview(Request $request)
     {
+
         $q                  = (new Team)->newQuery();
         $teams              = $q->orderBy('id', 'desc')->get();
         $user               = Auth::user();
@@ -637,6 +634,9 @@ class UsertripsController extends Controller
 
     public function getTeamdelete($id)
     {
+         if (!\Auth::check()) {
+            return redirect('user/login')->with('status', 'error')->with('message', 'You are no Logged in');
+        }
         Team::findOrFail($id)->delete();
         Session::flash("success", "Record Deleted");
 
@@ -645,6 +645,10 @@ class UsertripsController extends Controller
 
     public function uploadRoster($rfp_id, $team)
     {
+        if (!\Auth::check()) {
+            return redirect('user/login')->with('status', 'error')->with('message', 'You are no Logged in');
+        }
+
         Rfp::where('id', $rfp_id)->update(['team' => $team]);
 
         return response()->json([
@@ -655,13 +659,18 @@ class UsertripsController extends Controller
 
     public function uploadRosters($rfp_id)
     {
+         if (!\Auth::check()) {
+            return redirect('user/login')->with('status', 'error')->with('message', 'You are no Logged in');
+        }
         $teams = Rfp::where('id', $rfp_id)->get();
-
         return view('usertrips' . '.public' . '.uploadRoster', compact('teams'));
     }
 
     public function uploadRostertore(Request $request)
     {
+         if (!\Auth::check()) {
+            return redirect('user/login')->with('status', 'error')->with('message', 'You are no Logged in');
+        }
         $rfp_id          = $request->input('rfp_id');
         $file            = $request->file('room_file')->getClientOriginalName();
         $destinationPath = './uploads/users/';
@@ -679,22 +688,27 @@ class UsertripsController extends Controller
 
     public function show_trips()
     {
+
+         if (!\Auth::check()) {
+            return redirect(URL("/"));
+        }
+        //if (Session::get('level') != 4) {
         /** @var \App\User $user */
         $user = Auth::user();
 
         if (!$user->is_manager && !$user->is_subcoordinator) {
+
             return redirect(URL("/"));
         }
+        
 
-        if ($user->is_manager) {
+       /* if ($user->is_manager) {
             $trips = $user->organization->trips();
         } else {
             $trips = $user->trips();
-        }
+        }*/
 
-        $trips = $trips->with('tripuser', 'rfps')
-                       ->orderBy('added', 'desc')
-                       ->get();
+        $trips = Usertrip::with('tripuser', 'rfps')->where('entry_by',$user->id)->orderBy('added', 'desc')->get();
 
         $data_client = $user;
 
@@ -709,10 +723,12 @@ class UsertripsController extends Controller
         $get_invoice = Rfp::where("status", '!=', 3)->get();
         $data_accept = Rfp::where("status", 2)->get();
         $data_submit = Rfp::where("status", 1)->get();
-        $team        = Team::all();
 
+        $team = Team::where('user_id',$user->id)->get();
+        //$team        = Team::all();
         return view('coordinator.viewtrips',
             compact('trips', 'amenities', 'data_client', 'purchases', 'data_submit', 'get_invoice', 'data_accept', 'client', 'team'));
+
 
     }
 
