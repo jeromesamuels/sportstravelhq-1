@@ -183,7 +183,9 @@ return [
         Mews\Captcha\CaptchaServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
-        Vsmoraes\Pdf\PdfServiceProvider::class            
+        Vsmoraes\Pdf\PdfServiceProvider::class,
+        Way\Generators\GeneratorsServiceProvider::class,
+        Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class           
 
     ],
 

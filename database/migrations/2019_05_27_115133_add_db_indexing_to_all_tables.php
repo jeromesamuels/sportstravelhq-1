@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddDBIndexesOneMigration extends Migration
+class AddDbIndexingToAllTables extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class AddDBIndexesOneMigration extends Migration
      */
     public function up()
     {
-        Schema::table('tb_users', function (Blueprint $table) {
+       Schema::table('tb_users', function (Blueprint $table) {
             $table->index(['username']);
             $table->index(['email']);
             $table->index(['group_id']);

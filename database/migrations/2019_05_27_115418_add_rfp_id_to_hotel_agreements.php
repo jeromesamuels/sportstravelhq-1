@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddRfpIdToHotelAgreement extends Migration
+class AddRfpIdToHotelAgreements extends Migration
 {
     /**
      * Run the migrations.
@@ -26,7 +26,7 @@ class AddRfpIdToHotelAgreement extends Migration
     public function down()
     {
         Schema::table('hotel_agreements', function (Blueprint $table) {
-            $table->dropColumn('rfp_id');
+           $table->dropColumn('rfp_id');
         });
     }
 }
