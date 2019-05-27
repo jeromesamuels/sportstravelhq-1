@@ -174,7 +174,9 @@ class UsersController extends Controller {
                 $sales_manager = $user_invitition->first_name . '' . $user_invitition->last_name;
                 if (count($invitition) == 1 && count($rfps) == 1) {
                     $hotel =Hotel::findOrFail($request->input('hotel_id'));
-                   
+                    if (!\Auth::check()) {
+                        return redirect('user/login')->with('status', 'error')->with('message', 'You are no Logged in');
+                    }
                     AgreementForm::where('reciever_email', $request->input('email'))->update(['reciever_id' => $request->input('id'), 'hotel_name' => $hotel->name, 'hotel_details' => $hotel->address]);
                     Rfp::where('sales_manager', $request->input('email'))->update(['user_id' => $request->input('id'), 'sales_manager' => $sales_manager]);
                     Invitation::where('email', $request->input('email'))->update(['status' => 1]);

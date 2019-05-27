@@ -1078,7 +1078,7 @@
             </div>
             <div class="modal-body">
                 <h5>Select a Team</h5>
-                <select id="upload_roster_select" name='upload_roster_select' rows='5' class='select2'>
+                <select id="upload_roster_select" name='upload_roster_select' class='form-control'>
                     <option value="">--Please select a Team to be added--</option>
                     @foreach($team as $teams) 
                     <option value="{{ $teams->team_name }}">{{ $teams->team_name }}</option>

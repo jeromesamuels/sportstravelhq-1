@@ -64,7 +64,7 @@ Route::post('acceptRFP/{rfp_id}', 'UsertripsController@acceptRFP');
 Route::post('declineRFP/{rfp_id}/{reason}', 'UsertripsController@declineRFP');
 Route::post('acceptAgree/{rfp_id}', 'UsertripsController@acceptAgree');
 
-Route::get('teams', 'UsertripsController@getTeamview')->name('usertrips.team');
+//Route::get('teams', 'UsertripsController@getTeamview')->name('usertrips.team');
 Route::get('compare', 'UsertripsController@compare');
 Route::get('teams/create', 'UsertripsController@getTeam')->name('usertrips.team');
 Route::post('teams/store', 'UsertripsController@getTeamstore')->name('usertrips.team');

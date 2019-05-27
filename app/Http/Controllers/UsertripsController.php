@@ -343,6 +343,9 @@ class UsertripsController extends Controller
 
     public function compareRFP($rfp_id)
     {
+        if (!\Auth::check()) {
+            return redirect('user/login')->with('status', 'error')->with('message', 'You are no Logged in');
+        }
         $value = explode(',', $rfp_id);
         $rfps = Rfp::with('userInfo','userInfo.hotel')->whereIn("user_trip_id", $value)->get();
         return response()->json([
@@ -358,6 +361,9 @@ class UsertripsController extends Controller
          *
          * @var \App\Models\Rfp $rfp
          */
+        if (!\Auth::check()) {
+            return redirect('user/login')->with('status', 'error')->with('message', 'You are no Logged in');
+        }
         Rfp::where('id', $rfp_id)->update(['status' => 2]);
         $trip_id = Rfp::findOrFail($rfp_id);
         
@@ -451,7 +457,9 @@ class UsertripsController extends Controller
 
     public function acceptAgree($rfp_id)
     {
-       
+    if (!\Auth::check()) {
+            return redirect('user/login')->with('status', 'error')->with('message', 'You are no Logged in');
+    }  
     $trip=Rfp::findOrFail($rfp_id);
     $trip_entry=UserTrip::findOrFail($trip->user_trip_id);
     $trip_user=User::findOrFail($trip->user_id);
@@ -521,6 +529,9 @@ class UsertripsController extends Controller
 
     public function declineRFP($rfp_id, $reason)
     {
+        if (!\Auth::check()) {
+            return redirect('user/login')->with('status', 'error')->with('message', 'You are no Logged in');
+        }
         Rfp::where('id', $rfp_id)->update(['status' => 3, 'decline_reason' => $reason]);
         $user_trip_id = Rfp::where('user_trip_id', $rfp_id)->pluck('user_trip_id');
         foreach ($user_trip_id as $item_new) {
@@ -569,6 +580,10 @@ class UsertripsController extends Controller
 
     public function getTeamview(Request $request)
     {
+         if (!\Auth::check()) {
+            return redirect('user/login')->with('status', 'error')->with('message', 'You are no Logged in');
+        }
+
         $q     = (new Team)->newQuery();
         $teams = $q->orderBy('id','desc')->get();
         $user=Auth::user();
@@ -584,6 +599,9 @@ class UsertripsController extends Controller
 
     public function getTeamdelete($id)
     {
+         if (!\Auth::check()) {
+            return redirect('user/login')->with('status', 'error')->with('message', 'You are no Logged in');
+        }
         Team::findOrFail($id)->delete();
         Session::flash("success", "Record Deleted");
 
@@ -592,6 +610,10 @@ class UsertripsController extends Controller
 
     public function uploadRoster($rfp_id, $team)
     {
+        if (!\Auth::check()) {
+            return redirect('user/login')->with('status', 'error')->with('message', 'You are no Logged in');
+        }
+
         Rfp::where('id', $rfp_id)->update(['team' => $team]);
 
         return response()->json([
@@ -602,13 +624,18 @@ class UsertripsController extends Controller
 
     public function uploadRosters($rfp_id)
     {
+         if (!\Auth::check()) {
+            return redirect('user/login')->with('status', 'error')->with('message', 'You are no Logged in');
+        }
         $teams = Rfp::where('id', $rfp_id)->get();
-
         return view('usertrips' . '.public' . '.uploadRoster', compact('teams'));
     }
 
     public function uploadRostertore(Request $request)
     {
+         if (!\Auth::check()) {
+            return redirect('user/login')->with('status', 'error')->with('message', 'You are no Logged in');
+        }
         $rfp_id          = $request->input('rfp_id');
         $file            = $request->file('room_file')->getClientOriginalName();
         $destinationPath = './uploads/users/';
@@ -626,6 +653,9 @@ class UsertripsController extends Controller
 
     public function show_trips()
     {
+         if (!\Auth::check()) {
+            return redirect('user/login')->with('status', 'error')->with('message', 'You are no Logged in');
+        }
         if (Session::get('level') != 4) {
             return redirect(URL("/"));
         }
@@ -652,7 +682,7 @@ class UsertripsController extends Controller
         $get_invoice = Rfp::where("status", '!=', 3)->get();
         $data_accept = Rfp::where("status", 2)->get();
         $data_submit = Rfp::where("status", 1)->get();
-        $team = Team::all();
+        $team = Team::where('user_id',$user->id)->get();
         return view('coordinator.viewtrips', compact('trips', 'amenities', 'data_client', 'purchases', 'data_all', 'data_submit', 'get_invoice', 'data_accept', 'data','client','team'));
 
     }
