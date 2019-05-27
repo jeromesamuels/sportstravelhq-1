@@ -31,7 +31,7 @@ class TripSeeder extends Seeder
      * @param int $coordinator_id The person creating the trips
      * @param int $trip_count     The number of trips to create
      */
-    public function __construct($coordinator_id = 3, $trip_count = 25)
+    public function __construct($coordinator_id = 3, $trip_count = 100)
     {
         $this->_coordinator_id = $coordinator_id;
         $this->_trip_count     = $trip_count;

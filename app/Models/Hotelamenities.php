@@ -8,6 +8,9 @@ class HotelAmenities extends Sximo  {
 	protected $table = 'hotel_amenities';
 	protected $primaryKey = 'id';
 
+    //-- This table does not have created_at and updated_at
+    public $timestamps = false;
+
 	public function __construct() {
 		parent::__construct();
 		

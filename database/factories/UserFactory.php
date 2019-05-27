@@ -1,42 +1,49 @@
 <?php
 
 use App\User;
-use Faker\Generator;
 
 $factory->define(User::class, function (Faker\Generator $faker, $attrs) {
     $password = $attrs['password'] ?? 'secret';
 
     $account_type = $attrs['account_type'] ?? '';
-    $group_id = $attrs['group_id'] ?? 0;
-    $vcode = $attrs['vcode'] ?? 0;
+    $group_id     = $attrs['group_id'] ?? 0;
+    $vcode        = $attrs['vcode'] ?? 0;
 
     if (is_callable($group_id)) {
         $group_id = $group_id();
     }
 
-    if ($account_type === 'coordinator') {
-
+    switch ($account_type) {
+    case 'coordinator':
+    case 'subcoordinator':
+        $organization_name = $attrs['organization_name'] ?? $faker->company;
+        break;
+    case 'super_admin':
+    case 'admin':
+    case 'corporate':
+    default:
+        $organization_name = '';
+        break;
     }
 
-    $email = $faker->unique()->safeEmail;
-    $phone = $faker->phoneNumber;
-    $organization_name = $attrs['organization_name'] ?? $faker->company;
+    $email             = $faker->unique()->safeEmail;
+    $phone             = $faker->phoneNumber;
 
     return [
-        'group_id' => $group_id,
-        'vcode' => $vcode,
-        'username' => $email,
-        'email' => $email,
-        'phone_number' => $phone,
-        'first_name' => $faker->firstName,
-        'last_name' => $faker->lastName,
-        'active' => 1,
-        'o_name' => $organization_name,
-        'address' => $faker->streetAddress,
-        'state' => 'Florida',
-        'city' => $faker->city,
-        'zip' => $faker->postcode,
-        'password' => bcrypt($password),
+        'group_id'       => $group_id,
+        'vcode'          => $vcode,
+        'username'       => $email,
+        'email'          => $email,
+        'phone_number'   => $phone,
+        'first_name'     => $faker->firstName,
+        'last_name'      => $faker->lastName,
+        'active'         => 1,
+        'o_name'         => $organization_name,
+        'address'        => $faker->streetAddress,
+        'state'          => 'Florida',
+        'city'           => $faker->city,
+        'zip'            => $faker->postcode,
+        'password'       => bcrypt($password),
         'remember_token' => str_random(10),
     ];
 });
