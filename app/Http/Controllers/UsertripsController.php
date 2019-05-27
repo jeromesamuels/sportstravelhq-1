@@ -506,7 +506,7 @@ class UsertripsController extends Controller
         $trip_entry_user = User::findOrFail($trip_entry->entry_by);
         if (session('level') == 4) {
 
-            Rfp::where('id', $rfp_id)->update(['status' => 5]);
+            Rfp::where('id', $rfp_id)->update(['status' => Rfp::STATUS_AGREEMENT_CLIENT]);
             /*send an email to coordinator acceptance*/
             $to_co      = $user->email;
             $subject_co = "Thank you for Accepting Aggreement";
@@ -525,7 +525,7 @@ class UsertripsController extends Controller
             });
 
         } else {
-            Rfp::where('id', $rfp_id)->update(['status' => 6]);
+            Rfp::where('id', $rfp_id)->update(['status' => Rfp::STATUS_AGREEMENT_HOTEL]);
 
             /*send an email to manager acceptance*/
             $to_co      = $user->email;
