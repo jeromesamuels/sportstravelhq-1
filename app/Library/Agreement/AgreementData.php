@@ -59,6 +59,7 @@ class AgreementData
     public $name_of_group = '';
     public $contact = '';
 
+    public $hotel_id = 0;
     public $hotel_name = '';
     public $hotel_address = '';
     public $hotel_city = '';
@@ -67,6 +68,7 @@ class AgreementData
     public $hotel_phone = '';
 
 
+    public $user_trip_id = 0;
     public $address = '';
     public $address2 = '';
     public $hotel_honors = '';
@@ -95,6 +97,7 @@ class AgreementData
     public $mode = self::MODE_EDIT;
 
     //-- What the club fills out
+    public $travel_coordinator_id = 0;
     public $hotel_agreements_id = '';
     public $hotel_agreements_address = '';
     public $hotel_agreements_address2 = '';
@@ -115,6 +118,7 @@ class AgreementData
     public $url = '';
 
     //-- What the hotel fills out
+    public $hotel_manager_id = 0;
     public $hotel_agreements_hotel_first_name = '';
     public $hotel_agreements_hotel_last_name = '';
     public $hotel_agreements_hotel_title = '';
@@ -155,6 +159,13 @@ class AgreementData
         'id_title',
         'id_signature_date',
     ];
+
+    /**
+     * The ID to the RFP
+     *
+     * @var int
+     */
+    public $rfp_id;
 
 
     /**

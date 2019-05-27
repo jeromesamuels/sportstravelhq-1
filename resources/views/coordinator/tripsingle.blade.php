@@ -615,7 +615,6 @@
                             </div>
                             @endif
                     </div>
-                    <?php  ?>
                     <div class="col-sm-9" id="print_div">
                        
                         <table class="table " >

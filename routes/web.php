@@ -140,13 +140,15 @@ Route::resource('corporate/user', 'CorporateUsersController');
 Route::get('clientProfile/{id}', 'HomeController@clientProfile')->name('client.clientProfile');
 Route::get('admin', 'HomeController@adminAccount')->name('client.admin');
 
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/trips/', 'UsertripsController@show_trips');
+    Route::get('/trips/{id}', 'UsertripsController@show_trip_detail')->name('coordinator.trips.show');
+    Route::post('invoices/hotel', 'InvoicesController@getHotels');
+    Route::post('sendInvoice', 'InvoicesController@sendInvoice')->name('invoices.sendInvoice');
+    Route::post('multipleInvoice', 'InvoicesController@multipleInvoice')->name('invoices.multipleInvoice');
+    Route::post('/trips/recordFilter', 'UsertripsController@recordFilter');
+});
 
-Route::get('trips/', 'UsertripsController@show_trips');
-Route::get('/trips/{id}', 'UsertripsController@show_trip_detail')->name('coordinator.trips.show');
-Route::post('invoices/hotel', 'InvoicesController@getHotels');
-Route::post('sendInvoice', 'InvoicesController@sendInvoice')->name('invoices.sendInvoice');
-Route::post('multipleInvoice', 'InvoicesController@multipleInvoice')->name('invoices.multipleInvoice');
-Route::post('/trips/recordFilter', 'UsertripsController@recordFilter');
 Route::post('zipHotel', 'InvoicesController@zipHotel');
  //Download Receipt
 Route::get('downloadReceipt', 'InvoicesController@downloadReceipt')->name('downloadReceipt');

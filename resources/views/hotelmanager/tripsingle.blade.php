@@ -664,17 +664,15 @@
                         <div class="text-right">
                             <button class="btn btn-light print-btn" onclick="codespeedy()"> Print</button>
                             <a href="#" class="export btn btn-light print-btn">Export</a>
-                            
-                            <?php
-                             if($rfp && session('gid')== 5 ){ ?>
-                            <button class="btn btn-success" data-toggle="modal" data-target="#myModal"> View Bid </button>
-                            <?php } 
-                            elseif(session('gid')== 5 && $trip->status== 6) {   ?>
-                            <button class="btn btn-info" data-toggle="modal" data-target="#myModal"> Bid Now </button>
-                            <?php } 
-                             else{ ?>
-                           
-                            <?php } ?>
+
+                            @if (auth()->user()->is_hotel_manager)
+                                @if ($rfp)
+                                    <button class="btn btn-success" data-toggle="modal" data-target="#myModal"> View Bid </button>
+                                @elseif ($trip->status == 6)
+                                    <button class="btn btn-info" data-toggle="modal" data-target="#myModal"> Bid Now </button>
+                                @endif
+                            @endif
+
                             <!--  <a href="javascript:window.print()">Print</a>  -->
                         </div>
                     </div>

@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\HotelManager;
 use App\Http\Controllers\Controller;
+use App\Models\Core\Groups;
 use App\Models\UserTrip;
 use App\Models\Invoices;
 use App\Models\HotelAmenities;
@@ -27,7 +28,7 @@ class TripsController extends Controller {
         $user = Auth::user();
         $Hotel = Hotel::findOrFail($user->hotel_id);
 
-        if (session('level') == 1) {
+        if (session('level') == Groups::SUPER_ADMIN) {
             $trips = UserTrip::with('tripuser')->orderBy('added', 'desc')->get();
             $rfps = Rfp::all();
             $data_all =Rfp::all();
@@ -35,7 +36,7 @@ class TripsController extends Controller {
             $active_rfp = Rfp::where("status", '!=', 3)->get();
             $accepted_rfp =  Rfp::where("status", 2)->get();
         } 
-        elseif(session('level') == 6){
+        elseif(session('level') == Groups::CORPORATE){
             $rfps = Rfp::with('usertripInfo','usertripInfo.tripuser')->where('user_id', session('uid'))->orderBy('updated_at', 'desc')->get();
             $trips = UserTrip::with('tripuser')->orderBy('added', 'desc')->get();
             $data_all = Rfp::all();
@@ -44,7 +45,9 @@ class TripsController extends Controller {
             $accepted_rfp = Rfp::where("status", 2)->get();
         }
         else {
-            $trips = UserTrip::with('tripuser')->orderBy('added', 'desc')->where('service_type',$user->service_type)->get();
+            $trips = UserTrip::with('tripuser')
+                             ->orderBy('added', 'desc')
+                             ->where('service_type',$user->service_type)->get();
             $rfps = Rfp::with('usertripInfo','usertripInfo.tripuser')->where('user_id', session('uid'))->orderBy('updated_at', 'desc')->get();
 
             $data_all = Rfp::where('user_id', session('uid'))->get();
@@ -62,6 +65,7 @@ class TripsController extends Controller {
     public function show($id) {
         $trip = UserTrip::with('tripuser')->findOrFail($id);
         $rfp = Rfp::where('user_trip_id', '=', $id)->where('user_id', '=', session('uid'))->first();
+
         $trip_id =Rfp::where("user_trip_id", $trip->id)->first();
         if($trip_id != null){
            $invoice    = Invoices::where('rfp_id',$trip_id->id)->first();

@@ -1,10 +1,10 @@
 <?php
 
 use App\Models\Core\Groups;
-use App\Models\Core\Users;
 use App\Models\Organization;
 use App\Models\TripAmenity;
 use App\Models\UserTrip;
+use App\User;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
         $organization = $organizations[0];
 
         //-- First Create
-        $users = factory(Users::class, 10)
+        $users = factory(User::class, 10)
             ->create(
                 [
                     'password' => 'admin123',
@@ -41,7 +41,7 @@ class UserSeeder extends Seeder
             );
 
         $users->each(
-            function (Users $user) use ($faker, $organization) {
+            function (User $user) use ($faker, $organization) {
                 //-- Add user to org
                 $organization->users()->attach($user->id);
 

@@ -1,9 +1,9 @@
 <?php
 
 use App\Models\Core\Groups;
-use App\Models\Core\Users;
 use App\Models\Organization;
 use App\Models\OrganizationUser;
+use App\User;
 use Illuminate\Database\Migrations\Migration;
 
 class MigrateToOrginationsMigration extends Migration
@@ -17,7 +17,7 @@ class MigrateToOrginationsMigration extends Migration
     {
         $group = Groups::where('name', 'Travel Coordinator')->first();
 
-        $users = Users::where('group_id', $group->group_id)->get();
+        $users = User::where('group_id', $group->group_id)->get();
 
         foreach ($users as $user) {
             //-- Is this a new record that supports the new organization system

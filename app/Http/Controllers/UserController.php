@@ -1,6 +1,8 @@
 <?php 
 namespace App\Http\Controllers;
 use App\Libary\SiteHelpers;
+use App\Models\Core\Groups;
+use App\Models\Organization;
 use Redirect;
 use Socialize;
 use Illuminate\Http\Request;
@@ -25,6 +27,9 @@ use Auth;
 class UserController extends Controller
 {
     protected $layout = "layouts.main";
+
+    const HOTEL_REGISTER = 1;
+    const CLIENT_REGISTER = 2;
 
     public function __construct()
     {
@@ -121,20 +126,26 @@ class UserController extends Controller
             if ($request->input('o_name') != '') {
                 $authen->o_name = $request->input('o_name');
             }
-            if ($user_type == 1) {
+            if ($user_type == self::HOTEL_REGISTER) {
                  $hotel  = new Hotel();
-                 $hotel->hotel_code= $request->input('hotel_code');
+                 $hotel->hotel_code = $request->input('hotel_code');
                  $hotel->type  = $request->input('hotel_type');
                  $hotel->service_type  = $request->input('service_type');
                  $hotel->save();
             }
-            if ($user_type == 1) {
-                $authen->group_id = 5;
-            } elseif ($user_type == 2) {
-                $authen->group_id = 4;
+
+            if ($user_type == self::HOTEL_REGISTER) {
+                $authen->group_id = Groups::HOTEL_MANAGER;
+            } elseif ($user_type == self::CLIENT_REGISTER) {
+                $authen->group_id = Groups::TRAVEL_COORDINATOR;
             } else {
                 $authen->group_id = $this->config['cnf_group'];
             }
+
+            $is_client = $authen->is_manager || $authen->is_subcoordinator;
+
+
+
             $hotel_id = Hotel::where("hotel_code", $request->input('hotel_code'))->pluck('id');
             foreach ($hotel_id as $hotel_id_new) {
                 $authen->hotel_id = $hotel_id_new;
@@ -169,7 +180,22 @@ class UserController extends Controller
                     'body' => 'Thank You for registering with SportsTravel HQ! Please check your inbox and click on the activation link below ' . $new_code,
                 )
             );
-            $authen->save();
+
+            $saved = $authen->save();
+
+            if ($saved && $is_client) {
+                $org = new Organization();
+                //-- Grab the org name, if none provided use their name
+                $org->name = $authen->o_name || $authen->full_name;
+                //-- Set the client as the account holder for the organization
+                $org->user_id = $authen->id;
+                $org_saved = $org->save();
+
+                if ($org_saved) {
+                    $org->users()->attach($authen->id);
+                }
+            }
+
             $data = array(
                 'firstname' => $request->input('firstname'),
                 'lastname'  => $request->input('lastname'),
@@ -178,6 +204,7 @@ class UserController extends Controller
                 'code'      => $code,
                 'subject'   => "[ " . $this->config['cnf_appname'] . " ] REGISTRATION ",
             );
+
             if (config('sximo.cnf_activation') == 'confirmation') {
                 $to      = $request->input('email');
                 $subject = "[ " . $this->config['cnf_appname'] . " ] REGISTRATION ";

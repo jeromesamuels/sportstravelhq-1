@@ -1,12 +1,14 @@
 <?php
 
-use App\Models\Core\Users;
+use App\User;
+use Faker\Generator;
 
-$factory->define(Users::class, function (Faker\Generator $faker, $attrs) {
+$factory->define(User::class, function (Faker\Generator $faker, $attrs) {
     $password = $attrs['password'] ?? 'secret';
 
     $account_type = $attrs['account_type'] ?? '';
     $group_id = $attrs['group_id'] ?? 0;
+    $vcode = $attrs['vcode'] ?? 0;
 
     if (is_callable($group_id)) {
         $group_id = $group_id();
@@ -22,6 +24,7 @@ $factory->define(Users::class, function (Faker\Generator $faker, $attrs) {
 
     return [
         'group_id' => $group_id,
+        'vcode' => $vcode,
         'username' => $email,
         'email' => $email,
         'phone_number' => $phone,

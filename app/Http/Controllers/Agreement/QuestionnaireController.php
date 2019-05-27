@@ -1,6 +1,6 @@
 <?php
 /**
- * Hotel.php controls the agreement that everyone signs
+ * QuestionnaireController.php controls the questions asked before the agreement
  * php version 7.1
  *
  * @category Agreement
@@ -14,10 +14,14 @@ namespace App\Http\Controllers\Agreement;
 
 use App\Http\Controllers\Controller;
 use App\Library\Agreement\AgreementData;
+use App\Models\HotelAgreement;
+use App\Models\Rfp;
+use App\Models\UserTrip;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /**
- * Class Hotel
+ * Class QuestionnaireController
  * php version 7.1
  *
  * @category Agreement
@@ -26,11 +30,11 @@ use Illuminate\Http\Request;
  * @license  https://opensource.org/licenses/BSD-3-Clause BSD
  * @link     https://sportstravelhq.com
  */
-class Hotel extends Controller
+class QuestionnaireController extends Controller
 {
 
     /**
-     * The hotel agreement action
+     * The questionnaire index
      *
      * @param \Illuminate\Http\Request $request The http request
      *
@@ -40,14 +44,25 @@ class Hotel extends Controller
     {
         \Debugbar::disable();
 
-        $trip       = [];
-        $agreementData = new AgreementData();
+        /**
+         * The authorized user
+         *
+         * @var \App\User $user
+         */
+        $user = Auth::user();
+
+        $trip = UserTrip::findOrFail($request->get('trip_id'));
+
+        if (!$user->can('view', $trip)) {
+            return response('You do not have access to this trip', 403);
+        }
+
+        $agreement = HotelAgreement::where('user_trip_id', $trip->id)->with('rfp', 'hotel', 'trip')->first();
 
         return view(
-            'agreement.index',
+            'agreement.questionnaire',
             [
-                'trip'       => $trip,
-                'doc_values' => $agreementData->toArray(),
+                'agreement' => $agreement,
             ]
         );
     }

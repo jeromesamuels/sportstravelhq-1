@@ -53,7 +53,7 @@ class HotelAddress
      *
      * @return string
      */
-    public function parseAddress($value): string
+    public function parseAddress($value): HotelAddress
     {
         $address = explode(',', $value);
 
@@ -84,5 +84,7 @@ class HotelAddress
         if (strlen($country) > 0) {
             $this->country = $country;
         }
+
+        return $this;
     }
 }

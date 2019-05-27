@@ -281,8 +281,8 @@
                                         <?php 
                                             $playerson = $y;
                                              $maxplayers = $sum;
-                                            
-                                             $percentage =($playerson / $maxplayers) * 100; // floor (round down) optional
+
+                                             $percentage =(max($playerson, 1) / max($maxplayers, 1)) * 100; // floor (round down) optional
                                              $type_percent=round($percentage);
                                             ?>
                                         <div class="final_range">

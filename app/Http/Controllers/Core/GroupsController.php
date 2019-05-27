@@ -2,7 +2,6 @@
 
 
 use App\Http\Controllers\Controller;
-use App\Models\Core\Users;
 use App\Models\Core\Groups;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;

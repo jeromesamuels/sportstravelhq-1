@@ -97,6 +97,14 @@ class RfpPolicy
      */
     public function accept(User $user, Rfp $rfp)
     {
+        if ($user->is_manager) {
+            //-- If they are a manager, ensure the manager only access users
+            // within the organization, and not other users outside the
+            // organization
+            return $user->organization->hasUserId($rfp->trip->entry_by);
+        }
+
+        //-- If they are not a manager then they need to be a trip owner
         return $rfp->trip->entry_by === $user->id;
     }
 }
