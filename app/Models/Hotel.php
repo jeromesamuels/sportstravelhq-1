@@ -27,5 +27,10 @@ class Hotel extends Sximo  {
 		return "  ";
 	}
 	
+     // Many To Many Relation With Amenities
+	public function amenities(){
+		return $this->belongsToMany(hotelamenities::class,'h_amenity_pivot','hotel_id','amenity_id');
+	}
+	
 
 }
