@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddCodeToHotelsTable extends Migration
+class CreateOrganizationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,15 @@ class AddCodeToHotelsTable extends Migration
      */
     public function up()
     {
-        Schema::table('hotels', function (Blueprint $table) {
-            $table->string('code')->after('type');
+        Schema::create('organizations', function (Blueprint $table) {
+           $table->increments('id');
+
+            $table->string('name', 255);
+
+            $table->timestamps();
+
+            //-- Lookup indexes
+            $table->index(['name']);
         });
     }
 
@@ -25,8 +32,6 @@ class AddCodeToHotelsTable extends Migration
      */
     public function down()
     {
-        Schema::table('hotels', function (Blueprint $table) {
-            $table->dropColumn('code');
-        });         
+        Schema::dropIfExists('organizations');
     }
 }

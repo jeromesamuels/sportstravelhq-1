@@ -1,11 +1,10 @@
 <?php
-
 use App\Models\Sximo\Menu;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddPreferencesLinkMigration extends Migration
+class AddPreferencesToMenu extends Migration
 {
     /**
      * Run the migrations.

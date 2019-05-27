@@ -1,8 +1,13 @@
 <?php namespace App\Http\Controllers;
+use App\Http\Controllers\Controller;
+use App\Models\Core\Users;
 use App\Models\Core\Groups;
 use App\Models\Core\CorporateUsers;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Validator, Input, Redirect;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use App\Models\Rfp;
 use App\Models\Invoices;
 use App\Models\Hotel;
@@ -18,9 +23,9 @@ class CorporateUsersController extends Controller {
     public function __construct() {
         parent::__construct();
         $this->model = new CorporateUsers();
-        $this->info = $this->model->makeInfo('corporate_user');
+        $this->info = $this->model->makeInfo($this->module);
       
-        $this->data = array('pageTitle' => $this->info['title'] ?? '', 'pageNote' => $this->info['note'] ?? '', 'pageModule' => 'corporate/user', 'return' => self::returnUrl());
+        $this->data = array('pageTitle' => $this->info['title'], 'pageNote' => $this->info['note'], 'pageModule' => 'corporate/user', 'return' => self::returnUrl());
     }
 
     public function index(Request $request) {

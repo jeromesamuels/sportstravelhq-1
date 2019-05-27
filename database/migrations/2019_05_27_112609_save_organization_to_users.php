@@ -1,12 +1,13 @@
 <?php
-
 use App\Models\Core\Groups;
 use App\Models\Organization;
 use App\Models\OrganizationUser;
 use App\User;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class MigrateToOrginationsMigration extends Migration
+class SaveOrganizationToUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -15,7 +16,7 @@ class MigrateToOrginationsMigration extends Migration
      */
     public function up()
     {
-        $group = Groups::where('name', 'Travel Coordinator')->first();
+       $group = Groups::where('name', 'Travel Coordinator')->first();
 
         $users = User::where('group_id', $group->group_id)->get();
 

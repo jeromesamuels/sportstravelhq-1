@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTeamCcAuthFormTable extends Migration
+class CreateTeamPaymentDefaultsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -30,10 +30,6 @@ class CreateTeamCcAuthFormTable extends Migration
             $table->index(['user_id', 'team_id']);
             $table->index(['user_id']);
             $table->index(['team_id']);
-        });
-
-        Schema::table('hotel_agreement_defaults', function (Blueprint $table) {
-            $table->index(['user_id']);
         });
     }
 
