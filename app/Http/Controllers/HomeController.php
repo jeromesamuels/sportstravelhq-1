@@ -438,4 +438,5 @@ class HomeController extends Controller {
         //echo $purchases_date;
         return view('client.admin', compact('data_hotel', 'trip_booking', 'user', 'rfps_new', 'purchases', 'purchases_due'));
     }
+    
 }

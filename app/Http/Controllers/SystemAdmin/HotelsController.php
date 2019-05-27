@@ -92,7 +92,7 @@ class HotelsController extends Controller {
         $hotel->rating = $request->rating;
         $hotel->active = $request->active == "true" ? true : false;
         $hotel->save();
-        $hotel->amenities()->sync($request->amenities);
+        //$hotel->amenities()->sync($request->amenities);
         Session::flash("success", "New Hotel Added Successfully");
         return redirect()->action('SystemAdmin\HotelsController@viewHotels');
     }
@@ -181,7 +181,7 @@ class HotelsController extends Controller {
         $hotel->rating = $request->rating;
         $hotel->active = $request->active == "true" ? true : false;
         $hotel->save();
-        $hotel->amenities()->sync($request->amenities);
+        //$hotel->amenities()->sync($request->amenities);
         Session::flash("success", "Hotel Updated Successfully");
         return redirect()->back();
     }
