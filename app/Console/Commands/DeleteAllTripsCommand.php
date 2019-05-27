@@ -62,12 +62,19 @@ class DeleteAllTripsCommand extends Command
 
             /** @var \App\Models\Rfp $rfp */
             foreach ($rfps as $rfp) {
-                $rfp->delete();
                 $invoices = $rfp->invoices;
                 /** @var \App\Models\invoices $invoice */
                 foreach ($invoices as $invoice) {
                     $invoice->delete();
                 }
+
+                /** @var \App\Models\HotelAgreement $agreement */
+                $agreement = $rfp->hotelAgreement;
+                if ($agreement) {
+                    $agreement->delete();
+                }
+
+                $rfp->delete();
             }
 
             $trip->delete();

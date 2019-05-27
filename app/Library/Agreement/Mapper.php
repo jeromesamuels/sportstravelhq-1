@@ -48,6 +48,7 @@ class Mapper
         $address = new HotelAddress();
         $address->parseAddress($hotel->address);
 
+        $data->hotel_id      = $hotel->id;
         $data->hotel_name    = $hotel->name;
         $data->hotel_address = $hotel->address;
         $data->hotel_city    = $hotel->city;
@@ -219,6 +220,7 @@ class Mapper
      */
     public function mapFromHotelManager(User $hotel_manager, AgreementData $data)
     {
+        $data->hotel_manager_id = $hotel_manager->id;
         $data->hotel_agreements_hotel_first_name = $hotel_manager->first_name;
         $data->hotel_agreements_hotel_last_name  = $hotel_manager->last_name;
         $data->hotel_agreements_hotel_title      = 'Sales Manager';
@@ -276,6 +278,8 @@ class Mapper
         $agreement->hotel_id = $data->hotel_id;
         $agreement->user_trip_id = $data->user_trip_id;
         $agreement->travel_coordinator_id = $data->travel_coordinator_id;
+        $agreement->hotel_manager_id = $data->hotel_manager_id;
+
 
         return $agreement;
     }

@@ -102,4 +102,9 @@ class Rfp extends Model
     {
         return $this->hasMany(Invoices::class);
     }
+
+    public function hotelAgreement()
+    {
+        return $this->hasOne(HotelAgreement::class);
+    }
 }
