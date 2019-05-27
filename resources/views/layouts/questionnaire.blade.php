@@ -9,10 +9,10 @@
     @if(!Request::get('print'))
         <link href="//fonts.googleapis.com/css?family=Mukta:400,700|Open+Sans:400,700" rel="stylesheet">
     @endif
-{{--    <link href="{{ url(mix('css/agreement-style.css', 'hotel-agreement')) }}" rel="stylesheet">--}}
-    <!-- Vue Component Styles -->
+<!-- Vue Component Styles -->
     @if (config('APP_ENV') === 'production')
-        <link href="{{ url(mix('css/questionnaire.css', 'hotel-agreement')) }}" rel="stylesheet">
+        <link href="{{ url(mix('css/agreement-style.css', 'hotel-agreement')) }}" rel="stylesheet">
+        <link href="{{ url(mix('css/questionnaire-style.css', 'hotel-agreement')) }}" rel="stylesheet">
     @endif
 
     @if(!Request::get('print'))
@@ -27,7 +27,30 @@
 
 </head>
 <body>
-@yield('content')
+<header id="header">
+    <nav class="navbar navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="index.php"><img src="/images/logo-new.png" style="max-height: 78px"></a>
+            <div class="collapse navbar-toggleable-sm" id="nav-content">
+                <ul class="nav navbar-nav  pull-right goal-nav">
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-warning text-white login_button" data-toggle="modal"
+                           data-target="#flipFlop" href="#flipFlop">LOGIN</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2" style="min-height: 900px; margin-top: 10px;">
+            <div class="well page">
+                @yield('content')
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Polyfills for wkhtmltopdf -->
 {{--<script src="/bower_components/es5-shim/es5-shim.min.js"></script>--}}
 {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/json3/3.3.2/json3.min.js"></script>--}}
@@ -36,7 +59,6 @@
 
 <script type="text/javascript">
     var print = @json(Request::get('print'));
-{{--    var trip = @json($trip);--}}
     var FULLURL = @json(url('/'));
     var data = @json($agreement);
     window.Laravel = @json(['csrfToken' => csrf_token(), 'url' => url('/')]);
@@ -46,10 +68,16 @@
 {{--<script type="text/javascript" src="{{ url(mix('js/questionnaire-style.js', 'hotel-agreement')) }}"></script>--}}
 <script type="text/javascript" src="{{ url(mix('js/questionnaire.js', 'hotel-agreement')) }}"></script>
 @if(Request::get('print'))
-<script type="text/javascript" src="{{ url(mix('js/print-style.js', 'hotel-agreement')) }}"></script>
+    <script type="text/javascript" src="{{ url(mix('js/print-style.js', 'hotel-agreement')) }}"></script>
+@endif
+@if (config('APP_ENV') !== 'production')
+    <script type="text/javascript" src="{{ url(mix('js/agreement-style.js', 'hotel-agreement')) }}"></script>
+    <script type="text/javascript" src="{{ url(mix('js/questionnaire-style.js', 'hotel-agreement')) }}"></script>
 @endif
 <script type="text/javascript">
-    setTimeout(function () { window.status = "done"; }, 4000);
+    setTimeout(function () {
+        window.status = "done";
+    }, 4000);
 </script>
 </body>
 </html>

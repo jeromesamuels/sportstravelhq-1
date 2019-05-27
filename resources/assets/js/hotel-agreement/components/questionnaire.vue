@@ -9,13 +9,13 @@
 
         <div class="form-group label-static is-focused">
             <label>Are you authorized to sign the hotel agreement?</label>
-            <div class="radio radio-primary">
+            <div class="radio">
                 <label>
                     <input type="radio" name="is_authorized" value="1" v-bind:value="1"
                            v-model="is_authorized"> Yes
                 </label>
             </div>
-            <div class="radio radio-primary">
+            <div class="radio">
                 <label>
                     <input type="radio" name="is_authorized" value="0" v-bind:value="0"
                            v-model="is_authorized"> No
@@ -111,6 +111,7 @@
                     <p>An email will be sent to each authorized person, per team, to complete the hotel authorization form.</p>
                 </div>
 
+                <!--
                 <div class="row" v-for="(teams_chunk, i) in teams_chunks">
                     <div :class="'col-sm-' + (12 / teams_chunk.length)" v-for="(team, j) in teams_chunk">
                         <h3>{{ team.teams_name }} - {{ team.teams_gender.toLocaleUpperCase() }}</h3>
@@ -169,7 +170,7 @@
                         </div>
                     </div>
                 </div>
-
+                -->
             </div>
         </transition>
 
@@ -228,7 +229,7 @@
     });
     export default {
         name: 'Questionnaire',
-        props: ['formData'],
+        props: ['formData', 'print'],
         directives: {
             'sticky': VueSticky,
         },
@@ -264,7 +265,11 @@
                 // }),
             }
         },
-        mount() {
+        mounted() {
+            if (!this.print) {
+                jQuery.material.init();
+                console.log('enable material!');
+            }
         },
         methods: {
             phoneMask(value) {

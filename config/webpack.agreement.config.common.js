@@ -13,6 +13,7 @@ const webpackConfig = {
         agreement: helpers.root('resources', 'assets', 'js', 'hotel-agreement', 'app'),
         questionnaire: helpers.root('resources', 'assets', 'js', 'hotel-agreement', 'questionnaire'),
         'agreement-style': helpers.root('resources', 'assets', 'sass', 'hotel-agreement', 'agreement.scss'),
+        'questionnaire-style': helpers.root('resources', 'assets', 'sass', 'hotel-agreement', 'questionnaire.scss'),
         'print-style': helpers.root('resources', 'assets', 'sass', 'hotel-agreement', 'print.scss'),
     },
     resolve: {

@@ -6,10 +6,6 @@ import Bootstrap from 'bootstrap-sass/assets/javascripts/bootstrap';
 import BootstrapMaterial from 'bootstrap-material-design/scripts/material';
 import BootstraRipple from 'bootstrap-material-design/scripts/ripples';
 
-if (!print) {
-    jQuery.material.init();
-    console.log('enable material!');
-}
 
 jQuery.ajaxSetup({
     headers: {
