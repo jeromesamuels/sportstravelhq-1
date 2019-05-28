@@ -2,8 +2,10 @@
 namespace App\Http\Controllers\HotelManager;
 use App\Http\Controllers\Controller;
 use App\Models\Roomlisting;
+use App\Models\Core\Groups;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Auth;
 
 class BillingController extends Controller {
     public function __construct() {
@@ -13,7 +15,8 @@ class BillingController extends Controller {
     }
 
     public function showRoomListing() {
-        if (Session::get('level') != 1) {
+        $user = Auth::user();
+        if ($user->group_id != Groups::SUPER_ADMIN) {
             $roomListings = Roomlisting::where('hmanager_id', Session::get('uid'))->orderBy('created_at', 'desc')->get();
         } else {
             $roomListings = Roomlisting::orderBy('created_at', 'desc')->get();

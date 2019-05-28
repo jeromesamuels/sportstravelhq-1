@@ -11,6 +11,7 @@ use App\Models\UserTrip;
 use App\User;
 use Auth;
 use Carbon\Carbon;
+use App\Models\Core\Groups;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -101,7 +102,7 @@ class HotelManagerController extends Controller
 
     public function bidSent($id)
     {
-        Rfp::where('user_trip_id', $id)->update(['status' => 3]);
+        Rfp::where('user_trip_id', $id)->update(['status' => Rfp::STATUS_BID_SENT]);
 
         return redirect()->back()->with('Success', 'Bid Declined Successfully !');
     }
@@ -120,12 +121,11 @@ class HotelManagerController extends Controller
         }
 
         $hotel_data = Hotel::find($user->hotel_id);
-
-        if (Session::get('level') != 1 && Session::get('level') != 6) {
+        if ($user->group_id != Groups::SUPER_ADMIN && $user->group_id  != Groups::CORPORATE) {
             $agreements = AgreementForm::with('agreementRfp')->where('reciever_id', '=', session('uid'))->orWhere('coordinator_id', '=', $user_id)->orderBy('created_at',
                 'DESC')->get();
 
-        } elseif ($hotel_data->name != '' && Session::get('level') == 6) {
+        } elseif ($hotel_data->name != '' && $user->group_id  == Groups::CORPORATE) {
             $agreements = AgreementForm::with('agreementRfp')->orderBy('created_at', 'DESC')->where('hotel_name', $hotel_data->name)->get();
         } else {
             $agreements = AgreementForm::with('agreementRfp')->orderBy('created_at', 'DESC')->get();
@@ -246,7 +246,7 @@ class HotelManagerController extends Controller
         if (is_null($record_exists)) {
             $rfp->save();
             Rfp::where('id', $rfp->rfp_id)->update(['status' => 4]);
-            $users = User::findOrFail(1);
+            $users = User::where('group_id',Groups::SUPER_ADMIN)->first();
             /*send an invoice*/
             $to = [$email, $users->email];
             \Mail::send('user.emails.invoiceMail', compact('rfp'), function ($message) use ($rfp, $to) {
@@ -285,7 +285,7 @@ class HotelManagerController extends Controller
     public function blackoutReport()
     {
         $user = Auth::user();
-        if (session('level') == 1) {
+        if ($user->group_id == Groups::SUPER_ADMIN) {
             $hotel = Hotel::orderBY('updated_at', 'desc')->where('blackout_start', '!=', '')->get();
         } else {
             $hotel = Hotel::orderBY('updated_at', 'desc')->where([['blackout_start', '!=', ''], ['id', $user->hotel_id]])->get();

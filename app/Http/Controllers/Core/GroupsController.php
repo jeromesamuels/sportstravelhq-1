@@ -34,7 +34,7 @@ class GroupsController extends Controller {
 	{
 		// Make Sure users Logged 
 		if(!\Auth::check()) 
-			return redirect('user/login')->with('status', 'error')->with('message','You are no Logged in');
+			return redirect('user/login')->with('status', 'error')->with('message','You are not Logged in');
 		$this->grab( $request) ;
 		if($this->access['is_view'] ==0) 
 			return redirect('dashboard')->with('message', __('core.note_restric'))->with('status','error');				

@@ -9,6 +9,7 @@ use App\Models\usertrip;
 use Carbon\Carbon;
 use App\User;
 use App\Models\Hotel;
+use App\Models\Core\Groups;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -16,7 +17,7 @@ class CorporateController extends Controller
 {
 	public function __construct(){
 		if(Session::has('level')){
-			if(Session::get('level') != 5)
+			if(Session::get('level') != Groups::HOTEL_MANAGER)
 				return redirect()->back();
 		}
 		else
@@ -24,7 +25,7 @@ class CorporateController extends Controller
 	}
 
     public function index() {
-        $this->data['tc_users'] = User::where("group_id", 4)->count();
+        $this->data['tc_users'] = User::where("group_id", Groups::TRAVEL_COORDINATOR)->count();
         $this->data['hotel_info'] = Hotel::findOrFail(Session::get('hid'));
 
     	return view('corporate.index', $this->data);

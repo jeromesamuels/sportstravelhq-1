@@ -210,7 +210,8 @@
                     <div class="head">
                         <span>Revenue By Corporate</span>                        
                     </div>
-                    @if(session('level')==1 || session('level')==2)
+                    @if($corporate->group_id==1 || $corporate->group_id==2)
+                 
                     <div class="body">
                         @foreach($data_all as $all_data)
                              <?php  
@@ -242,6 +243,7 @@
                         @endforeach
                     </div>
                     @else
+
                     <div class="body">
                         @foreach($data_hotel as $value)
                         <?php  
@@ -292,7 +294,7 @@
                     <div class="head">
                         <span>Revenue by Hotels</span>
                     </div>
-                    @if(session('level')==1 || session('level')==2)
+                    @if($corporate->group_id==1 || $corporate->group_id==2)
                     <div class="body">
                         <script>
                             window.onload = function () {

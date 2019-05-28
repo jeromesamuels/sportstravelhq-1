@@ -18,7 +18,7 @@ use Auth;
 class TripsController extends Controller {
     public function __construct() {
         if (Session::has('level')) {
-            if (Session::get('level') != 5) return redirect()->back();
+            if (Session::get('level') != Groups::HOTEL_MANAGER) return redirect()->back();
         } else return redirect()->back();
     }
 
@@ -28,37 +28,34 @@ class TripsController extends Controller {
         $user = Auth::user();
         $Hotel = Hotel::findOrFail($user->hotel_id);
        
-        if (session('level') == Groups::SUPER_ADMIN) {
+        if ($user->group_id == Groups::SUPER_ADMIN) {
             $trips = UserTrip::with('tripuser')->orderBy('added', 'desc')->get();
             $rfps = Rfp::all();
             $data_all =Rfp::all();
             $purchases = Invoices::sum('invoices.amt_paid');
-            $active_rfp = Rfp::where("status", '!=', 3)->get();
-            $accepted_rfp =  Rfp::where("status", 2)->get();
+            $active_rfp = Rfp::where("status", '!=', Rfp::STATUS_BID_SENT)->get();
+            $accepted_rfp =  Rfp::where("status", Rfp::STATUS_BID_SELECTED)->get();
         } 
         elseif($user->group_id== Groups::CORPORATE){
             $rfps = Rfp::with('usertripInfo','usertripInfo.tripuser')->where('user_id', session('uid'))->orderBy('updated_at', 'desc')->get();
             $trips = UserTrip::with('tripuser')->orderBy('added', 'desc')->get();
-
             $data_all = Rfp::all();
             $purchases = Invoices::where('invoices.hotel_type', $Hotel->type)->sum('invoices.amt_paid');
-            $active_rfp = Rfp::where("status", '!=', 3)->get();
-            $accepted_rfp = Rfp::where("status", 2)->get();
+            $active_rfp = Rfp::where("status", '!=',  Rfp::STATUS_BID_SENT)->get();
+            $accepted_rfp = Rfp::where("status", Rfp::STATUS_BID_SELECTED)->get();
         }
         else {
             $trips = UserTrip::with('tripuser')->orderBy('added','desc')->where('service_type',$user->service_type)->get();
-          
             $rfps = Rfp::with('usertripInfo','usertripInfo.tripuser')->where('user_id', session('uid'))->orderBy('updated_at', 'desc')->get();
-              
             $data_all = Rfp::where('user_id', session('uid'))->get();
             $purchases = Invoices::where('invoices.hotel_name', $user->hotel_id)->sum('invoices.amt_paid');
-            $active_rfp = Rfp::where("status", '!=', 3)->where('user_id', session('uid'))->get();
-            $accepted_rfp = Rfp::where("status", 2)->where('user_id', session('uid'))->get();
+            $active_rfp = Rfp::where("status", '!=', Rfp::STATUS_BID_SENT)->where('user_id', session('uid'))->get();
+            $accepted_rfp = Rfp::where("status", Rfp::STATUS_BID_SELECTED)->where('user_id', session('uid'))->get();
         }
-        $trip_booking = UserTrip::where("status", 6)->get();
-        $data_grp = User::where('group_id', 4)->get();
-        $amenities = HotelAmenities::all();
-        
+            $trip_booking = UserTrip::where("status",Rfp::STATUS_AGREEMENT_HOTEL)->get();
+            $data_grp = User::where('group_id', Groups::TRAVEL_COORDINATOR)->get();
+            $amenities = HotelAmenities::all();
+    
         return view('hotelmanager.viewtrips', compact('trips', 'amenities', 'rfps', 'trip_booking', 'active_rfp', 'accepted_rfp', 'data_all', 'purchases', 'data_grp', 'trip_month'));
     }
 
@@ -78,11 +75,11 @@ class TripsController extends Controller {
         $hotel = Hotel::findOrFail($user->hotel_id);
       
         $trip_booking = UserTrip::all();
-        if (session('level') == 1) {
+        if ($user->group_id == Groups::SUPER_ADMIN) {
           $rfps_new = Rfp::with('usertripInfo','usertripInfo.tripuser')->orderBy('updated_at', 'desc')->get();
           $purchases = Invoices::sum('invoices.amt_paid');
         }
-        elseif($user->group_id==6){
+        elseif($user->group_id==Groups::CORPORATE){
            $rfps_new = Rfp::with('usertripInfo','usertripInfo.tripuser')->orderBy('updated_at', 'desc')->get(); 
             foreach ($data_hotel as $value) {
             $name = $value->type;
@@ -95,7 +92,7 @@ class TripsController extends Controller {
 
         }
        
-        if (session('uid') == 5) {
+        if ($user->group_id == Groups::HOTEL_MANAGER) {
             UserTrip::where('id', $id)->update(['status' => 6]);
         }
         

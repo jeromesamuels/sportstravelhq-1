@@ -5,13 +5,15 @@ use App\Models\Core\Groups;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Validator, Input, Redirect ; 
+use Auth;
 
 class ElfinderController extends Controller {
 
 	public function __construct()
 	{
-        $this->middleware(function ($request, $next) {           
-            if(session('gid') !='1')
+        $this->middleware(function ($request, $next) {  
+        $user = Auth::user();         
+            if($user->group_id != Groups::SUPER_ADMIN)
                 return redirect('dashboard')
                 ->with('messagetext','You Dont Have Access to Page !')->with('msgstatus','error');            
             return $next($request);
@@ -25,8 +27,8 @@ class ElfinderController extends Controller {
 		$data = array('pageTitle' =>'FileManager' , 'pageNote'=>'Manage My Files' );
 		//return public_path().'/uploads/userfiles/';
 		if(!is_dir(public_path().'/uploads/userfiles/')) mkdir(public_path().'/uploads/userfiles/',0777);
-		$groupID = \Session::get('gid');
-		if($groupID ==1 or $groupID ==2 ) 
+		$user = Auth::user();
+		if($user->group_id == Groups::SUPER_ADMIN or $user->group_id == Groups::ADMINISTRATOR ) 
 		{
 			$data['folder'] = 'uploads/'; 
 		} else {

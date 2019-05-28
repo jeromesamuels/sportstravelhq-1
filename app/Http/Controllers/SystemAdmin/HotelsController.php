@@ -4,6 +4,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Hotel;
 use App\Models\Rfp;
 use App\User;
+use Auth;
+use App\Models\Core\Groups;
 use App\Models\Invoices;
 use App\Models\State;
 use App\Models\UserTrip;
@@ -22,6 +24,7 @@ class HotelsController extends Controller {
 
     public function viewHotels(Request $request) {
         $q = (new Hotel)->newQuery();
+        $user = Auth::user();
         $searchField = "";
         if ($request->searchField) {
             $q->where('name', "LIKE", $request->searchField . "%");
@@ -36,9 +39,9 @@ class HotelsController extends Controller {
         $purchases_due_month = Invoices::whereRaw('MONTH(created_at)', [$currentMonth])->sum('invoices.est_amt_due');
         $purchases_due = Invoices::sum('invoices.est_amt_due');
         $trips = UserTrip::all();
-        $rfps_new = Rfp::where('status', 2)->get();
+        $rfps_new = Rfp::where('status',Rfp::STATUS_BID_SELECTED)->get();
         $trip_booking = UserTrip::whereRaw('MONTH(added) = ?', [$currentMonth])->get();
-        if(session('level')==1 || session('level')==2){
+        if($user->group_id==Groups::SUPER_ADMIN || $user->group_id==Groups::ADMINISTRATOR){
         return view('systemadmin.viewHotels', compact('hotels', 'searchField', 'purchases', 'purchases_due', 'trip_booking', 'data_hotel', 'rfps_new', 'purchases_month', 'purchases_due_month','trips'));
        }
        else{
@@ -119,7 +122,7 @@ class HotelsController extends Controller {
         $currentMonth = date('m');
         $purchases = Invoices::where('invoices.hotel_name', $id)->whereRaw('MONTH(created_at) = ?', [$currentMonth])->sum('invoices.amt_paid');
         $purchases_due = Invoices::where('invoices.hotel_name', $id)->whereRaw('MONTH(created_at) = ?', [$currentMonth])->sum('invoices.est_amt_due');
-        $hotel_contract = Rfp::get()->where("status", '!=', 3)->all();
+        $hotel_contract = Rfp::get()->where("status", '!=', Rfp::STATUS_BID_SENT)->all();
         $hotel_trips = Rfp::where('user_id', $user)->orderBy('created_at', 'desc')->paginate(10);
         /*Total Booking of this month*/
         $trip_booking = UserTrip::whereRaw('MONTH(added) = ?', [$currentMonth])->get();
