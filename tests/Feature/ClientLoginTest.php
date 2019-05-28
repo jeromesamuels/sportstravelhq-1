@@ -3,7 +3,9 @@
 namespace Tests\Feature;
 
 use App\Models\Core\Groups;
+use App\Notifications\SendTwoFactorVerificationCode;
 use App\User;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class ClientLoginTest extends TestCase
@@ -15,7 +17,7 @@ class ClientLoginTest extends TestCase
      */
     public function testLoginPage()
     {
-        $faker = \Faker\Factory::create();
+        $faker    = \Faker\Factory::create();
         $response = $this->get('/user/login');
 
         $response->assertSuccessful();
@@ -27,19 +29,51 @@ class ClientLoginTest extends TestCase
      *
      * @return void
      */
-    public function testClientCanLogIn()
+    public function testClientCanLogInVerified()
     {
-        $password = 'admin123';
+        $password = 'admin@123';
 
         $user = factory(User::class)->create(
             [
-                'vcode' => 1,
+                'vcode'    => 1,
                 'password' => bcrypt($password),
                 'group_id' => Groups::TRAVEL_COORDINATOR,
             ]
         );
 
-        $postData      = [
+        $postData = [
+            'email'    => $user->email,
+            'password' => $password,
+        ];
+
+        $response = $this->post('/user/signin', $postData);
+
+        $response->assertSessionDoesntHaveErrors();
+        $response->assertRedirect('/client');
+        $this->assertAuthenticatedAs($user);
+
+    }
+
+    /**
+     * See if a client can login.
+     *
+     * @return void
+     */
+    public function testClientCanLogInNotVerified()
+    {
+        Notification::fake();
+
+        $password = 'admin@123';
+
+        $user = factory(User::class)->create(
+            [
+                'vcode'    => 0,
+                'password' => bcrypt($password),
+                'group_id' => Groups::TRAVEL_COORDINATOR,
+            ]
+        );
+
+        $postData = [
             'email'    => $user->email,
             'password' => $password,
         ];
@@ -48,8 +82,32 @@ class ClientLoginTest extends TestCase
 
         $response->assertSessionDoesntHaveErrors();
 
+        $code = '';
+        Notification::assertSentTo(
+            [$user],
+            SendTwoFactorVerificationCode::class,
+            function (SendTwoFactorVerificationCode $notice) use (&$code) {
+                $code = $notice->getCode();
+
+                return true;
+            }
+        );
+
+        $response->assertRedirect('/user/login/code');
+
+        $response = $this->post(
+            '/user/signin',
+            [
+                'code'      => $code,
+                'send_code' => 1,
+                'user_id'   => $user->id,
+                'email'     => $user->email,
+                'password'  => $password,
+            ]
+        );
+
+        $response->assertStatus(302);
         $response->assertRedirect('/client');
         $this->assertAuthenticatedAs($user);
-
     }
 }

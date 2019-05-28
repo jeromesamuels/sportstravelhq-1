@@ -88,4 +88,26 @@ class SendTwoFactorVerificationCode extends Notification
             //
         ];
     }
+
+    /**
+     * Get the two factor verification code
+     *
+     * @return string
+     */
+    public function getCode(): string
+    {
+        return $this->_code;
+    }
+
+    /**
+     * Set the two factor verification code
+     *
+     * @param string $code The two factor authentication code
+     *
+     * @return void
+     */
+    public function setCode(string $code): void
+    {
+        $this->_code = $code;
+    }
 }
