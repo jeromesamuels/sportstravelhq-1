@@ -216,7 +216,7 @@
                         <p style="font-size: 14px;padding-top: 10px;">Total Month</p>
                     </div>
                     <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                        <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $revenu_due }}</h4>
+                        <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $revenu_due ?? 0.00 }}</h4>
                     </div>
                 </div>
                 <div class="col-md-3" style="border-right: 1px solid #c3bfbf;">
@@ -225,7 +225,7 @@
                         <p style="font-size: 14px;padding-top: 10px;">Total Month</p>
                     </div>
                     <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                        <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $revenu_due }}</h4>
+                        <h4 style="float:right;top: 50px;position: absolute;right: 10px;">${{ $revenu_due ?? 0.00 }}</h4>
                     </div>
                 </div>
                 <div class="col-md-3" style="border-right: 1px solid #c3bfbf;">
@@ -234,7 +234,7 @@
                         <p style="font-size: 14px;padding-top: 10px;">Total Month</p>
                     </div>
                     <div class="info-boxes" style="background: #fff; color: #000;float:right;">
-                        <h4 style="float:right;top: 50px;position: absolute;right:10px;color: #5dbbe0;">${{ $sum_new }}</h4>
+                        <h4 style="float:right;top: 50px;position: absolute;right:10px;color: #5dbbe0;">${{ $sum_new ?? 0.00 }}</h4>
                     </div>
                 </div>
             </div>

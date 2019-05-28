@@ -183,7 +183,7 @@ class ModuleSeeder extends Seeder
   },
   {
     "module_id": 57,
-    "module_name": "usertrips",
+    "module_name": "usertrip",
     "module_title": "Book a hotel now!",
     "module_note": "Booking Hotels  for Sports Team  Made Easy",
     "module_author": null,

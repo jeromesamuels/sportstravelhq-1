@@ -8,7 +8,7 @@
 
 
         <div class="form-group label-static is-focused">
-            <label>Are you authorized to sign the hotel agreement?</label>
+            <label class="control-label">Are you authorized to sign the hotel agreement?</label>
             <div class="radio">
                 <label>
                     <input type="radio" name="is_authorized" value="1" v-bind:value="1"
