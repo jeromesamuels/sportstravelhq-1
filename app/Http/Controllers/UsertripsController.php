@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Library\Agreement\AgreementBuilder;
 use App\Models\AgreementForm;
 use App\Models\Hotel;
+use App\Models\Core\Groups;
 use App\Models\HotelAmenities;
 use App\Models\Invoices;
 use App\Models\Rfp;
@@ -497,7 +498,7 @@ class UsertripsController extends Controller
         $trip_user       = User::findOrFail($trip->user_id);
         $user            = Auth::user();
         $trip_entry_user = User::findOrFail($trip_entry->entry_by);
-        if (session('level') == 4) {
+        if ($user->group_id == Groups::TRAVEL_COORDINATOR) {
 
             Rfp::where('id', $rfp_id)->update(['status' => Rfp::STATUS_AGREEMENT_CLIENT]);
             /*send an email to coordinator acceptance*/
@@ -541,8 +542,9 @@ class UsertripsController extends Controller
 
 
             /*send an email to Main Corporate  for aggreement acceptance*/
-            $corporate    = User::findOrFail(5);
-            $to_corp      = $corporate->email;
+
+            $corporate    = User::where('group_id',Groups::CORPORATE)->first();
+            $to_corp      = [$corporate->email];
             $subject_corp = "Manager Has Accepted Aggreement";
             $data_corp    = array(
                 "trip_id"          => $trip->user_trip_id,

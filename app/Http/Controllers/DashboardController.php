@@ -8,19 +8,21 @@ use App\Models\UserTrip;
 use App\Models\Hotelamenities;
 use App\Models\Rfp;
 use App\Models\Invoices;
+use App\Models\Core\Groups;
 use Illuminate\Support\Facades\DB;
+
 class DashboardController extends Controller {
     public function __construct() {
         parent::__construct();
         $this->data = array('pageTitle' => $this->config['cnf_appname'], 'pageNote' => 'Welcome to Dashboard',);
     }
     public function index(Request $request) {
-        $this->data['tc_users'] = User::where("group_id", 4)->count();
-        $this->data['ro_users'] = User::where("group_id", 3)->count();
+        $this->data['tc_users'] = User::where("group_id", Groups::TRAVEL_COORDINATOR)->count();
+        $this->data['ro_users'] = User::where("group_id", Groups::USERS)->count();
         $this->data['hotels'] = Hotelamenities::count();
         $this->data['rfps'] = Rfp::count();
-        $this->data['data_decline'] = Rfp::where("status", '!=', 3)->get();
-        $this->data['data_accept'] = Rfp::where("status", 2)->get();
+        $this->data['data_decline'] = Rfp::where("status", '!=', Rfp::STATUS_BID_SENT)->get();
+        $this->data['data_accept'] = Rfp::where("status", Rfp::STATUS_BID_SELECTED)->get();
         $this->data['purchases_month'] = Invoices::sum('invoices.amt_paid');
         $this->data['data_hotel'] = Hotel::groupBy('type')->get();
         $this->data['trips'] = UserTrip::count();

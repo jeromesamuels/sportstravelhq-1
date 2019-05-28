@@ -192,7 +192,7 @@
 						<?php 
                         }else{}
                     }
-						elseif(session('level')==1 || session('level')==2){ ?>
+						elseif($users->group_id==1 || $users->group_id==2){ ?>
 						    <tr style="border-bottom-style: dashed;border-color: #eee;">
 							<td> {{ ++$i }} </td>
 							<td ><input type="checkbox" class="ids minimal-green send_invoices" name="ids[]" value="{{ $row->id }}" />  </td>

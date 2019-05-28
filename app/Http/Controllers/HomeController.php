@@ -2,6 +2,7 @@
 use App\Models\Post;
 use App\Library\Markdown;
 use Mail;
+use App\Models\Core\Groups;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Illuminate\Support\Facades\DB;
@@ -250,14 +251,14 @@ class HomeController extends Controller {
 
     public function revenue() {
         /*for corportae*/
-        $client = User::where('group_id', 4)->get();
         $corporate = Auth::user();
+        $client = User::where('group_id', Groups::TRAVEL_COORDINATOR)->get();
         $hcorporateData = Hotel::findOrFail($corporate->hotel_id);
         $data_hotel = Hotel::groupBy('type')->where('id', $corporate->hotel_id)->get();
         $data_all = Hotel::groupBy('type')->get();
         
         
-        if ($corporate->group_id == 6) {
+        if ($corporate->group_id == Groups::CORPORATE) {
              $trip =UserTrip::where("status", 6)->get();
             $purchases_new = Invoices::where('invoices.hotel_type', '=', $hcorporateData->type)->sum('invoices.amt_paid');
             $purchases_due = Invoices::where('invoices.hotel_type', '=', $hcorporateData->type)->sum('invoices.est_amt_due');
@@ -279,7 +280,7 @@ class HomeController extends Controller {
                     $purchases = Invoices::where(['invoices.hotel_type' => $name])->whereRaw('YEAR(created_at) = ?', $i)->sum('invoices.amt_paid');
                     }
                 }
-        } elseif ($corporate->group_id == 5) {
+        } elseif ($corporate->group_id == Groups::HOTEL_MANAGER) {
             $trip=  Rfp::with('usertripInfo','usertripInfo.tripuser')->where('user_id', session('uid'))->orderBy('updated_at', 'desc')->get();
        
             $purchases_new = Invoices::where('invoices.hotel_name', '=', $corporate->hotel_id)->sum('invoices.amt_paid');
@@ -305,9 +306,9 @@ class HomeController extends Controller {
             } else {
                 return redirect()->back();
             }
+
         } else {
              $trip = UserTrip::all();
-
             foreach ($data_all as $data_all_new) {
                 $purchases_new = Invoices::where('invoices.hotel_type', '=', $data_all_new->type)->sum('invoices.amt_paid');
                 $purchases_due = Invoices::where('invoices.hotel_type', '=', $data_all_new->type)->sum('invoices.est_amt_due');
@@ -333,7 +334,7 @@ class HomeController extends Controller {
     public function booking() {
         $corporate = Auth::user();
         $hotel_type = Hotel::findOrFail($corporate->hotel_id);
-        if ($corporate->group_id == 6) {
+        if ($corporate->group_id == Groups::CORPORATE) {
             $data_hotel = Hotel::groupBy('type')->where('type', $hotel_type->type)->get();
             foreach ($data_hotel as $value) {
                 $name = $value->type;
@@ -345,21 +346,22 @@ class HomeController extends Controller {
             $purchases = Invoices::sum('invoices.amt_paid');
             $purchases_due = Invoices::sum('invoices.est_amt_due');
         }
-        $data_user = User::where('group_id', 3)->get();
+        $data_user = User::where('group_id', Groups::USERS)->get();
         $trip_booking = UserTrip::all();
         return view('invoices.booking', compact('data_hotel', 'data_user', 'purchases', 'purchases_due', 'trip_booking'));
     }
 
     public function client() {
+        $user = Auth::user();
         $data_hotel = Hotel::groupBy('type')->get();
-        if (session('level') == 4) {
+        if ($user->group_id == Groups::TRAVEL_COORDINATOR) {
             $data_client = User::where('id', session('uid'))->get();
             $trip_booking = UserTrip::where('entry_by', session('uid'))->get();
-            $rfps_new = Rfp::where('status', 2)->get();
+            $rfps_new = Rfp::where('status', Rfp::STATUS_BID_SELECTED)->get();
         } else {
-            $data_client = User::where('group_id', 4)->orderBy('created_at','desc')->get();
+            $data_client = User::where('group_id', Groups::TRAVEL_COORDINATOR)->orderBy('created_at','desc')->get();
             $trip_booking = UserTrip::all();
-             $rfps_new = Rfp::where('status', 2)->get();
+             $rfps_new = Rfp::where('status', Rfp::STATUS_BID_SELECTED)->get();
         }
    
             $currentMonth = date('m');
@@ -377,12 +379,13 @@ class HomeController extends Controller {
     }
 
     public function clientProfile($id) {
+        $user = Auth::user();
         $clientTrips = UserTrip::where('entry_by', $id)->paginate(10);
         $data_client = User::where("id", $id)->get();
         $data_rfps = Rfp::where('user_trip_id', $id);
         $data_hotel = Hotel::groupBy('type')->get();
         $currentMonth = date('m');
-         if (session('level') == 4) {
+         if ($user->group_id == Groups::TRAVEL_COORDINATOR) {
         $trip_booking = UserTrip::whereRaw('MONTH(added) = ?', [$currentMonth])->where('entry_by', session('uid'))->get();
         }
         else{
@@ -428,7 +431,7 @@ class HomeController extends Controller {
         $data_hotel = Hotel::groupBy('type')->get();
         $user = Auth::user();
         $trip_booking = UserTrip::all();
-        $rfps_new = Rfp::where('status', 2)->get();
+        $rfps_new = Rfp::where('status', Rfp::STATUS_BID_SELECTED)->get();
         foreach ($data_hotel as $value) {
             $name = $value->type;
             $currentMonth = date('m');

@@ -15,7 +15,7 @@ class AddPreferencesToMenu extends Migration
     {
         $preference = Menu::where('menu_name', 'Preferences')->first();
         if ($preference) {
-            $preference->url = url('client/preferences/index');
+            $preference->url = url('http://13.92.240.159/demo/public/client/preferences/index');
             $preference->save();
         }
     }

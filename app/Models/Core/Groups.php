@@ -25,6 +25,7 @@ class Groups extends Sximo  {
     const HOTEL_MANAGER = 5;
     const CORPORATE = 6;
     const SUB_COORDINATOR = 7;
+    const CORPORATE_USER = 8;
 
     public function __construct($attributes = array())
     {
@@ -32,8 +33,6 @@ class Groups extends Sximo  {
     }
 
 	public static function querySelect(  ){
-		
-		
 		return " SELECT  
 	tb_groups.group_id,
 	tb_groups.name,

@@ -4,6 +4,8 @@ use App\Models\Sximo;
 use App\Library\AppHelper;
 use App\Library\FormHelper;
 use Illuminate\Http\Request;
+use App\Models\Core\Groups;
+use Auth;
 use Validator, Input, Redirect; 
 
 class FormController extends Controller {
@@ -12,7 +14,8 @@ class FormController extends Controller {
 	{       
         parent::__construct();
         $this->middleware(function ($request, $next) {           
-            if(session('gid') !='1')
+            $user = Auth::user();
+            if( $user->group_id != Groups::SUPER_ADMIN)
                 return redirect('dashboard')
                 ->with('message','You Dont Have Access to Page !')->with('status','error');            
             return $next($request);

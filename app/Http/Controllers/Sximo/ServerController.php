@@ -3,7 +3,8 @@
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Validator, Input, Redirect; 
-
+use App\Models\Core\Groups;
+use Auth;
 
 
 class ServerController extends Controller {
@@ -12,7 +13,8 @@ class ServerController extends Controller {
     {
         parent::__construct();
         $this->middleware(function ($request, $next) {           
-            if(session('gid') !='1')
+             $user = Auth::user();
+            if( $user->group_id != Groups::SUPER_ADMIN)
                 return redirect('dashboard')
                 ->with('messagetext','You Dont Have Access to Page !')->with('msgstatus','error');            
             return $next($request);
