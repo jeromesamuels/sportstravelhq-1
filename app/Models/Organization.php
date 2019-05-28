@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @property \App\User coordinators
  * @property \App\User subcoordinators
+ * @property int     user_id
  */
 class Organization extends Model
 {
@@ -71,6 +72,26 @@ class Organization extends Model
             'organization_id',
             'entry_by'
         );
+    }
+
+    /**
+     * Get all payee defaults for the credit card auth form
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function hotelCcAuthDefaults()
+    {
+        return $this->hasMany(HotelCcAuthDefault::class);
+    }
+
+    /**
+     * Get all hotel agreement defaults
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function hotelAgreementDefaults()
+    {
+        return $this->hasMany(HotelAgreementDefault::class);
     }
 
     /**

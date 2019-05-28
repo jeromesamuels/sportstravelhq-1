@@ -59,6 +59,17 @@ class UserTrip extends Sximo
         return $this->hasMany(Rfp::class, 'user_trip_id');
     }
 
+
+    /**
+     * Get the trips accepted RFP
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function acceptedRfp()
+    {
+        return $this->hasOne(Rfp::class, 'user_trip_id');
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

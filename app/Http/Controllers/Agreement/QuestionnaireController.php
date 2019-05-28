@@ -42,8 +42,6 @@ class QuestionnaireController extends Controller
      */
     public function index(Request $request)
     {
-        \Debugbar::disable();
-
         /**
          * The authorized user
          *
@@ -57,12 +55,19 @@ class QuestionnaireController extends Controller
             return response('You do not have access to this trip', 403);
         }
 
+        $organization = $user->organization;
+        $cc_auth_defaults = $organization->hotelCcAuthDefaults;
+        $agreement_defaults = $organization->hotelAgreementDefaults;
+
         $agreement = HotelAgreement::where('user_trip_id', $trip->id)->with('rfp', 'hotel', 'trip')->first();
+        $cc_authorization = $agreement->rfp->cc_authorization;
 
         return view(
             'agreement.questionnaire',
             [
-                'agreement' => $agreement,
+                'cc_authorization' => $cc_authorization,
+                'agreement_defaults' => $agreement_defaults,
+                'cc_auth_defaults' => $cc_auth_defaults,
             ]
         );
     }

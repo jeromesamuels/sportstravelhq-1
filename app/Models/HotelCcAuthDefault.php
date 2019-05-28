@@ -25,14 +25,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon created_at
  * @property \Carbon\Carbon updated_at
  */
-class TeamPaymentDefault extends Model
+class HotelCcAuthDefault extends Model
 {
     /**
      * The attributes that aren't mass assignable.
      *
      * @var array
      */
-    protected $guarded = ['id', 'user_id', 'team_id', 'created_at', 'updated_at'];
+    protected $guarded = ['id', 'user_id', 'organization_id', 'created_at', 'updated_at'];
 
 
     /**
@@ -50,8 +50,8 @@ class TeamPaymentDefault extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function team()
+    public function organization()
     {
-        return $this->belongsTo(Team::class);
+        return $this->belongsTo(Organization::class);
     }
 }

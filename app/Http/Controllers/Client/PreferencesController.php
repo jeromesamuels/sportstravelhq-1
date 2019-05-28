@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePreferences;
 use App\Models\HotelAgreementDefault;
 use App\Models\Team;
-use App\Models\TeamPaymentDefault;
+use App\Models\HotelCcAuthDefault;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ViewErrorBag;
@@ -48,7 +48,7 @@ class PreferencesController extends Controller
 
         $teams         = Team::all();
         $team_ids      = $teams->pluck('id')->all();
-        $team_defaults = TeamPaymentDefault::whereIn('team_id', $team_ids)->get();
+        $team_defaults = HotelCcAuthDefault::whereIn('team_id', $team_ids)->get();
 
         $errors = $request->session()->pull('errors', new ViewErrorBag());
 
@@ -109,7 +109,7 @@ class PreferencesController extends Controller
         if (isset($validated['teams']) && is_array($validated['teams'])) {
             foreach ($validated['teams'] as $team_id => $team) {
                 //-- TODO: Permissions to make sure the user has access to this TEAM!
-                $team_default = TeamPaymentDefault::firstOrCreate(
+                $team_default = HotelCcAuthDefault::firstOrCreate(
                     [
                         'team_id' => $team_id,
                         'user_id' => $user->id,

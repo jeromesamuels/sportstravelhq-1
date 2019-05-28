@@ -164,7 +164,7 @@
                                 /**
                                  * List of team defaults
                                  *
-                                 * @var \App\Models\TeamPaymentDefault[] $team_defaults
+                                 * @var \App\Models\HotelCcAuthDefault[] $team_defaults
                                  */
                                 use Illuminate\Support\ViewErrorBag;
                                 ?>
