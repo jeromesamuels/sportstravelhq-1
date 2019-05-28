@@ -15,6 +15,8 @@ class DatabaseSeeder extends Seeder
         $this->call(HotelAmenitiesSeeder::class);
         $this->call(MenuSeeder::class);
         $this->call(ModuleSeeder::class);
+        $this->call(GroupAccessSeeder::class);
+        $this->call(PagesSeeder::class);
         $this->call(TripStatusSeeder::class);
         $this->call(TripSeeder::class);
     }

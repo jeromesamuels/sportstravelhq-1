@@ -333,7 +333,7 @@
                     <h3 style="padding-top:30px;color: #5dbbe0;">{{ $trips }}</h3>
                     <p style="font-size: 14px;">All Customers</p>
                     <br /><br />
-                    <strong class="pull-right" style="color: #5dbbe0;font-size: 18px;">{{ $sum }}$</strong>
+                    <strong class="pull-right" style="color: #5dbbe0;font-size: 18px;">{{ $sum ?? 0 }}$</strong>
                     <b style="display:block;">Average Revenue</b>
                     <p>Total Revenue</p>
                 </div>

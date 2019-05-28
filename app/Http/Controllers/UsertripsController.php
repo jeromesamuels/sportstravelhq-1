@@ -391,8 +391,8 @@ class UsertripsController extends Controller
         $rfp->update(['status' => Rfp::STATUS_BID_SELECTED]);
 
         if ($rfp->user_id != 0) {
-            $receiver = $rfp->user;
-            $hotel    = $rfp->hotel;
+            $receiver = $rfp->userInfo;
+            $hotel    = $receiver->hotel;
             $trip     = $rfp->trip;
 
             $agree_id = AgreementForm::where('for_rfp', $rfp_id)->first();

@@ -18,12 +18,12 @@ class BaseUserSeeder extends Seeder
     {
         $faker = \Faker\Factory::create();
 
-        $super_id      = Groups::where('name', 'Superadmin')->first()->group_id;
-        $admin_id      = Groups::where('name', 'Administrator')->first()->group_id;
-        $corp_id      = Groups::where('name', 'Corporate')->first()->group_id;
-        $hotel_id      = Groups::where('name', 'Hotel Manager')->first()->group_id;
-        $coord_id      = Groups::where('name', 'Travel Coordinator')->first()->group_id;
-        $subcoord_id   = Groups::where('name', 'Subcoordinator')->first()->group_id;
+        $super_id    = Groups::where('name', 'Superadmin')->first()->group_id;
+        $admin_id    = Groups::where('name', 'Administrator')->first()->group_id;
+        $corp_id     = Groups::where('name', 'Corporate')->first()->group_id;
+        $hotel_id    = Groups::where('name', 'Hotel Manager')->first()->group_id;
+        $coord_id    = Groups::where('name', 'Travel Coordinator')->first()->group_id;
+        $subcoord_id = Groups::where('name', 'Subcoordinator')->first()->group_id;
 
         $users = [
             [
@@ -107,6 +107,8 @@ class BaseUserSeeder extends Seeder
                 $organization = $organizations[0];
 
                 $user->organizations()->attach($organization->id);
+                $user->organization_id = $organization->id;
+                $user->save();
             }
         }
     }

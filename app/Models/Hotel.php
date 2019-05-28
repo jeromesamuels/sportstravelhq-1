@@ -8,6 +8,13 @@ class Hotel extends Sximo  {
 	protected $table = 'hotels';
 	protected $primaryKey = 'id';
 
+    /**
+     * This is for the type service_type field.
+     * I dont know which is which, but its a zero or a one.
+     */
+    const SERVICE_FULL = 0;
+    const SERVICE_PARTIAL = 1;
+
 	public function __construct() {
 		parent::__construct();
 		

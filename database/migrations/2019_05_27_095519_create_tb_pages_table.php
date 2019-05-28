@@ -25,7 +25,7 @@ class CreateTbPagesTable extends Migration {
 			$table->enum('status', array('enable','disable'))->nullable()->default('enable');
 			$table->text('access', 65535)->nullable();
 			$table->enum('allow_guest', array('0','1'))->nullable()->default('0');
-			$table->enum('template', array('frontend','backend'))->nullable()->default('frontend');
+			$table->enum('template', array('frontend','backend', ''))->nullable()->default('frontend');
 			$table->string('metakey')->nullable();
 			$table->text('metadesc', 65535)->nullable();
 			$table->enum('default', array('0','1'))->nullable()->default('0');

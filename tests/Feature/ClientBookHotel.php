@@ -78,7 +78,7 @@ class ClientBookHotel extends TestCase
             'double_queen_qty' => 2,
             'double_king_qty'  => 3,
             'trip_amenities'   => [1, 3],
-            'service_type'     => '1',
+            'service_type'     => $faker->boolean,
             'comment'          => $faker->paragraph,
             'added'            => null,
             'status'           => null,

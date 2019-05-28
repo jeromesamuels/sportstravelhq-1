@@ -101,7 +101,11 @@ class RfpPolicy
             //-- If they are a manager, ensure the manager only access users
             // within the organization, and not other users outside the
             // organization
-            return $user->organization->hasUserId($rfp->trip->entry_by);
+            if ($user->organization) {
+                return $user->organization->hasUserId($rfp->trip->entry_by);
+            } else {
+                //-- This is bad, event client belongs to an organization...
+            }
         }
 
         //-- If they are not a manager then they need to be a trip owner

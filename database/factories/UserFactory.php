@@ -7,6 +7,7 @@ $factory->define(User::class, function (Faker\Generator $faker, $attrs) {
 
     $account_type = $attrs['account_type'] ?? '';
     $group_id     = $attrs['group_id'] ?? 0;
+    $hotel_id     = $attrs['hotel_id'] ?? 0;
     $vcode        = $attrs['vcode'] ?? 0;
 
     if (is_callable($group_id)) {
@@ -21,6 +22,7 @@ $factory->define(User::class, function (Faker\Generator $faker, $attrs) {
     case 'super_admin':
     case 'admin':
     case 'corporate':
+    case 'manager':
     default:
         $organization_name = '';
         break;
@@ -29,8 +31,13 @@ $factory->define(User::class, function (Faker\Generator $faker, $attrs) {
     $email             = $faker->unique()->safeEmail;
     $phone             = $faker->phoneNumber;
 
+    if ($account_type === 'manager' && !$hotel_id) {
+
+    }
+
     return [
         'group_id'       => $group_id,
+        'hotel_id'       => $hotel_id,
         'vcode'          => $vcode,
         'username'       => $email,
         'email'          => $email,
