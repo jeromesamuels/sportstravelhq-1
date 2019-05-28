@@ -379,54 +379,68 @@ class UsertripsController extends Controller
          *
          * @var \App\Models\Rfp $rfp
          */
+        $rfp = Rfp::findOrFail($rfp_id);
 
-        if (!\Auth::check()) {
-            return redirect('user/login')->with('status', 'error')->with('message', 'You are no Logged in');
+        if (!$user->can('accept', $rfp)) {
+            return response()->json([
+                'success'   => false,
+                'view_data' => 'Sorry, you are not allowed to accept this RFP.',
+            ]);
         }
-        Rfp::where('id', $rfp_id)->update(['status' => 2]);
-        $trip_id = Rfp::findOrFail($rfp_id);
-        if ($trip_id->user_id != 0) {
-            $group = User::findOrFail($trip_id->user_id);
-            $hotel = Hotel::findOrFail($group->hotel_id);
-            $coordinatorId=Rfp::with('trip')->where('id',$rfp_id)->first();
-            //$log_id   = Session::get('uid');
+
+        $rfp->update(['status' => Rfp::STATUS_BID_SELECTED]);
+
+        if ($rfp->user_id != 0) {
+            $receiver = $rfp->user;
+            $hotel    = $rfp->hotel;
+            $trip     = $rfp->trip;
 
             $agree_id = AgreementForm::where('for_rfp', $rfp_id)->first();
 
             if ($agree_id === null) {
-               /* $agreementBldr = new AgreementBuilder();
-                $agreementBldr->setTrip($trip)->setHotelManager($receiver)->setHotel($hotel)->setRfp($rfp);
-                $saved = $agreementBldr->create();*/
-                $agreement_sent = date("Y-m-d H:i");
-                $created_at     = date("Y-m-d H:i");
-                $aggreement                 = new AgreementForm();
-                $aggreement->id             = $rfp_id;
-                $aggreement->sender_id      = $coordinatorId->trip->entry_by;
-                $aggreement->reciever_id    = $trip_id->user_id;
-                $aggreement->reciever_group = $group->group_id;
-                $aggreement->coordinator_id = $coordinatorId->trip->entry_by;
-                $aggreement->reciever_email = $group->email;
-                $aggreement->hotel_name     = $hotel->name;
-                $aggreement->hotel_details  = $hotel->address;
-                $aggreement->agreement_text = $trip_id->hotels_message;
-                $aggreement->for_rfp        = $rfp_id;
-                $aggreement->agreement_sent = $agreement_sent;
-                $aggreement->save();
+                $agreementBldr = new AgreementBuilder();
+                $agreementBldr
+                    ->setTrip($trip)
+                    ->setHotelManager($receiver)
+                    ->setHotel($hotel)
+                    ->setRfp($rfp);
 
-                if (!$aggreement->save()) {
+                $saved = $agreementBldr->create();
+
+                if (!$saved) {
                     return response()->json([
                         'success'   => false,
                         'view_data' => 'Unable to accept bid, please try again later',
                     ]);
-                } else {
+                }
+
+                /* Wait until this is more fleshed out so the existing workflow works.
+                 * else {
                     return response()->json([
                         'success'   => true,
                         'redirect'  => route('questionnaire-index', [
-                         'trip_id' => $rfp->user_trip_id,
+                            'trip_id' => $rfp->user_trip_id,
                         ]),
                         'view_data' => 'Accepted Successfully !',
                     ]);
-                }
+                }*/
+
+                $agreement_sent             = date("Y-m-d H:i");
+                $created_at                 = date("Y-m-d H:i");
+                $aggreement                 = new AgreementForm();
+                $aggreement->id             = $rfp_id;
+                $aggreement->sender_id      = $trip->entry_by;
+                $aggreement->reciever_id    = $receiver->id;
+                $aggreement->reciever_group = $receiver->group_id;
+                $aggreement->coordinator_id = $trip->entry_by;
+                $aggreement->reciever_email = $receiver->email;
+                $aggreement->hotel_name     = $hotel->name;
+                $aggreement->hotel_details  = $hotel->address;
+                $aggreement->agreement_text = $rfp->hotels_message;
+                $aggreement->for_rfp        = $rfp_id;
+                $aggreement->agreement_sent = $agreement_sent;
+                $aggreement->save();
+
 
             } else {
                 return response()->json([
@@ -490,8 +504,6 @@ class UsertripsController extends Controller
 
     public function acceptAgree($rfp_id)
     {
-
-
         $trip            = Rfp::findOrFail($rfp_id);
         $trip_entry      = UserTrip::findOrFail($trip->user_trip_id);
         $trip_user       = User::findOrFail($trip->user_id);
