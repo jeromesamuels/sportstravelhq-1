@@ -24,6 +24,7 @@ use Illuminate\Notifications\Notifiable;
  * @property int                        group_id
  * @property string                     first_name
  * @property string                     last_name
+ * @property int                        organization_id
  */
 class User extends Authenticatable
 {

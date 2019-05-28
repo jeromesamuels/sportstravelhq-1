@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Core\Groups;
+use App\Models\Hotel;
 use App\Models\Organization;
 use App\Models\TripAmenity;
 use App\Models\UserTrip;
@@ -102,6 +103,25 @@ class BaseUserSeeder extends Seeder
             $user->vcode = $user_data['vcode'];
             $user->save();
 
+            $hotel = factory(Hotel::class, 1)->create();
+
+            switch ($user_data['account_type']) {
+            case 'corporate':
+            case 'manager':
+                //-- I assume they are both from the same hotel?
+                $user->hotel_id = $hotel->first()->id;
+                $user->save();
+                break;
+            case 'coordinator':
+                $organizations = factory(Organization::class, 1)->create();
+                $organization = $organizations[0];
+
+                $user->organizations()->attach($organization->id);
+                $user->organization_id = $organization->id;
+                $user->save();
+                break;
+            }
+
             if ($user_data['account_type'] === 'coordinator') {
                 $organizations = factory(Organization::class, 1)->create();
                 $organization = $organizations[0];
@@ -110,6 +130,8 @@ class BaseUserSeeder extends Seeder
                 $user->organization_id = $organization->id;
                 $user->save();
             }
+
+
         }
     }
 }

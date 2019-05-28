@@ -392,7 +392,7 @@ class UsertripsController extends Controller
 
         if ($rfp->user_id != 0) {
             $receiver = $rfp->userInfo;
-            $hotel    = $receiver->hotel;
+            $hotel    = $rfp->hotel;
             $trip     = $rfp->trip;
 
             $agree_id = AgreementForm::where('for_rfp', $rfp_id)->first();

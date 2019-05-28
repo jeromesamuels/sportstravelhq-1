@@ -8,6 +8,7 @@ Setup configuration file first. You will need to read through the ENV to setup t
 
     cp .env.example .env
     php composer.phar install
+    php artisan key:generate
 
 Then run migration and seeding
     
