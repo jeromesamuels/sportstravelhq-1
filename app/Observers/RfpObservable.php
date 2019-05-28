@@ -15,13 +15,14 @@ class RfpObservable
      */
     public function saved(Rfp $rfp)
     {
-        $original_status = $rfp->getOriginal('status');
-        $current_status  = $rfp->status;
+        $current_status = $rfp->status;
 
-        $is_selected        = $current_status === RFP::STATUS_BID_SELECTED;
-        $status_has_changed = $current_status !== $original_status;
-        if ($is_selected && $status_has_changed) {
-            $rfp->trip->rfp_id = $rfp->id;
+        $is_selected = $current_status === RFP::STATUS_BID_SELECTED;
+        if ($is_selected) {
+            $trip = $rfp->trip;
+
+            $trip->rfp_id = $rfp->id;
+            $trip->save();
         }
 
     }
