@@ -7,6 +7,7 @@ Hooking hotels for sports teams made easy. Hotel Search, Proposals, Contract Sig
 Setup configuration file first. You will need to read through the ENV to setup the application correctly.
 
     cp .env.example .env
+    php composer.phar install
 
 Then run migration and seeding
     

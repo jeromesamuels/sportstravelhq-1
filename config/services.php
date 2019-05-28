@@ -54,5 +54,14 @@ return [
     //    'client_id' => '725712687473196',
         'client_secret' => '97af69633d9f00e4d3d2e9929574d9e9',
         'redirect' => 'http://sximobuilder.com/sximodemo/sximo5/user/facebook',
-    ],  
+    ],
+
+    'twilio' => [
+        'username' => env('TWILIO_USERNAME'), // optional when using auth token
+        'password' => env('TWILIO_PASSWORD'), // optional when using auth token
+        'auth_token' => env('TWILIO_AUTH_TOKEN', '424cddd97c717bd28f77b212168b6ad2'), // optional when using username and password
+        'account_sid' => env('TWILIO_ACCOUNT_SID', 'AC4174865c2b5f392f5ffe63f9cd5123fb'),
+        'from' => env('TWILIO_FROM', '+13055703074'), // optional
+    ],
 ];
+

@@ -2,6 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Notifications\SendActivationUrl;
+use App\User;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class ClientRegisterTest extends TestCase
@@ -13,11 +16,9 @@ class ClientRegisterTest extends TestCase
      */
     public function testRegistration()
     {
+        Notification::fake();
+
         $faker = \Faker\Factory::create();
-
-        $this->app['config']->set('sximo.cnf_activation', false);
-        $this->app['config']->set('cnf_activation', false);
-
 
         $email = $faker->email;
 
@@ -38,6 +39,12 @@ class ClientRegisterTest extends TestCase
                 'password'              => 'admin123',
                 'password_confirmation' => 'admin123',
             ]
+        );
+
+        $user = User::all()->last();
+
+        Notification::assertSentTo(
+            [$user], SendActivationUrl::class
         );
 
         $response->assertSessionDoesntHaveErrors();

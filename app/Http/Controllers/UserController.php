@@ -3,6 +3,8 @@ namespace App\Http\Controllers;
 use App\Libary\SiteHelpers;
 use App\Models\Core\Groups;
 use App\Models\Organization;
+use App\Notifications\SendActivationUrl;
+use App\Notifications\SendTwoFactorVerificationCode;
 use Redirect;
 use Socialize;
 use Illuminate\Http\Request;
@@ -164,24 +166,11 @@ class UserController extends Controller
                 $authen->active = '0';
             }
             $new_code = URL::to('user/activation?code=' . $code);
-            // Your Account SID and Auth Token from twilio.com/console
-            $account_sid = 'AC4174865c2b5f392f5ffe63f9cd5123fb';
-            $auth_token  = '424cddd97c717bd28f77b212168b6ad2';
-            // In production, these should be environment variables. E.g.:
-            // $auth_token = $_ENV["TWILIO_ACCOUNT_SID"]
-            // A Twilio number you own with SMS capabilities
-            $twilio_number = "+13055703074";
-            $client        = new Client($account_sid, $auth_token);
-            $client->messages->create(
-                // Where to send a text message (your cell phone?)
-                $request->input('phone'),
-                array(
-                    'from' => $twilio_number,
-                    'body' => 'Thank You for registering with SportsTravel HQ! Please check your inbox and click on the activation link below ' . $new_code,
-                )
-            );
 
             $saved = $authen->save();
+
+            //-- Send SMS of URL to access
+            $authen->notify(new SendActivationUrl($new_code));
 
             if ($saved && $is_client) {
                 $org = new Organization();
@@ -452,25 +441,14 @@ class UserController extends Controller
                             if ($session['level'] == 2 || $session['level'] == 1 || $session['level'] == 4 || $session['level'] == 5 || $session['level'] == 6) {
                                 if (!$request->has("send_code") && $row->vcode == 0) {
                                     $code          = rand(10000, 10000000);
-                                    $user_id       = $row->id;
-                                    $phone         = User::where('id', '=', $row->id)->pluck('phone_number');
-                                    $account_sid   = 'AC4174865c2b5f392f5ffe63f9cd5123fb';
-                                    $auth_token    = '424cddd97c717bd28f77b212168b6ad2';
-                                    $twilio_number = "+13055703074";
-                                    $client        = new Client($account_sid, $auth_token);
-                                    $client->messages->create(
 
-                                        $phone,
-                                        array(
-                                            'from' => $twilio_number,
-                                            'body' => 'Your SportsTravelHQ verification code is ' . $code,
-                                        )
-                                    );
+                                    //-- Send an SMS of the verification code
+                                    $row->notify(new SendTwoFactorVerificationCode($code));
 
                                     User::where('id', '=', $row->id)->update(array('activation' => $code));
 
 
-                                    $login_code_session['user_id'] = $user_id;
+                                    $login_code_session['user_id'] = $row->id;
 
                                     \Auth::logout();
                                     $login_code_session['user_email']    = $request->email;

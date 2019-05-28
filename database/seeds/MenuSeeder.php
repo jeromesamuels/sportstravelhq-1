@@ -529,6 +529,7 @@ JSON;
         $menus = json_decode($menus, true);
 
         $url = env('APP_URL_MENU', env('APP_URL'));
+        $path = url($url);
         foreach ($menus as $menuData) {
             $menu = new \App\Models\Sximo\Menu();
 
@@ -537,7 +538,7 @@ JSON;
             $menu->module      = $menuData['module'];
             $menu->url         = str_replace(
                 'http://13.92.240.159/demo/public/',
-                rtrim(url($url)->full(), '/') . '/',
+                rtrim($path, '/') . '/',
                 $menuData['url']
             );
             $menu->menu_name   = $menuData['menu_name'];
