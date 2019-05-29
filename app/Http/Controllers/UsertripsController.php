@@ -13,6 +13,7 @@ use App\Models\Team;
 use App\Models\TripAmenity;
 use App\Models\UserTrip;
 use App\User;
+use App\UserTripPolicy;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Illuminate\Support\Facades\Auth;
@@ -715,8 +716,7 @@ class UsertripsController extends Controller
             return redirect(URL("/"));
         }
         
-
-       /* if ($user->is_manager) {
+       /*if ($user->is_manager) {
             $trips = $user->organization->trips();
         } else {
             $trips = $user->trips();

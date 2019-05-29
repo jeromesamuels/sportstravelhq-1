@@ -334,6 +334,7 @@ class HomeController extends Controller {
     public function booking() {
         $corporate = Auth::user();
         $hotel_type = Hotel::findOrFail($corporate->hotel_id);
+
         if ($corporate->group_id == Groups::CORPORATE) {
             $data_hotel = Hotel::groupBy('type')->where('type', $hotel_type->type)->get();
             foreach ($data_hotel as $value) {
@@ -346,6 +347,7 @@ class HomeController extends Controller {
             $purchases = Invoices::sum('invoices.amt_paid');
             $purchases_due = Invoices::sum('invoices.est_amt_due');
         }
+        
         $data_user = User::where('group_id', Groups::USERS)->get();
         $trip_booking = UserTrip::all();
         return view('invoices.booking', compact('data_hotel', 'data_user', 'purchases', 'purchases_due', 'trip_booking'));
