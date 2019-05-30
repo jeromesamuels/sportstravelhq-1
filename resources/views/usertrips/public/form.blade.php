@@ -838,6 +838,10 @@ ini_set('max_execution_time', 3000);
         }
         }
         }
+        else{
+          $DB_Blackout_Date='';   
+        }
+
     ?>
 <script type="text/javascript">
     $(document).ready(function() { 
