@@ -839,7 +839,6 @@ ini_set('max_execution_time', 3000);
         }
         }
         else{
-            
           $DB_Blackout_Date='';   
         }
 
@@ -874,15 +873,15 @@ ini_set('max_execution_time', 3000);
     
     return [month,day, year].join('/');
     }
-    
     var dateArr = getDateArray(startDate, endDate);
-    
     var blackout_dates = []; 
     var blackout_dates1 = []; 
-    <?php foreach ($DB_Blackout_Date as $bo_date) { ?>
+    <?php 
+    if($DB_Blackout_Date != ''){
+    foreach ($DB_Blackout_Date as $bo_date) { ?>
         blackout_dates.push("<?php echo $bo_date; ?>")
-    <?php } ?>
-    
+    <?php }
+    } ?>
     for(var i=0; i<blackout_dates.length;i++){
         if(dateArr.includes(blackout_dates[i])){
            blackout_dates1.push(blackout_dates[i]);
