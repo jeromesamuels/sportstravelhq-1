@@ -897,9 +897,6 @@ ini_set('max_execution_time', 3000);
     }
         var blackin = '<?php echo $blackout; ?>';
         var blackout = '<?php echo $blackoutend; ?>';
-         
-    
-       
     });
     });
 </script>

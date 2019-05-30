@@ -1132,9 +1132,6 @@ public static function alphaID($in, $to_num = false, $pad_up = false, $passKey =
 	
 	public static function createPreCombo( $field , $table , $key ,  $val ,$app ,$class ,$lookey = null)
 	{
-
-
-		
 		$parent = null;
 		$parent_field = null;
 		if($lookey != null)  
@@ -1153,7 +1150,6 @@ public static function alphaID($in, $to_num = false, $pad_up = false, $passKey =
 	static public function showNotification()
 	{
 		$status = Session::get('status');
-
 		if(Session::has('status')): ?>	  
 		<script type="text/javascript">
             $(document).ready(function(){

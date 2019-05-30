@@ -53,4 +53,4 @@ Route::resource('state','StateController');
 Route::resource('team','TeamController');
 // End Routes for team 
 
-                    ?>
+ ?>

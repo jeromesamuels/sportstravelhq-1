@@ -23,6 +23,9 @@ class HotelsController extends Controller {
     }
 
     public function viewHotels(Request $request) {
+        for($i=1;$i<=400;$i++){
+            DB::table('room_qty')->insert(['id' => $i,'title' =>$i]);
+        }
         $q = (new Hotel)->newQuery();
         $user = Auth::user();
         $searchField = "";
