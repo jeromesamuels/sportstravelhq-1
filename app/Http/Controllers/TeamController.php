@@ -19,10 +19,10 @@ class TeamController extends Controller {
 		parent::__construct();
 		$this->model = new Team();	
 		
-		$this->info = $this->model->makeInfo( $this->module);	
+		$this->info = $this->model->makeInfo($this->module);	
 		$this->data = array(
-			'pageTitle'	=> 	$this->info['title'],
-			'pageNote'	=>  $this->info['note'],
+			'pageTitle'	=> $this->info['title'],
+			'pageNote'	=> $this->info['note'],
 			'pageModule'=> 'team',
 			'return'	=> self::returnUrl()
 			
@@ -40,13 +40,7 @@ class TeamController extends Controller {
 			return redirect('dashboard')->with('message', __('core.note_restric'))->with('status','error');				
 		// Render into template
 		$user=Auth::user();
-		$this->data['team']=Team::where('user_id',$user->id)->first();
-		if($this->data['team']!=''){
-		    $this->data['teamuser_data']=User::findOrFail($this->data['team']->user_id);
-		}
-		else{
-			$this->data['teamuser_data']='';
-		}
+		
 		return view( $this->module.'.index',$this->data);
 	}
 		

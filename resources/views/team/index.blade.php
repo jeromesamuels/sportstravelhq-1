@@ -73,8 +73,8 @@
 						<th style="width: 3% !important;" class="number"> No </th>
 						<th  style="width: 3% !important;"> <input type="checkbox" class="checkall minimal-green" /></th>
 						<th  style="width: 10% !important;">{{ __('core.btn_action') }}</th>
-						<th style="width: 10% !important;" class="text">Created By </th>
-
+						<!-- <th style="width: 10% !important;" class="text">Created By </th>
+ -->
 						@foreach ($tableGrid as $t)
 							@if($t['view'] =='1')				
 								<?php $limited = isset($t['limited']) ? $t['limited'] :''; 
@@ -120,8 +120,7 @@
 								</div>
 
 							</td>
-							<td>{{$teamuser_data->first_name.' '.$teamuser_data->last_name}}</td>	
-						
+							
 
 						 @foreach ($tableGrid as $field)
 							 @if($field['view'] =='1')

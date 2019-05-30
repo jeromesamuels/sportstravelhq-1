@@ -1,5 +1,6 @@
-<?php namespace App\Models;
-
+<?php 
+namespace App\Models;
+use App\User;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -75,7 +76,7 @@ class Team extends Sximo  {
 
 	 public function teamuser()
     {
-        return $this->belongsTo(Users::class, "user_id");
+        return $this->belongsTo(User::class, "user_id");
     }
      public function teams()
     {
