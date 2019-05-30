@@ -239,7 +239,7 @@ class ModuleSeeder extends Seeder
   },
   {
     "module_id": 64,
-    "module_name": "corporate_user",
+    "module_name": "CorporateUser",
     "module_title": "Corporate User",
     "module_note": "Corporate User",
     "module_author": null,

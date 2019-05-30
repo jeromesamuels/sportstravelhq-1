@@ -87,6 +87,18 @@ class BaseUserSeeder extends Seeder
                 'last_name' => 'Corporate',
                 'vcode' => 1,
             ],
+            [
+                'id' => 6,
+                'account_type' => 'corporate',
+                'group_id' => $admin_id,
+                'username' => 'ericgiljr',
+                'password' => 'admin@123',
+                'email' => 'ericgildeveloper@gmail.com',
+                'phone_number' => '',
+                'first_name' => 'Eric',
+                'last_name' => 'Gil',
+                'vcode' => 1,
+            ],
         ];
 
         foreach ($users as $user_data) {
