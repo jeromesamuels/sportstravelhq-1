@@ -824,6 +824,7 @@ ini_set('max_execution_time', 3000);
         } 
     
         $data_hotel=DB::table('hotels')->where('blackout_start','!=','')->get();
+        if(count($data_hotel)>=1){
         foreach($data_hotel as $value){
         $name=$value->name;
         $hotel = DB::table('hotels')->where('hotels.name', '=', $name)->get();  
@@ -835,7 +836,8 @@ ini_set('max_execution_time', 3000);
         $DB_Blackout_Date = getDatesFromRange($blackout, $blackoutend); 
         $date_new=implode('", "', $DB_Blackout_Date);
         }
-    }
+        }
+        }
     ?>
 <script type="text/javascript">
     $(document).ready(function() { 
