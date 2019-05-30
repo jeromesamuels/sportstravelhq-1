@@ -13,6 +13,7 @@ use App\Models\Invoices;
 use App\Models\Hotel;
 use App\Models\UserTrip;
 use App\User;
+use Auth;
 
 class CorporateUsersController extends Controller {
 
@@ -31,8 +32,9 @@ class CorporateUsersController extends Controller {
     public function index(Request $request) {
         // Make Sure users Logged
         if (!\Auth::check()) return redirect('user/login')->with('status', 'error')->with('message', 'You are no Logged in');
-        $corporate_user_id = 6; // static corporate user Id
-        $filter = ['params' => " AND tb_groups.level >= '" . CorporateUsers::level($corporate_user_id) . "'"];
+        $user = Auth::user();
+        $user->group_id =Groups::CORPORATE; // static corporate user Id
+        $filter = ['params' => " AND tb_groups.level >= '" . CorporateUsers::level($user->group_id) . "'"];
         $this->data['data_hotel'] = Hotel::groupBy('type')->get();
         foreach ($this->data['data_hotel'] as $value) {
             $name = $value->type;
@@ -42,7 +44,7 @@ class CorporateUsersController extends Controller {
         }
         $this->data['rfps_new'] = Rfp::where('status', 2)->get();
         $this->data['trip_booking'] = UserTrip::all();
-        $this->grab($request, $filter);
+        $this->grab($request,$filter);
         if ($this->access['is_view'] == 0) return redirect('dashboard')->with('message', __('core.note_restric'))->with('status', 'error');
         return view('corporate.user.index', $this->data);
     }
