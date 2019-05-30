@@ -839,6 +839,8 @@ ini_set('max_execution_time', 3000);
         }
         }
         else{
+          $blackout='';
+          $blackoutend='';
           $DB_Blackout_Date='';   
         }
 
