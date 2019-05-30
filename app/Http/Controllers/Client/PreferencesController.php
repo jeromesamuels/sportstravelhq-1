@@ -37,6 +37,7 @@ class PreferencesController extends Controller
          *
          * @var \App\User $user
          */
+
         $user = Auth::user();
 
         $hotel_defaults = $user->hotelAgreementDefault;
@@ -48,8 +49,8 @@ class PreferencesController extends Controller
 
         $teams         = Team::all();
         $team_ids      = $teams->pluck('id')->all();
-        $team_defaults = HotelCcAuthDefault::whereIn('team_id', $team_ids)->get();
-
+        $team_defaults = HotelCcAuthDefault::whereIn('id', $team_ids)->get();
+       
         $errors = $request->session()->pull('errors', new ViewErrorBag());
 
         $view_data = [
@@ -111,20 +112,19 @@ class PreferencesController extends Controller
                 //-- TODO: Permissions to make sure the user has access to this TEAM!
                 $team_default = HotelCcAuthDefault::firstOrCreate(
                     [
-                        'team_id' => $team_id,
+                        //'team_id' => $team_id,
                         'user_id' => $user->id,
                     ],
                     $team
                 );
-                $team_default->team_id = $team_id;
+               // $team_default->team_id = $team_id;
                 $team_default->user_id = $user->id;
                 $team_default->save();
             }
         }
 
 
-        return redirect()->route('client-preferences-index')
-                         ->with('success', 'Preferences Saved!');
+        return redirect()->route('client-preferences-index')->with('success', 'Preferences Saved!');
 
     }
 }

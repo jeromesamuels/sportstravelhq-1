@@ -1,131 +1,6 @@
 @extends('layouts.app')
 @section('content')
 {{--*/ usort($tableGrid, "SiteHelpers::_sort") /*--}}
-<style>
-    #myModal .modal-dialog {
-    max-width: 600px;
-    margin: 5.75rem auto;
-    }
-    #myModal .modal-header{
-    display: block;
-    border-bottom: 2px solid #eee;
-    border-bottom-style:dashed;
-    }
-    #myModal .modal-content .modal-header .modal-title {
-    font-weight: bold;
-    font-size: 20px;
-    }
-    /*steps progress bar css */
-    .one, .two, .three, .four, .five, .six, .seven, .eight, .nine{
-    position:absolute;
-    margin-top:-2px;
-    z-index:1;
-    height:12px;
-    width:12px;
-    border-radius:25px;
-    }
-    .one{
-    left:1%;
-    }
-    .two{
-    left:12.5%;
-    }
-    .three{
-    left:25%;
-    }
-    .four{
-    left:37.5%;
-    }
-    .five{
-    left:50%;
-    }
-    .six{
-    left:62.5%;
-    }
-    .seven{
-    left:75%;
-    }
-    .eight{
-    left:87.5%;
-    }
-    .nine{
-    left:98%;
-    }
-    .success-color{
-    background-color:#44c8f5;
-    }
-    .no-color{
-    background-color:#afafaf;
-    }
-    .progress .progress-bar {
-    line-height: 10px;
-    background-color: #dddede;
-    box-shadow: none;
-    }
-    .progress{
-    height: 8px;
-    }
-    #progress_bar{
-    margin-top: 40px;
-    background: #f5f5f5;
-    padding: 25px 50px;
-    height: 180px;
-    }
-    .progress p{
-    font-size: 16px;
-    width: 60px;
-    left: -15px;
-    position: relative;
-    padding-top: 20px;
-    word-break: keep-all;
-    color: #44c8f5;
-    font-weight: bold;
-    }
-    .progress h6{
-    left: -15px;
-    position: relative;
-    width: 90px;
-    }
-    .sbox{
-    padding: 20px;
-    }
-    .table td, .table th,.table tbody tr td, .table tbody tr th {
-    border-bottom: 0 !important;
-    border-top: 0 !important;
-    font-size: 14px;
-    padding: 12px;
-    }
-    .status_detail{
-    border-bottom: 2px solid #dedbdb;
-    border-bottom-style: dotted;
-    margin-bottom: 30px;
-    padding-bottom: 15px;
-    }
-     .status_detail1{
-       margin-bottom: 30px;
-      padding-bottom: 25px;
-     }
-    .print-btn{
-    text-align: center;
-    border-radius: 20px !important;
-    border: 2px solid #eee !important;
-    width: 100px;
-    height: 40px;
-    padding: 8px;
-    margin-right: 50px;
-    }
-    a.export,
-    a.export:visited {
-    display: inline-block;
-    text-decoration: none;
-    color: #000;
-    padding: 10px;
-    background-color: transparent;
-    }
-    .modal-header {
-    display: inline-block !important;
-}
-</style>
 <section class="page-header row" style="margin-top: 30px;">
     <h1>Dashboard </h1>
     <span style="padding: 10px 15px;font-size: 16px;"><i class="fa fa-home" aria-hidden="true"></i> - Trip Status | Trip {{ $trip->id }}</span>
@@ -179,8 +54,6 @@
                     </div>
                 </div>
                 <?php 
-                
-              
                 if($trip_id != null ){  
                     if($trip_id->status==1){
                    ?>
@@ -273,8 +146,7 @@
                         </div>
                     </div>
                 </div>
-
-                         <?php 
+           <?php 
             }
             elseif( $trip_id->status==8){ ?>
                         <div class="row" id="progress_bar">
@@ -895,10 +767,6 @@
 </div>
 @endif
 <!--for calculate distance-->
-
 </div>
-<div id="map"></div>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 @stop

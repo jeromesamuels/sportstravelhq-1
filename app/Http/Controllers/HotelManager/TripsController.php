@@ -79,7 +79,7 @@ class TripsController extends Controller {
         }
         $data_hotel = Hotel::groupBy('type')->get();
         $user = Auth::user();
-        $hotel = Hotel::findOrFail($user->hotel_id);
+        $hotel = Hotel::find($user->hotel_id);
         $trip_booking = UserTrip::all();
         
         if ($user->is_super_admin) {
@@ -100,7 +100,7 @@ class TripsController extends Controller {
         }
        
         if ($user->group_id == Groups::CORPORATE) {
-            UserTrip::where('id', $id)->update(['status' => 6]);
+            UserTrip::where('id', $id)->update(['status' => UserTrip::STATUS_VIEWED]);
         }
         
         return view('hotelmanager.tripsingle', compact('trip', 'rfp', 'trip_id', 'invoice', 'trip_booking', 'rfps_new', 'hotel', 'purchases'));

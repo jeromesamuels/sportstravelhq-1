@@ -28,9 +28,6 @@ class StateController extends Controller {
 			'return'	=> self::returnUrl()
 			
 		),$this->data);
-
-
-		
 	}
 
 	public function index( Request $request )

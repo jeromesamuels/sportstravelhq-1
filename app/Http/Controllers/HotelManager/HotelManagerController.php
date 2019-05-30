@@ -103,7 +103,6 @@ class HotelManagerController extends Controller
     public function bidSent($id)
     {
         Rfp::where('user_trip_id', $id)->update(['status' => Rfp::STATUS_BID_SENT]);
-
         return redirect()->back()->with('Success', 'Bid Declined Successfully !');
     }
 

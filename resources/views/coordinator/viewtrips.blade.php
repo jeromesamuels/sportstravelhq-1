@@ -5,16 +5,6 @@
 <section class="page-header row" style="margin-top: 30px;">
     <h1>Dashboard </h1><span style="padding: 10px 15px;font-size: 16px;"><i class="fa fa-home" aria-hidden="true"></i> - Trip Status </span>
 </section>
-<style>
-    .usertrips .pagination li.active a{
-     background-color: #5dbbe0;
-    border-color: #5dbbe0;
-    }
-    #usertrips_wrapper .row{
-        width:100%;
-    }
-</style>
-
 <script type="text/javascript">
     
     $(document).ready(function() {

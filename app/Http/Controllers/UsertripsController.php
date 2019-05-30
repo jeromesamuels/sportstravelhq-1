@@ -401,11 +401,7 @@ class UsertripsController extends Controller
 
             if ($agree_id === null) {
                 $agreementBldr = new AgreementBuilder();
-                $agreementBldr
-                    ->setTrip($trip)
-                    ->setHotelManager($receiver)
-                    ->setHotel($hotel)
-                    ->setRfp($rfp);
+                $agreementBldr->setTrip($trip)->setHotelManager($receiver)->setHotel($hotel)->setRfp($rfp);
 
                 $saved = $agreementBldr->create();
 
@@ -585,7 +581,7 @@ class UsertripsController extends Controller
         if (!\Auth::check()) {
             return redirect('user/login')->with('status', 'error')->with('message', 'You are no Logged in');
         }
-        Rfp::where('id', $rfp_id)->update(['status' => 3, 'decline_reason' => $reason]);
+        Rfp::where('id', $rfp_id)->update(['status' => Rfp::STATUS_BID_SENT, 'decline_reason' => $reason]);
         $user_trip_id = Rfp::where('user_trip_id', $rfp_id)->pluck('user_trip_id');
         foreach ($user_trip_id as $item_new) {
             $trip_id = $item_new;

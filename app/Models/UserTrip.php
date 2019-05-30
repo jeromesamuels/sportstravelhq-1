@@ -10,11 +10,26 @@ use App\User;
  */
 class UserTrip extends Sximo
 {
-    //-- This table does not have created_at and updated_at
+  
+  
     public $timestamps = false;
     public $table = 'user_trips';
     protected $primaryKey = 'id';
+     /**
+     * A text friendly version of the RFP statuses
+     *
+     * @var array
+     */
+       /**
+     * Constants for RFP status to make it easy to read a status
+     */
+    const STATUS_VIEWED = 6;
 
+    const STATUSES = [
+       'Corporate Viewed'      => UserTrip::STATUS_VIEWED,
+    ];
+
+    //-- This table does not have created_at and updated_at
     protected $fillable = [
         'entry_by',
         'trip_name',

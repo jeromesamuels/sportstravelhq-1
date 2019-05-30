@@ -24,19 +24,8 @@
         <script type="text/javascript" src="{{ asset('sximo5/js/sximo.js') }}"></script>
         <script type="text/javascript" src="{{ asset('sximo5/js/plugins/node-waves/waves.js') }}"></script>
         <script type="text/javascript" src="{{ asset('sximo5/js/admin.js') }}"></script>
-        <!--begin::Web font -->
-        <!--  <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
-            <script>
-                WebFont.load({
-                      google: {"families":["Poppins:300,400,500,600,700","Roboto:300,400,500,600,700"]},
-                      active: function() {
-                          sessionStorage.fonts = true;
-                      }
-                    });
-                  
-            </script> -->
-        <!--end::Web font -->
-        <!--begin:: Global Mandatory Vendors -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
         <link href="{{ asset('frontend/sportstravel/vendors/perfect-scrollbar/css/perfect-scrollbar.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('frontend/sportstravel/vendors/tether/dist/css/tether.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('frontend/sportstravel/vendors/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" type="text/css" />
@@ -68,6 +57,7 @@
         <link href="{{ asset('frontend/sportstravel/vendors/vendors/fontawesome5/css/all.min.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('frontend/sportstravel/assets/demo/base/style.bundle.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('frontend/sportstravel/assets/vendors/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
+         <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css"/>
         <script src="{{ asset('frontend/sportstravel/vendors/jquery/dist/jquery.js') }}" type="text/javascript"></script>
         <style>
             .amenityFilter + * .select2-selection__rendered{
@@ -249,6 +239,283 @@
             .cus-blackhead-part{
             margin-top: 80px;
             }
+            .trips-dropdown ul li a,.trips-dropdown ul li button{
+            padding: 7px 50px;
+            }
+            .hotel_range{
+            background-color: #000;
+            height: 6px;
+            border-radius: 5px;
+            }
+            .skills {
+            text-align: right;
+            padding: 0;
+            color: #000;
+            }
+            .final_range{
+            width: 100%;
+            background-color: #ddd;
+            }
+            .trips-dropdown ul li a, .trips-dropdown ul li button {
+            padding: 7px 5px;
+            text-align: center;
+            margin: 0 auto;
+            display: block;
+            }
+            .one, .two, .three, .four, .five, .six, .seven, .eight, .nine{
+            position:absolute;
+            margin-top:-2px;
+            z-index:1;
+            height:12px;
+            width:12px;
+            border-radius:25px;
+            }
+            .one{
+            left:1%;
+            }
+            .two{
+            left:12.5%;
+            }
+            .three{
+            left:25%;
+            }
+            .four{
+            left:37.5%;
+            }
+            .five{
+            left:50%;
+            }
+            .six{
+            left:62.5%;
+            }
+            .seven{
+            left:75%;
+            }
+            .eight{
+            left:87.5%;
+            }
+            .nine{
+            left:98%;
+            }
+            .success-color{
+            background-color:#44c8f5;
+            }
+            .no-color{
+            background-color:#afafaf;
+            }
+            .progress .progress-bar {
+            line-height: 10px;
+            background-color: #dddede;
+            box-shadow: none;
+            }
+            .progress{
+            height: 8px;
+            }
+            #progress_bar{
+            margin-top: 40px;
+            background: #f5f5f5;
+            padding: 25px 50px;
+            height: 150px;
+            }
+            .progress p{
+            font-size: 16px;
+            width: 60px;
+            left: -15px;
+            position: relative;
+            padding-top: 20px;
+            word-break: keep-all;
+            color: #44c8f5;
+            font-weight: bold;
+            }
+            .progress h6{
+            left: -15px;
+            position: relative;
+            width: 90px;
+            }
+            .alert{
+            display: none;
+            }
+            #show_div{
+            margin-top: 5px;
+            background: #f5f5f5;
+            padding: 20px 120px;
+            height: 175px;
+            width: 100%;
+            }
+            .sbox {
+            padding: 50px 15px;
+            }
+            .dropdown .dropdown-menu {
+            display: none;
+            opacity: 1;
+            }
+            .trips-dropdown-new{
+            margin: -20px auto;
+            float: none;
+            top: -22px;
+            }
+            .fa.fa-caret-down{
+            font-size: 30px;
+            color:#dddddd;
+            text-align: center;
+            width: 100%;
+            margin:0 auto;
+            }
+            .dropdown .dropdown-menu-new{
+            opacity: 1;
+            min-width: 100%;
+            width: 1350px;
+            background: transparent;
+            left: 15% !important;
+            border: 0;
+            box-shadow: none;
+            margin-top: -20px !important;
+            transition: none;
+            }
+            .table-responsive {
+            display: block;
+            min-height: 500px;
+            width: 100%;
+            overflow-y: visible;
+            overflow-x: hidden;
+            }
+            .modal-header {
+            display: inline-block !important;
+            }
+            .status_detail{
+            border-bottom: 2px solid #dedbdb;
+            border-bottom-style: dotted;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            }
+            .status_detail1{
+            margin-bottom: 30px;
+            padding-bottom: 25px;
+            }
+            .print-btn{
+            text-align: center;
+            border-radius: 20px !important;
+            border: 2px solid #eee !important;
+            width: 100px;
+            height: 40px;
+            padding: 8px;
+            margin-right: 50px;
+            }
+            a.export,
+            a.export:visited {
+            display: inline-block;
+            text-decoration: none;
+            color: #000;
+            padding: 10px;
+            background-color: transparent;
+            }
+            .usertrips .pagination li.active a{
+             background-color: #5dbbe0;
+            border-color: #5dbbe0;
+            }
+            #usertrips_wrapper .row{
+                width:100%;
+            }
+             .booking_h3{
+            position: absolute;
+            float: left;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            }
+            .booking_h3 h3{
+            font-size:50px;
+            color: #44c8f5;
+            }
+            .booking_h3 p{
+            font-size: 14px;
+            padding-top: 14px;
+            }
+            .dashboard-container .info-boxes {
+            background: #eae7ee; 
+            color: #240849;
+            margin: 10px 0;
+            padding: 10px 0;
+            font-size: 20px;
+            }
+            .dashboard-container .info-boxes h3 {
+            line-height: 20px;
+            margin: 5px 0;
+            }
+            .dashboard-container .widget-box {
+            margin: 10px;
+            }
+            .dashboard-container .widget-box .head {
+            border-bottom: solid 1px #EEE;
+            }
+            .dashboard-container .widget-box .body table {
+            width: 95%;
+            margin: 10px auto;
+            }
+            .dashboard-container .widget-box .body table tr th {
+            padding: 10px;
+            background: #240849; 
+            color: #FFFFFF;
+            }
+            .dashboard-container .widget-box .body table tr td {
+            padding: 10px;
+            border-bottom: solid 1px #EEE;
+            }
+            .dashboard-container .widget-box .body ul {
+            list-style: none;
+            padding: 0px;
+            margin: 0;
+            }
+            .dashboard-container .widget-box .body ul li {
+            padding: 10px;
+            border-bottom: dotted 1px #EEE;
+            }
+            .dashboard-container .widget-box .body ul li strong {
+            color: #e9955f
+            }
+            .dashboard-container .widget-box .head span {
+            color: #240849;
+            font-size: 16px;
+            font-weight: bold;
+            line-height: 50px;
+            padding: 10px;
+            }
+             .state_report .details_button{
+            border: 1px solid #eee !important;
+            border-radius: 25px !important;
+            width: 100px;
+            color: #000;
+            font-weight: normal;
+            }
+            .canvasjs-chart-toolbar{
+            display: none;
+            }
+            .hotel_range{
+            background-color: #000;
+            height: 6px;
+            border-radius: 5px;
+            }
+            .skills {
+            text-align: right;
+            padding: 0;
+            color: #000;
+            }
+            .final_range{
+            width: 100%;
+            background-color: #ddd;
+            }
+            .box-shadow {
+            -webkit-box-shadow: 0px 2px 20px 0px rgba(153,153,153,0.5);
+            -moz-box-shadow: 0px 2px 20px 0px rgba(153,153,153,0.5);
+            box-shadow: 0px 2px 20px 0px rgba(153,153,153,0.5);
+            }
+            .page-header {
+            margin-top: 25px;
+            }
+            .sbox b {
+            text-align: left;
+            }
+           
         </style>
     </head>
     <body class="m-page--wide m-header--fixed m-header--fixed-mobile m-footer--push m-aside--offcanvas-default index-page sidebar-collapse">
