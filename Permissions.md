@@ -55,7 +55,7 @@ They can do everything, except see finance reports.
  - Can see every trip submitted in the system
  - Can see every bid in the trip that one of their hotel managers have submitted. Its important that they only see bids within the corporate account and not be able to see bids from other corporate hotel accounts.
  - They cannot submit bids.
- - Can see all invoices and receipts
+ - Can see all family of brands invoices and receipts
  - Can download rooming lists
  - Can edit hotel blackouts
  - Can see "Brand Reports"
@@ -68,13 +68,16 @@ They can do everything corporate can except be the account holder of the corpora
 
 Hotel managers are limited to the hotels they have created or given ownership of. The system needs to allow multiple hotels per manager account.
 
- - Can see every trip submitted in the system
- - Can see all invoices and receipts
+-  Can view RFP’s that is sent from their Corporate via shared url
+ -  Can submit bids
+ -  Can view all RFP’s received from their corporate (history)
+ - Can enter actualized room count and room rate
+ - Can generate invoices 
+ - Can upload final billing receipts
  - Can download room lists
  - Can edit hotel blackouts
- - Can see "Brand Reports"
- - They submit bids
- - Downloading rooming lists - Of hotels they control
+ - Can see “Hotel Reports"
+ - Downloading rooming lists - of hotels they control
 
 
 ### Organization
